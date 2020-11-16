@@ -10,17 +10,73 @@ import tarfile
 PGLET_VERSION = "0.1.5"
 pglet_exe = ""
 
+class Event:
+    target = ""
+    name = ""
+    data = None
+
+    def __init__(self, target, name, data):
+        self.target = target
+        self.name = name
+        self.data = data
+
 class Connection:
     conn_id = ""
     url = ""
     public = False
     private = False
 
+    win_command_pipe = None
+    win_event_pipe = None
+
     def __init__(self, conn_id):
         self.conn_id = conn_id
 
-    def f(self):
-        return 'hello world'
+        if is_windows():
+            self.__init_windows()
+        else:
+            self.__init_linux()
+    
+    def send(self, command):
+        if is_windows():
+            return self.__send_windows(command)
+        else:
+            return self.__send_linux(command)
+
+    def wait_events(self):
+        if is_windows():
+            return self.__wait_events_windows()
+        else:
+            return self.__wait_events_linux()
+
+    def __init_windows(self):
+        self.win_command_pipe = open(rf'\\.\pipe\{self.conn_id}', 'r+b', buffering=0)
+        self.win_event_pipe = open(rf'\\.\pipe\{self.conn_id}.events', 'r+b', buffering=0)
+
+    def __send_windows(self, command):
+        self.win_command_pipe.write(command.encode('utf-8'))
+        r = self.win_command_pipe.readline().decode('utf-8').strip('\n')
+        result_parts = re.split(r"\s", r, 1)
+        if result_parts[0] == "error":
+            raise Exception(result_parts[1])
+        return result_parts[1]
+
+    def __wait_events_windows(self):
+        r = self.win_event_pipe.readline().decode('utf-8').strip('\n')
+        result_parts = re.split(r"\s", r, 2)
+        return Event(result_parts[0], result_parts[1], result_parts[2])
+
+    def __init_linux(self):
+        print ("init")
+
+    def __send_linux(self, command):
+        print (command)
+
+    def __wait_events_linux(self):
+        print ("wait for events")        
+
+    def close(self):
+        raise Exception("Not implemented yet")
 
 def page(name='', public=False, private=False, server='', token=''):
     print (f"connecting to {name}")
@@ -56,7 +112,6 @@ def page(name='', public=False, private=False, server='', token=''):
 
 def install():
     global pglet_exe
-    isWindows = (platform.system() == "Windows")
 
     home = str(pathlib.Path.home())
     pglet_dir = os.path.join(home, ".pglet")
@@ -65,7 +120,7 @@ def install():
     if not os.path.exists(pglet_bin):
         os.makedirs(pglet_bin)
     
-    if isWindows:
+    if is_windows():
         pglet_exe = os.path.join(pglet_bin, "pglet.exe")
     else:
         pglet_exe = os.path.join(pglet_bin, "pglet")
@@ -83,7 +138,7 @@ def install():
         print(f'Installing Pglet v{PGLET_VERSION}...')
 
         p = platform.system()
-        if isWindows:
+        if is_windows():
             target = "windows-amd64.zip"
         elif p == "Linux":
             target = "linux-amd64.tar.gz"
@@ -101,7 +156,7 @@ def install():
         r = requests.get(pglet_url, allow_redirects=True)
         open(temp_arch, 'wb').write(r.content)
 
-        if isWindows:
+        if is_windows():
             with zipfile.ZipFile(temp_arch, 'r') as zip_arch:
                 zip_arch.extractall(pglet_bin)
         else:
@@ -109,6 +164,9 @@ def install():
                 tar_arch.extractall(pglet_bin)
 
         os.remove(temp_arch)
+
+def is_windows():
+    return platform.system() == "Windows"
 
 def cmp(a, b):
     return (a > b) - (a < b) 
