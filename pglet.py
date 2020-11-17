@@ -153,7 +153,7 @@ def app(name='', public=False, private=False, server='', token='', target=None):
 
     # execute pglet.exe and get connection ID
     page_url = ""
-    proc = subprocess.Popen(pargs, stdout = subprocess.PIPE)
+    proc = subprocess.Popen(pargs, bufsize=0, stdout = subprocess.PIPE)
     for bline in proc.stdout:
         line = bline.decode('utf-8').rstrip()
         if page_url == "":
@@ -162,8 +162,6 @@ def app(name='', public=False, private=False, server='', token='', target=None):
         else:
             # connection ID
             conn_id = line
-         
-            sleep(1)
 
             # create connection object
             p = Connection(conn_id)
