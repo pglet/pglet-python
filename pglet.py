@@ -6,6 +6,8 @@ import re
 import requests
 import zipfile
 import tarfile
+from threading import Thread
+from time import sleep
 
 PGLET_VERSION = "0.1.5"
 pglet_exe = ""
@@ -93,7 +95,7 @@ class Connection:
         raise Exception("Not implemented yet")
 
 def page(name='', public=False, private=False, server='', token=''):
-    print (f"connecting to {name}")
+    #print (f"connecting to page {name}")
 
     pargs = [pglet_exe, "page"]
 
@@ -123,6 +125,55 @@ def page(name='', public=False, private=False, server='', token=''):
     p.public = public
     p.private = private
     return p
+
+def app(name='', public=False, private=False, server='', token='', target=None):
+    #print (f"connecting to app {name}")
+
+    if target == None:
+        raise Exception("target argument is not specified")
+
+    pargs = [pglet_exe, "app"]
+
+    if name != "":
+        pargs.append(name)
+    
+    if public:
+        pargs.append("--public")
+
+    if private:
+        pargs.append("--private")
+
+    if server != "":
+        pargs.append("--server")
+        pargs.append(server)
+
+    if token != "":
+        pargs.append("--token")
+        pargs.append(token)
+
+    # execute pglet.exe and get connection ID
+    page_url = ""
+    proc = subprocess.Popen(pargs, stdout = subprocess.PIPE)
+    for bline in proc.stdout:
+        line = bline.decode('utf-8').rstrip()
+        if page_url == "":
+            # 1st is URL
+            page_url = line
+        else:
+            # connection ID
+            conn_id = line
+         
+            sleep(1)
+
+            # create connection object
+            p = Connection(conn_id)
+            p.url = page_url
+            p.public = public
+            p.private = private
+
+            # start page session in a new thread
+            thread = Thread(target = target, args = (p,))
+            thread.start()
 
 def install():
     global pglet_exe
