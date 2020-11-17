@@ -1,4 +1,6 @@
 
+version: 0.1.{build}
+
 environment:
   PYTHON: C:\Python39-x64
   TWINE_USERNAME: __token__
