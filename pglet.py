@@ -67,13 +67,27 @@ class Connection:
         return Event(result_parts[0], result_parts[1], result_parts[2])
 
     def __init_linux(self):
-        print ("init")
+        pass
 
     def __send_linux(self, command):
-        print (command)
+        pipe = open(rf'{self.conn_id}', "w")
+        pipe.write(command)
+        pipe.close()
+
+        pipe = open(rf'{self.conn_id}', "r")
+        r = pipe.readline()
+        pipe.close()
+        result_parts = re.split(r"\s", r, 1)
+        if result_parts[0] == "error":
+            raise Exception(result_parts[1])
+        return result_parts[1]        
 
     def __wait_events_linux(self):
-        print ("wait for events")        
+        pipe = open(rf'{self.conn_id}.events', "r")
+        r = pipe.readline()
+        pipe.close()
+        result_parts = re.split(r"\s", r, 2)
+        return Event(result_parts[0], result_parts[1], result_parts[2])        
 
     def close(self):
         raise Exception("Not implemented yet")

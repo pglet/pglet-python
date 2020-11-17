@@ -1,17 +1,19 @@
 import pglet
 
-p = pglet.page()
+p = pglet.page('page1')
 
-p.send("add textbox id=name")
+r1 = p.send("add row")
+c1 = p.send(f"add col to={r1}")
+p.send(f"add textbox id=name to={c1}")
 
 # row
 #   col
 #     button id=ok
 #     button id=cancel
 
-r1 = p.send("add row")
-c1 = p.send(f"add col to={r1}")
-c2 = p.send(f"add col to={r1}")
+r2 = p.send("add row")
+c1 = p.send(f"add col to={r2}")
+c2 = p.send(f"add col to={r2}")
 
 p.send(f"add button id=ok text='OK' to={c1}")
 p.send(f"add button id=cancel text='Cancel' to={c2}")
