@@ -9,7 +9,7 @@ import tarfile
 from threading import Thread
 from time import sleep
 
-PGLET_VERSION = "0.1.5"
+PGLET_VERSION = "0.1.6"
 pglet_exe = ""
 
 class Event:
