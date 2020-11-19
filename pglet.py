@@ -45,11 +45,11 @@ class Connection:
         else:
             return self.__send_linux(command)
 
-    def wait_events(self):
+    def wait_event(self):
         if is_windows():
-            return self.__wait_events_windows()
+            return self.__wait_event_windows()
         else:
-            return self.__wait_events_linux()
+            return self.__wait_event_linux()
 
     def __init_windows(self):
         self.win_command_pipe = open(rf'\\.\pipe\{self.conn_id}', 'r+b', buffering=0)
@@ -63,7 +63,7 @@ class Connection:
             raise Exception(result_parts[1])
         return result_parts[1]
 
-    def __wait_events_windows(self):
+    def __wait_event_windows(self):
         r = self.win_event_pipe.readline().decode('utf-8').strip('\n')
         result_parts = re.split(r"\s", r, 2)
         return Event(result_parts[0], result_parts[1], result_parts[2])
@@ -84,7 +84,7 @@ class Connection:
             raise Exception(result_parts[1])
         return result_parts[1]        
 
-    def __wait_events_linux(self):
+    def __wait_event_linux(self):
         pipe = open(rf'{self.conn_id}.events', "r")
         r = pipe.readline()
         pipe.close()
