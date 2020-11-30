@@ -22,6 +22,31 @@ class Event:
         self.name = name
         self.data = data
 
+class Textbox:
+    def __init__(self, id=None, label=None, value=None, placeholder=None, errorMessage=None, description=None, multiline=False):
+        self.id = id
+        self.label = label
+        self.value = value
+        self.placeholder = placeholder
+        self.errorMessage = errorMessage
+        self.description = description
+        self.multiline = multiline
+
+    def __str__(self):
+        parts = []
+        parts.append("textbox")
+
+        if self.id:
+            parts.append(f"id=\"{encode_attr(self.id)}\"")
+
+        if self.label:
+            parts.append(f"label=\"{encode_attr(self.label)}\"")
+
+        if self.value:
+            parts.append(f"value=\"{encode_attr(self.value)}\"")            
+
+        return " ".join(parts)
+
 class Connection:
     conn_id = ""
     url = ""
@@ -38,6 +63,17 @@ class Connection:
             self.__init_windows()
         else:
             self.__init_linux()
+
+    # value: control.value ? control.value : "",
+    # label: control.label ? control.label : null,
+    # placeholder: control.placeholder ? control.placeholder : null,
+    # errorMessage: control.errormessage ? control.errormessage : null,
+    # description: control.description ? control.description : null,
+    # multiline: control.multiline ? true : false
+    def add_textbox(self, id=None, to=None, at=None, label=None, value=None, placeholder=None, errorMessage=None, description=None, multiline=False):
+        tb = Textbox(id=id, label=label, value=value, placeholder=placeholder, errorMessage=errorMessage,
+            description=description, multiline=multiline)
+        return self.send(f"add {tb}")
     
     def send(self, command):
         if is_windows():
@@ -173,8 +209,20 @@ def app(name='', public=False, private=False, server='', token='', target=None):
             thread = Thread(target = target, args = (p,))
             thread.start()
 
+
 def install():
     global pglet_exe
+
+    if is_windows():
+        pglet_exe = "pglet.exe"
+    else:
+        pglet_exe = "pglet"
+
+    # check if pglet.exe is in PATH already (development mode)
+    pglet_in_path = which(pglet_exe)
+    if pglet_in_path:
+        pglet_exe = pglet_in_path
+        return
 
     home = str(pathlib.Path.home())
     pglet_dir = os.path.join(home, ".pglet")
@@ -184,9 +232,9 @@ def install():
         os.makedirs(pglet_bin)
     
     if is_windows():
-        pglet_exe = os.path.join(pglet_bin, "pglet.exe")
+        pglet_exe = os.path.join(pglet_bin, pglet_exe)
     else:
-        pglet_exe = os.path.join(pglet_bin, "pglet")
+        pglet_exe = os.path.join(pglet_bin, pglet_exe)
 
     ver = PGLET_VERSION
 
@@ -197,7 +245,7 @@ def install():
         installed_ver = subprocess.check_output([pglet_exe, "--version"]).decode("utf-8")
         print(f'Found Pglet v{installed_ver}')
     
-    if not installed_ver or ver_cmp(installed_ver, ver) < 0:
+    if not installed_ver or installed_ver != ver:
         print(f'Installing Pglet v{PGLET_VERSION}...')
 
         p = platform.system()
@@ -227,6 +275,27 @@ def install():
                 tar_arch.extractall(pglet_bin)
 
         os.remove(temp_arch)
+
+# https://stackoverflow.com/questions/377017/test-if-executable-exists-in-python
+def which(program):
+    import os
+    def is_exe(fpath):
+        return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
+
+    fpath, _ = os.path.split(program)
+    if fpath:
+        if is_exe(program):
+            return program
+    else:
+        for path in os.environ["PATH"].split(os.pathsep):
+            exe_file = os.path.join(path, program)
+            if is_exe(exe_file):
+                return exe_file
+
+    return None
+
+def encode_attr(attr):
+    return attr.replace("\n", "\\n")
 
 def is_windows():
     return platform.system() == "Windows"

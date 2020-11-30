@@ -19,3 +19,12 @@ def test_page():
     # add button command
     r = p.send("add button id=ok text='OK'")
     assert r == "ok", "Test failed"
+
+def test_textbox():
+    tb = pglet.Textbox(id="txt1", label="Your name:")
+    assert str(tb) == "textbox id=\"txt1\" label=\"Your name:\"", "Test failed"
+
+def test_add_textbox():
+    p = pglet.page('page1')
+    tb_id = p.add_textbox(value="Test1")
+    assert tb_id.startswith('_'), "Test failed"
