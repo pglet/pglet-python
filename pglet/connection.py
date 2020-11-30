@@ -69,7 +69,7 @@ class Connection:
         pipe.close()
 
         pipe = open(rf'{self.conn_id}', "r")
-        r = pipe.readline()
+        r = pipe.readline().strip('\n')
         result_parts = re.split(r"\s", r, 1)
         if result_parts[0] == "error":
             raise Exception(result_parts[1])
@@ -77,14 +77,14 @@ class Connection:
         result = result_parts[1]
         extra_lines = int(result_parts[0])
         for _ in range(extra_lines):
-            line = pipe.readline()
+            line = pipe.readline().strip('\n')
             result = result + "\n" + line
         pipe.close()
         return result
 
     def __wait_event_linux(self):
         pipe = open(rf'{self.conn_id}.events', "r")
-        r = pipe.readline()
+        r = pipe.readline().strip('\n')
         pipe.close()
         result_parts = re.split(r"\s", r, 2)
         return Event(result_parts[0], result_parts[1], result_parts[2])        
