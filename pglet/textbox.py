@@ -22,6 +22,18 @@ class Textbox(Control):
             parts.append(f"label=\"{encode_attr(self.label)}\"")
 
         if self.value:
-            parts.append(f"value=\"{encode_attr(self.value)}\"")            
+            parts.append(f"value=\"{encode_attr(self.value)}\"")
+
+        if self.placeholder:
+            parts.append(f"placeholder=\"{encode_attr(self.placeholder)}\"")
+
+        if self.errorMessage:
+            parts.append(f"errorMessage=\"{encode_attr(self.errorMessage)}\"")
+
+        if self.description:
+            parts.append(f"description=\"{encode_attr(self.description)}\"")
+
+        if self.multiline:
+            parts.append(f"multiline=\"true\"")                        
 
         return " ".join(parts)

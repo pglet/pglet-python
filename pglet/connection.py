@@ -1,5 +1,5 @@
 import re
-from .utils import *
+from .utils import is_windows
 from .textbox import Textbox
 from .event import Event
 
@@ -22,7 +22,7 @@ class Connection:
 
     def add_textbox(self, id=None, to=None, at=None, label=None, value=None, placeholder=None, errorMessage=None, description=None, multiline=False):
         tb = Textbox(id=id, label=label, value=value, placeholder=placeholder, errorMessage=errorMessage,
-            description=description, multiline=multiline)
+                description=description, multiline=multiline)
         return self.send(f"add {tb}")
     
     def send(self, command):
@@ -47,7 +47,13 @@ class Connection:
         result_parts = re.split(r"\s", r, 1)
         if result_parts[0] == "error":
             raise Exception(result_parts[1])
-        return result_parts[1]
+        
+        result = result_parts[1]
+        extra_lines = int(result_parts[0])
+        for _ in range(extra_lines):
+            line = self.win_command_pipe.readline().decode('utf-8').strip('\n')
+            result = result + "\n" + line
+        return result
 
     def __wait_event_windows(self):
         r = self.win_event_pipe.readline().decode('utf-8').strip('\n')
@@ -64,11 +70,17 @@ class Connection:
 
         pipe = open(rf'{self.conn_id}', "r")
         r = pipe.readline()
-        pipe.close()
         result_parts = re.split(r"\s", r, 1)
         if result_parts[0] == "error":
             raise Exception(result_parts[1])
-        return result_parts[1]        
+        
+        result = result_parts[1]
+        extra_lines = int(result_parts[0])
+        for _ in range(extra_lines):
+            line = pipe.readline()
+            result = result + "\n" + line
+        pipe.close()
+        return result
 
     def __wait_event_linux(self):
         pipe = open(rf'{self.conn_id}.events', "r")
