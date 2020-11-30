@@ -8,6 +8,7 @@ import zipfile
 import tarfile
 from threading import Thread
 from time import sleep
+from .textbox import Textbox
 
 PGLET_VERSION = "0.1.6"
 pglet_exe = ""
@@ -21,31 +22,6 @@ class Event:
         self.target = target
         self.name = name
         self.data = data
-
-class Textbox:
-    def __init__(self, id=None, label=None, value=None, placeholder=None, errorMessage=None, description=None, multiline=False):
-        self.id = id
-        self.label = label
-        self.value = value
-        self.placeholder = placeholder
-        self.errorMessage = errorMessage
-        self.description = description
-        self.multiline = multiline
-
-    def __str__(self):
-        parts = []
-        parts.append("textbox")
-
-        if self.id:
-            parts.append(f"id=\"{encode_attr(self.id)}\"")
-
-        if self.label:
-            parts.append(f"label=\"{encode_attr(self.label)}\"")
-
-        if self.value:
-            parts.append(f"value=\"{encode_attr(self.value)}\"")            
-
-        return " ".join(parts)
 
 class Connection:
     conn_id = ""
@@ -64,12 +40,6 @@ class Connection:
         else:
             self.__init_linux()
 
-    # value: control.value ? control.value : "",
-    # label: control.label ? control.label : null,
-    # placeholder: control.placeholder ? control.placeholder : null,
-    # errorMessage: control.errormessage ? control.errormessage : null,
-    # description: control.description ? control.description : null,
-    # multiline: control.multiline ? true : false
     def add_textbox(self, id=None, to=None, at=None, label=None, value=None, placeholder=None, errorMessage=None, description=None, multiline=False):
         tb = Textbox(id=id, label=label, value=value, placeholder=placeholder, errorMessage=errorMessage,
             description=description, multiline=multiline)
@@ -293,9 +263,6 @@ def which(program):
                 return exe_file
 
     return None
-
-def encode_attr(attr):
-    return attr.replace("\n", "\\n")
 
 def is_windows():
     return platform.system() == "Windows"

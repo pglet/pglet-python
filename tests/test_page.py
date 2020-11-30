@@ -26,5 +26,5 @@ def test_textbox():
 
 def test_add_textbox():
     p = pglet.page('page1')
-    tb_id = p.add_textbox(value="Test1")
+    tb_id = p.add_textbox(value="Test2")
     assert tb_id.startswith('_'), "Test failed"
