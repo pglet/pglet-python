@@ -1,6 +1,7 @@
-from .utils import *
+from .utils import encode_attr
+from .control import Control
 
-class Textbox:
+class Textbox(Control):
     def __init__(self, id=None, label=None, value=None, placeholder=None, errorMessage=None, description=None, multiline=False):
         self.id = id
         self.label = label

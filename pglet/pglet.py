@@ -2,114 +2,28 @@ import os
 import pathlib
 import platform
 import subprocess
-import re
 import requests
 import zipfile
 import tarfile
+import re
 from threading import Thread
 from time import sleep
+from .utils import is_windows, which
 from .textbox import Textbox
+from .connection import Connection
 
 PGLET_VERSION = "0.1.6"
 pglet_exe = ""
 
-class Event:
-    target = ""
-    name = ""
-    data = None
-
-    def __init__(self, target, name, data):
-        self.target = target
-        self.name = name
-        self.data = data
-
-class Connection:
-    conn_id = ""
-    url = ""
-    public = False
-    private = False
-
-    win_command_pipe = None
-    win_event_pipe = None
-
-    def __init__(self, conn_id):
-        self.conn_id = conn_id
-
-        if is_windows():
-            self.__init_windows()
-        else:
-            self.__init_linux()
-
-    def add_textbox(self, id=None, to=None, at=None, label=None, value=None, placeholder=None, errorMessage=None, description=None, multiline=False):
-        tb = Textbox(id=id, label=label, value=value, placeholder=placeholder, errorMessage=errorMessage,
-            description=description, multiline=multiline)
-        return self.send(f"add {tb}")
-    
-    def send(self, command):
-        if is_windows():
-            return self.__send_windows(command)
-        else:
-            return self.__send_linux(command)
-
-    def wait_event(self):
-        if is_windows():
-            return self.__wait_event_windows()
-        else:
-            return self.__wait_event_linux()
-
-    def __init_windows(self):
-        self.win_command_pipe = open(rf'\\.\pipe\{self.conn_id}', 'r+b', buffering=0)
-        self.win_event_pipe = open(rf'\\.\pipe\{self.conn_id}.events', 'r+b', buffering=0)
-
-    def __send_windows(self, command):
-        self.win_command_pipe.write(command.encode('utf-8'))
-        r = self.win_command_pipe.readline().decode('utf-8').strip('\n')
-        result_parts = re.split(r"\s", r, 1)
-        if result_parts[0] == "error":
-            raise Exception(result_parts[1])
-        return result_parts[1]
-
-    def __wait_event_windows(self):
-        r = self.win_event_pipe.readline().decode('utf-8').strip('\n')
-        result_parts = re.split(r"\s", r, 2)
-        return Event(result_parts[0], result_parts[1], result_parts[2])
-
-    def __init_linux(self):
-        pass
-
-    def __send_linux(self, command):
-        pipe = open(rf'{self.conn_id}', "w")
-        pipe.write(command)
-        pipe.close()
-
-        pipe = open(rf'{self.conn_id}', "r")
-        r = pipe.readline()
-        pipe.close()
-        result_parts = re.split(r"\s", r, 1)
-        if result_parts[0] == "error":
-            raise Exception(result_parts[1])
-        return result_parts[1]        
-
-    def __wait_event_linux(self):
-        pipe = open(rf'{self.conn_id}.events', "r")
-        r = pipe.readline()
-        pipe.close()
-        result_parts = re.split(r"\s", r, 2)
-        return Event(result_parts[0], result_parts[1], result_parts[2])        
-
-    def close(self):
-        raise Exception("Not implemented yet")
-
-def page(name='', public=False, private=False, server='', token=''):
-    #print (f"connecting to page {name}")
+def page(name='', web=False, private=False, server='', token='', noWindow=False):
 
     pargs = [pglet_exe, "page"]
 
     if name != "":
         pargs.append(name)
     
-    if public:
-        pargs.append("--public")
+    if web:
+        pargs.append("--web")
 
     if private:
         pargs.append("--private")
@@ -122,18 +36,20 @@ def page(name='', public=False, private=False, server='', token=''):
         pargs.append("--token")
         pargs.append(token)
 
+    if noWindow:
+        pargs.append("--no-window")
+
     # execute pglet.exe and get connection ID
     exe_result = subprocess.check_output(pargs).decode("utf-8").strip()
     result_parts = re.split(r"\s", exe_result, 1)
 
     p = Connection(result_parts[0])
     p.url = result_parts[1]
-    p.public = public
+    p.web = web
     p.private = private
     return p
 
-def app(name='', public=False, private=False, server='', token='', target=None):
-    #print (f"connecting to app {name}")
+def app(name='', web=False, private=False, server='', token='', target=None, noWindow=False):
 
     if target == None:
         raise Exception("target argument is not specified")
@@ -143,8 +59,8 @@ def app(name='', public=False, private=False, server='', token='', target=None):
     if name != "":
         pargs.append(name)
     
-    if public:
-        pargs.append("--public")
+    if web:
+        pargs.append("--web")
 
     if private:
         pargs.append("--private")
@@ -156,6 +72,9 @@ def app(name='', public=False, private=False, server='', token='', target=None):
     if token != "":
         pargs.append("--token")
         pargs.append(token)
+
+    if noWindow:
+        pargs.append("--no-window")        
 
     # execute pglet.exe and get connection ID
     page_url = ""
@@ -172,7 +91,7 @@ def app(name='', public=False, private=False, server='', token='', target=None):
             # create connection object
             p = Connection(conn_id)
             p.url = page_url
-            p.public = public
+            p.web = web
             p.private = private
 
             # start page session in a new thread
@@ -245,35 +164,6 @@ def install():
                 tar_arch.extractall(pglet_bin)
 
         os.remove(temp_arch)
-
-# https://stackoverflow.com/questions/377017/test-if-executable-exists-in-python
-def which(program):
-    import os
-    def is_exe(fpath):
-        return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
-
-    fpath, _ = os.path.split(program)
-    if fpath:
-        if is_exe(program):
-            return program
-    else:
-        for path in os.environ["PATH"].split(os.pathsep):
-            exe_file = os.path.join(path, program)
-            if is_exe(exe_file):
-                return exe_file
-
-    return None
-
-def is_windows():
-    return platform.system() == "Windows"
-
-def cmp(a, b):
-    return (a > b) - (a < b) 
-
-def ver_cmp(version1, version2):
-    def normalize(v):
-        return [int(x) for x in re.sub(r'(\.0+)*$','', v).split(".")]
-    return cmp(normalize(version1), normalize(version2))
 
 # install Pglet during import
 install()
