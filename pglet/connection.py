@@ -41,7 +41,7 @@ class Connection:
         else:
             return result
 
-    def update(self, *controls):
+    def update(self, *controls, fire_and_forget=False):
         cmd = ""
         for control in controls:
             if isinstance(control, list):
@@ -50,28 +50,28 @@ class Connection:
             else:
                 cmd += f"\n{control.update_cmd()}"
 
-    def set_value(self, id, value):
+    def set_value(self, id, value, fire_and_forget=False):
         pass
 
     def get_value(self, id):
         pass
 
-    def show(self, *control_ids):
+    def show(self, *control_ids, fire_and_forget=False):
         pass
 
-    def hide(self, *control_ids):
+    def hide(self, *control_ids, fire_and_forget=False):
         pass
 
-    def disable(self, *control_ids):
+    def disable(self, *control_ids, fire_and_forget=False):
         pass
 
-    def enable(self, *control_ids):
+    def enable(self, *control_ids, fire_and_forget=False):
         pass
 
-    def clean(self, *control_ids):
+    def clean(self, *control_ids, fire_and_forget=False):
         pass
 
-    def remove(self, at=None, *control_ids):
+    def remove(self, at=None, *control_ids, fire_and_forget=False):
         pass
     
     def send(self, command):
