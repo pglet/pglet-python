@@ -11,13 +11,26 @@ class Textbox(Control):
         self.description = description
         self.multiline = multiline
 
-    def __str__(self):
+    def add_cmd(self):
         parts = []
         parts.append("textbox")
 
         if self.id:
             parts.append(f"id=\"{encode_attr(self.id)}\"")
 
+        return self.__props_str(parts)
+
+    def update_cmd(self):
+        parts = []
+
+        if not self.id:
+            raise Exception("id attribute is not set")
+
+        parts.append(f"{encode_attr(self.id)}")
+
+        return self.__props_str(parts)
+
+    def __props_str(self, parts):
         if self.label:
             parts.append(f"label=\"{encode_attr(self.label)}\"")
 

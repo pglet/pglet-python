@@ -1,6 +1,5 @@
 import re
 from .utils import is_windows
-from .textbox import Textbox
 from .event import Event
 
 class Connection:
@@ -32,9 +31,9 @@ class Connection:
         for control in controls:
             if isinstance(control, list):
                 for c in control:
-                    cmd += f"\n{c}"
+                    cmd += f"\n{c.add_cmd()}"
             else:
-                cmd += f"\n{control}"
+                cmd += f"\n{control.add_cmd()}"
 
         result = self.send(cmd)
         if result.find(" ") != -1:
@@ -42,10 +41,14 @@ class Connection:
         else:
             return result
 
-    def add_textbox(self, id=None, to=None, at=None, label=None, value=None, placeholder=None, errorMessage=None, description=None, multiline=False):
-        tb = Textbox(id=id, label=label, value=value, placeholder=placeholder, errorMessage=errorMessage,
-                description=description, multiline=multiline)
-        return self.send(f"add {tb}")
+    def update(self, *controls):
+        cmd = ""
+        for control in controls:
+            if isinstance(control, list):
+                for c in control:
+                    cmd += f"\n{c.update_cmd()}"
+            else:
+                cmd += f"\n{control.update_cmd()}"
 
     def set_value(self, id, value):
         pass
