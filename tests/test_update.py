@@ -4,7 +4,7 @@ from pglet import Textbox
 
 @pytest.fixture
 def page():
-    return pglet.page('page1', noWindow=True)
+    return pglet.page('test_update', noWindow=True)
 
 def test_update_should_fail_without_id(page):
     with pytest.raises(Exception):

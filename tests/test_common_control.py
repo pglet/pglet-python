@@ -3,7 +3,7 @@ import pglet
 
 @pytest.fixture
 def page():
-    return pglet.page('page1', noWindow=True)
+    return pglet.page("test_common_control", noWindow=True)
 
 def test_show_hide(page):
     # open page

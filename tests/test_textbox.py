@@ -1,4 +1,5 @@
 import pglet
+from pglet import Textbox
 
 def test_textbox():
     tb = pglet.Textbox(id="txt1", label="Your name:")
@@ -8,12 +9,12 @@ def test_textbox():
 
 def test_add_textbox():
     # open page
-    p = pglet.page('page1', noWindow=True)
+    p = pglet.page('test_textbox', noWindow=True)
 
     tb_value = "Line1\nLine2\nLine3"
 
     # add textbox
-    tb_id = p.add(pglet.Textbox(value=tb_value, multiline=True))
+    tb_id = p.add(Textbox(value=tb_value, multiline=True))
     assert tb_id.startswith('_'), "Test failed"
 
     # get textbox value

@@ -2,7 +2,7 @@ import pglet
 
 def test_page():
     # create page
-    p = pglet.page('page1', noWindow=True)
+    p = pglet.page('test_page', noWindow=True)
     
     assert p.url != "" and p.url.startswith('http'), "Test failed"
     assert p.conn_id != "", "Test failed"
