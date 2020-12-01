@@ -20,10 +20,56 @@ class Connection:
         else:
             self.__init_linux()
 
+    def add(self, *controls, to=None, at=None):
+        cmd = "add"
+
+        if to:
+            cmd += f" to=\"{to}\""
+
+        if isinstance(at, int):
+            cmd += f" at=\"{at}\""
+
+        for control in controls:
+            if isinstance(control, list):
+                for c in control:
+                    cmd += f"\n{c}"
+            else:
+                cmd += f"\n{control}"
+
+        result = self.send(cmd)
+        if result.find(" ") != -1:
+            return result.split(" ")
+        else:
+            return result
+
     def add_textbox(self, id=None, to=None, at=None, label=None, value=None, placeholder=None, errorMessage=None, description=None, multiline=False):
         tb = Textbox(id=id, label=label, value=value, placeholder=placeholder, errorMessage=errorMessage,
                 description=description, multiline=multiline)
         return self.send(f"add {tb}")
+
+    def set_value(self, id, value):
+        pass
+
+    def get_value(self, id):
+        pass
+
+    def show(self, *control_ids):
+        pass
+
+    def hide(self, *control_ids):
+        pass
+
+    def disable(self, *control_ids):
+        pass
+
+    def enable(self, *control_ids):
+        pass
+
+    def clean(self, *control_ids):
+        pass
+
+    def remove(self, at=None, *control_ids):
+        pass
     
     def send(self, command):
         if is_windows():
