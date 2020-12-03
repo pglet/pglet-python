@@ -4,12 +4,13 @@ from .alignment import Alignment
 
 class Stack(Control):
 
-    def __init__(self, id=None, horizontal=None, horizontalAlign=None,
-            verticalAlign=None, width=None, controls=[],
+    def __init__(self, id=None, horizontal=None, verticalFill=None, horizontalAlign=None,
+            verticalAlign=None, width=None, gap=None, controls=[],
             visible=None, disabled=None):
         Control.__init__(self, id=id, visible=visible, disabled=disabled)
 
         self.horizontal = horizontal
+        self.verticalFill = verticalFill
 
         if horizontalAlign != None and not isinstance(horizontalAlign, Alignment):
             raise Exception("horizontalAlign must be of Alignment type")
@@ -20,6 +21,7 @@ class Stack(Control):
 
         self.verticalAlign = verticalAlign
         self.width = width
+        self.gap = gap
         self.controls = []
         if controls and len(controls) > 0:
             for control in controls:
@@ -43,6 +45,9 @@ class Stack(Control):
         # base props
         parts.extend(Control._get_attrs_str(self, update))
 
+        if self.verticalFill != None:
+            parts.append(f'verticalFill="{str(self.verticalFill).lower()}"')
+
         if self.horizontal != None:
             parts.append(f'horizontal="{str(self.horizontal).lower()}"')
 
@@ -51,6 +56,12 @@ class Stack(Control):
 
         if self.verticalAlign != None:
             parts.append(f'verticalAlign="{self.verticalAlign}"')
+
+        if self.width != None:
+            parts.append(f'width="{self.width}"')
+
+        if self.gap != None:
+            parts.append(f'gap="{self.gap}"')
 
         lines.append(" ".join(parts))
 

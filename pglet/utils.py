@@ -2,6 +2,7 @@ import platform
 import re
 
 def encode_attr(attr):
+    attr = str(attr)
     return attr.replace("\n", "\\n")
 
 def is_windows():

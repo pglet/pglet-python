@@ -28,18 +28,25 @@ class Connection:
         if isinstance(at, int):
             cmd += f" at=\"{at}\""
 
+        index = []
+
         for control in controls:
             if isinstance(control, list):
                 for c in control:
-                    cmd += f"\n{c.get_cmd_str()}"
+                    cmd += f"\n{c.get_cmd_str(index=index)}"
             else:
-                cmd += f"\n{control.get_cmd_str()}"
+                cmd += f"\n{control.get_cmd_str(index=index)}"
 
         result = self.send(cmd)
-        if result.find(" ") != -1:
-            return result.split(" ")
+        ids = result.split(" ")
+
+        for i in range(len(ids)):
+            index[i].id = ids[i]
+
+        if len(ids) == 1:
+            return ids[0]
         else:
-            return result
+            return ids
 
     def update(self, *controls, fire_and_forget=False):
         cmd = ""

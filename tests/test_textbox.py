@@ -18,8 +18,10 @@ def test_add_textbox():
     tb_value = "Line1\nLine2\nLine3"
 
     # add textbox
-    tb_id = p.add(Textbox(value=tb_value, multiline=True))
+    txt1 = Textbox(value=tb_value, multiline=True)
+    tb_id = p.add(txt1)
     assert tb_id.startswith('_'), "Test failed"
+    assert tb_id == txt1.id, "Test failed"
 
     # get textbox value
     ret_tb_value = p.send(f"get {tb_id} value")
