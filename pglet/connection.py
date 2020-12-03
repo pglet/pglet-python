@@ -49,7 +49,7 @@ class Connection:
             return ids
 
     def update(self, *controls, fire_and_forget=False):
-        cmd = ""
+        cmd = "set"
         for control in controls:
             if isinstance(control, list):
                 for c in control:
