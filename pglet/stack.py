@@ -4,7 +4,7 @@ from .alignment import Alignment
 
 class Stack(Control):
 
-    def __init__(self, id=None, horizontal=False, horizontalAlign=None,
+    def __init__(self, id=None, horizontal=None, horizontalAlign=None,
             verticalAlign=None, width=None, controls=[],
             visible=None, disabled=None):
         Control.__init__(self, id=id, visible=visible, disabled=disabled)
@@ -31,7 +31,7 @@ class Stack(Control):
 
         self.controls.append(control)
 
-    def get_cmd_str(self, update=False, indent=''):
+    def get_cmd_str(self, update=False, indent='', index=None):
         lines = []
 
         # main command
@@ -44,28 +44,22 @@ class Stack(Control):
         parts.extend(Control._get_attrs_str(self, update))
 
         if self.horizontal != None:
-            parts.append(f'horizontal="{encode_attr(self.horizontal)}"')
+            parts.append(f'horizontal="{str(self.horizontal).lower()}"')
 
         if self.horizontalAlign != None:
             parts.append(f'horizontalAlign="{self.horizontalAlign}"')
 
-        if self.verticalAlign:
+        if self.verticalAlign != None:
             parts.append(f'verticalAlign="{self.verticalAlign}"')
 
         lines.append(" ".join(parts))
 
-        # # options
-        # if not update:
-        #     for option in self.options:
-        #         parts.clear()
-        #         parts.append(indent + "  option")
+        if index != None:
+            index.append(self)
 
-        #         if option.key:
-        #             parts.append(f"key=\"{encode_attr(option.key)}\"")
-
-        #         if option.text:
-        #             parts.append(f"text=\"{encode_attr(option.text)}\"")
-
-        #         lines.append(" ".join(parts))
+        # controls
+        if not update:
+            for control in self.controls:
+                lines.append(control.get_cmd_str(update=update, indent=indent+"  ", index=index))
 
         return "\n".join(lines)

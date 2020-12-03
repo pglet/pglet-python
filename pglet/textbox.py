@@ -12,7 +12,7 @@ class Textbox(Control):
         self.description = description
         self.multiline = multiline
 
-    def get_cmd_str(self, update=False, indent=''):
+    def get_cmd_str(self, update=False, indent='', index=None):
         parts = []
 
         if not update:
@@ -37,6 +37,9 @@ class Textbox(Control):
             parts.append(f"description=\"{encode_attr(self.description)}\"")
 
         if self.multiline:
-            parts.append(f"multiline=\"true\"")                        
+            parts.append(f"multiline=\"true\"")
+
+        if index != None:
+            index.append(self)
 
         return " ".join(parts)

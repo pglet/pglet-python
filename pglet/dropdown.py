@@ -1,7 +1,7 @@
 from .utils import encode_attr
 from .control import Control
 
-class Option:
+class Option(Control):
     def __init__(self, key, text=None):
         self.key = key
         self.text = text
@@ -28,7 +28,7 @@ class Dropdown(Control):
         else:
             self.options.append(Option(str(option)))
 
-    def get_cmd_str(self, update=False, indent=''):
+    def get_cmd_str(self, update=False, indent='', index=None):
         lines = []
 
         # main command
@@ -54,6 +54,9 @@ class Dropdown(Control):
 
         lines.append(" ".join(parts))
 
+        if index != None:
+            index.append(self)
+
         # options
         if not update:
             for option in self.options:
@@ -67,5 +70,8 @@ class Dropdown(Control):
                     parts.append(f"text=\"{encode_attr(option.text)}\"")
 
                 lines.append(" ".join(parts))
+
+                if index != None:
+                    index.append(option)
 
         return "\n".join(lines)

@@ -1,26 +1,37 @@
 import pglet
-from pglet import Textbox
+from pglet import Stack, Textbox, Button
 
-def test_textbox_add():
-    tb = pglet.Textbox(id="txt1", label="Your name:")
-    assert isinstance(tb, pglet.Control)
-    assert isinstance(tb, pglet.Textbox)
-    assert tb.get_cmd_str(indent='  ') == '  textbox id="txt1" label="Your name:"', "Test failed"
+def test_stack_add():
+    s = Stack(controls=[
+        Textbox(id="firstName"),
+        Textbox(id="lastName")
+    ])
+    assert isinstance(s, pglet.Control)
+    assert isinstance(s, pglet.Stack)
+    #raise Exception(s.get_cmd_str())
+    assert s.get_cmd_str() == (
+        'stack\n'
+        '  textbox id="firstName"\n'
+        '  textbox id="lastName"'
+    ), "Test failed"
 
-def test_textbox_update():
-    tb = Textbox(id="txt1", errorMessage="Enter the value")
-    assert tb.get_cmd_str(update=True) == 'id="txt1" errorMessage="Enter the value"', "Test failed"
-
-def test_add_textbox():
-    # open page
-    p = pglet.page('test_textbox', noWindow=True)
-
-    tb_value = "Line1\nLine2\nLine3"
-
-    # add textbox
-    tb_id = p.add(Textbox(value=tb_value, multiline=True))
-    assert tb_id.startswith('_'), "Test failed"
-
-    # get textbox value
-    ret_tb_value = p.send(f"get {tb_id} value")
-    assert ret_tb_value == tb_value, "Test failed"
+def test_nested_stacks_add():
+    s = Stack(controls=[
+        Textbox(id="firstName"),
+        Textbox(id="lastName"),
+        Stack(horizontal=True, controls=[
+            Button(id="ok", text="OK"),
+            Button(id="cancel", text="Cancel")
+        ])
+    ])
+    assert isinstance(s, pglet.Control)
+    assert isinstance(s, pglet.Stack)
+    #raise Exception(s.get_cmd_str())
+    assert s.get_cmd_str() == (
+        'stack\n'
+        '  textbox id="firstName"\n'
+        '  textbox id="lastName"\n'
+        '  stack horizontal="true"\n'
+        '    button id="ok" text="OK"\n'
+        '    button id="cancel" text="Cancel"'
+    ), "Test failed"
