@@ -31,9 +31,9 @@ class Connection:
         for control in controls:
             if isinstance(control, list):
                 for c in control:
-                    cmd += f"\n{c.add_cmd()}"
+                    cmd += f"\n{c.get_cmd_str()}"
             else:
-                cmd += f"\n{control.add_cmd()}"
+                cmd += f"\n{control.get_cmd_str()}"
 
         result = self.send(cmd)
         if result.find(" ") != -1:
@@ -46,9 +46,9 @@ class Connection:
         for control in controls:
             if isinstance(control, list):
                 for c in control:
-                    cmd += f"\n{c.update_cmd()}"
+                    cmd += f"\n{c.get_cmd_str(update=True)}"
             else:
-                cmd += f"\n{control.update_cmd()}"
+                cmd += f"\n{control.get_cmd_str(update=True)}"
 
     def set_value(self, id, value, fire_and_forget=False):
         pass

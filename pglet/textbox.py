@@ -2,8 +2,9 @@ from .utils import encode_attr
 from .control import Control
 
 class Textbox(Control):
-    def __init__(self, id=None, label=None, value=None, placeholder=None, errorMessage=None, description=None, multiline=False):
-        self.id = id
+    def __init__(self, id=None, label=None, value=None, placeholder=None, errorMessage=None, description=None, multiline=False,
+            visible=None, disabled=None):
+        Control.__init__(self, id=id, visible=visible, disabled=disabled)
         self.label = label
         self.value = value
         self.placeholder = placeholder
@@ -11,26 +12,15 @@ class Textbox(Control):
         self.description = description
         self.multiline = multiline
 
-    def add_cmd(self):
-        parts = []
-        parts.append("textbox")
-
-        if self.id:
-            parts.append(f"id=\"{encode_attr(self.id)}\"")
-
-        return self.__props_str(parts)
-
-    def update_cmd(self):
+    def get_cmd_str(self, update=False, indent=''):
         parts = []
 
-        if not self.id:
-            raise Exception("id attribute is not set")
+        if not update:
+            parts.append(indent + "textbox")
+        
+        # base props
+        parts.extend(Control._get_attrs_str(self, update))
 
-        parts.append(f"{encode_attr(self.id)}")
-
-        return self.__props_str(parts)
-
-    def __props_str(self, parts):
         if self.label:
             parts.append(f"label=\"{encode_attr(self.label)}\"")
 
