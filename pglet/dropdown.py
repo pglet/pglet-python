@@ -1,10 +1,33 @@
 from .utils import encode_attr
 from .control import Control
 
+# Option
 class Option(Control):
     def __init__(self, key, text=None):
+        Control.__init__(self)
         self.key = key
         self.text = text
+
+    def _getControlName(self):
+        return "option"
+
+    # key
+    @property
+    def key(self):
+        return self._get_attr("key")
+
+    @key.setter
+    def key(self, value):
+        self._set_attr("key", value)
+
+    # text
+    @property
+    def text(self):
+        return self._get_attr("text")
+
+    @text.setter
+    def text(self, value):
+        self._set_attr("text", value)
 
 class Dropdown(Control):
     def __init__(self, id=None, label=None, value=None, placeholder=None,
@@ -14,64 +37,58 @@ class Dropdown(Control):
         self.value = value
         self.placeholder = placeholder
         self.errorMessage = errorMessage
-        self.options = []
+        self._options = []
         if options and len(options) > 0:
             for option in options:
                 self.add_option(option)
 
+    def _getControlName(self):
+        return "dropdown"
+
     def add_option(self, option):
         if isinstance(option, tuple) and len(option) > 1:
             # (key, value) tuple
-            self.options.append(Option(option[0], option[1]))
+            self._options.append(Option(option[0], option[1]))
         elif isinstance(option, Option):
-            self.options.append(option)
+            self._options.append(option)
         else:
-            self.options.append(Option(str(option)))
+            self._options.append(Option(str(option)))
 
-    def get_cmd_str(self, update=False, indent='', index=None):
-        lines = []
+    # label
+    @property
+    def label(self):
+        return self._get_attr("label")
 
-        # main command
-        parts = []
+    @label.setter
+    def label(self, value):
+        self._set_attr("label", value)
 
-        if not update:
-            parts.append(indent + "dropdown")
-        
-        # base props
-        parts.extend(Control._get_attrs_str(self, update))
+    # value
+    @property
+    def value(self):
+        return self._get_attr("value")
 
-        if self.label:
-            parts.append(f"label=\"{encode_attr(self.label)}\"")
+    @value.setter
+    def value(self, value):
+        self._set_attr("value", value)
 
-        if self.value:
-            parts.append(f"value=\"{encode_attr(self.value)}\"")
+    # placeholder
+    @property
+    def placeholder(self):
+        return self._get_attr("placeholder")
 
-        if self.placeholder:
-            parts.append(f"placeholder=\"{encode_attr(self.placeholder)}\"")
+    @placeholder.setter
+    def placeholder(self, value):
+        self._set_attr("placeholder", value)
 
-        if self.errorMessage:
-            parts.append(f"errorMessage=\"{encode_attr(self.errorMessage)}\"")
+    # errorMessage
+    @property
+    def errorMessage(self):
+        return self._get_attr("errorMessage")
 
-        lines.append(" ".join(parts))
+    @errorMessage.setter
+    def errorMessage(self, value):
+        self._set_attr("errorMessage", value)
 
-        if index != None:
-            index.append(self)
-
-        # options
-        if not update:
-            for option in self.options:
-                parts.clear()
-                parts.append(indent + "  option")
-
-                if option.key:
-                    parts.append(f"key=\"{encode_attr(option.key)}\"")
-
-                if option.text:
-                    parts.append(f"text=\"{encode_attr(option.text)}\"")
-
-                lines.append(" ".join(parts))
-
-                if index != None:
-                    index.append(option)
-
-        return "\n".join(lines)
+    def _getChildren(self):
+        return self._options

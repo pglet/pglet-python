@@ -11,66 +11,82 @@ class Stack(Control):
 
         self.horizontal = horizontal
         self.verticalFill = verticalFill
-
-        if horizontalAlign != None and not isinstance(horizontalAlign, Alignment):
-            raise Exception("horizontalAlign must be of Alignment type")
         self.horizontalAlign = horizontalAlign
-
-        if verticalAlign != None and not isinstance(verticalAlign, Alignment):
-            raise Exception("verticalAlign must be of Alignment type")
-
         self.verticalAlign = verticalAlign
         self.width = width
         self.gap = gap
-        self.controls = []
+
+        self._controls = []
         if controls and len(controls) > 0:
             for control in controls:
                 self.add_control(control)
+
+    def _getControlName(self):
+        return "stack"
 
     def add_control(self, control):
         if not isinstance(control, Control):
             raise Exception("Stack can hold controls only")
 
-        self.controls.append(control)
+        self._controls.append(control)
 
-    def get_cmd_str(self, update=False, indent='', index=None):
-        lines = []
+# width
+    @property
+    def width(self):
+        return self._get_attr("width")
 
-        # main command
-        parts = []
+    @width.setter
+    def width(self, value):
+        self._set_attr("width", value)
 
-        if not update:
-            parts.append(indent + "stack")
-        
-        # base props
-        parts.extend(Control._get_attrs_str(self, update))
+# gap
+    @property
+    def gap(self):
+        return self._get_attr("gap")
 
-        if self.verticalFill != None:
-            parts.append(f'verticalFill="{str(self.verticalFill).lower()}"')
+    @gap.setter
+    def gap(self, value):
+        self._set_attr("gap", value)
 
-        if self.horizontal != None:
-            parts.append(f'horizontal="{str(self.horizontal).lower()}"')
+# horizontal
+    @property
+    def horizontal(self):
+        return self._get_attr("horizontal")
 
-        if self.horizontalAlign != None:
-            parts.append(f'horizontalAlign="{self.horizontalAlign}"')
+    @horizontal.setter
+    def horizontal(self, value):
+        assert value == None or isinstance(value, bool), "horizontal must be a bool"
+        self._set_attr("horizontal", value)
 
-        if self.verticalAlign != None:
-            parts.append(f'verticalAlign="{self.verticalAlign}"')
+# verticalFill
+    @property
+    def verticalFill(self):
+        return self._get_attr("verticalFill")
 
-        if self.width != None:
-            parts.append(f'width="{self.width}"')
+    @verticalFill.setter
+    def verticalFill(self, value):
+        assert value == None or isinstance(value, bool), "verticalFill must be a bool"
+        self._set_attr("verticalFill", value)
 
-        if self.gap != None:
-            parts.append(f'gap="{self.gap}"')
+# horizontalAlign
+    @property
+    def horizontalAlign(self):
+        return self._get_attr("horizontalAlign")
 
-        lines.append(" ".join(parts))
+    @horizontalAlign.setter
+    def horizontalAlign(self, value):
+        assert value == None or isinstance(value, Alignment), "horizontalAlign must be an Alignment"
+        self._set_attr("horizontalAlign", value)
 
-        if index != None:
-            index.append(self)
+# verticalAlign
+    @property
+    def verticalAlign(self):
+        return self._get_attr("verticalAlign")
 
-        # controls
-        if not update:
-            for control in self.controls:
-                lines.append(control.get_cmd_str(update=update, indent=indent+"  ", index=index))
+    @verticalAlign.setter
+    def verticalAlign(self, value):
+        assert value == None or isinstance(value, Alignment), "verticalAlign must be an Alignment"
+        self._set_attr("verticalAlign", value)
 
-        return "\n".join(lines)
+    def _getChildren(self):
+        return self._controls

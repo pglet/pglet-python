@@ -21,29 +21,50 @@ class Page(Control):
         self.width = width
         self.padding = padding
 
-    def get_cmd_str(self, update=False, indent='', index=None):
+# verticalFill
+    @property
+    def verticalFill(self):
+        return self._get_attr("verticalFill")
 
-        if not update:
-            raise Exception("Page control cannot be added, only updated.")
+    @verticalFill.setter
+    def verticalFill(self, value):
+        assert value == None or isinstance(value, bool), "verticalFill must be a bool"
+        self._set_attr("verticalFill", value)
 
-        parts = []
-        
-        # base props
-        parts.extend(Control._get_attrs_str(self, update))
+# horizontalAlign
+    @property
+    def horizontalAlign(self):
+        return self._get_attr("horizontalAlign")
 
-        if self.verticalFill != None:
-            parts.append(f'verticalFill="{str(self.verticalFill).lower()}"')
+    @horizontalAlign.setter
+    def horizontalAlign(self, value):
+        assert value == None or isinstance(value, Alignment), "horizontalAlign must be an Alignment"
+        self._set_attr("horizontalAlign", value)
 
-        if self.horizontalAlign != None:
-            parts.append(f'horizontalAlign="{self.horizontalAlign}"')
+# verticalAlign
+    @property
+    def verticalAlign(self):
+        return self._get_attr("verticalAlign")
 
-        if self.verticalAlign != None:
-            parts.append(f'verticalAlign="{self.verticalAlign}"')
+    @verticalAlign.setter
+    def verticalAlign(self, value):
+        assert value == None or isinstance(value, Alignment), "verticalAlign must be an Alignment"
+        self._set_attr("verticalAlign", value)
 
-        if self.width != None:
-            parts.append(f'width="{self.width}"')
+# width
+    @property
+    def width(self):
+        return self._get_attr("width")
 
-        if self.padding != None:
-            parts.append(f'padding="{self.padding}"')
+    @width.setter
+    def width(self, value):
+        self._set_attr("width", value)
 
-        return " ".join(parts)
+# padding
+    @property
+    def padding(self):
+        return self._get_attr("padding")
+
+    @padding.setter
+    def padding(self, value):
+        self._set_attr("padding", value)

@@ -7,19 +7,14 @@ class Text(Control):
         Control.__init__(self, id=id, visible=visible, disabled=disabled)
         self.value = value
 
-    def get_cmd_str(self, update=False, indent='', index=None):
-        parts = []
+    def _getControlName(self):
+        return "text"
 
-        if not update:
-            parts.append(indent + "text")
-        
-        # base props
-        parts.extend(Control._get_attrs_str(self, update))
+# value
+    @property
+    def value(self):
+        return self._get_attr("value")
 
-        if self.value:
-            parts.append(f"value=\"{encode_attr(self.value)}\"")
-
-        if index != None:
-            index.append(self)
-
-        return " ".join(parts)
+    @value.setter
+    def value(self, value):
+        self._set_attr("value", value)

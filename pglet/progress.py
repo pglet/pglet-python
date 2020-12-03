@@ -9,25 +9,33 @@ class Progress(Control):
         self.description = description
         self.label = label
 
-    def get_cmd_str(self, update=False, indent='', index=None):
-        parts = []
+    def _getControlName(self):
+        return "progress"
 
-        if not update:
-            parts.append(indent + "progress")
-        
-        # base props
-        parts.extend(Control._get_attrs_str(self, update))
+# value
+    @property
+    def value(self):
+        return self._get_attr("value")
 
-        if self.label:
-            parts.append(f"label=\"{encode_attr(self.label)}\"")
+    @value.setter
+    def value(self, value):
+        assert value == None or isinstance(value, int), "value must be an int"
+        self._set_attr("value", value)
 
-        if self.value:
-            parts.append(f"value=\"{encode_attr(self.value)}\"")
+# description
+    @property
+    def description(self):
+        return self._get_attr("description")
 
-        if self.description:
-            parts.append(f"description=\"{encode_attr(self.description)}\"")
+    @description.setter
+    def description(self, value):
+        self._set_attr("description", value)
 
-        if index != None:
-            index.append(self)
+# label
+    @property
+    def label(self):
+        return self._get_attr("label")
 
-        return " ".join(parts)
+    @label.setter
+    def label(self, value):
+        self._set_attr("label", value)

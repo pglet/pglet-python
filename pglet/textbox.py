@@ -2,7 +2,8 @@ from .utils import encode_attr
 from .control import Control
 
 class Textbox(Control):
-    def __init__(self, id=None, label=None, value=None, placeholder=None, errorMessage=None, description=None, multiline=False,
+    def __init__(self, id=None, label=None, value=None, placeholder=None,
+            errorMessage=None, description=None, multiline=None,
             visible=None, disabled=None):
         Control.__init__(self, id=id, visible=visible, disabled=disabled)
         self.label = label
@@ -12,34 +13,60 @@ class Textbox(Control):
         self.description = description
         self.multiline = multiline
 
-    def get_cmd_str(self, update=False, indent='', index=None):
-        parts = []
+    def _getControlName(self):
+        return "textbox"
 
-        if not update:
-            parts.append(indent + "textbox")
-        
-        # base props
-        parts.extend(Control._get_attrs_str(self, update))
+# label
+    @property
+    def label(self):
+        return self._get_attr("label")
 
-        if self.label:
-            parts.append(f"label=\"{encode_attr(self.label)}\"")
+    @label.setter
+    def label(self, value):
+        self._set_attr("label", value)
 
-        if self.value:
-            parts.append(f"value=\"{encode_attr(self.value)}\"")
+# value
+    @property
+    def value(self):
+        return self._get_attr("value")
 
-        if self.placeholder:
-            parts.append(f"placeholder=\"{encode_attr(self.placeholder)}\"")
+    @value.setter
+    def value(self, value):
+        self._set_attr("value", value)
 
-        if self.errorMessage:
-            parts.append(f"errorMessage=\"{encode_attr(self.errorMessage)}\"")
+# placeholder
+    @property
+    def placeholder(self):
+        return self._get_attr("placeholder")
 
-        if self.description:
-            parts.append(f"description=\"{encode_attr(self.description)}\"")
+    @placeholder.setter
+    def placeholder(self, value):
+        self._set_attr("placeholder", value)
 
-        if self.multiline:
-            parts.append(f"multiline=\"true\"")
+# errorMessage
+    @property
+    def errorMessage(self):
+        return self._get_attr("errorMessage")
 
-        if index != None:
-            index.append(self)
+    @errorMessage.setter
+    def errorMessage(self, value):
+        self._set_attr("errorMessage", value)
 
-        return " ".join(parts)
+# description
+    @property
+    def description(self):
+        return self._get_attr("description")
+
+    @description.setter
+    def description(self, value):
+        self._set_attr("description", value)
+
+# multiline
+    @property
+    def multiline(self):
+        return self._get_attr("multiline")
+
+    @multiline.setter
+    def multiline(self, value):
+        assert value == None or isinstance(value, bool), "multiline must be a boolean"
+        self._set_attr("multiline", value)

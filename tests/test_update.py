@@ -11,4 +11,6 @@ def test_update_should_fail_without_id(page):
         page.update(Textbox(label="First name:"))
 
 def test_update_single_control(page):
-    page.update(Textbox(id="txt1", label="First name:"))
+    txt = Textbox(id="txt1", label="First name:")
+    page.add(txt)
+    page.update(txt)

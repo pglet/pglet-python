@@ -8,22 +8,24 @@ class Checkbox(Control):
         self.value = value
         self.label = label
 
-    def get_cmd_str(self, update=False, indent='', index=None):
-        parts = []
+    def _getControlName(self):
+        return "checkbox"
 
-        if not update:
-            parts.append(indent + "checkbox")
-        
-        # base props
-        parts.extend(Control._get_attrs_str(self, update))
+# value
+    @property
+    def value(self):
+        return self._get_attr("value")
 
-        if self.label != None:
-            parts.append(f'label="{encode_attr(self.label)}"')
+    @value.setter
+    def value(self, value):
+        assert value == None or isinstance(value, bool), "value must be a boolean"
+        self._set_attr("value", value)
 
-        if self.value != None:
-            parts.append(f'value="{str(self.value).lower()}"')
+# label
+    @property
+    def label(self):
+        return self._get_attr("label")
 
-        if index != None:
-            index.append(self)
-
-        return " ".join(parts)
+    @label.setter
+    def label(self, value):
+        self._set_attr("label", value)

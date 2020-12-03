@@ -9,6 +9,9 @@ class Button(Control):
         self.primary = primary
         self.data = data
 
+    def _getControlName(self):
+        return "button"
+
 # text
     @property
     def text(self):
@@ -25,7 +28,7 @@ class Button(Control):
 
     @primary.setter
     def primary(self, value):
-        assert value == None or isinstance(value, bool), "primary property must be a boolean"
+        assert value == None or isinstance(value, bool), "primary must be a boolean"
         self._set_attr("primary", value)
 
 # data
@@ -36,17 +39,3 @@ class Button(Control):
     @data.setter
     def data(self, value):
         self._set_attr("data", value)
-
-    def get_cmd_str(self, update=False, indent='', index=None):
-        parts = []
-
-        if not update:
-            parts.append(indent + "button")
-        
-        # base props
-        parts.extend(Control._get_attrs_str(self, update))
-
-        if index != None:
-            index.append(self)
-
-        return " ".join(parts)

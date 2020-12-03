@@ -9,7 +9,7 @@ def test_textbox_add():
 
 def test_textbox_update():
     tb = Textbox(id="txt1", errorMessage="Enter the value")
-    assert tb.get_cmd_str(update=True) == 'id="txt1" errorMessage="Enter the value"', "Test failed"
+    assert tb.get_cmd_str(update=True) == '"txt1" errorMessage="Enter the value"', "Test failed"
 
 def test_add_textbox():
     # open page
