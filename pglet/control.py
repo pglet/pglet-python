@@ -46,14 +46,14 @@ class Control:
     def _get_attr(self, name, defValue=None):
         if not name in self._attrs:
             return defValue
-        return self._attrs[name]
+        return self._attrs[name][0]
 
     def _set_attr(self, name, value):
         if value == None:
             if name in self._attrs:
                 del self._attrs[name]
             return
-        self._attrs[name] = value
+        self._attrs[name] = (value, True)
 
     def get_cmd_str(self, update=False, indent='', index=None):
         lines = []
@@ -65,17 +65,20 @@ class Control:
             parts.append(indent + self._getControlName())
         
         # base props
-        parts.extend(self._get_attrs_str(update))
+        attrParts = self._get_attrs_str(update)
 
-        lines.append(" ".join(parts))
+        if len(attrParts) > 0 or not update:
+            parts.extend(attrParts)
+            lines.append(" ".join(parts))
 
         if index != None:
             index.append(self)
 
         # controls
-        if not update:
-            for control in self._getChildren():
-                lines.append(control.get_cmd_str(update=update, indent=indent+"  ", index=index))
+        for control in self._getChildren():
+            childCmd = control.get_cmd_str(update=update, indent=indent+"  ", index=index)
+            if childCmd != "":
+                lines.append(childCmd)
 
         return "\n".join(lines)
 
@@ -83,7 +86,7 @@ class Control:
         parts = []
 
         if update and not self._id:
-            raise Exception("id attribute is not set")
+            return parts
 
         if not update:
             # reset ID
@@ -91,15 +94,14 @@ class Control:
                 self._id = None
             elif self._id:
                 self._id = self._id.split(":").pop()
-    
-        if self._id:
-            if not update:
-                parts.append(f'id="{encode_attr(self._id)}"')
-            else:
-                parts.append(f'"{encode_attr(self._id)}"')
 
         for attrName in sorted(self._attrs):
-            val = self._attrs[attrName]
+            dirty = self._attrs[attrName][1]
+
+            if not dirty:
+                continue
+
+            val = self._attrs[attrName][0]
             sval = ""
             if isinstance(val, bool):
                 sval = str(val).lower()
@@ -107,5 +109,12 @@ class Control:
                 sval = encode_attr(val)
 
             parts.append(f'{attrName}="{sval}"')
+            self._attrs[attrName] = (val, False)
+
+        if self._id:
+            if not update:
+                parts.insert(0, f'id="{encode_attr(self._id)}"')
+            elif len(parts) > 0:
+                parts.insert(0, f'"{encode_attr(self._id)}"')
         
         return parts

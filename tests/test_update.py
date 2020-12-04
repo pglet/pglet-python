@@ -6,10 +6,6 @@ from pglet import Textbox
 def page():
     return pglet.page('test_update', noWindow=True)
 
-def test_update_should_fail_without_id(page):
-    with pytest.raises(Exception):
-        page.update(Textbox(label="First name:"))
-
 def test_update_single_control(page):
     txt = Textbox(id="txt1", label="First name:")
     page.add(txt)

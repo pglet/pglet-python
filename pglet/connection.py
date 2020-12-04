@@ -52,23 +52,29 @@ class Connection:
             index[i].id = ids[i]
 
         if len(ids) == 1:
-            return ids[0]
+            return index[0]
         else:
-            return ids
+            return index
 
     def update(self, *controls, fire_and_forget=False):
         cmd = "set"
         if fire_and_forget:
             cmd = "setf"
 
+        lines = []
+
         for control in controls:
             if isinstance(control, list):
                 for c in control:
-                    cmd += f"\n{c.get_cmd_str(update=True)}"
+                    lines.append(c.get_cmd_str(update=True))
             else:
-                cmd += f"\n{control.get_cmd_str(update=True)}"
+                lines.append(control.get_cmd_str(update=True))
 
-        self.send(cmd)
+        if len(lines) == 0:
+            return
+
+        slines = "\n".join(lines)
+        self.send(f'{cmd}\n{slines}')
 
     def set_value(self, id_or_control, value, fire_and_forget=False):
         cmd = "set"

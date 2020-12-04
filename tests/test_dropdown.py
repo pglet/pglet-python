@@ -43,5 +43,15 @@ def test_dropdown_update():
         Option("key2")
     ])
 
-    assert dd.get_cmd_str(update=True) == '"list1" label="Your favorite color:"', "Test failed"
+    p = pglet.page(noWindow=True)
+    p.add(dd)
 
+    assert dd.get_cmd_str(update=True) == '', "Test failed"
+
+    dd.options[0].key = 1
+    dd.options[1].text = "Key 2"
+
+    assert dd.get_cmd_str(update=True) == (
+        '"_0" key="1"\n'
+        '"_1" text="Key 2"'
+    ), "Test failed"

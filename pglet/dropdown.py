@@ -54,6 +54,11 @@ class Dropdown(Control):
         else:
             self._options.append(Option(str(option)))
 
+    # options
+    @property
+    def options(self):
+        return self._options
+
     # label
     @property
     def label(self):

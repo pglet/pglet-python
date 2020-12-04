@@ -48,11 +48,32 @@ def test_nested_stacks_update():
 
     # open page
     p = pglet.page(noWindow=True)
-    ids = p.add(stack)
+    ctrls = p.add(stack)
 
-    assert ['_0', 'firstName', 'lastName', '_1', 'ok', 'cancel'] == ids, "Test failed"
+    assert ['_0', 'firstName', 'lastName', '_1', 'ok', 'cancel'] == [ctrls[0].id, ctrls[1].id, ctrls[2].id, ctrls[3].id, ctrls[4].id, ctrls[5].id], "Test failed"
 
-    # raise Exception(stack.get_cmd_str(update=True))
+    # empty update
+    assert stack.get_cmd_str(update=True) == "", "Test failed"
+
+    # update stack element
+    ctrls[0].horizontal=True
+    assert stack.get_cmd_str(update=True) == '"_0" horizontal="true"', "Test failed"
+
+    # update inner elements
+    ctrls[1].value = "John"
+    ctrls[2].value = "Smith"
+    ctrls[4].primary = True
+
+    #raise Exception(stack.get_cmd_str(update=True))
+
+    assert stack.get_cmd_str(update=True) == (
+        '"firstName" value="John"\n'
+        '"lastName" value="Smith"\n'
+        '"ok" primary="true"'
+    ), "Test failed"    
+
+    
+
     # assert stack.get_cmd_str(update=True) == (
     #     'stack\n'
     #     '  textbox id="firstName"\n'
