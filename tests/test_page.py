@@ -1,4 +1,5 @@
 import pglet
+from pglet import Page
 
 def test_page():
     # create page
@@ -8,14 +9,5 @@ def test_page():
     assert p.conn_id != "", "Test failed"
     assert p.conn_id != "", "Test failed"
 
-    # clean page command
-    r = p.send("clean page")
-    assert r == "", "Test failed"
+    p.update(Page(title="Hello, title!", padding=0))
 
-    # add text command
-    r = p.send("add text value='Hello'")
-    assert r.startswith('_'), "Test failed"
-
-    # add button command
-    r = p.send("add button id=ok text='OK'")
-    assert r == "ok", "Test failed"

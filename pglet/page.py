@@ -4,10 +4,11 @@ from .alignment import Alignment
 
 class Page(Control):
 
-    def __init__(self, id=None, verticalFill=None, horizontalAlign=None,
+    def __init__(self, id=None, title=None, verticalFill=None, horizontalAlign=None,
             verticalAlign=None, width=None, padding=None):
         Control.__init__(self, id="page")
 
+        self.title = title
         self.verticalFill = verticalFill
 
         if horizontalAlign != None and not isinstance(horizontalAlign, Alignment):
@@ -20,6 +21,15 @@ class Page(Control):
         self.verticalAlign = verticalAlign
         self.width = width
         self.padding = padding
+
+# title
+    @property
+    def title(self):
+        return self._get_attr("title")
+
+    @title.setter
+    def title(self, value):
+        self._set_attr("title", value)
 
 # verticalFill
     @property
