@@ -70,52 +70,70 @@ class Connection:
 
         self.send(cmd)
 
-    def set_value(self, id, value, fire_and_forget=False):
+    def set_value(self, id_or_control, value, fire_and_forget=False):
         cmd = "set"
         if fire_and_forget:
             cmd = "setf"
 
-        self.send(f'{cmd} {id} value="{encode_attr(value)}"')
+        self.send(f'{cmd} {self._get_control_id(id_or_control)} value="{encode_attr(value)}"')
 
-    def get_value(self, id):
-        return self.send(f'get {id} value')
+    def get_value(self, id_or_control):
+        return self.send(f'get {self._get_control_id(id_or_control)} value')
 
-    def show(self, *control_ids, fire_and_forget=False):
-        self.send(self._build_set_cmd('visible="true"', fire_and_forget, *control_ids))
+    def append_value(self, id_or_control, value, fire_and_forget=False):
+        cmd = "append"
+        if fire_and_forget:
+            cmd = "appendf"
 
-    def hide(self, *control_ids, fire_and_forget=False):
-        self.send(self._build_set_cmd('visible="false"', fire_and_forget, *control_ids))
+        self.send(f'{cmd} {self._get_control_id(id_or_control)} value="{encode_attr(value)}"')
 
-    def disable(self, *control_ids, fire_and_forget=False):
-        self.send(self._build_set_cmd('disabled="true"', fire_and_forget, *control_ids))
+    def show(self, *id_or_controls, fire_and_forget=False):
+        self.send(self._build_set_cmd('visible="true"', fire_and_forget, *id_or_controls))
 
-    def enable(self, *control_ids, fire_and_forget=False):
-        self.send(self._build_set_cmd('disabled="false"', fire_and_forget, *control_ids))
+    def hide(self, *id_or_controls, fire_and_forget=False):
+        self.send(self._build_set_cmd('visible="false"', fire_and_forget, *id_or_controls))
 
-    def _build_set_cmd(self, propValue, fire_and_forget, *control_ids):
+    def disable(self, *id_or_controls, fire_and_forget=False):
+        self.send(self._build_set_cmd('disabled="true"', fire_and_forget, *id_or_controls))
+
+    def enable(self, *id_or_controls, fire_and_forget=False):
+        self.send(self._build_set_cmd('disabled="false"', fire_and_forget, *id_or_controls))
+
+    def _build_set_cmd(self, propValue, fire_and_forget, *id_or_controls):
         cmd = 'set'
         if fire_and_forget:
             cmd = 'setf'
 
         lines = [cmd]
-        for id in control_ids:
-            lines.append(f"{id} {propValue}")
-
-        #raise Exception(type(control_ids))
-        #raise Exception("\n".join(lines))
+        for c in id_or_controls:
+            lines.append(f"{self._get_control_id(c)} {propValue}")
         return "\n".join(lines)
 
-    def clean(self, *control_ids, fire_and_forget=False):
-        cmd = 'clean'
-        if fire_and_forget:
-            cmd = 'cleanf'
-        self.send(f'{cmd} {" ".join(control_ids)}')
+    def clean(self, *id_or_controls, at=None, fire_and_forget=False):
+        parts = []
+        if not fire_and_forget:
+            parts.append('clean')
+        else:
+            parts.append('cleanf')
+        if at != None:
+            assert isinstance(at, int), "at must be an int"
+            parts.append(f'at="{at}"')
+        for c in id_or_controls:
+            parts.append(self._get_control_id(c))
+        self.send(" ".join(parts))
 
-    def remove(self, *control_ids, fire_and_forget=False):
-        cmd = 'remove'
-        if fire_and_forget:
-            cmd = 'removef'
-        self.send(f'{cmd} {" ".join(control_ids)}')
+    def remove(self, *id_or_controls, at=None, fire_and_forget=False):
+        parts = []
+        if not fire_and_forget:
+            parts.append('remove')
+        else:
+            parts.append('removef')
+        if at != None:
+            assert isinstance(at, int), "at must be an int"
+            parts.append(f'at="{at}"')
+        for c in id_or_controls:
+            parts.append(self._get_control_id(c))
+        self.send(" ".join(parts))
     
     def send(self, command):
         if is_windows():
