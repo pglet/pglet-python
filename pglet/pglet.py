@@ -2,7 +2,7 @@ import os
 import pathlib
 import platform
 import subprocess
-import requests
+import urllib.request
 import zipfile
 import tarfile
 import re
@@ -107,7 +107,7 @@ def install():
     else:
         pglet_exe = "pglet"
 
-    # check if pglet.exe is in PATH already (development mode)
+    check if pglet.exe is in PATH already (development mode)
     pglet_in_path = which(pglet_exe)
     if pglet_in_path:
         pglet_exe = pglet_in_path
@@ -153,8 +153,7 @@ def install():
 
         #print (pglet_url)
 
-        r = requests.get(pglet_url, allow_redirects=True)
-        open(temp_arch, 'wb').write(r.content)
+        urllib.request.urlretrieve(pglet_url, temp_arch)
 
         if is_windows():
             with zipfile.ZipFile(temp_arch, 'r') as zip_arch:
