@@ -47,7 +47,7 @@ def test_nested_stacks_update():
     ])
 
     # open page
-    p = pglet.page(noWindow=True)
+    p = pglet.page(no_window=True)
     ctrls = p.add(stack)
 
     assert ['_0', 'firstName', 'lastName', '_1', 'ok', 'cancel'] == [ctrls[0].id, ctrls[1].id, ctrls[2].id, ctrls[3].id, ctrls[4].id, ctrls[5].id], "Test failed"

@@ -4,7 +4,7 @@ from pglet import Textbox, Stack
 
 @pytest.fixture
 def page():
-    return pglet.page('test_add', noWindow=True)
+    return pglet.page('test_add', no_window=True)
 
 def test_add_single_control(page):
     result = page.add(Textbox(id="txt1", label="First name:"))

@@ -8,12 +8,12 @@ def test_textbox_add():
     assert tb.get_cmd_str(indent='  ') == '  textbox id="txt1" label="Your name:"', "Test failed"
 
 def test_textbox_update():
-    tb = Textbox(id="txt1", errorMessage="Enter the value")
+    tb = Textbox(id="txt1", error_message="Enter the value")
     assert tb.get_cmd_str(update=True) == '"txt1" errorMessage="Enter the value"', "Test failed"
 
 def test_add_textbox():
     # open page
-    p = pglet.page('test_textbox', noWindow=True)
+    p = pglet.page('test_textbox', no_window=True)
 
     tb_value = "Line1\nLine2\nLine3"
 

@@ -4,21 +4,21 @@ from .alignment import Alignment
 
 class Page(Control):
 
-    def __init__(self, id=None, title=None, verticalFill=None, horizontalAlign=None,
-            verticalAlign=None, width=None, padding=None):
+    def __init__(self, id=None, title=None, vertical_fill=None, horizontal_align=None,
+            vertical_align=None, width=None, padding=None):
         Control.__init__(self, id="page")
 
         self.title = title
-        self.verticalFill = verticalFill
+        self.vertical_fill = vertical_fill
 
-        if horizontalAlign != None and not isinstance(horizontalAlign, Alignment):
+        if horizontal_align != None and not isinstance(horizontal_align, Alignment):
             raise Exception("horizontalAlign must be of Alignment type")
-        self.horizontalAlign = horizontalAlign
+        self.horizontal_align = horizontal_align
 
-        if verticalAlign != None and not isinstance(verticalAlign, Alignment):
+        if vertical_align != None and not isinstance(vertical_align, Alignment):
             raise Exception("verticalAlign must be of Alignment type")
 
-        self.verticalAlign = verticalAlign
+        self.vertical_align = vertical_align
         self.width = width
         self.padding = padding
 
@@ -31,33 +31,33 @@ class Page(Control):
     def title(self, value):
         self._set_attr("title", value)
 
-# verticalFill
+# vertical_fill
     @property
-    def verticalFill(self):
+    def vertical_fill(self):
         return self._get_attr("verticalFill")
 
-    @verticalFill.setter
-    def verticalFill(self, value):
+    @vertical_fill.setter
+    def vertical_fill(self, value):
         assert value == None or isinstance(value, bool), "verticalFill must be a bool"
         self._set_attr("verticalFill", value)
 
-# horizontalAlign
+# horizontal_align
     @property
-    def horizontalAlign(self):
+    def horizontal_align(self):
         return self._get_attr("horizontalAlign")
 
-    @horizontalAlign.setter
-    def horizontalAlign(self, value):
+    @horizontal_align.setter
+    def horizontal_align(self, value):
         assert value == None or isinstance(value, Alignment), "horizontalAlign must be an Alignment"
         self._set_attr("horizontalAlign", value)
 
-# verticalAlign
+# vertical_align
     @property
-    def verticalAlign(self):
+    def vertical_align(self):
         return self._get_attr("verticalAlign")
 
-    @verticalAlign.setter
-    def verticalAlign(self, value):
+    @vertical_align.setter
+    def vertical_align(self, value):
         assert value == None or isinstance(value, Alignment), "verticalAlign must be an Alignment"
         self._set_attr("verticalAlign", value)
 

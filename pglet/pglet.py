@@ -15,7 +15,7 @@ from .connection import Connection
 PGLET_VERSION = "0.1.7"
 pglet_exe = ""
 
-def page(name='', web=False, private=False, server='', token='', noWindow=False):
+def page(name='', web=False, private=False, server='', token='', no_window=False):
 
     pargs = [pglet_exe, "page"]
 
@@ -36,7 +36,7 @@ def page(name='', web=False, private=False, server='', token='', noWindow=False)
         pargs.append("--token")
         pargs.append(token)
 
-    if noWindow:
+    if no_window:
         pargs.append("--no-window")
 
     # execute pglet.exe and get connection ID
@@ -49,7 +49,7 @@ def page(name='', web=False, private=False, server='', token='', noWindow=False)
     p.private = private
     return p
 
-def app(name='', web=False, private=False, server='', token='', target=None, noWindow=False):
+def app(name='', web=False, private=False, server='', token='', target=None, no_window=False):
 
     if target == None:
         raise Exception("target argument is not specified")
@@ -73,7 +73,7 @@ def app(name='', web=False, private=False, server='', token='', target=None, noW
         pargs.append("--token")
         pargs.append(token)
 
-    if noWindow:
+    if no_window:
         pargs.append("--no-window")        
 
     # execute pglet.exe and get connection ID

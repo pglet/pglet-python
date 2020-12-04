@@ -3,13 +3,13 @@ from .control import Control
 
 class Textbox(Control):
     def __init__(self, id=None, label=None, value=None, placeholder=None,
-            errorMessage=None, description=None, multiline=None,
+            error_message=None, description=None, multiline=None,
             visible=None, disabled=None):
         Control.__init__(self, id=id, visible=visible, disabled=disabled)
         self.label = label
         self.value = value
         self.placeholder = placeholder
-        self.errorMessage = errorMessage
+        self.error_message = error_message
         self.description = description
         self.multiline = multiline
 
@@ -43,13 +43,13 @@ class Textbox(Control):
     def placeholder(self, value):
         self._set_attr("placeholder", value)
 
-# errorMessage
+# error_message
     @property
-    def errorMessage(self):
+    def error_message(self):
         return self._get_attr("errorMessage")
 
-    @errorMessage.setter
-    def errorMessage(self, value):
+    @error_message.setter
+    def error_message(self, value):
         self._set_attr("errorMessage", value)
 
 # description

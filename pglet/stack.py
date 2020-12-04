@@ -4,15 +4,15 @@ from .alignment import Alignment
 
 class Stack(Control):
 
-    def __init__(self, id=None, horizontal=None, verticalFill=None, horizontalAlign=None,
-            verticalAlign=None, width=None, gap=None, controls=[],
+    def __init__(self, id=None, horizontal=None, vertical_fill=None, horizontal_align=None,
+            vertical_align=None, width=None, gap=None, controls=[],
             visible=None, disabled=None):
         Control.__init__(self, id=id, visible=visible, disabled=disabled)
 
         self.horizontal = horizontal
-        self.verticalFill = verticalFill
-        self.horizontalAlign = horizontalAlign
-        self.verticalAlign = verticalAlign
+        self.vertical_fill = vertical_fill
+        self.horizontal_align = horizontal_align
+        self.vertical_align = vertical_align
         self.width = width
         self.gap = gap
 
@@ -58,33 +58,33 @@ class Stack(Control):
         assert value == None or isinstance(value, bool), "horizontal must be a bool"
         self._set_attr("horizontal", value)
 
-# verticalFill
+# vertical_fill
     @property
-    def verticalFill(self):
+    def vertical_fill(self):
         return self._get_attr("verticalFill")
 
-    @verticalFill.setter
-    def verticalFill(self, value):
+    @vertical_fill.setter
+    def vertical_fill(self, value):
         assert value == None or isinstance(value, bool), "verticalFill must be a bool"
         self._set_attr("verticalFill", value)
 
-# horizontalAlign
+# horizontal_align
     @property
-    def horizontalAlign(self):
+    def horizontal_align(self):
         return self._get_attr("horizontalAlign")
 
-    @horizontalAlign.setter
-    def horizontalAlign(self, value):
+    @horizontal_align.setter
+    def horizontal_align(self, value):
         assert value == None or isinstance(value, Alignment), "horizontalAlign must be an Alignment"
         self._set_attr("horizontalAlign", value)
 
-# verticalAlign
+# vertical_align
     @property
-    def verticalAlign(self):
+    def vertical_align(self):
         return self._get_attr("verticalAlign")
 
-    @verticalAlign.setter
-    def verticalAlign(self, value):
+    @vertical_align.setter
+    def vertical_align(self, value):
         assert value == None or isinstance(value, Alignment), "verticalAlign must be an Alignment"
         self._set_attr("verticalAlign", value)
 

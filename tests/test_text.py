@@ -14,7 +14,7 @@ def test_add_text_inside_stack():
     stack = Stack(id="header", controls=[txt, btn])
 
     # open page
-    p = pglet.page('test_text', noWindow=True)
+    p = pglet.page('test_text', no_window=True)
 
     # add control first time
     p.add(stack)

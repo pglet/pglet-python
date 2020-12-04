@@ -43,7 +43,7 @@ def test_dropdown_update():
         Option("key2")
     ])
 
-    p = pglet.page(noWindow=True)
+    p = pglet.page(no_window=True)
     p.add(dd)
 
     assert dd.get_cmd_str(update=True) == '', "Test failed"
