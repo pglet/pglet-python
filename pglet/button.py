@@ -2,7 +2,7 @@ from .utils import encode_attr
 from .control import Control
 
 class Button(Control):
-    def __init__(self, id=None, text=None, primary=None, data=None,
+    def __init__(self, id=None, text=None, primary=None, data=None, onclick=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
         Control.__init__(self, id=id,
@@ -11,9 +11,19 @@ class Button(Control):
         self.text = text
         self.primary = primary
         self.data = data
+        self.onclick = onclick
 
     def _getControlName(self):
         return "button"
+
+# text
+    @property
+    def onclick(self):
+        return None
+
+    @onclick.setter
+    def onclick(self, handler):
+        self._add_event_handler("click", handler)
 
 # text
     @property

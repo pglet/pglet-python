@@ -3,6 +3,7 @@ from .utils import encode_attr
 class Control:
     def __init__(self, id=None, width=None, height=None,
             padding=None, margin=None, visible=None, disabled=None):
+        self._conn = None
         self._attrs = {}
         self._id = id
         self.width = width
@@ -11,12 +12,28 @@ class Control:
         self.margin = margin
         self.visible = visible
         self.disabled = disabled
+        self._event_handlers = {}
 
     def _getChildren(self):
         return []
 
     def _getControlName(self):
         raise Exception("_getControlName must be overridden in inherited class")
+
+    def _get_event_handlers(self):
+        return self._event_handlers
+
+    def _add_event_handler(self, event_name, handler):
+        # add handler to the control handlers list (for rebinding on control changes)
+        event_group = self._event_handlers.get(event_name)
+        if not event_group:
+            event_group = {}
+            self._event_handlers[event_name] = event_group
+        event_group[handler] = True
+
+        # add handler to the connection if control is already added
+        if self._conn:
+            self._conn._add_event_handler(self._id, event_name, handler)
 
 # id
     @property
@@ -96,7 +113,18 @@ class Control:
             return
         self._attrs[name] = (value, True)
 
-    def get_cmd_str(self, update=False, indent='', index=None):
+    def get_cmd_str(self, update=False, indent='', index=None, conn=None):
+
+        if conn != None:
+            self._conn = conn
+
+        if not update:
+            # reset ID
+            if self._id and self._id.startswith("_"):
+                self._id = None
+            elif self._id:
+                self._id = self._id.split(":").pop()
+
         lines = []
 
         # main command
@@ -106,7 +134,7 @@ class Control:
             parts.append(indent + self._getControlName())
         
         # base props
-        attrParts = self._get_attrs_str(update)
+        attrParts = self._get_cmd_attrs(update)
 
         if len(attrParts) > 0 or not update:
             parts.extend(attrParts)
@@ -123,23 +151,16 @@ class Control:
 
         return "\n".join(lines)
 
-    def _get_attrs_str(self, update=False):
+    def _get_cmd_attrs(self, update=False):
         parts = []
 
         if update and not self._id:
             return parts
 
-        if not update:
-            # reset ID
-            if self._id and self._id.startswith("_"):
-                self._id = None
-            elif self._id:
-                self._id = self._id.split(":").pop()
-
         for attrName in sorted(self._attrs):
             dirty = self._attrs[attrName][1]
 
-            if not dirty:
+            if update and not dirty:
                 continue
 
             val = self._attrs[attrName][0]

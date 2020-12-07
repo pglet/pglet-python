@@ -1,4 +1,5 @@
 import re
+import time
 import threading
 from .utils import is_windows, encode_attr
 from .event import Event
@@ -15,6 +16,7 @@ class Connection:
 
     event_available = threading.Event()
     last_event = None
+    _event_handlers = {}
 
     def __init__(self, conn_id):
         self.conn_id = conn_id
@@ -40,12 +42,10 @@ class Connection:
 
         index = []
 
-        for control in controls:
-            if isinstance(control, list):
-                for c in control:
-                    cmd += f"\n{c.get_cmd_str(index=index)}"
-            else:
-                cmd += f"\n{control.get_cmd_str(index=index)}"
+        for control in self._expand_controls_argv(*controls):
+            if control.id:
+                self._remove_event_handlers(control.id)
+            cmd += f"\n{control.get_cmd_str(index=index, conn=self)}"
 
         result = self.send(cmd)
 
@@ -56,6 +56,12 @@ class Connection:
 
         for i in range(len(ids)):
             index[i].id = ids[i]
+
+            # resubscribe event handlers
+            event_handlers = index[i]._get_event_handlers()
+            for event_name in event_handlers:
+                for handler in event_handlers[event_name]:
+                    self._add_event_handler(ids[i], event_name, handler)
 
         if len(ids) == 1:
             return index[0]
@@ -69,18 +75,22 @@ class Connection:
 
         lines = []
 
-        for control in controls:
-            if isinstance(control, list):
-                for c in control:
-                    lines.append(c.get_cmd_str(update=True))
-            else:
-                lines.append(control.get_cmd_str(update=True))
+        for control in self._expand_controls_argv(*controls):
+            lines.append(control.get_cmd_str(update=True))
 
         if len(lines) == 0:
             return
 
         slines = "\n".join(lines)
         self.send(f'{cmd}\n{slines}')
+
+    def _expand_controls_argv(self, *controls):
+        for control in controls:
+            if isinstance(control, list):
+                for c in control:
+                    yield c
+            else:
+                yield control
 
     def set_value(self, id_or_control, value, fire_and_forget=False):
         cmd = "set"
@@ -144,10 +154,16 @@ class Connection:
             assert isinstance(at, int), "at must be an int"
             parts.append(f'at="{at}"')
         for c in id_or_controls:
-            parts.append(self._get_control_id(c))
+            control_id = self._get_control_id(c)
+            parts.append(control_id)
+            if at == None:
+                self._remove_event_handlers(control_id)
+        
         self.send(" ".join(parts))
     
     def send(self, command):
+        print("SEND:", command)
+        
         if is_windows():
             return self.__send_windows(command)
         else:
@@ -160,7 +176,7 @@ class Connection:
         return evt
 
     def __start_event_loop(self):
-        thread = threading.Thread(target=self.__event_loop)
+        thread = threading.Thread(target=self.__event_loop, daemon=True)
         thread.start()
 
     def __event_loop(self):
@@ -169,6 +185,17 @@ class Connection:
                 self.last_event = self.__wait_event_windows()
             else:
                 self.last_event = self.__wait_event_linux()
+
+            # call all event handlers
+            control_events = self._event_handlers.get(self.last_event.target)
+            if control_events:
+                event_handlers = control_events.get(self.last_event.name)
+                if event_handlers:
+                    for handler in event_handlers:
+                        t = threading.Thread(target=handler, args=(self.last_event,), daemon=True)
+                        t.start()
+            
+            # release wait_event() loop
             self.event_available.set()
 
     def __init_windows(self):
@@ -237,3 +264,18 @@ class Connection:
         if result == "":
             raise Exception("control ID cannot be empty")
         return result
+
+    def _add_event_handler(self, control_id, event_name, handler):
+        control_events = self._event_handlers.get(control_id)
+        if not control_events:
+            control_events = {}
+            self._event_handlers[control_id] = control_events
+        event_handlers = control_events.get(event_name)
+        if not event_handlers:
+            event_handlers = {}
+            control_events[event_name] = event_handlers
+        event_handlers[handler] = True
+
+    def _remove_event_handlers(self, control_id):
+        if control_id in self._event_handlers:
+            del self._event_handlers[control_id]
