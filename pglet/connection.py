@@ -20,6 +20,7 @@ class Connection:
 
     def __init__(self, conn_id):
         self.conn_id = conn_id
+        self.lock = threading.Lock()
 
         if is_windows():
             self.__init_windows()
@@ -162,12 +163,17 @@ class Connection:
         self.send(" ".join(parts))
     
     def send(self, command):
-        print("SEND:", command)
-        
-        if is_windows():
-            return self.__send_windows(command)
-        else:
-            return self.__send_linux(command)
+
+        fire_and_forget = False
+        cmdName = command.split(' ', 1)[0].strip()
+        if cmdName[len(cmdName) - 1] == 'f':
+            fire_and_forget = True
+
+        with self.lock:
+            if is_windows():
+                return self.__send_windows(command, fire_and_forget)
+            else:
+                return self.__send_linux(command, fire_and_forget)
 
     def wait_event(self):
         self.event_available.wait()
@@ -202,8 +208,14 @@ class Connection:
         self.win_command_pipe = open(rf'\\.\pipe\{self.conn_id}', 'r+b', buffering=0)
         self.win_event_pipe = open(rf'\\.\pipe\{self.conn_id}.events', 'r+b', buffering=0)
 
-    def __send_windows(self, command):
+    def __send_windows(self, command, fire_and_forget):
+        # send command
         self.win_command_pipe.write(command.encode('utf-8'))
+
+        if fire_and_forget:
+            return
+
+        # wait for result
         r = self.win_command_pipe.readline().decode('utf-8').strip('\n')
         result_parts = re.split(r"\s", r, 1)
         if result_parts[0] == "error":
@@ -224,11 +236,16 @@ class Connection:
     def __init_linux(self):
         pass
 
-    def __send_linux(self, command):
+    def __send_linux(self, command, fire_and_forget):
+        # send command
         pipe = open(rf'{self.conn_id}', "w")
         pipe.write(command)
         pipe.close()
 
+        if fire_and_forget:
+            return
+
+        # wait for result
         pipe = open(rf'{self.conn_id}', "r")
         r = pipe.readline().strip('\n')
         result_parts = re.split(r"\s", r, 1)

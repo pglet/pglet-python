@@ -30,9 +30,9 @@ cancel.text = "Back to main menu"
 page.update(cancel)
 
 progr = page.add(Progress(label="Doing something...", width="30%"))
-for i in range(11):
-    page.set_value(progr, i*10)
-    time.sleep(1)
+for i in range(101):
+    page.set_value(progr, i, fire_and_forget=True)
+    time.sleep(0.01)
 
 
 while True:
