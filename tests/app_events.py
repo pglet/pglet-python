@@ -7,7 +7,7 @@ import time
 import pglet
 from pglet import Text, Textbox, Button, Progress
 
-page = pglet.page("index")
+page = pglet.page("index", no_window=True)
 page.clean()
 
 txt = Textbox(label="Your name")
@@ -16,8 +16,9 @@ page.add(txt, btn)
 
 while True:
     e = page.wait_event()
+    print(e)
 
-    if e.target == btn.id and e.name == "clicked":
+    if e.target == btn.id and e.name == "click":
         name = page.get_value(txt)
 
         if name == "":

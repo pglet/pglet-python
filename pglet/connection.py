@@ -1,4 +1,5 @@
 import re
+import threading
 from .utils import is_windows, encode_attr
 from .event import Event
 from .control import Control
@@ -12,6 +13,9 @@ class Connection:
     win_command_pipe = None
     win_event_pipe = None
 
+    event_available = threading.Event()
+    last_event = None
+
     def __init__(self, conn_id):
         self.conn_id = conn_id
 
@@ -19,6 +23,8 @@ class Connection:
             self.__init_windows()
         else:
             self.__init_linux()
+
+        self.__start_event_loop()
 
     def add(self, *controls, to=None, at=None, fire_and_forget=False):
         cmd = "add"
@@ -148,10 +154,22 @@ class Connection:
             return self.__send_linux(command)
 
     def wait_event(self):
-        if is_windows():
-            return self.__wait_event_windows()
-        else:
-            return self.__wait_event_linux()
+        self.event_available.wait()
+        evt = self.last_event
+        self.event_available.clear()
+        return evt
+
+    def __start_event_loop(self):
+        thread = threading.Thread(target=self.__event_loop)
+        thread.start()
+
+    def __event_loop(self):
+        while True:
+            if is_windows():
+                self.last_event = self.__wait_event_windows()
+            else:
+                self.last_event = self.__wait_event_linux()
+            self.event_available.set()
 
     def __init_windows(self):
         self.win_command_pipe = open(rf'\\.\pipe\{self.conn_id}', 'r+b', buffering=0)
