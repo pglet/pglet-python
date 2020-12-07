@@ -1,9 +1,14 @@
 from .utils import encode_attr
 
 class Control:
-    def __init__(self, id=None, visible=None, disabled=None):
+    def __init__(self, id=None, width=None, height=None,
+            padding=None, margin=None, visible=None, disabled=None):
         self._attrs = {}
         self._id = id
+        self.width = width
+        self.height = height
+        self.padding = padding
+        self.margin = margin
         self.visible = visible
         self.disabled = disabled
 
@@ -21,6 +26,42 @@ class Control:
     @id.setter
     def id(self, id):
         self._id = id
+
+# width
+    @property
+    def width(self):
+        return self._get_attr("width")
+
+    @width.setter
+    def width(self, value):
+        self._set_attr("width", value)
+
+# height
+    @property
+    def height(self):
+        return self._get_attr("height")
+
+    @height.setter
+    def height(self, value):
+        self._set_attr("height", value)
+
+# padding
+    @property
+    def padding(self):
+        return self._get_attr("padding")
+
+    @padding.setter
+    def padding(self, value):
+        self._set_attr("padding", value)
+
+# margin
+    @property
+    def margin(self):
+        return self._get_attr("margin")
+
+    @margin.setter
+    def margin(self, value):
+        self._set_attr("margin", value)
 
 # visible
     @property

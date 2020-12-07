@@ -31,8 +31,12 @@ class Option(Control):
 
 class Dropdown(Control):
     def __init__(self, id=None, label=None, value=None, placeholder=None,
-            error_message=None, options=[], visible=None, disabled=None):
-        Control.__init__(self, id=id, visible=visible, disabled=disabled)
+            error_message=None, options=[],
+            width=None, height=None, padding=None, margin=None,
+            visible=None, disabled=None):
+        Control.__init__(self, id=id,
+            width=width, height=height, padding=padding, margin=margin,
+            visible=visible, disabled=disabled)
         self.label = label
         self.value = value
         self.placeholder = placeholder

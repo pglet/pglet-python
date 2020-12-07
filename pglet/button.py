@@ -3,8 +3,11 @@ from .control import Control
 
 class Button(Control):
     def __init__(self, id=None, text=None, primary=None, data=None,
+            width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
-        Control.__init__(self, id=id, visible=visible, disabled=disabled)
+        Control.__init__(self, id=id,
+            width=width, height=height, padding=padding, margin=margin,
+            visible=visible, disabled=disabled)
         self.text = text
         self.primary = primary
         self.data = data

@@ -3,8 +3,11 @@ from .control import Control
 
 class Progress(Control):
     def __init__(self, id=None, label=None, description=None, value=None,
+            width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
-        Control.__init__(self, id=id, visible=visible, disabled=disabled)
+        Control.__init__(self, id=id,
+            width=width, height=height, padding=padding, margin=margin,
+            visible=visible, disabled=disabled)
         self.value = value
         self.description = description
         self.label = label

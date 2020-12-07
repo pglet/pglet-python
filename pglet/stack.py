@@ -5,15 +5,17 @@ from .alignment import Alignment
 class Stack(Control):
 
     def __init__(self, id=None, horizontal=None, vertical_fill=None, horizontal_align=None,
-            vertical_align=None, width=None, gap=None, controls=[],
+            vertical_align=None, gap=None, controls=[],
+            width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
-        Control.__init__(self, id=id, visible=visible, disabled=disabled)
+        Control.__init__(self, id=id,
+            width=width, height=height, padding=padding, margin=margin,
+            visible=visible, disabled=disabled)
 
         self.horizontal = horizontal
         self.vertical_fill = vertical_fill
         self.horizontal_align = horizontal_align
         self.vertical_align = vertical_align
-        self.width = width
         self.gap = gap
 
         self._controls = []
@@ -29,15 +31,6 @@ class Stack(Control):
             raise Exception("Stack can hold controls only")
 
         self._controls.append(control)
-
-# width
-    @property
-    def width(self):
-        return self._get_attr("width")
-
-    @width.setter
-    def width(self, value):
-        self._set_attr("width", value)
 
 # gap
     @property
