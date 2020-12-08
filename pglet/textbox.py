@@ -3,7 +3,8 @@ from .control import Control
 
 class Textbox(Control):
     def __init__(self, id=None, label=None, value=None, placeholder=None,
-            error_message=None, description=None, multiline=None,
+            error_message=None, description=None, multiline=None, password=None,
+            required=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
         Control.__init__(self, id=id,
@@ -15,6 +16,8 @@ class Textbox(Control):
         self.error_message = error_message
         self.description = description
         self.multiline = multiline
+        self.password = password
+        self.required = required
 
     def _getControlName(self):
         return "textbox"
@@ -73,3 +76,23 @@ class Textbox(Control):
     def multiline(self, value):
         assert value == None or isinstance(value, bool), "multiline must be a boolean"
         self._set_attr("multiline", value)
+
+# password
+    @property
+    def password(self):
+        return self._get_attr("password")
+
+    @password.setter
+    def password(self, value):
+        assert value == None or isinstance(value, bool), "password must be a boolean"
+        self._set_attr("password", value)
+
+# required
+    @property
+    def required(self):
+        return self._get_attr("required")
+
+    @required.setter
+    def required(self, value):
+        assert value == None or isinstance(value, bool), "required must be a boolean"
+        self._set_attr("required", value)

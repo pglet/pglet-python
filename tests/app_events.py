@@ -21,21 +21,22 @@ def say_hello_click(e):
         page.remove(txt, btn)
         page.add(Text(value=f'Hello, {name}!'), at=0)
 
-txt = Textbox(label="Your name")
+txt = Textbox(label="Your name", required=True)
+psw = Textbox(label="Password", password=True)
 btn = Button(text="Say hello", primary=True)
 btn.onclick = say_hello_click
 cancel = Button(text="Cancel", onclick=lambda e: print("Cancel clicked"))
 
-page.add(txt, btn, cancel)
+page.add(txt, psw, btn, cancel)
 print("added #1")
 
 time.sleep(5)
 
-page.clean()
-page.add(txt, btn, cancel)
-print("added #2")
+# page.clean()
+# page.add(txt, btn, cancel)
+# print("added #2")
 
-time.sleep(5)
+# time.sleep(5)
 
 cancel.text = "Back to main menu"
 page.update(cancel)
