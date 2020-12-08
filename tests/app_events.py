@@ -5,9 +5,10 @@ sys.path.insert(0,parentdir)
 
 import time
 import pglet
-from pglet import Text, Textbox, Button, Progress
+from pglet import Page, Text, Textbox, Button, Progress
 
 page = pglet.page("index", no_window=True)
+page.update(Page(title="Hello, pglet!"))
 page.clean()
 
 def say_hello_click(e):
