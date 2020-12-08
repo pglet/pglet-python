@@ -10,9 +10,19 @@ from pglet import Text, Textbox, Button, Progress
 page = pglet.page("index", no_window=True)
 page.clean()
 
+def say_hello_click(e):
+    name = page.get_value(txt)
+    if name == "":
+        txt.error_message = "Name cannot be blank"
+        btn.text = "Say it again!"
+        page.update(txt, btn)
+    else:
+        page.remove(txt, btn)
+        page.add(Text(value=f'Hello, {name}!'), at=0)
+
 txt = Textbox(label="Your name")
 btn = Button(text="Say hello", primary=True)
-btn.onclick = lambda e: print("Say hello click", e.data)
+btn.onclick = say_hello_click
 cancel = Button(text="Cancel", onclick=lambda e: print("Cancel clicked"))
 
 page.add(txt, btn, cancel)
@@ -32,29 +42,7 @@ page.update(cancel)
 progr = page.add(Progress(label="Doing something...", width="30%"))
 for i in range(101):
     page.set_value(progr, i, fire_and_forget=True)
-    time.sleep(0.01)
+    time.sleep(0.1)
 
 
-while True:
-    e = page.wait_event()
-    #print(e)
-    continue
-
-    # if e.target == btn.id and e.name == "click":
-    #     name = page.get_value(txt)
-
-    #     if name == "":
-    #         txt.error_message = "Name cannot be blank"
-    #         btn.text = "Say it again!"
-    #         page.update(txt, btn)
-    #         continue
-
-    #     page.remove(btn)
-    #     page.add(Text(value=f'Hello, {name}!'), at=0)
-
-    #     prg = page.add(Progress(label="Doing something..."))
-    #     for i in range(1, 11):
-    #         page.set_value(prg, i * 10)
-    #         time.sleep(1)
-
-    #     break
+page.wait_close()

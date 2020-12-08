@@ -176,10 +176,15 @@ class Connection:
                 return self.__send_linux(command, fire_and_forget)
 
     def wait_event(self):
-        self.event_available.wait()
-        evt = self.last_event
         self.event_available.clear()
-        return evt
+        self.event_available.wait()
+        return self.last_event
+
+    def wait_close(self):
+        while True:
+            e = self.wait_event()
+            if e.target == "page" and e.name == "close":
+                break
 
     def __start_event_loop(self):
         thread = threading.Thread(target=self.__event_loop, daemon=True)
@@ -188,20 +193,22 @@ class Connection:
     def __event_loop(self):
         while True:
             if is_windows():
-                self.last_event = self.__wait_event_windows()
+                evt = self.__wait_event_windows()
             else:
-                self.last_event = self.__wait_event_linux()
+                evt = self.__wait_event_linux()
 
             # call all event handlers
-            control_events = self._event_handlers.get(self.last_event.target)
+            control_events = self._event_handlers.get(evt.target)
             if control_events:
-                event_handlers = control_events.get(self.last_event.name)
+                event_handlers = control_events.get(evt.name)
                 if event_handlers:
                     for handler in event_handlers:
-                        t = threading.Thread(target=handler, args=(self.last_event,), daemon=True)
+                        t = threading.Thread(target=handler, args=(evt,), daemon=True)
                         t.start()
             
             # release wait_event() loop
+            #print ("EVENT:", evt.target, evt.name, evt.data)
+            self.last_event = evt
             self.event_available.set()
 
     def __init_windows(self):
