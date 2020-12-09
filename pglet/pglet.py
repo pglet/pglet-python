@@ -6,6 +6,7 @@ import urllib.request
 import zipfile
 import tarfile
 import re
+import signal
 from threading import Thread
 from time import sleep
 from .utils import is_windows, which
@@ -166,3 +167,6 @@ def install():
 
 # install Pglet during import
 install()
+
+# Fix: https://bugs.python.org/issue35935
+signal.signal(signal.SIGINT, signal.SIG_DFL)
