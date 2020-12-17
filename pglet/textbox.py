@@ -5,7 +5,7 @@ class Textbox(Control):
     def __init__(self, id=None, label=None, value=None, placeholder=None,
             error_message=None, description=None, multiline=None, password=None,
             required=None,
-            width=None, height=None, padding=None, margin=None,
+            width=None, height=None, padding=None, margin=None, align=None,
             visible=None, disabled=None):
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
@@ -15,6 +15,7 @@ class Textbox(Control):
         self.placeholder = placeholder
         self.error_message = error_message
         self.description = description
+        self.align = align
         self.multiline = multiline
         self.password = password
         self.required = required
@@ -66,6 +67,15 @@ class Textbox(Control):
     @description.setter
     def description(self, value):
         self._set_attr("description", value)
+
+# align
+    @property
+    def align(self):
+        return self._get_attr("align")
+
+    @align.setter
+    def align(self, value):
+        self._set_attr("align", value)
 
 # multiline
     @property
