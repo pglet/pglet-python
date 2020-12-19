@@ -26,9 +26,6 @@ def page(name='', web=False, private=False, server='', token='', no_window=False
     if web:
         pargs.append("--web")
 
-    if private:
-        pargs.append("--private")
-
     if server != "":
         pargs.append("--server")
         pargs.append(server)
@@ -62,9 +59,6 @@ def app(name='', web=False, private=False, server='', token='', target=None, no_
     
     if web:
         pargs.append("--web")
-
-    if private:
-        pargs.append("--private")
 
     if server != "":
         pargs.append("--server")
