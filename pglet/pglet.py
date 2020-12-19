@@ -16,7 +16,7 @@ from .connection import Connection
 PGLET_VERSION = "0.1.10"
 pglet_exe = ""
 
-def page(name='', web=False, private=False, server='', token='', no_window=False):
+def page(name='', web=False, server='', token='', no_window=False):
 
     pargs = [pglet_exe, "page"]
 
@@ -47,7 +47,7 @@ def page(name='', web=False, private=False, server='', token='', no_window=False
     p.private = private
     return p
 
-def app(name='', web=False, private=False, server='', token='', target=None, no_window=False):
+def app(name='', web=False, server='', token='', target=None, no_window=False):
 
     if target == None:
         raise Exception("target argument is not specified")
