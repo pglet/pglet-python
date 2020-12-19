@@ -44,7 +44,6 @@ def page(name='', web=False, server='', token='', no_window=False):
     p = Connection(result_parts[0])
     p.url = result_parts[1]
     p.web = web
-    p.private = private
     return p
 
 def app(name='', web=False, server='', token='', target=None, no_window=False):
@@ -87,8 +86,7 @@ def app(name='', web=False, server='', token='', target=None, no_window=False):
             p = Connection(conn_id)
             p.url = page_url
             p.web = web
-            p.private = private
-
+            
             # start page session in a new thread
             thread = Thread(target = target, args = (p,))
             thread.start()

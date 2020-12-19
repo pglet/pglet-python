@@ -25,11 +25,7 @@ class Control:
 
     def _add_event_handler(self, event_name, handler):
         # add handler to the control handlers list (for rebinding on control changes)
-        event_group = self._event_handlers.get(event_name)
-        if not event_group:
-            event_group = {}
-            self._event_handlers[event_name] = event_group
-        event_group[handler] = True
+        self._event_handlers[event_name] = handler
 
         # add handler to the connection if control is already added
         if self._conn:

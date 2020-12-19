@@ -11,6 +11,9 @@ page = pglet.page("index", no_window=True)
 page.update(Page(title="Hello, pglet!"))
 page.clean()
 
+def say_hello_click_wrong(e):
+    print('This should not be called!')
+
 def say_hello_click(e):
     name = page.get_value(txt)
     if name == "":
@@ -24,7 +27,7 @@ def say_hello_click(e):
 txt = Textbox(label="Your name", required=True)
 psw = Textbox(label="Password", password=True)
 btn = Button(text="Say hello", primary=True)
-btn.onclick = say_hello_click
+btn.onclick = say_hello_click_wrong
 cancel = Button(text="Cancel", onclick=lambda e: print("Cancel clicked"))
 
 page.add(txt, psw, btn, cancel)
@@ -32,11 +35,12 @@ print("added #1")
 
 time.sleep(5)
 
-# page.clean()
-# page.add(txt, btn, cancel)
-# print("added #2")
+page.clean()
+btn.onclick = say_hello_click
+page.add(txt, btn, cancel)
+print("added #2")
 
-# time.sleep(5)
+time.sleep(5)
 
 cancel.text = "Back to main menu"
 page.update(cancel)

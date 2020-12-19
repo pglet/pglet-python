@@ -61,8 +61,7 @@ class Connection:
             # resubscribe event handlers
             event_handlers = index[i]._get_event_handlers()
             for event_name in event_handlers:
-                for handler in event_handlers[event_name]:
-                    self._add_event_handler(ids[i], event_name, handler)
+                self._add_event_handler(ids[i], event_name, event_handlers[event_name])
 
         if len(ids) == 1:
             return index[0]
@@ -200,11 +199,10 @@ class Connection:
             # call all event handlers
             control_events = self._event_handlers.get(evt.target)
             if control_events:
-                event_handlers = control_events.get(evt.name)
-                if event_handlers:
-                    for handler in event_handlers:
-                        t = threading.Thread(target=handler, args=(evt,), daemon=True)
-                        t.start()
+                handler = control_events.get(evt.name)
+                if handler:
+                    t = threading.Thread(target=handler, args=(evt,), daemon=True)
+                    t.start()
             
             # release wait_event() loop
             #print ("EVENT:", evt.target, evt.name, evt.data)
@@ -294,11 +292,7 @@ class Connection:
         if not control_events:
             control_events = {}
             self._event_handlers[control_id] = control_events
-        event_handlers = control_events.get(event_name)
-        if not event_handlers:
-            event_handlers = {}
-            control_events[event_name] = event_handlers
-        event_handlers[handler] = True
+        control_events[event_name] = handler
 
     def _remove_event_handlers(self, control_id):
         if control_id in self._event_handlers:
