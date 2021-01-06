@@ -56,6 +56,6 @@ build_script:
 - python setup.py sdist bdist_wheel
 
 # publish package
-- twine upload dist/*
+- IF "%APPVEYOR_PULL_REQUEST_NUMBER%"=="" twine upload dist/*
 
 test: off
