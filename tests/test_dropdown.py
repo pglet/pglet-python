@@ -52,6 +52,6 @@ def test_dropdown_update():
     dd.options[1].text = "Key 2"
 
     assert dd.get_cmd_str(update=True) == (
-        '"_0" key="1"\n'
-        '"_1" text="Key 2"'
+        '"_1" key="1"\n'
+        '"_2" text="Key 2"'
     ), "Test failed"

@@ -50,14 +50,14 @@ def test_nested_stacks_update():
     p = pglet.page(no_window=True)
     ctrls = p.add(stack)
 
-    assert ['_0', 'firstName', 'lastName', '_1', 'ok', 'cancel'] == [ctrls[0].id, ctrls[1].id, ctrls[2].id, ctrls[3].id, ctrls[4].id, ctrls[5].id], "Test failed"
+    assert ['_1', 'firstName', 'lastName', '_2', 'ok', 'cancel'] == [ctrls[0].id, ctrls[1].id, ctrls[2].id, ctrls[3].id, ctrls[4].id, ctrls[5].id], "Test failed"
 
     # empty update
     assert stack.get_cmd_str(update=True) == "", "Test failed"
 
     # update stack element
     ctrls[0].horizontal=True
-    assert stack.get_cmd_str(update=True) == '"_0" horizontal="true"', "Test failed"
+    assert stack.get_cmd_str(update=True) == '"_1" horizontal="true"', "Test failed"
 
     # update inner elements
     ctrls[1].value = "John"
