@@ -1,4 +1,4 @@
-# Pglet client library for Python
+# Pglet client for Python
 
 [Pglet](https://pglet.io) (*"pagelet"*) is a rich user interface (UI) framework for programs written in Python or any other language. 
 Pglet renders web UI, so you can easily [build web apps](https://pglet.io/docs/quickstart) with Python.
