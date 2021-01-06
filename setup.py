@@ -10,7 +10,7 @@ setuptools.setup(
     license="MIT",
     author="Appveyor Systems Inc.",
     author_email="pglet@appveyor.com",
-    description="Python bindings for Pglet - easily build interactive web apps in Python",
+    description="Pglet client for Python - easily build interactive web apps in Python",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/pglet/pglet-python",
