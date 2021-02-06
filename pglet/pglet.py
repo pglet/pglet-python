@@ -130,7 +130,7 @@ def install():
     if not installed_ver or installed_ver != ver:
         #print(f'Installing Pglet v{PGLET_VERSION}...')
 
-        a = platform.machine()
+        a = platform.machine().lower()
         if a == "x86_64" or a == "amd64":
             arch = "amd64"
         elif a == "arm64" or a == "aarch64":
