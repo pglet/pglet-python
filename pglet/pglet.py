@@ -130,19 +130,32 @@ def install():
     if not installed_ver or installed_ver != ver:
         #print(f'Installing Pglet v{PGLET_VERSION}...')
 
+        a = platform.machine()
+        if a == "x86_64" or a == "amd64":
+            arch = "amd64"
+        elif a == "arm64" or a == "aarch64":
+            arch = "arm64"
+        elif a.startswith("arm"):
+            arch = "arm"
+        else:
+            raise Exception(f"Unsupported architecture: {a}")
+
         p = platform.system()
         if is_windows():
-            target = "windows-amd64.zip"
+            plat = "windows"
+            ext = "zip"
         elif p == "Linux":
-            target = "linux-amd64.tar.gz"
+            plat = "linux"
+            ext = "tar.gz"
         elif p == "Darwin":
-            target = "darwin-amd64.tar.gz"
+            plat = "darwin"
+            ext = "tar.gz"
         else:
             raise Exception(f"Unsupported platform: {p}")
 
         # download archive
-        pglet_url = f"https://github.com/pglet/pglet/releases/download/v{ver}/pglet-{target}"
-        temp_arch = os.path.join(pglet_dir, target)
+        pglet_url = f"https://github.com/pglet/pglet/releases/download/v{ver}/pglet-{ver}-{plat}-{arch}.{ext}"
+        temp_arch = os.path.join(pglet_dir, f"pglet-{ver}-{plat}-{arch}.{ext}")
 
         #print (pglet_url)
 
