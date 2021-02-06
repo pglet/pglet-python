@@ -116,7 +116,7 @@ class Control:
 
         if not update:
             # reset ID
-            if self._id and self._id.startswith("_"):
+            if self._id and self._id.split(":").pop().startswith("_"):
                 self._id = None
             elif self._id:
                 self._id = self._id.split(":").pop()

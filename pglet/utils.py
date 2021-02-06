@@ -3,7 +3,7 @@ import re
 
 def encode_attr(attr):
     attr = str(attr)
-    return attr.replace("\n", "\\n")
+    return attr.replace("\n", "\\n").replace("\"", "\\\"")
 
 def is_windows():
     return platform.system() == "Windows"

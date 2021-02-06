@@ -8,6 +8,11 @@ def test_text_add():
     #raise Exception(s.get_cmd_str())
     assert c.get_cmd_str() == ('text value="Hello,\\nworld!"'), "Test failed"
 
+def test_text_double_quotes():
+    c = Text(value='Hello, "world!"')
+    #raise Exception(c.get_cmd_str())
+    assert c.get_cmd_str() == ('text value="Hello, \\"world!\\""'), "Test failed"
+
 def test_add_text_inside_stack():
     txt = Text(id="txt1", value="Hello,\nworld!")
     btn = Button(text="Super button")
@@ -19,13 +24,12 @@ def test_add_text_inside_stack():
     # add control first time
     p.add(stack)
     btnId = btn.id
-    assert btnId.startswith("_"), "Test failed"
+    assert btnId.startswith("header:_"), "Test failed"
     assert txt.id == "header:txt1", "Test failed"
     assert stack.id == "header", "Test failed"
 
-
     # add control second time
     p.add(stack)
-    assert btn.id.startswith("_") and btn.id != btnId, "Test failed"
+    assert btn.id.startswith("header:_") and btn.id != btnId, "Test failed"
     assert txt.id == "header:txt1", "Test failed"
     assert stack.id == "header", "Test failed"
