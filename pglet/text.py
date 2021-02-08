@@ -3,6 +3,7 @@ from .control import Control
 
 class Text(Control):
     def __init__(self, id=None, value=None, align=None, verticalAlign=None,
+            size=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
 
@@ -13,6 +14,7 @@ class Text(Control):
         self.value = value
         self.align = align
         self.verticalAlign = verticalAlign
+        self.size = size
 
     def _getControlName(self):
         return "text"
@@ -43,3 +45,12 @@ class Text(Control):
     @verticalAlign.setter
     def verticalAlign(self, value):
         self._set_attr("verticalAlign", value)
+
+# size
+    @property
+    def size(self):
+        return self._get_attr("size")
+
+    @size.setter
+    def size(self, value):
+        self._set_attr("size", value)
