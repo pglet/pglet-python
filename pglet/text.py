@@ -2,7 +2,7 @@ from .utils import encode_attr
 from .control import Control
 
 class Text(Control):
-    def __init__(self, id=None, value=None, align=None,
+    def __init__(self, id=None, value=None, align=None, verticalAlign=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
 
@@ -12,6 +12,7 @@ class Text(Control):
 
         self.value = value
         self.align = align
+        self.verticalAlign = verticalAlign
 
     def _getControlName(self):
         return "text"
@@ -33,3 +34,12 @@ class Text(Control):
     @align.setter
     def align(self, value):
         self._set_attr("align", value)
+
+# verticalAlign
+    @property
+    def verticalAlign(self):
+        return self._get_attr("verticalAlign")
+
+    @verticalAlign.setter
+    def verticalAlign(self, value):
+        self._set_attr("verticalAlign", value)
