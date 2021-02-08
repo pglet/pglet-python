@@ -5,6 +5,7 @@ class Text(Control):
     def __init__(self, id=None, value=None, align=None, verticalAlign=None,
             size=None, bold=None, italic=None, pre=None, nowrap=None,
             block=None, color=None, bgcolor=None, border=None,
+            borderRadius=None, borderLeft=None, borderRight=None, borderTop=None, borderBottom=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
 
@@ -24,6 +25,11 @@ class Text(Control):
         self.color = color
         self.bgcolor = bgcolor
         self.border = border
+        self.borderRadius = borderRadius
+        self.borderLeft = borderLeft
+        self.borderRight = borderRight
+        self.borderTop = borderTop
+        self.borderBottom = borderBottom
 
     def _getControlName(self):
         return "text"
@@ -135,3 +141,48 @@ class Text(Control):
     @border.setter
     def border(self, value):
         self._set_attr("border", value)
+
+# borderRadius
+    @property
+    def borderRadius(self):
+        return self._get_attr("borderRadius")
+
+    @borderRadius.setter
+    def borderRadius(self, value):
+        self._set_attr("borderRadius", value)
+
+# borderLeft
+    @property
+    def borderLeft(self):
+        return self._get_attr("borderLeft")
+
+    @borderLeft.setter
+    def borderLeft(self, value):
+        self._set_attr("borderLeft", value)
+
+# borderRight
+    @property
+    def borderRight(self):
+        return self._get_attr("borderRight")
+
+    @borderRight.setter
+    def borderRight(self, value):
+        self._set_attr("borderRight", value)
+
+# borderTop
+    @property
+    def borderTop(self):
+        return self._get_attr("borderTop")
+
+    @borderTop.setter
+    def borderTop(self, value):
+        self._set_attr("borderTop", value)
+
+# borderBottom
+    @property
+    def borderBottom(self):
+        return self._get_attr("borderBottom")
+
+    @borderBottom.setter
+    def borderBottom(self, value):
+        self._set_attr("borderBottom", value)
