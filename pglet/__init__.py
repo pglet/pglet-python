@@ -7,4 +7,5 @@ from .checkbox import Checkbox
 from .progress import Progress
 from .button import Button
 from .dropdown import Dropdown
+from .icon import Icon
 from .pglet import *

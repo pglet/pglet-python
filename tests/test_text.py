@@ -4,7 +4,7 @@ from pglet import Text, Stack, Button
 def test_text_add():
     c = Text(value="Hello,\nworld!", align="left", verticalAlign="left", size="tiny", bold=True, italic=False, 
             pre=False, nowrap=True, block=False, color='#9FE2BF', bgcolor='#FF7F50', border='1px solid #550000',
-            borderRadius='Border radius', borderLeft='1px solid #550000', borderRight='1px solid #550000',
+            borderRadius='4px', borderLeft='1px solid #550000', borderRight='1px solid #550000',
             borderTop='1px solid #550000', borderBottom='1px solid #550000')
     assert isinstance(c, pglet.Control)
     assert isinstance(c, pglet.Text)
@@ -13,7 +13,7 @@ def test_text_add():
     assert c.get_cmd_str() == ('text align="left" bgcolor="#FF7F50" '
         'block="false" bold="true" border="1px solid #550000" '
         'borderBottom="1px solid #550000" borderLeft="1px solid #550000" '
-        'borderRadius="Border radius" borderRight="1px solid #550000" '
+        'borderRadius="4px" borderRight="1px solid #550000" '
         'borderTop="1px solid #550000" color="#9FE2BF" '
         'italic="false" nowrap="true" '
         'pre="false" size="tiny" value="Hello,\\nworld!" '
