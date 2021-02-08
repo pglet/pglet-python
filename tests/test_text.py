@@ -2,11 +2,11 @@ import pglet
 from pglet import Text, Stack, Button
 
 def test_text_add():
-    c = Text(value="Hello,\nworld!")
+    c = Text(value="Hello,\nworld!", align="left")
     assert isinstance(c, pglet.Control)
     assert isinstance(c, pglet.Text)
     #raise Exception(s.get_cmd_str())
-    assert c.get_cmd_str() == ('text value="Hello,\\nworld!"'), "Test failed"
+    assert c.get_cmd_str() == ('text align="left" value="Hello,\\nworld!"'), "Test failed"
 
 def test_text_double_quotes():
     c = Text(value='Hello, "world!"')
