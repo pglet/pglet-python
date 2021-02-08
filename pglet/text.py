@@ -4,7 +4,7 @@ from .control import Control
 class Text(Control):
     def __init__(self, id=None, value=None, align=None, verticalAlign=None,
             size=None, bold=None, italic=None, pre=None, nowrap=None,
-            block=None,
+            block=None, color=None, bgcolor=None, border=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
 
@@ -21,6 +21,9 @@ class Text(Control):
         self.pre = pre
         self.nowrap = nowrap
         self.block = block
+        self.color = color
+        self.bgcolor = bgcolor
+        self.border = border
 
     def _getControlName(self):
         return "text"
@@ -105,3 +108,30 @@ class Text(Control):
     @block.setter
     def block(self, value):
         self._set_attr("block", value)
+
+# color
+    @property
+    def color(self):
+        return self._get_attr("color")
+
+    @color.setter
+    def color(self, value):
+        self._set_attr("color", value)
+
+# bgcolor
+    @property
+    def bgcolor(self):
+        return self._get_attr("bgcolor")
+
+    @bgcolor.setter
+    def bgcolor(self, value):
+        self._set_attr("bgcolor", value)
+
+# border
+    @property
+    def border(self):
+        return self._get_attr("border")
+
+    @border.setter
+    def border(self, value):
+        self._set_attr("border", value)
