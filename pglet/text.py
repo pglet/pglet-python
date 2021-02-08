@@ -3,7 +3,8 @@ from .control import Control
 
 class Text(Control):
     def __init__(self, id=None, value=None, align=None, verticalAlign=None,
-            size=None, bold=None, italic=None,
+            size=None, bold=None, italic=None, pre=None, nowrap=None,
+            block=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
 
@@ -17,6 +18,9 @@ class Text(Control):
         self.size = size
         self.bold = bold
         self.italic = italic
+        self.pre = pre
+        self.nowrap = nowrap
+        self.block = block
 
     def _getControlName(self):
         return "text"
@@ -74,3 +78,30 @@ class Text(Control):
     @italic.setter
     def italic(self, value):
         self._set_attr("italic", value)
+
+# pre
+    @property
+    def pre(self):
+        return self._get_attr("pre")
+
+    @pre.setter
+    def pre(self, value):
+        self._set_attr("pre", value)
+
+# nowrap
+    @property
+    def nowrap(self):
+        return self._get_attr("nowrap")
+
+    @nowrap.setter
+    def nowrap(self, value):
+        self._set_attr("nowrap", value)
+
+# block
+    @property
+    def block(self):
+        return self._get_attr("block")
+
+    @block.setter
+    def block(self, value):
+        self._set_attr("block", value)
