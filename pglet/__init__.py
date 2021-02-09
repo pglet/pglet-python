@@ -9,4 +9,5 @@ from .button import Button
 from .dropdown import Dropdown
 from .icon import Icon
 from .link import Link
+from .toggle import Toggle
 from .pglet import *
