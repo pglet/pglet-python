@@ -77,6 +77,7 @@ class Link(Control):
 
     @bold.setter
     def bold(self, value):
+        assert value == None or isinstance(value, bool), "value must be a boolean"
         self._set_attr("bold", value)
 
 # italic
@@ -86,6 +87,7 @@ class Link(Control):
 
     @italic.setter
     def italic(self, value):
+        assert value == None or isinstance(value, bool), "value must be a boolean"
         self._set_attr("italic", value)
 
 # pre
@@ -95,6 +97,7 @@ class Link(Control):
 
     @pre.setter
     def pre(self, value):
+        assert value == None or isinstance(value, bool), "value must be a boolean"
         self._set_attr("pre", value)
 
 # align

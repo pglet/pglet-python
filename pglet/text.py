@@ -77,6 +77,7 @@ class Text(Control):
 
     @bold.setter
     def bold(self, value):
+        assert value == None or isinstance(value, bool), "value must be a boolean"
         self._set_attr("bold", value)
 
 # italic
@@ -86,6 +87,7 @@ class Text(Control):
 
     @italic.setter
     def italic(self, value):
+        assert value == None or isinstance(value, bool), "value must be a boolean"
         self._set_attr("italic", value)
 
 # pre
@@ -95,6 +97,7 @@ class Text(Control):
 
     @pre.setter
     def pre(self, value):
+        assert value == None or isinstance(value, bool), "value must be a boolean"
         self._set_attr("pre", value)
 
 # nowrap
@@ -104,6 +107,7 @@ class Text(Control):
 
     @nowrap.setter
     def nowrap(self, value):
+        assert value == None or isinstance(value, bool), "value must be a boolean"
         self._set_attr("nowrap", value)
 
 # block
@@ -113,6 +117,7 @@ class Text(Control):
 
     @block.setter
     def block(self, value):
+        assert value == None or isinstance(value, bool), "value must be a boolean"
         self._set_attr("block", value)
 
 # color

@@ -9,7 +9,7 @@ def test_text_add():
     assert isinstance(c, pglet.Control)
     assert isinstance(c, pglet.Text)
     #raise Exception(s.get_cmd_str())
-    #assert c.get_cmd_str() == ('text align="left" block="false" bold="true" italic="false" nowrap="true" pre="false" size="tiny" value="Hello,\\nworld!" verticalAlign="left"'), "Test failed"
+    #assert c.get_cmd_str() == ('text align="left" block="false" bold='true italic="false" nowrap="true" pre="false" size="tiny" value="Hello,\\nworld!" verticalAlign="left"'), "Test failed"
     assert c.get_cmd_str() == ('text align="left" bgcolor="#FF7F50" '
         'block="false" bold="true" border="1px solid #550000" '
         'borderBottom="1px solid #550000" borderLeft="1px solid #550000" '

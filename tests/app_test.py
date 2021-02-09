@@ -13,9 +13,9 @@ def link_click(event):
 page = pglet.page("index")
 page.update(Page(title="Hello, pglet!"))
 page.clean()
-page.add(Text(value='Hello', align='right', width='100%'))
-page.add(Icon(name='Mail1', color='green', size='50'))
-page.add(Link(value='Visit google', url='https://google.com', new_window=True))
+page.add(Text(value='Hello', align='right', width='100%', nowrap=True, size='small'))
+page.add(Icon(name='Mail', color='green', size='large'))
+page.add(Link(value='Visit google', url='https://google.com', pre=True, align='right', width='100', size='large1'))
 page.add(Link(value='Start action', url=None, new_window=False, onclick=link_click))
 
 page.wait_close()
