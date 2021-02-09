@@ -16,7 +16,7 @@ class Button(Control):
     def _getControlName(self):
         return "button"
 
-# text
+# onclick
     @property
     def onclick(self):
         return None
