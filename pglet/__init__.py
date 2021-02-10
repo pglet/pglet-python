@@ -10,4 +10,5 @@ from .dropdown import Dropdown
 from .icon import Icon
 from .link import Link
 from .toggle import Toggle
+from .message import Message, MessageButton
 from .pglet import *
