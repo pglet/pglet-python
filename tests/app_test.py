@@ -5,8 +5,7 @@ sys.path.insert(0,parentdir)
 
 import time
 import pglet
-from pglet import Page, Text, Textbox, Button, Progress, Icon, Link, Toggle, Message, MessageButton
-#from pglet.message import MessageButton
+from pglet import Page, Text, Textbox, Button, Progress, Icon, Link, Toggle, Message, MessageButton, Checkbox
 
 def link_click(event):
     print('This link is clicked!')
@@ -16,6 +15,9 @@ def toggle_change(event):
 
 def message_dismissed(event):
     print('This message is dismissed!')
+
+def checkbox_changed(event):
+    print('This checkbox is dismissed!')
 
 page = pglet.page("index")
 page.update(Page(title="Hello, pglet!"))
@@ -31,6 +33,8 @@ page.add(Message(value='This is message', dismiss=True, ondismiss=message_dismis
     MessageButton(text='Yes, I agree', action='Yes'),
     MessageButton(text='No, I disagree', action='No')
 ]))
+
+page.add(Checkbox(value=True, label='I am a human', box_side='start', data='data to pass', onchange=checkbox_changed))
 
 
 page.wait_close()
