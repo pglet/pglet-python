@@ -14,12 +14,13 @@ def test_text_double_quotes():
     assert c.get_cmd_str() == ('text value="Hello, \\"world!\\""'), "Test failed"
 
 def test_add_text_inside_stack():
-    txt = Text(id="txt1", value="Hello,\nworld!")
+    txt = Text(id="txt1", value='Hello, "world!"')
     btn = Button(text="Super button")
     stack = Stack(id="header", controls=[txt, btn])
 
     # open page
     p = pglet.page('test_text', no_window=True)
+    p.clean()
 
     # add control first time
     p.add(stack)
