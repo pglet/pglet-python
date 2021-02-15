@@ -16,7 +16,7 @@ def test_choicegroup():
     assert isinstance(cg, pglet.Control)
     assert isinstance(cg, pglet.ChoiceGroup)
     assert cg.get_cmd_str() == (
-        'dropdown id="list1" label="Your favorite color:"\n'
+        'choicegroup id="list1" label="Your favorite color:" value="list1"\n'
         '  option key="key1" text="value1"\n'
         '  option key="key2" text="value2"'
         ), "Test failed"
@@ -29,7 +29,7 @@ def test_choicegroup_with_just_keys():
     cg.add_option("key1")
     cg.add_option("key2")
     assert cg.get_cmd_str(indent='  ') == (
-        '  dropdown id="list1" label="Your favorite color:"\n'
+        '  choicegroup id="list1" label="Your favorite color:"\n'
         '    option key="key1"\n'
         '    option key="key2"'
         ), "Test failed"
