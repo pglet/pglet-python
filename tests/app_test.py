@@ -5,7 +5,8 @@ sys.path.insert(0,parentdir)
 
 import time
 import pglet
-from pglet import Page, Text, Textbox, Button, Progress, Icon, Link, Toggle, Message, MessageButton, Checkbox
+from pglet import Page, Text, Textbox, Button, Progress, Icon, Link, Toggle, Message, MessageButton, Checkbox, ChoiceGroup, Dropdown
+from pglet import choicegroup
 
 def link_click(event):
     print('This link is clicked!')
@@ -17,7 +18,10 @@ def message_dismissed(event):
     print('This message is dismissed!')
 
 def checkbox_changed(event):
-    print('This checkbox is dismissed!')
+    print('This checkbox is changed!')
+
+def choicegroup_changed(event):
+    print('This choicegroup is changed!')
 
 page = pglet.page("index")
 page.update(Page(title="Hello, pglet!"))
@@ -36,5 +40,9 @@ page.add(Message(value='This is message', dismiss=True, ondismiss=message_dismis
 
 page.add(Checkbox(value=True, label='I am a human', box_side='start', data='data to pass', onchange=checkbox_changed))
 
+page.add(ChoiceGroup(value='colour', label='Select a colour:', data='data to pass', options=[
+    choicegroup.Option(key='Green'),
+    choicegroup.Option(key='Yellow')], 
+    onchange=choicegroup_changed))
 
 page.wait_close()
