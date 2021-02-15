@@ -10,10 +10,9 @@ import signal
 from threading import Thread
 from time import sleep
 from .utils import is_windows, which
-from .textbox import Textbox
 from .connection import Connection
 
-PGLET_VERSION = "0.2.0"
+PGLET_VERSION = "0.2.1"
 pglet_exe = ""
 
 def page(name='', web=False, server='', token='', no_window=False):
