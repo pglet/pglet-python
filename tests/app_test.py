@@ -7,6 +7,7 @@ import time
 import pglet
 from pglet import Page, Text, Textbox, Button, Progress, Icon, Link, Toggle, Message, MessageButton, Checkbox, ChoiceGroup, Dropdown
 from pglet import choicegroup
+from pglet import dropdown
 
 def link_click(event):
     print('This link is clicked!')
@@ -22,6 +23,9 @@ def checkbox_changed(event):
 
 def choicegroup_changed(event):
     print('This choicegroup is changed!')
+
+def dropdown_changed(event):
+    print('This dropdown is changed!')
 
 page = pglet.page("index")
 page.update(Page(title="Hello, pglet!"))
@@ -44,5 +48,11 @@ page.add(ChoiceGroup(value='colour', label='Select a colour:', data='data to pas
     choicegroup.Option(key='Green'),
     choicegroup.Option(key='Yellow')], 
     onchange=choicegroup_changed))
+
+page.add(Dropdown(id='dd1', label='Choose your weapon', options=[
+    dropdown.Option('Sword'),
+    dropdown.Option('Word'),
+    dropdown.Option('Poison')],
+    onchange=dropdown_changed))
 
 page.wait_close()

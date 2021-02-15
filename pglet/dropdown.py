@@ -3,8 +3,9 @@ from .control import Control
 
 # Option
 class Option(Control):
-    def __init__(self, key, text=None):
+    def __init__(self, key=None, text=None):
         Control.__init__(self)
+        assert key != None or text != None, "key or text must be specified"
         self.key = key
         self.text = text
 
@@ -31,7 +32,7 @@ class Option(Control):
 
 class Dropdown(Control):
     def __init__(self, id=None, label=None, value=None, placeholder=None,
-            error_message=None, options=[],
+            error_message=None, onchange=None, options=[],
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
         Control.__init__(self, id=id,
@@ -41,6 +42,7 @@ class Dropdown(Control):
         self.value = value
         self.placeholder = placeholder
         self.error_message = error_message
+        self.onchange = onchange
         self._options = []
         if options and len(options) > 0:
             for option in options:
@@ -50,10 +52,7 @@ class Dropdown(Control):
         return "dropdown"
 
     def add_option(self, option):
-        if isinstance(option, tuple) and len(option) > 1:
-            # (key, value) tuple
-            self._options.append(Option(option[0], option[1]))
-        elif isinstance(option, Option):
+        if isinstance(option, Option):
             self._options.append(option)
         else:
             self._options.append(Option(str(option)))
@@ -62,6 +61,15 @@ class Dropdown(Control):
     @property
     def options(self):
         return self._options
+        
+    # onchange
+    @property
+    def onchange(self):
+        return None
+
+    @onchange.setter
+    def onchange(self, handler):
+        self._add_event_handler("change", handler)
 
     # label
     @property
