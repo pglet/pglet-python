@@ -9,7 +9,7 @@ from pglet import Page, Text, Textbox, Button, Progress, Icon, Link, Toggle, Mes
 from pglet import choicegroup
 from pglet import dropdown
 from pglet import nav
-from pglet import Nav, SearchBox
+from pglet import Nav, SearchBox, Slider
 
 def link_click(event):
     print('This link is clicked!')
@@ -41,10 +41,13 @@ def navitem_collapsed(event):
 def searchbox_changed(event):
     print('This searchbox is changed!')
 
+def slider_changed(event):
+    print('This slider is changed!')
+
 page = pglet.page("index")
 page.update(Page(title="Hello, pglet!"))
 page.clean()
-page.add(Text(value='Hello', align='right', width='100%', nowrap=True, size='small'))
+page.add(Text(value='C:\\He\nllo', align='right', width='100%', nowrap=True, size='small'))
 page.add(Icon(name='Mail', color='green', size='large'))
 page.add(Link(value='Visit google', url='https://google.com', pre=True, align='right', width='100', size='large1'))
 page.add(Link(value='Start action', url=None, new_window=False, onclick=link_click))
@@ -82,5 +85,8 @@ page.add(Nav(id='n1', value='n1', items=[
 
 page.add(SearchBox(value='', placeholder='search for something', underlined=True, icon='mail', 
     icon_color='red', data='data', on_change=True, onchange=searchbox_changed))
+
+page.add(Slider(value=1, label='To what extend you agree', min=0, max=10, step=1, 
+    show_value=True, value_format='current_value is {value}', vertical=True, height=200, onchange=slider_changed))
 
 page.wait_close()

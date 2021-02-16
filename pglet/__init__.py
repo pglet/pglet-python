@@ -14,4 +14,5 @@ from .message import Message, MessageButton
 from .choicegroup import ChoiceGroup
 from .nav import Nav
 from .searchbox import SearchBox
+from .slider import Slider
 from .pglet import *
