@@ -8,6 +8,8 @@ import pglet
 from pglet import Page, Text, Textbox, Button, Progress, Icon, Link, Toggle, Message, MessageButton, Checkbox, ChoiceGroup, Dropdown
 from pglet import choicegroup
 from pglet import dropdown
+from pglet import nav
+from pglet import Nav
 
 def link_click(event):
     print('This link is clicked!')
@@ -54,5 +56,11 @@ page.add(Dropdown(id='dd1', label='Choose your weapon', options=[
     dropdown.Option('Word'),
     dropdown.Option('Poison')],
     onchange=dropdown_changed))
+    
+page.add(Nav(id='n1', value='n1', items=[
+    nav.Item('Item1'),
+    nav.Item('Item2'),
+    nav.Item('Item3'),]
+    ))
 
 page.wait_close()

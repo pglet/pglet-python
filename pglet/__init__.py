@@ -12,4 +12,5 @@ from .link import Link
 from .toggle import Toggle
 from .message import Message, MessageButton
 from .choicegroup import ChoiceGroup
+from .nav import Nav
 from .pglet import *
