@@ -29,6 +29,15 @@ def choicegroup_changed(event):
 def dropdown_changed(event):
     print('This dropdown is changed!')
 
+def navitem_changed(event):
+    print('This navitem is changed!')
+
+def navitem_expanded(event):
+    print('This navitem is expanded!')
+
+def navitem_collapsed(event):
+    print('This navitem is collapsed!')
+
 page = pglet.page("index")
 page.update(Page(title="Hello, pglet!"))
 page.clean()
@@ -58,9 +67,14 @@ page.add(Dropdown(id='dd1', label='Choose your weapon', options=[
     onchange=dropdown_changed))
     
 page.add(Nav(id='n1', value='n1', items=[
-    nav.Item('Item1'),
+    nav.Item(key='Item1', items=[
+        nav.Item('item1.1', items=
+            [nav.Item(key='item1.1.1', icon='mail', icon_color='green', url='https://google.com', expanded=True, new_window=True),
+            nav.Item('item1.1.2')]),
+        nav.Item('item1.2')
+    ]),
     nav.Item('Item2'),
-    nav.Item('Item3'),]
-    ))
+    nav.Item('Item3'),],
+    onchange=navitem_changed, onexpand=navitem_expanded, oncollapse=navitem_collapsed))
 
 page.wait_close()

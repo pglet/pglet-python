@@ -3,10 +3,11 @@ from .control import Control
 
 # Item
 class Item(Control):
-    def __init__(self, key=None, text=None, icon=None, icon_color=None, url=None,
-        new_window=None, expanded=None, collapsed=None):
+    def __init__(self, key=None, text=None, icon=None, icon_color=None, url=None, items=[],
+        new_window=None, expanded=None):
         Control.__init__(self)
-        assert key != None or text != None, "key or text must be specified"
+        #key and text are optional for group item but key or text are required for level 2 and deeper items 
+        #assert key != None or text != None, "key or text must be specified"
         self.key = key
         self.text = text
         self.icon = icon
@@ -14,11 +15,24 @@ class Item(Control):
         self.url = url
         self.new_window = new_window
         self.expanded = expanded
-        self.collapsed = collapsed
-
+        self._items = []
+        if items and len(items) > 0:
+            for item in items:
+                self.add_item(item)
 
     def _getControlName(self):
         return "item"
+
+    def add_item(self, item):
+        if isinstance(item, Item):
+            self._items.append(item)
+        else:
+            self._items.append(Item(str(item)))
+
+    # items
+    @property
+    def items(self):
+        return self._items
 
     # key
     @property
@@ -85,15 +99,8 @@ class Item(Control):
         assert value == None or isinstance(value, bool), "value must be a boolean"
         self._set_attr("expanded", value)
 
-    # collapsed
-    @property
-    def collapsed(self):
-        return self._get_attr("collapsed")
-
-    @collapsed.setter
-    def collapsed(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
-        self._set_attr("collapsed", value)
+    def _getChildren(self):
+        return self._items
 
 class Nav(Control):
     def __init__(self, id=None, value=None, items=[],

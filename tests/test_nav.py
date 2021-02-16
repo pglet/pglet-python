@@ -9,7 +9,8 @@ def test_item():
 
 def test_nav():
     n = pglet.Nav(id="list1", value="list1", items=[
-        Item(key="key1", text="item1"),
+        Item(key="key1", text="item1", icon='mail', icon_color='green', 
+        url='https://google.com', new_window=True, expanded=True),
         Item(key="key2", text="item2")
     ])
 
@@ -17,7 +18,7 @@ def test_nav():
     assert isinstance(n, pglet.Nav)
     assert n.get_cmd_str() == (
         'nav id="list1" value="list1"\n'
-        '  item key="key1" text="item1"\n'
+        '  item expanded="true" icon="mail" iconColor="green" key="key1" newWindow="true" text="item1" url="https://google.com"\n'
         '  item key="key2" text="item2"'
         ), "Test failed"
 
