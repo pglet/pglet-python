@@ -9,7 +9,7 @@ from pglet import Page, Text, Textbox, Button, Progress, Icon, Link, Toggle, Mes
 from pglet import choicegroup
 from pglet import dropdown
 from pglet import nav
-from pglet import Nav
+from pglet import Nav, SearchBox
 
 def link_click(event):
     print('This link is clicked!')
@@ -37,6 +37,9 @@ def navitem_expanded(event):
 
 def navitem_collapsed(event):
     print('This navitem is collapsed!')
+
+def searchbox_changed(event):
+    print('This searchbox is changed!')
 
 page = pglet.page("index")
 page.update(Page(title="Hello, pglet!"))
@@ -76,5 +79,8 @@ page.add(Nav(id='n1', value='n1', items=[
     nav.Item('Item2'),
     nav.Item('Item3'),],
     onchange=navitem_changed, onexpand=navitem_expanded, oncollapse=navitem_collapsed))
+
+page.add(SearchBox(value='', placeholder='search for something', underlined=True, icon='mail', 
+    icon_color='red', data='data', on_change=True, onchange=searchbox_changed))
 
 page.wait_close()
