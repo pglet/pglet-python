@@ -15,4 +15,5 @@ from .choicegroup import ChoiceGroup
 from .nav import Nav
 from .searchbox import SearchBox
 from .slider import Slider
+from .spinbutton import SpinButton
 from .pglet import *
