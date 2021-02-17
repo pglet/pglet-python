@@ -3,7 +3,7 @@ from .control import Control
 
 # Tab
 class Tab(Control):
-    def __init__(self, id=None, key=None, text=None, icon=None, count=None, controls=[]):
+    def __init__(self, text, id=None, key=None, icon=None, count=None, controls=[]):
         Control.__init__(self, id=None)
         #key or text are required 
         assert key != None or text != None, "key or text must be specified"
