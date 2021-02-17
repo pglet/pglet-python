@@ -9,7 +9,7 @@ from pglet import Page, Text, Textbox, Button, Progress, Icon, Link, Toggle, Mes
 from pglet import choicegroup
 from pglet import dropdown
 from pglet import nav
-from pglet import Nav, SearchBox, Slider, SpinButton, Tabs, Tab
+from pglet import Nav, SearchBox, Slider, SpinButton, Tabs, Tab, Dialog
 
 def link_click(event):
     print('This link is clicked!')
@@ -99,13 +99,27 @@ page.add(SpinButton(value=1, label='Level of satisfaction', min=0, max=10, step=
     icon='mail', width=200, onchange=spinbutton_changed))
 
 page.add(Tabs(id='t1', value='Tabs101', tabs=[
-    Tab(key='Tab1', controls=[
+    Tab(text='Tab1', controls=[
         Button(text='hello')
     ]),
-    Tab(key='Tab2', controls=[
+    Tab(text='Tab2', controls=[
         Text(value='this is text')
     ]),
-    Tab(key='Tab3')],
+    Tab(text='Tab3')],
     onchange=tabs_changed))
+
+d = Dialog(title='Hello', open=True, controls=[
+    Text(value='Are you sure?')
+], footer=[
+    Button(text='OK'),
+    Button(text="Cancel")
+])
+
+d.footer.id = "myfooter"
+
+page.add(d)
+
+id = d.footer.id 
+print(id)
 
 page.wait_close()
