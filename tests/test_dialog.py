@@ -1,40 +1,20 @@
 import pglet
-from pglet import Dialog, Footer, Text, Button
+from pglet import Dialog, Text, Button
 
-def test_tabs_add():
-    t = Tabs(tabs=[
-            Tab(text='Tab1'),
-            Tab('Tab2'),
-            Tab('Tab3')])
-
-    assert isinstance(t, pglet.Control)
-    assert isinstance(t, pglet.Tabs)
-    assert t.get_cmd_str() == (
-        'tabs\n'
-        '  tab text="Tab1"\n'
-        '  tab text="Tab2"\n'
-        '  tab text="Tab3"'
-    ), "Test failed"
-
-def test_tabs_with_controls_add():
-    t = Tabs(tabs=[
-            Tab(text='Tab1', controls=[
-                Button(text='OK'),
-                Button(text='Cancel')
-            ]),
-            Tab('Tab2', controls=[
-                Textbox(label='Textbox 1'),
-                Textbox(label='Textbox 2')
-            ])
+def test_dialog_add():
+    d = Dialog(title='Hello', controls=[
+        Text(value='Are you sure?')
+        ], footer=[
+        Button(text='OK'),
+        Button(text="Cancel")
     ])
-    assert isinstance(t, pglet.Control)
-    assert isinstance(t, pglet.Tabs)
-    assert t.get_cmd_str() == (
-        'tabs\n'
-        '  tab text="Tab1"\n'
+
+    assert isinstance(d, pglet.Control)
+    assert isinstance(d, pglet.Dialog)
+    assert d.get_cmd_str() == (
+        'dialog title="Hello"\n'
+        '  text value="Are you sure?"\n'
+        '  footer\n'
         '    button text="OK"\n'
-        '    button text="Cancel"\n'
-        '  tab text="Tab2"\n'
-        '    textbox label="Textbox 1"\n'
-        '    textbox label="Textbox 2"'
+        '    button text="Cancel"'
     ), "Test failed"
