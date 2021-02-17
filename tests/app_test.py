@@ -9,7 +9,7 @@ from pglet import Page, Text, Textbox, Button, Progress, Icon, Link, Toggle, Mes
 from pglet import choicegroup
 from pglet import dropdown
 from pglet import nav
-from pglet import Nav, SearchBox, Slider, SpinButton
+from pglet import Nav, SearchBox, Slider, SpinButton, Tabs, Tab
 
 def link_click(event):
     print('This link is clicked!')
@@ -46,6 +46,9 @@ def slider_changed(event):
 
 def spinbutton_changed(event):
     print('This spinbutton is changed!')
+
+def tabs_changed(event):
+    print('This tabs is changed!')
 
 page = pglet.page("index")
 page.update(Page(title="Hello, pglet!"))
@@ -94,5 +97,15 @@ page.add(Slider(value=1, label='To what extend you agree', min=0, max=10, step=1
 
 page.add(SpinButton(value=1, label='Level of satisfaction', min=0, max=10, step=1, 
     icon='mail', width=200, onchange=spinbutton_changed))
+
+page.add(Tabs(id='t1', value='Tabs101', tabs=[
+    Tab(key='Tab1', controls=[
+        Button(text='hello')
+    ]),
+    Tab(key='Tab2', controls=[
+        Text(value='this is text')
+    ]),
+    Tab(key='Tab3')],
+    onchange=tabs_changed))
 
 page.wait_close()

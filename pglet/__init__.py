@@ -16,4 +16,5 @@ from .nav import Nav
 from .searchbox import SearchBox
 from .slider import Slider
 from .spinbutton import SpinButton
+from .tabs import Tabs, Tab
 from .pglet import *
