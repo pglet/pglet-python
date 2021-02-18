@@ -3,14 +3,14 @@ from .control import Control
 
 # Column
 class Column(Control):
-    def __init__(self, id=None, name=None, icon_name=None, icon_only=None, 
+    def __init__(self, id=None, name=None, icon=None, icon_only=None, 
         field_name=None, sortable=None, sort_field=None, sorted=None, resizable=None,
         min_width=None, max_width=None, on_click=None, controls=[], onclick=None,
         new_window=None, expanded=None):
         Control.__init__(self, id=None)
 
         self.name = name
-        self.icon_name = icon_name
+        self.icon = icon
         self.icon_only = icon_only
         self.field_name = field_name
         self.sortable = sortable
@@ -57,14 +57,14 @@ class Column(Control):
     def name(self, value):
         self._set_attr("name", value)
 
-    # icon_name
+    # icon
     @property
-    def icon_name(self):
-        return self._get_attr("iconName")
+    def icon(self):
+        return self._get_attr("icon")
 
-    @icon_name.setter
-    def icon_name(self, value):
-        self._set_attr("iconName", value)
+    @icon.setter
+    def icon(self, value):
+        self._set_attr("icon", value)
 
     # icon_only
     @property
