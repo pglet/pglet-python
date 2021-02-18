@@ -10,6 +10,12 @@ from pglet import choicegroup
 from pglet import dropdown
 from pglet import nav
 from pglet import Nav, SearchBox, Slider, SpinButton, Tabs, Tab, Dialog
+from pglet import Grid, Column, Item
+
+class Contact():
+    def __init__(self, first_name, last_name):
+        self.first_name = first_name
+        self.last_name = last_name
 
 def link_click(event):
     print('This link is clicked!')
@@ -117,9 +123,19 @@ d = Dialog(title='Hello', open=True, controls=[
 
 d.footer.id = "myfooter"
 
-page.add(d)
+#page.add(d)
 
 id = d.footer.id 
 print(id)
+
+g = Grid(columns=[
+    Column(field_name="first_name", name='First name'),
+    Column(field_name="last_name1", name='Last name')
+], items=[
+    Contact(first_name='Inesa', last_name='Fitsner'),
+    Contact(first_name='Fiodar', last_name='Fitsner')
+])
+
+page.add(g)
 
 page.wait_close()
