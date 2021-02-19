@@ -17,6 +17,7 @@ from .searchbox import SearchBox
 from .slider import Slider
 from .spinbutton import SpinButton
 from .tabs import Tabs, Tab
-from .dialog import Dialog, Footer
+from .dialog import Dialog
 from .grid import Grid, Columns, Items, Column, Item
+from .panel import Panel
 from .pglet import *

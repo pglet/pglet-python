@@ -9,7 +9,7 @@ from pglet import Page, Text, Textbox, Button, Progress, Icon, Link, Toggle, Mes
 from pglet import choicegroup
 from pglet import dropdown
 from pglet import nav
-from pglet import Nav, SearchBox, Slider, SpinButton, Tabs, Tab, Dialog
+from pglet import Nav, SearchBox, Slider, SpinButton, Tabs, Tab, Dialog, Panel
 from pglet import Grid, Column, Item
 
 class Contact():
@@ -137,5 +137,14 @@ g = Grid(columns=[
 ])
 
 page.add(g)
+
+p = Panel(title='Hello', open=True, controls=[
+    Text(value='Are you sure?')
+], footer=[
+    Button(text='OK'),
+    Button(text="Cancel")
+])
+
+page.add(p)
 
 page.wait_close()
