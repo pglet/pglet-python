@@ -9,8 +9,9 @@ from pglet import Page, Text, Textbox, Button, Progress, Icon, Link, Toggle, Mes
 from pglet import choicegroup
 from pglet import dropdown
 from pglet import nav
-from pglet import Nav, SearchBox, Slider, SpinButton, Tabs, Tab, Dialog, Panel
-from pglet import Grid, Column, Item
+from pglet import Nav, SearchBox, Slider, SpinButton, Tabs, Tab, Dialog, Panel, Toolbar
+from pglet import Grid, Column
+from pglet import toolbar
 
 class Contact():
     def __init__(self, first_name, last_name):
@@ -146,5 +147,16 @@ p = Panel(title='Hello', open=True, controls=[
 ])
 
 page.add(p)
+
+t = Toolbar(items=[
+    toolbar.Item(text='Are you sure?')
+], overflow=[
+    toolbar.Item(text='OK'),
+    toolbar.Item(text="Cancel")
+], far=[
+    toolbar.Item(text='far')
+])
+
+page.add(t)
 
 page.wait_close()
