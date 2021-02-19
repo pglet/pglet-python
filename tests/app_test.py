@@ -11,6 +11,7 @@ from pglet import dropdown
 from pglet import nav
 from pglet import Nav, SearchBox, Slider, SpinButton, Tabs, Tab, Dialog, Panel, Toolbar
 from pglet import Grid, Column
+from pglet import VerticalBarChart, P
 from pglet import toolbar
 
 class Contact():
@@ -137,7 +138,7 @@ g = Grid(columns=[
     Contact(first_name='Fiodar', last_name='Fitsner')
 ])
 
-page.add(g)
+#page.add(g)
 
 p = Panel(title='Hello', open=True, controls=[
     Text(value='Are you sure?')
@@ -146,7 +147,7 @@ p = Panel(title='Hello', open=True, controls=[
     Button(text="Cancel")
 ])
 
-page.add(p)
+#page.add(p)
 
 t = Toolbar(items=[
     toolbar.Item(text='Are you sure?')
@@ -157,6 +158,14 @@ t = Toolbar(items=[
     toolbar.Item(text='far')
 ])
 
-page.add(t)
+#page.add(t)
 
-page.wait_close()
+vbc = VerticalBarChart(x_type='number', data=[
+    P(x='1', y=100),
+    P(x='80', y=200), 
+    P(x='100', y=300),
+])
+
+page.add(vbc)
+
+#page.wait_close()

@@ -212,12 +212,12 @@ class Toolbar(Control):
     # items
     @property
     def items(self):
-        return self.items
+        return self._items
 
     # far
     @property
     def far(self):
-        return self.far
+        return self._far
 
     # overflow
     @property
