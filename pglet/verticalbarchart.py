@@ -33,6 +33,7 @@ class P(Control):
 
     @y.setter
     def y(self, value):
+        assert value == None or isinstance(value, float) or isinstance(value, int), "y must be a float"    
         self._set_attr("y", value)
 
     # legend
@@ -107,6 +108,15 @@ class VerticalBarChart(Control):
             visible=visible, disabled=disabled)
 
         self._data = Data(points=data)
+        self.ledend = legend
+        self.tooltips = tooltips
+        self.bar_width = bar_width
+        self.colors = colors
+        self.y_min = y_min
+        self.y_max = y_max
+        self.y_ticks = y_ticks
+        self.y_format = y_format
+        self.x_type = x_type
         
     def _getControlName(self):
         return "verticalbarchart"
@@ -153,6 +163,7 @@ class VerticalBarChart(Control):
 
     @y_min.setter
     def y_min(self, value):
+        assert value == None or isinstance(value, float) or isinstance(value, int), "yMin must be a float" 
         self._set_attr("yMin", value)
 
     # yMax
@@ -162,6 +173,7 @@ class VerticalBarChart(Control):
 
     @y_max.setter
     def y_max(self, value):
+        assert value == None or isinstance(value, float) or isinstance(value, int), "yMax must be a float" 
         self._set_attr("yMax", value)
 
     # yTicks
