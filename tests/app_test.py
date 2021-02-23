@@ -12,6 +12,7 @@ from pglet import nav
 from pglet import Nav, SearchBox, Slider, SpinButton, Tabs, Tab, Dialog, Panel, Toolbar
 from pglet import Grid, Column
 from pglet import VerticalBarChart, P
+from pglet import Image
 from pglet import toolbar
 from pglet import button
 
@@ -80,6 +81,10 @@ b = Button(primary=False, compound=False, action=False, toolbar=True, split=Fals
         button.Item(text='Item2 text')
     ])
 page.add(b)
+
+i = Image(src='https://www.w3schools.com/css/img_5terre.jpg', alt='This is image', title='This is title',
+ maximize_frame=False)
+page.add(i)
 
 page.add(Text(value='C:\\He\nllo', align='right', width='100%', nowrap=True, size='small'))
 page.add(Icon(name='Mail', color='green', size='large'))

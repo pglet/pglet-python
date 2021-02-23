@@ -22,4 +22,5 @@ from .grid import Grid, Columns, Items, Column, Item
 from .panel import Panel
 from .toolbar import Toolbar
 from .verticalbarchart import VerticalBarChart, P
+from .image import Image
 from .pglet import *
