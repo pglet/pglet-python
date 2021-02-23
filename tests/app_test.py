@@ -15,6 +15,7 @@ from pglet import VerticalBarChart, P
 from pglet import Image
 from pglet import toolbar
 from pglet import button
+from pglet import link
 
 class Contact():
     def __init__(self, first_name, last_name):
@@ -80,15 +81,22 @@ b = Button(primary=False, compound=False, action=False, toolbar=True, split=Fals
         ]),
         button.Item(text='Item2 text')
     ])
-page.add(b)
+#page.add(b)
 
 i = Image(src='https://www.w3schools.com/css/img_5terre.jpg', alt='This is image', title='This is title',
  maximize_frame=False)
-page.add(i)
+#page.add(i)
 
-page.add(Text(value='C:\\He\nllo', align='right', width='100%', nowrap=True, size='small'))
-page.add(Icon(name='Mail', color='green', size='large'))
-page.add(Link(value='Visit google', url='https://google.com', pre=True, align='right', width='100', size='large1'))
+#page.add(Text(value='C:\\He\nllo', align='right', width='100%', nowrap=True, size='small'))
+#page.add(Icon(name='Mail', color='green', size='large'))
+
+l = Link(value='Visit google', url='https://google.com', pre=True, align='right', width='100', size='large1', 
+title='Link title', controls=[
+    Text(value='LinkText1'),
+    Text(value='LinkText2')
+])
+page.add(l)
+
 page.add(Link(value='Start action', url=None, new_window=False, onclick=link_click))
 page.add(Toggle(value=True, label='This is toggle', on_text='On text', off_text='Off text', 
     inline=True, onchange=toggle_change))

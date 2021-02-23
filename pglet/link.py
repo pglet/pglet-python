@@ -2,8 +2,8 @@ from .utils import encode_attr
 from .control import Control
 
 class Link(Control):
-    def __init__(self, id=None, value=None, url=None, new_window=None,
-            size=None, bold=None, italic=None, pre=None, align=None, onclick=None,
+    def __init__(self, id=None, value=None, url=None, new_window=None, title=None,
+            size=None, bold=None, italic=None, pre=None, align=None, onclick=None, controls=[],
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
         
@@ -14,15 +14,29 @@ class Link(Control):
         self.value = value
         self.url = url
         self.new_window = new_window
+        self.title = title
         self.size = size
         self.bold = bold
         self.italic = italic
         self.pre = pre
         self.align = align
         self.onclick = onclick
+        self._controls = []
+        if controls and len(controls) > 0:
+            for control in controls:
+                self.add_control(control)
 
     def _getControlName(self):
         return "link"
+
+    def add_control(self, control):
+        assert isinstance(control, Control), 'link can hold controls only'
+        self._controls.append(control)
+
+# controls
+    @property
+    def controls(self):
+        return self._controls
 
 # onclick
     @property
@@ -61,6 +75,15 @@ class Link(Control):
         assert value == None or isinstance(value, bool), "value must be a boolean"
         self._set_attr("newWindow", value)
 
+# title
+    @property
+    def title(self):
+        return self._get_attr("title")
+
+    @title.setter
+    def title(self, value):
+        self._set_attr("title", value)
+
 # size
     @property
     def size(self):
@@ -97,7 +120,7 @@ class Link(Control):
 
     @pre.setter
     def pre(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
+        assert value == None or isinstance(value, bool), "pre must be a boolean"
         self._set_attr("pre", value)
 
 # align
@@ -108,3 +131,11 @@ class Link(Control):
     @align.setter
     def align(self, value):
         self._set_attr("align", value)
+        
+
+    def _getChildren(self):
+        result=[]
+        if self._controls and len(self._controls) > 0:
+            for control in self._controls:
+                result.append(control)
+        return result
