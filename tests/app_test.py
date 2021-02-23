@@ -13,6 +13,7 @@ from pglet import Nav, SearchBox, Slider, SpinButton, Tabs, Tab, Dialog, Panel, 
 from pglet import Grid, Column
 from pglet import VerticalBarChart, P
 from pglet import toolbar
+from pglet import button
 
 class Contact():
     def __init__(self, first_name, last_name):
@@ -58,9 +59,28 @@ def spinbutton_changed(event):
 def tabs_changed(event):
     print('This tabs is changed!')
 
+def button_clicked(event):
+    print('This button is clicked!')
+
+def item_clicked(event):
+    print('This item is clicked!')
+
 page = pglet.page("index")
 page.update(Page(title="Hello, pglet!"))
 page.clean()
+
+b = Button(primary=False, compound=False, action=False, toolbar=True, split=False, text='This is text', 
+    secondary_text='This is secondary text', url='https://google.com', new_window=True, title='This is title',
+    icon='Mail', icon_color='red', data='data', onclick=button_clicked, items=[
+        button.Item(text='Item1 text', secondary_text='Item1 secondary text', url='https://google.com', new_window=False,
+        icon='Mail', icon_color='blue', icon_only=True, split=False, divider=False, onclick=item_clicked, items=[
+            button.Item('Item1Item1'),
+            button.Item('Item1Item2')
+        ]),
+        button.Item(text='Item2 text')
+    ])
+page.add(b)
+
 page.add(Text(value='C:\\He\nllo', align='right', width='100%', nowrap=True, size='small'))
 page.add(Icon(name='Mail', color='green', size='large'))
 page.add(Link(value='Visit google', url='https://google.com', pre=True, align='right', width='100', size='large1'))
