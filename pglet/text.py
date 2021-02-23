@@ -2,11 +2,11 @@ from .utils import encode_attr
 from .control import Control
 
 class Text(Control):
-    def __init__(self, id=None, value=None, align=None, verticalAlign=None,
+    def __init__(self, id=None, value=None, markdown=None, align=None, vertical_align=None,
             size=None, bold=None, italic=None, pre=None, nowrap=None,
-            block=None, color=None, bgcolor=None, border=None,
-            borderRadius=None, borderLeft=None, borderRight=None, borderTop=None, borderBottom=None,
-            width=None, height=None, padding=None, margin=None,
+            block=None, color=None, bgcolor=None, border=None, border_style=None, border_width=None,
+            border_color=None, border_radius=None, border_left=None, border_right=None, border_top=None, 
+            border_bottom=None, width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
 
         Control.__init__(self, id=id,
@@ -14,8 +14,9 @@ class Text(Control):
             visible=visible, disabled=disabled)
 
         self.value = value
+        self.markdown = markdown
         self.align = align
-        self.verticalAlign = verticalAlign
+        self.vertical_align = vertical_align
         self.size = size
         self.bold = bold
         self.italic = italic
@@ -25,11 +26,14 @@ class Text(Control):
         self.color = color
         self.bgcolor = bgcolor
         self.border = border
-        self.borderRadius = borderRadius
-        self.borderLeft = borderLeft
-        self.borderRight = borderRight
-        self.borderTop = borderTop
-        self.borderBottom = borderBottom
+        self.border_style = border_style
+        self.border_width = border_width
+        self.border_color = border_color
+        self.border_radius = border_radius
+        self.border_left = border_left
+        self.border_right = border_right
+        self.border_top = border_top
+        self.border_bottom = border_bottom
 
     def _getControlName(self):
         return "text"
@@ -43,6 +47,16 @@ class Text(Control):
     def value(self, value):
         self._set_attr("value", value)
 
+# markdown
+    @property
+    def markdown(self):
+        return self._get_attr("markdown")
+
+    @markdown.setter
+    def markdown(self, value):
+        assert value == None or isinstance(value, bool), "markdown must be a boolean"
+        self._set_attr("markdown", value)
+
 # align
     @property
     def align(self):
@@ -52,13 +66,13 @@ class Text(Control):
     def align(self, value):
         self._set_attr("align", value)
 
-# verticalAlign
+# vertical_align
     @property
-    def verticalAlign(self):
+    def vertical_align(self):
         return self._get_attr("verticalAlign")
 
-    @verticalAlign.setter
-    def verticalAlign(self, value):
+    @vertical_align.setter
+    def vertical_align(self, value):
         self._set_attr("verticalAlign", value)
 
 # size
@@ -147,47 +161,74 @@ class Text(Control):
     def border(self, value):
         self._set_attr("border", value)
 
-# borderRadius
+# border_style
     @property
-    def borderRadius(self):
+    def border_style(self):
+        return self._get_attr("borderStyle")
+
+    @border_style.setter
+    def border_style(self, value):
+        self._set_attr("borderStyle", value)
+
+# border_width
+    @property
+    def border_width(self):
+        return self._get_attr("borderWidth")
+
+    @border_width.setter
+    def border_width(self, value):
+        self._set_attr("borderWidth", value)
+
+# border_color
+    @property
+    def border_color(self):
+        return self._get_attr("borderColor")
+
+    @border_color.setter
+    def border_color(self, value):
+        self._set_attr("borderColor", value)
+
+# border_radius
+    @property
+    def border_radius(self):
         return self._get_attr("borderRadius")
 
-    @borderRadius.setter
-    def borderRadius(self, value):
+    @border_radius.setter
+    def border_radius(self, value):
         self._set_attr("borderRadius", value)
 
-# borderLeft
+# border_left
     @property
-    def borderLeft(self):
+    def border_left(self):
         return self._get_attr("borderLeft")
 
-    @borderLeft.setter
-    def borderLeft(self, value):
+    @border_left.setter
+    def border_left(self, value):
         self._set_attr("borderLeft", value)
 
-# borderRight
+# border_right
     @property
-    def borderRight(self):
+    def border_right(self):
         return self._get_attr("borderRight")
 
-    @borderRight.setter
-    def borderRight(self, value):
+    @border_right.setter
+    def border_right(self, value):
         self._set_attr("borderRight", value)
 
-# borderTop
+# border_top
     @property
-    def borderTop(self):
+    def border_top(self):
         return self._get_attr("borderTop")
 
-    @borderTop.setter
-    def borderTop(self, value):
+    @border_top.setter
+    def border_top(self, value):
         self._set_attr("borderTop", value)
 
-# borderBottom
+# border_bottom
     @property
-    def borderBottom(self):
+    def border_bottom(self):
         return self._get_attr("borderBottom")
 
-    @borderBottom.setter
-    def borderBottom(self, value):
+    @border_bottom.setter
+    def border_bottom(self, value):
         self._set_attr("borderBottom", value)
