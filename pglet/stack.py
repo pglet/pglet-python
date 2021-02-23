@@ -5,7 +5,7 @@ from .alignment import Alignment
 class Stack(Control):
 
     def __init__(self, id=None, horizontal=None, vertical_fill=None, horizontal_align=None,
-            vertical_align=None, gap=None, controls=[],
+            vertical_align=None, gap=None, wrap=None, controls=[],
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
         Control.__init__(self, id=id,
@@ -17,6 +17,7 @@ class Stack(Control):
         self.horizontal_align = horizontal_align
         self.vertical_align = vertical_align
         self.gap = gap
+        self.wrap = wrap
 
         self._controls = []
         if controls and len(controls) > 0:
@@ -40,6 +41,16 @@ class Stack(Control):
     @gap.setter
     def gap(self, value):
         self._set_attr("gap", value)
+
+# wrap
+    @property
+    def wrap(self):
+        return self._get_attr("wrap")
+
+    @wrap.setter
+    def wrap(self, value):
+        assert value == None or isinstance(value, bool), "wrap must be a bool"
+        self._set_attr("wrap", value)
 
 # horizontal
     @property

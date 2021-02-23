@@ -134,8 +134,4 @@ class Link(Control):
         
 
     def _getChildren(self):
-        result=[]
-        if self._controls and len(self._controls) > 0:
-            for control in self._controls:
-                result.append(control)
-        return result
+        return self._controls
