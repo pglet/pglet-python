@@ -3,13 +3,14 @@ from .control import Control
 
 # Option
 class Option(Control):
-    def __init__(self, key=None, text=None, icon=None):
+    def __init__(self, key=None, text=None, icon=None, icon_color=None):
         Control.__init__(self)
         assert key != None or text != None, "key or text must be specified"
 
         self.key = key
         self.text = text
         self.icon = icon
+        self.icon_color = icon_color
 
     def _getControlName(self):
         return "option"
@@ -40,6 +41,15 @@ class Option(Control):
     @icon.setter
     def icon(self, value):
         self._set_attr("icon", value)
+
+    # icon_color
+    @property
+    def icon_color(self):
+        return self._get_attr("iconColor")
+
+    @icon_color.setter
+    def icon_color(self, value):
+        self._set_attr("iconColor", value)
 
 class ChoiceGroup(Control):
     def __init__(self, id=None, value=None, label=None, data=None, options=[],

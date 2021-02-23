@@ -9,7 +9,7 @@ def test_option():
 
 def test_choicegroup():
     cg = pglet.ChoiceGroup(id="list1", value='list1', label="Your favorite color:", options=[
-        Option(key="key1", text="value1"),
+        Option(key="key1", text="value1", icon='Shop', icon_color='Green'),
         Option(key="key2", text="value2")]
         )
 
@@ -17,7 +17,7 @@ def test_choicegroup():
     assert isinstance(cg, pglet.ChoiceGroup)
     assert cg.get_cmd_str() == (
         'choicegroup id="list1" label="Your favorite color:" value="list1"\n'
-        '  option key="key1" text="value1"\n'
+        '  option icon="Shop" iconColor="Green" key="key1" text="value1"\n'
         '  option key="key2" text="value2"'
         ), "Test failed"
 

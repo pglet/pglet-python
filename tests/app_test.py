@@ -101,7 +101,7 @@ page.add(Message(value='This is message', dismiss=True, ondismiss=message_dismis
 page.add(Checkbox(value=True, label='I am a human', box_side='start', data='data to pass', onchange=checkbox_changed))
 
 page.add(ChoiceGroup(value='colour', label='Select a colour:', data='data to pass', options=[
-    choicegroup.Option(key='Green'),
+    choicegroup.Option(key='Green', icon='Shop', icon_color='Green'),
     choicegroup.Option(key='Yellow')], 
     onchange=choicegroup_changed))
 
