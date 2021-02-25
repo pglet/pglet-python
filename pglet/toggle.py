@@ -1,21 +1,27 @@
 from .utils import encode_attr
 from .control import Control
 
-class Checkbox(Control):
-    def __init__(self, id=None, label=None, value=None, box_side=None, data=None,
-            width=None, height=None, padding=None, margin=None, onchange=None,
+class Toggle(Control):
+    def __init__(self, id=None, value=None, label=None, inline=None,
+            on_text=None, off_text=None, data=None, onchange=None,
+            width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
+        
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
             visible=visible, disabled=disabled)
+        
         self.value = value
         self.label = label
-        self.box_side = box_side
+        self.inline = inline
+        self.on_text = on_text
+        self.off_text = off_text
         self.data = data
         self.onchange = onchange
+       
 
     def _getControlName(self):
-        return "checkbox"
+        return "toggle"
 
 # onchange
     @property
@@ -45,14 +51,33 @@ class Checkbox(Control):
     def label(self, value):
         self._set_attr("label", value)
 
-# box_side
+# inline
     @property
-    def box_side(self):
-        return self._get_attr("boxSide")
+    def inline(self):
+        return self._get_attr("inline")
 
-    @box_side.setter
-    def box_side(self, value):
-        self._set_attr("boxSide", value)
+    @inline.setter
+    def inline(self, value):
+        assert value == None or isinstance(value, bool), "value must be a boolean"
+        self._set_attr("inline", value)
+
+# on_text
+    @property
+    def on_text(self):
+        return self._get_attr("onText")
+
+    @on_text.setter
+    def on_text(self, value):
+        self._set_attr("onText", value)
+
+# off_text
+    @property
+    def off_text(self):
+        return self._get_attr("offText")
+
+    @off_text.setter
+    def off_text(self, value):
+        self._set_attr("offText", value)
 
 # data
     @property
@@ -62,3 +87,4 @@ class Checkbox(Control):
     @data.setter
     def data(self, value):
         self._set_attr("data", value)
+

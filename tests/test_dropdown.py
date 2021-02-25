@@ -9,8 +9,8 @@ def test_option():
 
 def test_dropdown():
     dd = pglet.Dropdown(id="list1", label="Your favorite color:", options=[
-        ("key1", "value1"),
-        ("key2", "value2")
+        Option(key="key1", text="value1"),
+        Option(key="key2", text="value2")
     ])
 
     assert isinstance(dd, pglet.Control)

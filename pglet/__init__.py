@@ -7,4 +7,20 @@ from .checkbox import Checkbox
 from .progress import Progress
 from .button import Button
 from .dropdown import Dropdown
+from .icon import Icon
+from .link import Link
+from .toggle import Toggle
+from .message import Message, MessageButton
+from .choicegroup import ChoiceGroup
+from .nav import Nav
+from .searchbox import SearchBox
+from .slider import Slider
+from .spinbutton import SpinButton
+from .tabs import Tabs, Tab
+from .dialog import Dialog
+from .grid import Grid, Columns, Items, Column, Item
+from .panel import Panel
+from .toolbar import Toolbar
+from .verticalbarchart import VerticalBarChart, P
+from .image import Image
 from .pglet import *

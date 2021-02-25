@@ -3,11 +3,14 @@ from .control import Control
 
 # Option
 class Option(Control):
-    def __init__(self, key=None, text=None):
+    def __init__(self, key=None, text=None, icon=None, icon_color=None):
         Control.__init__(self)
         assert key != None or text != None, "key or text must be specified"
+
         self.key = key
         self.text = text
+        self.icon = icon
+        self.icon_color = icon_color
 
     def _getControlName(self):
         return "option"
@@ -30,18 +33,34 @@ class Option(Control):
     def text(self, value):
         self._set_attr("text", value)
 
-class Dropdown(Control):
-    def __init__(self, id=None, label=None, value=None, placeholder=None,
-            error_message=None, onchange=None, options=[],
-            width=None, height=None, padding=None, margin=None,
+    # icon
+    @property
+    def icon(self):
+        return self._get_attr("icon")
+
+    @icon.setter
+    def icon(self, value):
+        self._set_attr("icon", value)
+
+    # icon_color
+    @property
+    def icon_color(self):
+        return self._get_attr("iconColor")
+
+    @icon_color.setter
+    def icon_color(self, value):
+        self._set_attr("iconColor", value)
+
+class ChoiceGroup(Control):
+    def __init__(self, id=None, value=None, label=None, data=None, options=[],
+            width=None, height=None, padding=None, margin=None, onchange=None,
             visible=None, disabled=None):
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
             visible=visible, disabled=disabled)
-        self.label = label
         self.value = value
-        self.placeholder = placeholder
-        self.error_message = error_message
+        self.label = label
+        self.data = data
         self.onchange = onchange
         self._options = []
         if options and len(options) > 0:
@@ -49,7 +68,7 @@ class Dropdown(Control):
                 self.add_option(option)
 
     def _getControlName(self):
-        return "dropdown"
+        return "choicegroup"
 
     def add_option(self, option):
         if isinstance(option, Option):
@@ -57,11 +76,6 @@ class Dropdown(Control):
         else:
             self._options.append(Option(str(option)))
 
-    # options
-    @property
-    def options(self):
-        return self._options
-        
     # onchange
     @property
     def onchange(self):
@@ -70,15 +84,6 @@ class Dropdown(Control):
     @onchange.setter
     def onchange(self, handler):
         self._add_event_handler("change", handler)
-
-    # label
-    @property
-    def label(self):
-        return self._get_attr("label")
-
-    @label.setter
-    def label(self, value):
-        self._set_attr("label", value)
 
     # value
     @property
@@ -89,23 +94,23 @@ class Dropdown(Control):
     def value(self, value):
         self._set_attr("value", value)
 
-    # placeholder
+    # label
     @property
-    def placeholder(self):
-        return self._get_attr("placeholder")
+    def label(self):
+        return self._get_attr("label")
 
-    @placeholder.setter
-    def placeholder(self, value):
-        self._set_attr("placeholder", value)
+    @label.setter
+    def label(self, value):
+        self._set_attr("label", value)
 
-    # error_message
+    # data
     @property
-    def error_message(self):
-        return self._get_attr("errorMessage")
+    def data(self):
+        return self._get_attr("data")
 
-    @error_message.setter
-    def error_message(self, value):
-        self._set_attr("errorMessage", value)
+    @data.setter
+    def data(self, value):
+        self._set_attr("data", value)
 
     def _getChildren(self):
         return self._options
