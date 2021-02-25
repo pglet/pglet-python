@@ -29,10 +29,20 @@ class Connection:
 
         self.__start_event_loop()
 
-    def add(self, *controls, to=None, at=None, fire_and_forget=False):
+    def add(self, *controls, to=None, at=None, trim=None, fire_and_forget=False):
         cmd = "add"
         if fire_and_forget:
             cmd = "addf"
+        return self._add_or_replace(cmd, *controls, to=to, at=at, trim=trim, fire_and_forget=fire_and_forget)
+
+    def replace(self, *controls, to=None, at=None, trim=None, fire_and_forget=False):
+        cmd = "replace"
+        if fire_and_forget:
+            cmd = "replacef"
+        return self._add_or_replace(cmd, *controls, to=to, at=at, trim=trim, fire_and_forget=fire_and_forget)
+
+    def _add_or_replace(self, cmdName, *controls, to=None, at=None, trim=None, fire_and_forget=False):
+        cmd = cmdName
 
         if to != None:
             cmd += f' to="{self._get_control_id(to)}"'
@@ -40,6 +50,10 @@ class Connection:
         if at != None:
             assert isinstance(at, int), "at must be an int"
             cmd += f' at="{at}"'
+
+        if trim != None:
+            assert isinstance(trim, int), "trim must be an int"
+            cmd += f' trim="{trim}"'
 
         index = []
 
