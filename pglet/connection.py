@@ -6,21 +6,20 @@ from .event import Event
 from .control import Control
 
 class Connection:
-    conn_id = ""
-    url = ""
-    web = False
-    private = False
-
-    win_command_pipe = None
-    win_event_pipe = None
-
-    event_available = threading.Event()
-    last_event = None
-    _event_handlers = {}
-
     def __init__(self, conn_id):
         self.conn_id = conn_id
         self.lock = threading.Lock()
+
+        self.url = ""
+        self.web = False
+        self.private = False
+
+        self.win_command_pipe = None
+        self.win_event_pipe = None
+
+        self.event_available = threading.Event()
+        self.last_event = None
+        self._event_handlers = {}        
 
         if is_windows():
             self.__init_windows()
