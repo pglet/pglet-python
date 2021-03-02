@@ -12,7 +12,7 @@ from time import sleep
 from .utils import is_windows, which
 from .connection import Connection
 
-PGLET_VERSION = "0.2.2"
+PGLET_VERSION = "0.2.4"
 pglet_exe = ""
 
 def page(name='', web=False, server='', token='', no_window=False):
