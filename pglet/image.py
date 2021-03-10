@@ -2,7 +2,7 @@ from .utils import encode_attr
 from .control import Control
 
 class Image(Control):
-    def __init__(self, id=None, src=None, alt=None, title=None, maximize_frame=None,
+    def __init__(self, src=None, id=None, alt=None, title=None, maximize_frame=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
         

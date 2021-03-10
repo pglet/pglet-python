@@ -52,7 +52,7 @@ class Option(Control):
         self._set_attr("iconColor", value)
 
 class ChoiceGroup(Control):
-    def __init__(self, id=None, value=None, label=None, data=None, options=[],
+    def __init__(self, label=None, id=None, value=None, data=None, options=[],
             width=None, height=None, padding=None, margin=None, onchange=None,
             visible=None, disabled=None):
         Control.__init__(self, id=id,

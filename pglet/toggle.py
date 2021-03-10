@@ -2,7 +2,7 @@ from .utils import encode_attr
 from .control import Control
 
 class Toggle(Control):
-    def __init__(self, id=None, value=None, label=None, inline=None,
+    def __init__(self, label=None, id=None, value=None, inline=None,
             on_text=None, off_text=None, data=None, onchange=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):

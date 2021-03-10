@@ -2,7 +2,7 @@ from .utils import encode_attr
 from .control import Control
 
 class Item(Control):
-    def __init__(self, id=None, text=None, secondary_text=None, url=None, new_window=None, 
+    def __init__(self, text=None, id=None, secondary_text=None, url=None, new_window=None, 
             icon=None, icon_color=None, icon_only=None, split=None, divider=None, onclick=None, items=[],
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
@@ -137,8 +137,8 @@ class Item(Control):
         return self._items
 
 class Button(Control):
-    def __init__(self, id=None, primary=None, compound=None, action=None, toolbar=None,
-            split=None, text=None, secondary_text=None, url=None, new_window=None, 
+    def __init__(self, text=None, id=None, primary=None, compound=None, action=None, toolbar=None,
+            split=None, secondary_text=None, url=None, new_window=None, 
             title=None, icon=None, icon_color=None, data=None, onclick=None, items=[],
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):

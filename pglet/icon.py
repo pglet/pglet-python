@@ -2,7 +2,7 @@ from .utils import encode_attr
 from .control import Control
 
 class Icon(Control):
-    def __init__(self, id=None, name=None, color=None, size=None,
+    def __init__(self, name=None, id=None, color=None, size=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
         

@@ -32,7 +32,7 @@ def test_button_with_all_properties():
     'split="false" text="This is text" title="This is title" toolbar="true" url="https://google.com"\n'
     '  item divider="false" icon="Mail" iconColor="blue" iconOnly="true" newWindow="false" '
     'secondaryText="Item1 secondary text" split="false" text="Item1 text" url="https://google.com"\n'
-    '    item id="Item1Item1"\n'
-    '    item id="Item1Item2"\n'
+    '    item text="Item1Item1"\n'
+    '    item text="Item1Item2"\n'
     '  item text="Item2 text"'), "Test failed"
 
