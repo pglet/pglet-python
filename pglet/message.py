@@ -31,7 +31,7 @@ class MessageButton(Control):
 
 # Message
 class Message(Control):
-    def __init__(self, type="info", value=None, id=None,
+    def __init__(self, value=None, type=None, id=None,
             multiline=None, truncated=None, dismiss=None,
             data=None, ondismiss=None, buttons=[],
             width=None, height=None, padding=None, margin=None,
