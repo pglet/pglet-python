@@ -4,8 +4,8 @@ from .alignment import Alignment
 
 class Stack(Control):
 
-    def __init__(self, id=None, horizontal=None, vertical_fill=None, horizontal_align=None,
-            vertical_align=None, gap=None, wrap=None, controls=[],
+    def __init__(self, controls=[], id=None, horizontal=None, vertical_fill=None, horizontal_align=None,
+            vertical_align=None, gap=None, wrap=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
         Control.__init__(self, id=id,

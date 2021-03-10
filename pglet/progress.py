@@ -2,7 +2,7 @@ from .utils import encode_attr
 from .control import Control
 
 class Progress(Control):
-    def __init__(self, id=None, label=None, description=None, value=None,
+    def __init__(self, label=None, id=None, description=None, value=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
         Control.__init__(self, id=id,

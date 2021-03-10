@@ -2,7 +2,7 @@ from .utils import encode_attr
 from .control import Control
 
 class Textbox(Control):
-    def __init__(self, id=None, label=None, value=None, placeholder=None,
+    def __init__(self, label=None, id=None, value=None, placeholder=None,
             error_message=None, description=None, multiline=None, password=None,
             required=None,
             width=None, height=None, padding=None, margin=None, align=None,

@@ -2,7 +2,7 @@ from .utils import encode_attr
 from .control import Control
 
 class Link(Control):
-    def __init__(self, id=None, value=None, url=None, new_window=None, title=None,
+    def __init__(self, url=None, id=None, value=None, new_window=None, title=None,
             size=None, bold=None, italic=None, pre=None, align=None, onclick=None, controls=[],
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):

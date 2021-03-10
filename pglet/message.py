@@ -31,9 +31,8 @@ class MessageButton(Control):
 
 # Message
 class Message(Control):
-    def __init__(self, id=None, value=None, info=None, error=None,
-            blocked=None, severe_warning=None, success=None,
-            warning=None, multiline=None, truncated=None, dismiss=None,
+    def __init__(self, type="info", value=None, id=None,
+            multiline=None, truncated=None, dismiss=None,
             data=None, ondismiss=None, buttons=[],
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
@@ -42,13 +41,8 @@ class Message(Control):
             width=width, height=height, padding=padding, margin=margin,
             visible=visible, disabled=disabled)
         
+        self.type = type
         self.value = value
-        self.info = info
-        self.error = error
-        self.blocked = blocked
-        self.severe_warning = severe_warning
-        self.success = success
-        self.warning = warning
         self.multiline = multiline
         self.truncated = truncated
         self.dismiss = dismiss
@@ -87,65 +81,14 @@ class Message(Control):
     def value(self, value):
         self._set_attr("value", value)
 
-# info
+# type
     @property
-    def info(self):
-        return self._get_attr("info")
+    def type(self):
+        return self._get_attr("type")
 
-    @info.setter
-    def info(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
-        self._set_attr("info", value)
-
-# error
-    @property
-    def error(self):
-        return self._get_attr("error")
-
-    @error.setter
-    def error(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
-        self._set_attr("error", value)
-
-# blocked
-    @property
-    def blocked(self):
-        return self._get_attr("blocked")
-
-    @blocked.setter
-    def blocked(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
-        self._set_attr("blocked", value)
-
-# severe_warning
-    @property
-    def severe_warning(self):
-        return self._get_attr("severeWarning")
-
-    @severe_warning.setter
-    def severe_warning(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
-        self._set_attr("severeWarning", value)
-
-# success
-    @property
-    def success(self):
-        return self._get_attr("success")
-
-    @success.setter
-    def success(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
-        self._set_attr("success", value)
-
-# warning
-    @property
-    def warning(self):
-        return self._get_attr("warning")
-
-    @warning.setter
-    def warning(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
-        self._set_attr("warning", value)
+    @type.setter
+    def type(self, value):
+        self._set_attr("type", value)
 
 # multiline
     @property

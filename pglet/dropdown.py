@@ -31,7 +31,7 @@ class Option(Control):
         self._set_attr("text", value)
 
 class Dropdown(Control):
-    def __init__(self, id=None, label=None, value=None, placeholder=None,
+    def __init__(self, label=None, id=None, value=None, placeholder=None,
             error_message=None, onchange=None, options=[],
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):

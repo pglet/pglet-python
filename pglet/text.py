@@ -2,7 +2,7 @@ from .utils import encode_attr
 from .control import Control
 
 class Text(Control):
-    def __init__(self, id=None, value=None, markdown=None, align=None, vertical_align=None,
+    def __init__(self, value=None, id=None, markdown=None, align=None, vertical_align=None,
             size=None, bold=None, italic=None, pre=None, nowrap=None,
             block=None, color=None, bgcolor=None, border=None, border_style=None, border_width=None,
             border_color=None, border_radius=None, border_left=None, border_right=None, border_top=None, 

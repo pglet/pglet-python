@@ -2,7 +2,7 @@ from .utils import encode_attr
 from .control import Control
 
 class Checkbox(Control):
-    def __init__(self, id=None, label=None, value=None, box_side=None, data=None,
+    def __init__(self, label=None, id=None, value=None, box_side=None, data=None,
             width=None, height=None, padding=None, margin=None, onchange=None,
             visible=None, disabled=None):
         Control.__init__(self, id=id,
