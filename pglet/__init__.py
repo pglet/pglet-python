@@ -23,5 +23,6 @@ from .panel import Panel
 from .toolbar import Toolbar
 from .verticalbarchart import VerticalBarChart
 from .barchart import BarChart
+from .callout import Callout
 from .image import Image
 from .pglet import *

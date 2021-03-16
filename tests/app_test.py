@@ -11,7 +11,7 @@ from pglet import dropdown
 from pglet import nav
 from pglet import Nav, SearchBox, Slider, SpinButton, Tabs, Tab, Dialog, Panel, Toolbar
 from pglet import Grid, Column
-from pglet import VerticalBarChart, BarChart
+from pglet import VerticalBarChart, BarChart, Callout
 from pglet import Image
 from pglet import toolbar
 from pglet import button
@@ -68,6 +68,8 @@ def button_clicked(event):
 
 def item_clicked(event):
     print('This item is clicked!')
+
+
 
 page = pglet.page("index")
 page.update(Page(title="Hello, pglet!"))
@@ -209,6 +211,19 @@ bc = BarChart(data_mode='default', data=[
     barchart.P(x=100, y=300),
 ])
 
-page.add(bc)
+#page.add(bc)
+
+def button1_clicked(event):
+    print('Button1 is clicked!')
+    c.visible = True
+    page.update(c)
+    #page.send('set callout1 visible"True"')
+
+button1 = Button(id='button1', text='Click to see callout', onclick=button1_clicked)
+c = Callout(id='callout1', target = 'button1', controls = [Text(value='This is callout')])
+
+page.add(button1, c)
+
+
 
 #page.wait_close()
