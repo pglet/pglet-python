@@ -84,6 +84,7 @@ class Data(Control):
                 self.add_point(point)
 
         self.color = color
+        self.legend = legend
 
     # color
     @property

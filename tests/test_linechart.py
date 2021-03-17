@@ -18,10 +18,10 @@ def test_verticalbarchart_add():
     assert lc.get_cmd_str() == (
         'linechart legend="true" strokeWidth="4" tooltips="true" xType="number" '
         'yFormat="{y}%" yMax="100" yMin="0" yTicks="2"\n'
-        '  data color="yellow"\n'
+        '  data color="yellow" legend="yellow color"\n'
         '    p x="1" y="100"\n'
         '    p x="5" y="50"\n'
-        '  data color="green"\n'
+        '  data color="green" legend="green color"\n'
         '    p x="10" y="20"\n'
         '    p x="20" y="10"'
     ), "Test failed"
