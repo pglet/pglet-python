@@ -229,9 +229,13 @@ c = Callout(target='button1', position='leftBottom', gap=100, beak=True, beak_wi
 #page.add(button1, c)
 
 lc = LineChart(legend=True, tooltips=True, stroke_width=4, y_min=0, y_max=100, y_ticks=2, y_format='{y}%', 
-                x_type='number', data=[
-                    linechart.P(x=1, y=100),
-                    linechart.P(x=5, y=50)
+                x_type='number', datas=[
+                    linechart.Data(color='yellow', legend='yellow color', points=[
+                        linechart.P(x=1, y=100),
+                        linechart.P(x=5, y=50)]),
+                    linechart.Data(color='green', legend='green color', points=[
+                        linechart.P(x=10, y=20),
+                        linechart.P(x=20, y=10)])
                 ])
 
 page.add(lc)
