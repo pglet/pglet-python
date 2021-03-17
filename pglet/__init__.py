@@ -25,4 +25,5 @@ from .verticalbarchart import VerticalBarChart
 from .barchart import BarChart
 from .callout import Callout
 from .image import Image
+from .linechart import LineChart
 from .pglet import *

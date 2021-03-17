@@ -11,13 +11,14 @@ from pglet import dropdown
 from pglet import nav
 from pglet import Nav, SearchBox, Slider, SpinButton, Tabs, Tab, Dialog, Panel, Toolbar
 from pglet import Grid, Column
-from pglet import VerticalBarChart, BarChart, Callout
+from pglet import VerticalBarChart, BarChart, Callout, LineChart
 from pglet import Image
 from pglet import toolbar
 from pglet import button
 from pglet import link
 from pglet import verticalbarchart
 from pglet import barchart
+from pglet import linechart
 
 class Contact():
     def __init__(self, first_name, last_name):
@@ -220,10 +221,19 @@ def button1_clicked(event):
     #page.send('set callout1 visible"True"')
 
 button1 = Button(id='button1', text='Click to see callout', onclick=button1_clicked)
-c = Callout(id='callout1', target = 'button1', controls = [Text(value='This is callout')])
+c = Callout(target='button1', position='leftBottom', gap=100, beak=True, beak_width=10, page_padding=10,
+    focus=False, cover=True, visible=True, controls=[
+        Text(value='This is callout')
+        ])
 
-page.add(button1, c)
+#page.add(button1, c)
 
+lc = LineChart(legend=True, tooltips=True, stroke_width=4, y_min=0, y_max=100, y_ticks=2, y_format='{y}%', 
+                x_type='number', data=[
+                    linechart.P(x=1, y=100),
+                    linechart.P(x=5, y=50)
+                ])
 
+page.add(lc)
 
 #page.wait_close()
