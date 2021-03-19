@@ -1,11 +1,11 @@
 from .utils import encode_attr
 from .control import Control
-from .alignment import Alignment
+#from .alignment import Alignment
 
 class Stack(Control):
 
     def __init__(self, controls=[], id=None, horizontal=None, vertical_fill=None, horizontal_align=None,
-            vertical_align=None, gap=None, wrap=None,
+            vertical_align=None, gap=None, wrap=None, scrollx=None, scrolly=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
         Control.__init__(self, id=id,
@@ -18,6 +18,8 @@ class Stack(Control):
         self.vertical_align = vertical_align
         self.gap = gap
         self.wrap = wrap
+        self.scrollx = scrollx
+        self.scrolly = scrolly
 
         self._controls = []
         if controls and len(controls) > 0:
@@ -79,7 +81,7 @@ class Stack(Control):
 
     @horizontal_align.setter
     def horizontal_align(self, value):
-        assert value == None or isinstance(value, Alignment), "horizontalAlign must be an Alignment"
+        #assert value == None or isinstance(value, Alignment), "horizontalAlign must be an Alignment"
         self._set_attr("horizontalAlign", value)
 
 # vertical_align
@@ -89,8 +91,30 @@ class Stack(Control):
 
     @vertical_align.setter
     def vertical_align(self, value):
-        assert value == None or isinstance(value, Alignment), "verticalAlign must be an Alignment"
+        #assert value == None or isinstance(value, Alignment), "verticalAlign must be an Alignment"
         self._set_attr("verticalAlign", value)
+    
+# scrollx
+    @property
+    def scrollx(self):
+        return self._get_attr("scrollx")
+
+    @scrollx.setter
+    def scrollx(self, value):
+        assert value == None or isinstance(value, bool), "scrollx must be a bool"
+        self._set_attr("scrollx", value)
+
+# scrolly
+    @property
+    def scrolly(self):
+        return self._get_attr("scrolly")
+
+    @scrolly.setter
+    def scrolly(self, value):
+        assert value == None or isinstance(value, bool), "scrolly must be a bool"
+        self._set_attr("scrolly", value)
+
+
 
     def _getChildren(self):
         return self._controls
