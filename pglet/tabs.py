@@ -4,7 +4,7 @@ from .control import Control
 # Tab
 class Tab(Control):
     def __init__(self, text, controls=[], id=None, key=None, icon=None, count=None):
-        Control.__init__(self, id=None)
+        Control.__init__(self, id=id)
         #key or text are required 
         assert key != None or text != None, "key or text must be specified"
         self.key = key

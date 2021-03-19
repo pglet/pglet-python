@@ -3,39 +3,26 @@ from .control import Control
 
 # P
 class P(Control):
-    def __init__(self, id=None, x=None, y=None, legend=None, color=None,
-        x_tooltip=None, y_tooltip=None):
+    def __init__(self, id=None, value=None, legend=None, color=None, tooltip=None):
         Control.__init__(self, id=id)
 
-        self.x = x
-        self.y = y
+        self.value = value
         self.legend = legend
         self.color = color
-        self.x_tooltip = x_tooltip
-        self.y_tooltip = y_tooltip
+        self.tooltip = tooltip
 
     def _getControlName(self):
         return "p"
 
-    # x
+    # value
     @property
-    def x(self):
-        return self._get_attr("x")
+    def value(self):
+        return self._get_attr("value")
 
-    @x.setter
-    def x(self, value):
-        assert value == None or isinstance(value, float) or isinstance(value, int), "x must be a float"  
-        self._set_attr("x", value)
-
-    # y
-    @property
-    def y(self):
-        return self._get_attr("y")
-
-    @y.setter
-    def y(self, value):
-        assert value == None or isinstance(value, float) or isinstance(value, int), "y must be a float"    
-        self._set_attr("y", value)
+    @value.setter
+    def value(self, value):
+        assert value == None or isinstance(value, float) or isinstance(value, int), "value must be a float"  
+        self._set_attr("value", value)
 
     # legend
     @property
@@ -55,23 +42,14 @@ class P(Control):
     def color(self, value):
         self._set_attr("color", value)
 
-    # x_tooltip
+    # tooltip
     @property
-    def x_tooltip(self):
-        return self._get_attr("xTooltip")
+    def tooltip(self):
+        return self._get_attr("tooltip")
 
-    @x_tooltip.setter
-    def x_tooltip(self, value):
-        self._set_attr("xTooltip", value)
-
-    # y_tooltip
-    @property
-    def y_tooltip(self):
-        return self._get_attr("yTooltip")
-
-    @y_tooltip.setter
-    def y_tooltip(self, value):
-        self._set_attr("yTooltip", value)
+    @tooltip.setter
+    def tooltip(self, value):
+        self._set_attr("tooltip", value)
 
 # Data
 class Data(Control):
@@ -99,8 +77,8 @@ class Data(Control):
         return self._points
 
 
-class BarChart(Control):
-    def __init__(self, id=None, tooltips=None, data_mode=None, data=[],
+class PieChart(Control):
+    def __init__(self, id=None, legend=None, tooltips=None, inner_value=None, inner_radius=None, data=[],
             width=None, height=None, padding=None, margin=None, visible=None, disabled=None):
         
         Control.__init__(self, id=id,
@@ -108,16 +86,28 @@ class BarChart(Control):
             visible=visible, disabled=disabled)
 
         self._data = Data(points=data)
+        self.legend = legend
         self.tooltips = tooltips
-        self.data_mode = data_mode
+        self.inner_value = inner_value
+        self.inner_radius = inner_radius
         
     def _getControlName(self):
-        return "barchart"
+        return "piechart"
 
     # data
     @property
     def data(self):
         return self._data
+
+    # legend
+    @property
+    def legend(self):
+        return self._get_attr("legend")
+
+    @legend.setter
+    def legend(self, value):
+        assert value == None or isinstance(value, bool), "legend must be a boolean"
+        self._set_attr("legend", value)
 
     # tooltips
     @property
@@ -129,14 +119,24 @@ class BarChart(Control):
         assert value == None or isinstance(value, bool), "tooltips must be a boolean"
         self._set_attr("tooltips", value)
 
-    # data_mode
+    # inner_value
     @property
-    def data_mode(self):
-        return self._get_attr("dataMode")
+    def inner_value(self):
+        return self._get_attr("innerValue")
 
-    @data_mode.setter
-    def data_mode(self, value):
-        self._set_attr("dataMode", value)
+    @inner_value.setter
+    def inner_value(self, value):
+        self._set_attr("innerValue", value)
+
+    # inner_radius
+    @property
+    def inner_radius(self):
+        return self._get_attr("innerRadius")
+
+    @inner_radius.setter
+    def inner_radius(self, value):
+        assert value == None or isinstance(value, float) or isinstance(value, int), "inner_radius must be a float"  
+        self._set_attr("innerRadius", value)
 
     def _getChildren(self):
         return [self._data]

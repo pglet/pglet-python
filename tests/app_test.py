@@ -11,7 +11,7 @@ from pglet import dropdown
 from pglet import nav
 from pglet import Nav, SearchBox, Slider, SpinButton, Tabs, Tab, Dialog, Panel, Toolbar
 from pglet import Grid, Column
-from pglet import VerticalBarChart, BarChart, Callout, LineChart
+from pglet import VerticalBarChart, BarChart, Callout, LineChart, PieChart
 from pglet import Image
 from pglet import toolbar
 from pglet import button
@@ -19,6 +19,7 @@ from pglet import link
 from pglet import verticalbarchart
 from pglet import barchart
 from pglet import linechart
+from pglet import piechart
 
 class Contact():
     def __init__(self, first_name, last_name):
@@ -238,6 +239,13 @@ lc = LineChart(legend=True, tooltips=True, stroke_width=4, y_min=0, y_max=100, y
                         linechart.P(x='2021-03-31', y=10)])
                 ])
 
-page.add(lc)
+#page.add(lc)
+
+pc = PieChart(legend=True, tooltips=True, inner_value=40, inner_radius=42, width='100%', data=[
+                    piechart.P(value=20, color='yellow'),
+                    piechart.P(value=30, color='green')])
+
+page.add(pc)
+
 
 #page.wait_close()

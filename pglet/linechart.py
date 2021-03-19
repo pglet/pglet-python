@@ -76,7 +76,7 @@ class P(Control):
 # Data
 class Data(Control):
     def __init__(self, id=None, color=None, legend=None, points=[]):
-        Control.__init__(self, id=None)
+        Control.__init__(self, id=id)
     
         self._points = []
         if points and len(points) > 0:
