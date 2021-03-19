@@ -4,7 +4,7 @@ from pglet import toolbar
 
 
 def test_toolbar_add():
-    t = Toolbar(items=[
+    t = Toolbar(inverted=True, items=[
         toolbar.Item(text='text1', secondary_text='text2', url='url', new_window=True,
         icon='icon', icon_color='green', icon_only=False, split=True, divider=True)
     ], overflow=[
@@ -18,7 +18,7 @@ def test_toolbar_add():
     assert isinstance(t, pglet.Control)
     assert isinstance(t, pglet.Toolbar)
     assert t.get_cmd_str() == (
-        'toolbar\n'
+        'toolbar inverted="true"\n'
         '  item divider="true" icon="icon" iconColor="green" iconOnly="false" newWindow="true" '
         'secondaryText="text2" split="true" text="text1" url="url"\n'
         '  overflow\n'
