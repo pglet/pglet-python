@@ -38,32 +38,17 @@ def main(page):
         stack_controls = []
         found_icon_names = search_icons(search_name)
         for icon_name in found_icon_names:
-            s = Stack(controls=[
-                Icon(name = icon_name),
-                Text(value = icon_name)
+            s = Stack(horizontal_align='center', vertical_align='center', width=100, height=100, 
+                border='solid 1px #eee', border_radius='3', controls=[
+                Icon(name = icon_name, size='40', color='#555'),
+                Text(value = icon_name, size='small')
             ])
             stack_controls.append(s)
         return stack_controls
         
     stack_controls = get_stack_controls(None)
-
-    '''
-      pglet_send "add
-    searchbox id=search placeholder='Search icons'
-    stack id=result horizontal wrap
-  "
-
-  pglet_send "add to=result
-    stack horizontalAlign=center verticalAlign=center width=100 height=100 border='solid 1px #eee' borderRadius=3
-      icon name=Shop size=40 color='#555'
-      text value='Shop' size=small
-    stack horizontalAlign=center verticalAlign=center width=100 height=100 border='solid 1px #eee' borderRadius=3
-      icon name=Installation size=40 color='#555'
-      text value='Installation' size=small
-  "
-    '''
         
-    result_stack = Stack(horizontal=True, wrap=True, horizontal_align='center', vertical_align='center', controls=stack_controls)
+    result_stack = Stack(horizontal=True, wrap=True, controls=stack_controls)
     page.add(SearchBox(id='searchbox', onchange=searchbox_changed, onsearch=enter_clicked, on_change=True), result_stack)
 
     page.wait_close()
