@@ -27,7 +27,7 @@ class Column(Control):
             for control in controls:
                 self.add_control(control)
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "column"
 
     def add_control(self, control):
@@ -37,7 +37,7 @@ class Column(Control):
     # onclick
     @property
     def onclick(self):
-        return None
+        return self._get_event_handler("click")
 
     @onclick.setter
     def onclick(self, handler):
@@ -153,7 +153,7 @@ class Column(Control):
         assert value == None or isinstance(value, bool), "resizable must be a boolean"
         self._set_attr("onClick", value)
 
-    def _getChildren(self):
+    def _get_children(self):
         return self._controls
 
 # Item
@@ -161,7 +161,7 @@ class Item(Control):
     def __init__(self):
         Control.__init__(self)
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "item"
 
 # Columns
@@ -179,14 +179,14 @@ class Columns(Control):
     def columns(self):
         return self._columns
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "columns"
 
     def add_column(self, column):
         assert isinstance(column, Column), ("Columns can hold columns only")
         self._columns.append(column)
 
-    def _getChildren(self):
+    def _get_children(self):
         return self._columns
 
 # Items
@@ -204,13 +204,13 @@ class Items(Control):
     def items(self):
         return self._items
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "items"
 
     def add_item(self, item):
         self._items.append(item)
 
-    def _getChildren(self):
+    def _get_children(self):
         items = []
         if self._items and len(self._items) > 0:
             for obj in self._items:
@@ -240,7 +240,7 @@ class Grid(Control):
         self._columns = Columns(columns=columns)
         self._items = Items(items=items)
         
-    def _getControlName(self):
+    def _get_control_name(self):
         return "grid"
 
     # columns
@@ -256,7 +256,7 @@ class Grid(Control):
     # onselect
     @property
     def onselect(self):
-        return None
+        return self._get_event_handler("select")
 
     @onselect.setter
     def onselect(self, handler):
@@ -265,7 +265,7 @@ class Grid(Control):
     # onitem_invoke
     @property
     def onitem_invoke(self):
-        return None
+        return self._get_event_handler("itemInvoke")
 
     @onitem_invoke.setter
     def onitem_invoke(self, handler):
@@ -310,7 +310,7 @@ class Grid(Control):
         assert value == None or isinstance(value, int), "shimmerLines must be an int"
         self._set_attr("shimmerLines", value)
 
-    def _getChildren(self):
+    def _get_children(self):
         result=[]
         result.append(self._columns)
         result.append(self._items)

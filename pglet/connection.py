@@ -170,12 +170,18 @@ class Connection:
         
         self.send(" ".join(parts))
     
+    def send_batch(self, commands):
+        with self.lock:
+            self.__send("begin")
+            for command in commands:
+                self.__send(command)
+            return self.__send("end")
+
     def send(self, command):
         with self.lock:
             return self.__send(command)
 
     def __send(self, command):
-
         fire_and_forget = False
         cmdName = command.split(' ', 1)[0].strip()
         if cmdName[len(cmdName) - 1] == 'f':

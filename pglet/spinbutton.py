@@ -18,13 +18,13 @@ class SpinButton(Control):
         self.data = data
         self.onchange = onchange
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "spinbutton"
 
 # onchange
     @property
     def onchange(self):
-        return None
+        return self._get_event_handler("change")
 
     @onchange.setter
     def onchange(self, handler):

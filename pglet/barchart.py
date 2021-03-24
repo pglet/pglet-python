@@ -14,7 +14,7 @@ class P(Control):
         self.x_tooltip = x_tooltip
         self.y_tooltip = y_tooltip
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "p"
 
     # x
@@ -88,14 +88,14 @@ class Data(Control):
     def points(self):
         return self._points
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "data"
 
     def add_point(self, point):
         assert isinstance(point, P), ("data can hold points only")
         self._points.append(point)
 
-    def _getChildren(self):
+    def _get_children(self):
         return self._points
 
 
@@ -111,7 +111,7 @@ class BarChart(Control):
         self.tooltips = tooltips
         self.data_mode = data_mode
         
-    def _getControlName(self):
+    def _get_control_name(self):
         return "barchart"
 
     # data
@@ -138,5 +138,5 @@ class BarChart(Control):
     def data_mode(self, value):
         self._set_attr("dataMode", value)
 
-    def _getChildren(self):
+    def _get_children(self):
         return [self._data]

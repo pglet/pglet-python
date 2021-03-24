@@ -24,13 +24,13 @@ class SearchBox(Control):
         self.onescape = onescape
         self.onchange = onchange
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "searchbox"
 
 # onsearch
     @property
     def onsearch(self):
-        return None
+        return self._get_event_handler("search")
 
     @onsearch.setter
     def onsearch(self, handler):
@@ -39,7 +39,7 @@ class SearchBox(Control):
 # onclear
     @property
     def onclear(self):
-        return None
+        return self._get_event_handler("clear")
 
     @onclear.setter
     def onclear(self, handler):
@@ -48,7 +48,7 @@ class SearchBox(Control):
 # onescape
     @property
     def onescape(self):
-        return None
+        return self._get_event_handler("escape")
 
     @onescape.setter
     def onescape(self, handler):
@@ -57,7 +57,7 @@ class SearchBox(Control):
 # onchange
     @property
     def onchange(self):
-        return None
+        return self._get_event_handler("change")
 
     @onchange.setter
     def onchange(self, handler):

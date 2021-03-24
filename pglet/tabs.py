@@ -16,7 +16,7 @@ class Tab(Control):
             for control in controls:
                 self.add_control(control)
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "tab"
 
     def add_control(self, control):
@@ -60,7 +60,7 @@ class Tab(Control):
     def count(self, value):
         self._set_attr("count", value)
 
-    def _getChildren(self):
+    def _get_children(self):
         return self._controls
 
 class Tabs(Control):
@@ -81,7 +81,7 @@ class Tabs(Control):
             for tab in tabs:
                 self.add_tab(tab)
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "tabs"
 
     def add_tab(self, tab):
@@ -96,7 +96,7 @@ class Tabs(Control):
     # onchange
     @property
     def onchange(self):
-        return None
+        return self._get_event_handler("change")
 
     @onchange.setter
     def onchange(self, handler):
@@ -121,5 +121,5 @@ class Tabs(Control):
         assert value == None or isinstance(value, bool), "show_value must be a boolean"
         self._set_attr("solid", value)
 
-    def _getChildren(self):
+    def _get_children(self):
         return self._tabs

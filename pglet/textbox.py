@@ -20,7 +20,7 @@ class Textbox(Control):
         self.password = password
         self.required = required
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "textbox"
 
 # label

@@ -25,7 +25,7 @@ class Item(Control):
             for item in items:
                 self.add_item(item)
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "item"
 
     def add_item(self, item):
@@ -37,7 +37,7 @@ class Item(Control):
     # onclick
     @property
     def onclick(self):
-        return None
+        return self._get_event_handler("click")
 
     @onclick.setter
     def onclick(self, handler):
@@ -133,7 +133,7 @@ class Item(Control):
         assert value == None or isinstance(value, bool), "divider must be a boolean"
         self._set_attr("divider", value)
 
-    def _getChildren(self):
+    def _get_children(self):
         return self._items
 
 class Button(Control):
@@ -165,7 +165,7 @@ class Button(Control):
             for item in items:
                 self.add_item(item)
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "button"
     
     def add_item(self, item):
@@ -175,7 +175,7 @@ class Button(Control):
 # onclick
     @property
     def onclick(self):
-        return None
+        return self._get_event_handler("click")
 
     @onclick.setter
     def onclick(self, handler):
@@ -304,5 +304,5 @@ class Button(Control):
     def data(self, value):
         self._set_attr("data", value)
 
-    def _getChildren(self):
+    def _get_children(self):
         return self._items

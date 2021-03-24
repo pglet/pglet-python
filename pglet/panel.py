@@ -16,14 +16,14 @@ class Footer(Control):
     def controls(self):
         return self._controls
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "footer"
 
     def add_control(self, control):
         assert isinstance(control, Control), ("Footer can hold controls only")
         self._controls.append(control)
 
-    def _getChildren(self):
+    def _get_children(self):
         return self._controls
 
 class Panel(Control):
@@ -51,7 +51,7 @@ class Panel(Control):
             for control in controls:
                 self.add_control(control)
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "panel"
 
     def add_control(self, control):
@@ -71,7 +71,7 @@ class Panel(Control):
     # ondismiss
     @property
     def ondismiss(self):
-        return None
+        return self._get_event_handler("dismiss")
 
     @ondismiss.setter
     def ondismiss(self, handler):
@@ -153,7 +153,7 @@ class Panel(Control):
     def data(self, value):
         self._set_attr("data", value)
 
-    def _getChildren(self):
+    def _get_children(self):
         result=[]
         if self._controls and len(self._controls) > 0:
             for control in self._controls:

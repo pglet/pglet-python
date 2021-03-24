@@ -1,45 +1,68 @@
 from .utils import encode_attr
+from .diff import myers_diff, Keep, Insert, Remove
 import datetime as dt
 
 class Control:
     def __init__(self, id=None, width=None, height=None,
             padding=None, margin=None, visible=None, disabled=None):
-        self._conn = None
-        self._attrs = {}
-        self._id = id
+        self.__page = None
+        self.__attrs = {}
+        self.__previous_children = []
+        self.__id = id
         self.width = width
         self.height = height
         self.padding = padding
         self.margin = margin
         self.visible = visible
         self.disabled = disabled
-        self._event_handlers = {}
+        self.__event_handlers = {}
 
-    def _getChildren(self):
+    def _get_children(self):
         return []
 
-    def _getControlName(self):
+    def _get_control_name(self):
         raise Exception("_getControlName must be overridden in inherited class")
 
-    def _get_event_handlers(self):
-        return self._event_handlers
-
     def _add_event_handler(self, event_name, handler):
-        # add handler to the control handlers list (for rebinding on control changes)
-        self._event_handlers[event_name] = handler
+        self.__event_handlers[event_name] = handler
 
-        # add handler to the connection if control is already added
-        if self._conn:
-            self._conn._add_event_handler(self._id, event_name, handler)
+    def _get_event_handler(self, event_name):
+        return self.__event_handlers.get(event_name)
+
+    def _get_attr(self, name, defValue=None):
+        if not name in self.__attrs:
+            return defValue
+        return self.__attrs[name][0]
+
+    def _set_attr(self, name, value):
+        if value == None:
+            if name in self.__attrs:
+                del self.__attrs[name]
+            return
+        self.__attrs[name] = (value, True)        
+
+# event_handlers
+    @property
+    def event_handlers(self):
+        return self.__event_handlers
+
+# page
+    @property
+    def page(self):
+        return self.__page
+
+    @page.setter
+    def page(self, page):
+        self.__page = page
 
 # id
     @property
     def id(self):
-        return self._id
+        return self.__id
 
     @id.setter
     def id(self, id):
-        self._id = id
+        self.__id = id
 
 # width
     @property
@@ -97,70 +120,115 @@ class Control:
         assert value == None or isinstance(value, bool), "disabled must be a boolean"
         self._set_attr("disabled", value)
 
+# public methods
+    def build_update_commands(self, index, added_controls, commands):
+        update_attrs = self._get_cmd_attrs(update=True)
+
+        if len(update_attrs) > 0:
+            commands.append(f'set {" ".join(update_attrs)}')
+
+        # go through children
+        previous_children = self.__previous_children
+        current_children = self._get_children()
+
+        hashes = {}
+        previous_ints = []
+        current_ints = []
+
+        for ctrl in previous_children:
+            hashes[hash(ctrl)] = ctrl
+            previous_ints.append(hash(ctrl))
+
+        for ctrl in current_children:
+            hashes[hash(ctrl)] = ctrl
+            current_ints.append(hash(ctrl))
+
+        diff = myers_diff(previous_ints, current_ints)
+
+        n = 0
+        for elem in diff:
+            if isinstance(elem, Keep):
+                # unchanged control
+                ctrl = hashes[elem.line]
+                ctrl.build_update_commands(index, added_controls, commands)
+                n += 1
+            elif isinstance(elem, Insert):
+                # added control
+                ctrl = hashes[elem.line]
+                cmd = ctrl.get_cmd_str(index=index,added_controls=added_controls)
+                commands.append(f"add to=\"{self.__get_id()}\" at=\"{n}\"\n{cmd}")
+                n += 1
+            else:
+                # removed control
+                ctrl = hashes[elem.line]
+                self.__remove_control_recursively(index, ctrl)
+                commands.append(f"remove {ctrl.id}")
+
+    def __remove_control_recursively(self, index, control):
+        for child in control._get_children():
+            self.__remove_control_recursively(index, child)
+        
+        if control.id in index:
+            del index[control.id]
+
 # private methods
-    def _get_attr(self, name, defValue=None):
-        if not name in self._attrs:
-            return defValue
-        return self._attrs[name][0]
+    def get_cmd_str(self, indent='', index=None, added_controls=None):
 
-    def _set_attr(self, name, value):
-        if value == None:
-            if name in self._attrs:
-                del self._attrs[name]
-            return
-        self._attrs[name] = (value, True)
+        # remove control from index
+        id = self.__get_id()
 
-    def get_cmd_str(self, update=False, indent='', index=None, conn=None):
+        if id and index != None and id in index:
+            del index[id]
 
-        if conn != None:
-            self._conn = conn
-
-        if not update:
-            # reset ID
-            if self._id and self._id.split(":").pop().startswith("_"):
-                self._id = None
-            elif self._id:
-                self._id = self._id.split(":").pop()
+        # reset ID
+        if id and id.split(":").pop().startswith("_"):
+            self.__id = None
+        elif id:
+            self.__id = id.split(":").pop()
 
         lines = []
 
         # main command
         parts = []
 
-        if not update:
-            parts.append(indent + self._getControlName())
+        # control name
+        parts.append(indent + self._get_control_name())
         
         # base props
-        attrParts = self._get_cmd_attrs(update)
+        attrParts = self._get_cmd_attrs(update=False)
 
-        if len(attrParts) > 0 or not update:
+        if len(attrParts) > 0:
             parts.extend(attrParts)
             lines.append(" ".join(parts))
 
-        if index != None:
-            index.append(self)
+        if added_controls != None:
+            added_controls.append(self)
 
         # controls
-        for control in self._getChildren():
-            childCmd = control.get_cmd_str(update=update, indent=indent+"  ", index=index)
+        children = self._get_children()
+        for control in children:
+            childCmd = control.get_cmd_str(indent=indent+"  ", index=index, added_controls=added_controls)
             if childCmd != "":
                 lines.append(childCmd)
+
+        self.__previous_children.clear()
+        self.__previous_children.extend(children)
 
         return "\n".join(lines)
 
     def _get_cmd_attrs(self, update=False):
         parts = []
 
-        if update and not self._id:
+        if update and not self.__id:
             return parts
 
-        for attrName in sorted(self._attrs):
-            dirty = self._attrs[attrName][1]
+        for attrName in sorted(self.__attrs):
+            dirty = self.__attrs[attrName][1]
 
             if update and not dirty:
                 continue
 
-            val = self._attrs[attrName][0]
+            val = self.__attrs[attrName][0]
             sval = ""
             if isinstance(val, bool):
                 sval = str(val).lower()
@@ -170,12 +238,18 @@ class Control:
                 sval = encode_attr(val)
 
             parts.append(f'{attrName}="{sval}"')
-            self._attrs[attrName] = (val, False)
+            self.__attrs[attrName] = (val, False)
 
-        if self._id:
+        if self.__id:
             if not update:
-                parts.insert(0, f'id="{encode_attr(self._id)}"')
+                parts.insert(0, f'id="{encode_attr(self.__id)}"')
             elif len(parts) > 0:
-                parts.insert(0, f'"{encode_attr(self._id)}"')
+                parts.insert(0, f'"{encode_attr(self.__id)}"')
         
         return parts
+
+    def __get_id(self):
+        if self.__id != None:
+            return str(self.__id)
+        else:
+            return None

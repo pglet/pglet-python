@@ -8,12 +8,11 @@ from pglet import Page, Text, Button, Stack, Textbox
 
 page = pglet.page("index", no_window = True)
 
-page.connection.clean()
+page.clean(force=True)
 
 #page.update(Page(title="Counter"))
 page.title = "Counter"
 page.update()
-
 
 txtNum = Textbox(value = '0', align = 'right')
 
@@ -33,7 +32,7 @@ def on_click(e):
     except ValueError:
         page.connection.send('set number errorMessage="Please enter a number"')
 
-page.connection.add(
+page.add(
     Stack(horizontal = True, controls=[
         Button('-', onclick=on_click, data='-'),
         txtNum,

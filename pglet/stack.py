@@ -39,7 +39,7 @@ class Stack(Control):
             for control in controls:
                 self.add_control(control)
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "stack"
 
     def add_control(self, control):
@@ -75,7 +75,6 @@ class Stack(Control):
 
     @horizontal_align.setter
     def horizontal_align(self, value):
-        #assert value == None or isinstance(value, Alignment), "horizontalAlign must be an Alignment"
         self._set_attr("horizontalAlign", value)
 
 # vertical_align
@@ -85,7 +84,6 @@ class Stack(Control):
 
     @vertical_align.setter
     def vertical_align(self, value):
-        #assert value == None or isinstance(value, Alignment), "verticalAlign must be an Alignment"
         self._set_attr("verticalAlign", value)
 
 # min_width
@@ -228,5 +226,5 @@ class Stack(Control):
 
 
 
-    def _getChildren(self):
+    def _get_children(self):
         return self._controls

@@ -1,6 +1,5 @@
 from .utils import encode_attr
 from .control import Control
-from .alignment import Alignment
 
 class Page(Control):
 
@@ -15,7 +14,7 @@ class Page(Control):
     def get_control(self, id):
         return self.__index.get(id)
 
-    def _getChildren(self):
+    def _get_children(self):
         return self.__controls
 
     def update(self, *controls):
@@ -25,7 +24,53 @@ class Page(Control):
             return self.__update(*controls)
 
     def __update(self, *controls):
-        pass
+        added_controls = []
+        commands = []
+
+        # build commands
+        for control in controls:
+            control.build_update_commands(self.__index, added_controls, commands)
+
+        # execute commands
+        ids = self.__conn.send_batch(commands)
+
+        if ids != "":
+            n = 0
+            for line in ids.split('\n'):
+                for id in line.split(' '):
+                    added_controls[n].id = id
+                    added_controls[n].page = self
+
+                    # add to index
+                    self.__index[id] = added_controls[n]
+                    n += 1
+
+    def add(self, *controls):
+        self.__controls.extend(controls)
+        return self.update()
+
+    def insert(self, at, *controls):
+        n = at
+        for control in controls:
+            self.__controls.insert(n, control)
+            n += 1
+        return self.update()
+
+    def remove(self, *controls):
+        for control in controls:
+            self.__controls.remove(control)
+        return self.update()
+
+    def remove_at(self, index):
+        self.__controls.pop(index)
+        return self.update()
+
+    def clean(self, force=False):
+        if force:
+            return self.__conn.send("clean page")
+        else:
+            self.__controls.clear()
+            return self.update()
 
 # connection
     @property
@@ -72,7 +117,6 @@ class Page(Control):
 
     @horizontal_align.setter
     def horizontal_align(self, value):
-        assert value == None or isinstance(value, Alignment), "horizontalAlign must be an Alignment"
         self._set_attr("horizontalAlign", value)
 
 # vertical_align
@@ -82,7 +126,6 @@ class Page(Control):
 
     @vertical_align.setter
     def vertical_align(self, value):
-        assert value == None or isinstance(value, Alignment), "verticalAlign must be an Alignment"
         self._set_attr("verticalAlign", value)
 
 # width
