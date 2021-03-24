@@ -8,7 +8,10 @@ class Control:
         self.__page = None
         self.__attrs = {}
         self.__previous_children = []
-        self.__id = id
+        self.id = id
+        self.__gid = None
+        if id == "page":
+            self.__gid = "page"
         self.width = width
         self.height = height
         self.padding = padding
@@ -58,11 +61,11 @@ class Control:
 # id
     @property
     def id(self):
-        return self.__id
+        return self._get_attr("id")
 
     @id.setter
-    def id(self, id):
-        self.__id = id
+    def id(self, value):
+        self._set_attr("id", value)
 
 # width
     @property
@@ -156,35 +159,30 @@ class Control:
                 # added control
                 ctrl = hashes[elem.line]
                 cmd = ctrl.get_cmd_str(index=index,added_controls=added_controls)
-                commands.append(f"add to=\"{self.__get_id()}\" at=\"{n}\"\n{cmd}")
+                commands.append(f"add to=\"{self.__gid}\" at=\"{n}\"\n{cmd}")
                 n += 1
             else:
                 # removed control
                 ctrl = hashes[elem.line]
                 self.__remove_control_recursively(index, ctrl)
-                commands.append(f"remove {ctrl.id}")
+                commands.append(f"remove {ctrl.__gid}")
+        
+        self.__previous_children.clear()
+        self.__previous_children.extend(current_children)
 
     def __remove_control_recursively(self, index, control):
         for child in control._get_children():
             self.__remove_control_recursively(index, child)
         
-        if control.id in index:
-            del index[control.id]
+        if control.__gid in index:
+            del index[control.__gid]
 
 # private methods
     def get_cmd_str(self, indent='', index=None, added_controls=None):
 
         # remove control from index
-        id = self.__get_id()
-
-        if id and index != None and id in index:
-            del index[id]
-
-        # reset ID
-        if id and id.split(":").pop().startswith("_"):
-            self.__id = None
-        elif id:
-            self.__id = id.split(":").pop()
+        if self.__gid and index != None and self.__gid in index:
+            del index[self.__gid]
 
         lines = []
 
@@ -219,11 +217,14 @@ class Control:
     def _get_cmd_attrs(self, update=False):
         parts = []
 
-        if update and not self.__id:
+        if update and not self.__gid:
             return parts
 
         for attrName in sorted(self.__attrs):
             dirty = self.__attrs[attrName][1]
+
+            if attrName == "id":
+                continue
 
             if update and not dirty:
                 continue
@@ -240,16 +241,10 @@ class Control:
             parts.append(f'{attrName}="{sval}"')
             self.__attrs[attrName] = (val, False)
 
-        if self.__id:
-            if not update:
-                parts.insert(0, f'id="{encode_attr(self.__id)}"')
-            elif len(parts) > 0:
-                parts.insert(0, f'"{encode_attr(self.__id)}"')
+        id = self.__attrs.get("id")
+        if not update and id != None:
+            parts.insert(0, f'id="{encode_attr(id[0])}"')
+        elif update and len(parts) > 0:
+            parts.insert(0, f'"{encode_attr(self.__gid)}"')
         
         return parts
-
-    def __get_id(self):
-        if self.__id != None:
-            return str(self.__id)
-        else:
-            return None

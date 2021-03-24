@@ -37,6 +37,8 @@ def page(name='', web=False, server='', token='', no_window=False):
     if no_window:
         pargs.append("--no-window")
 
+    pargs.append("--all-events")
+
     # execute pglet.exe and get connection ID
     exe_result = subprocess.check_output(pargs).decode("utf-8").strip()
     result_parts = re.split(r"\s", exe_result, 1)
@@ -68,7 +70,9 @@ def app(name='', web=False, server='', token='', target=None, no_window=False):
         pargs.append(token)
 
     if no_window:
-        pargs.append("--no-window")        
+        pargs.append("--no-window")
+    
+    pargs.append("--all-events")
 
     # execute pglet.exe and get connection ID
     page_url = ""

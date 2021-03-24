@@ -7,6 +7,7 @@ class Page(Control):
         Control.__init__(self, id="page")
     
         self.__conn = conn
+        self.__conn.on_event = self.__on_event
         self.__url = url
         self.__controls = [] # page controls
         self.__index = {} # index with all page controls
@@ -38,7 +39,7 @@ class Page(Control):
             n = 0
             for line in ids.split('\n'):
                 for id in line.split(' '):
-                    added_controls[n].id = id
+                    added_controls[n]._Control__gid = id
                     added_controls[n].page = self
 
                     # add to index
@@ -71,6 +72,9 @@ class Page(Control):
         else:
             self.__controls.clear()
             return self.update()
+
+    def __on_event(self, evt):
+        print(evt.target, evt.name, evt.data)
 
 # connection
     @property

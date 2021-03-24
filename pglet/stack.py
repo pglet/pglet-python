@@ -48,6 +48,11 @@ class Stack(Control):
 
         self._controls.append(control)
 
+# controls
+    @property
+    def controls(self):
+        return self._controls
+
 # horizontal
     @property
     def horizontal(self):

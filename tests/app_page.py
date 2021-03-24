@@ -4,7 +4,7 @@ parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 
 import pglet
-from pglet import Page, Text, Button, Stack, Textbox
+from pglet import Page, Text, Button, Stack, Textbox, Checkbox
 
 page = pglet.page("index", no_window = True)
 
@@ -32,12 +32,21 @@ def on_click(e):
     except ValueError:
         page.connection.send('set number errorMessage="Please enter a number"')
 
-page.add(
-    Stack(horizontal = True, controls=[
+stack = Stack(horizontal = True, controls=[
         Button('-', onclick=on_click, data='-'),
         txtNum,
         Button('+', onclick=on_click, data='+'),
     ])
-)
+
+page.add(stack)
+
+chk = Checkbox("Check it!", id="check1")
+page.add(chk)
+
+chk.label = "Check it, again!"
+page.update()
+
+stack.controls.pop(0)
+page.update()
 
 input("Press Enter to exit...")
