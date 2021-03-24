@@ -1,13 +1,15 @@
-import os,sys,inspect
+import os
+
+import sys,inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 
 import pglet
-from pglet import Page, Text, Button, Stack, Textbox, SearchBox, Icon
+from pglet import Page, Text, Stack, SearchBox, Icon
 
 def main(page):
-    global icon_names
+    icon_names = load_icon_names()
     page.update(Page(title="Icon Browser"))
     page.clean()
 
@@ -25,13 +27,11 @@ def main(page):
         search_name = page.get_value('searchbox')
         stack_controls = get_stack_controls(search_name)
         page.replace(stack_controls, to=result_stack)
-        #print('Seachbox changed to ' + search_name)
 
     def enter_clicked(e):
         search_name = page.get_value('searchbox')
         stack_controls = get_stack_controls(search_name)
         page.replace(stack_controls, to=result_stack)
-        #print('Seachbox changed to ' + search_name)
             
     #add stack controls each with Icon and Text
     def get_stack_controls(search_name):
@@ -53,15 +53,17 @@ def main(page):
 
     page.wait_close()
 
-# read list of icon names from file
-file_path = 'C:/Projects/Python/pglet_samples/fluent-icons-clean.txt'
-input_file = open(file_path, 'r')   
-icon_names = []
-for line in input_file:
-    line=line.strip()
-    icon_names.append(line)
-input_file.close()
 
-pglet.app("icon-browser-app", target = main)
+# load list of icon names from file
+def load_icon_names():
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    file_path = os.path.join(dir_path, "fluent-icons-clean.txt")
+    input_file = open(file_path, 'r')   
+    icon_names = []
+    for line in input_file:
+        line=line.strip()
+        icon_names.append(line)
+    input_file.close()
+    return icon_names
 
-#pglet.app("inesa-counter-app", target = main, web = True)
+pglet.app("icon-browser-app2", target = main)
