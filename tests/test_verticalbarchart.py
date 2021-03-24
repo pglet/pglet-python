@@ -1,5 +1,6 @@
 import pglet
-from pglet import VerticalBarChart, P
+from pglet import VerticalBarChart
+from pglet.verticalbarchart import P
 
 
 def test_verticalbarchart_add():

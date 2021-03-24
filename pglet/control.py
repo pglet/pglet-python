@@ -1,4 +1,5 @@
 from .utils import encode_attr
+import datetime as dt
 
 class Control:
     def __init__(self, id=None, width=None, height=None,
@@ -163,6 +164,8 @@ class Control:
             sval = ""
             if isinstance(val, bool):
                 sval = str(val).lower()
+            elif isinstance(val, dt.datetime) or isinstance(val, dt.date):
+                sval = val.isoformat()
             else:
                 sval = encode_attr(val)
 

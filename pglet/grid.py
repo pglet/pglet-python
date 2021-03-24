@@ -7,7 +7,7 @@ class Column(Control):
         field_name=None, sortable=None, sort_field=None, sorted=None, resizable=None,
         min_width=None, max_width=None, on_click=None, controls=[], onclick=None,
         new_window=None, expanded=None):
-        Control.__init__(self, id=None)
+        Control.__init__(self, id=id)
 
         self.name = name
         self.icon = icon
@@ -167,7 +167,7 @@ class Item(Control):
 # Columns
 class Columns(Control):
     def __init__(self, id=None, columns=[]):
-        Control.__init__(self, id=None)
+        Control.__init__(self, id=id)
     
         self._columns = []
         if columns and len(columns) > 0:
