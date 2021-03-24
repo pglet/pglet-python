@@ -4,7 +4,7 @@ from .alignment import Alignment
 
 class Page(Control):
 
-    def __init__(self, id=None, title=None, vertical_fill=None, horizontal_align=None,
+    def __init__(self, title=None, vertical_fill=None, horizontal_align=None,
             vertical_align=None, width=None, padding=None):
         Control.__init__(self, id="page")
 

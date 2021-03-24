@@ -21,6 +21,10 @@ from .dialog import Dialog
 from .grid import Grid, Columns, Items, Column, Item
 from .panel import Panel
 from .toolbar import Toolbar
-from .verticalbarchart import VerticalBarChart, P
+from .verticalbarchart import VerticalBarChart
+from .barchart import BarChart
+from .callout import Callout
 from .image import Image
+from .linechart import LineChart
+from .piechart import PieChart
 from .pglet import *

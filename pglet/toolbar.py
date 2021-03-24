@@ -137,7 +137,7 @@ class Item(Control):
 # Overflow
 class Overflow(Control):
     def __init__(self, id=None, items=[]):
-        Control.__init__(self, id=None)
+        Control.__init__(self, id=id)
     
         self._items = []
         if items and len(items) > 0:
@@ -162,7 +162,7 @@ class Overflow(Control):
 # Far
 class Far(Control):
     def __init__(self, id=None, items=[]):
-        Control.__init__(self, id=None)
+        Control.__init__(self, id=id)
     
         self._items = []
         if items and len(items) > 0:
@@ -187,7 +187,7 @@ class Far(Control):
 
 
 class Toolbar(Control):
-    def __init__(self, id=None, items=[], overflow=[], far=[],
+    def __init__(self, id=None, inverted=None, items=[], overflow=[], far=[],
             width=None, height=None, padding=None, margin=None, visible=None, disabled=None):
         
         Control.__init__(self, id=id,
@@ -201,6 +201,7 @@ class Toolbar(Control):
 
         self._overflow = Overflow(items=overflow)
         self._far = Far(items=far)
+        self.inverted = inverted
         
     def _getControlName(self):
         return "toolbar"
@@ -208,6 +209,16 @@ class Toolbar(Control):
     def add_item(self, item):
         assert isinstance(item, Item), 'toolbar can hold items only'
         self._items.append(item)
+
+    # inverted
+    @property
+    def inverted(self):
+        return self._get_attr("inverted")
+
+    @inverted.setter
+    def inverted(self, value):
+        assert value == None or isinstance(value, bool), "inverted must be a boolean"
+        self._set_attr("inverted", value)
 
     # items
     @property

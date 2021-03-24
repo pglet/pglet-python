@@ -2,7 +2,8 @@ import pglet
 from pglet import Stack, Textbox, Button
 
 def test_stack_add():
-    s = Stack(controls=[
+    s = Stack(horizontal=True, vertical_fill=True, horizontal_align='center', vertical_align='baseline',
+    gap='large', wrap=True, scrollx=True, scrolly=True, controls=[
         Textbox(id="firstName"),
         Textbox(id="lastName")
     ])
@@ -10,7 +11,8 @@ def test_stack_add():
     assert isinstance(s, pglet.Stack)
     #raise Exception(s.get_cmd_str())
     assert s.get_cmd_str() == (
-        'stack\n'
+        'stack gap="large" horizontal="true" horizontalAlign="center" '
+        'scrollx="true" scrolly="true" verticalAlign="baseline" verticalFill="true" wrap="true"\n'
         '  textbox id="firstName"\n'
         '  textbox id="lastName"'
     ), "Test failed"

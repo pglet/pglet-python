@@ -4,7 +4,7 @@ from .control import Control
 # Footer
 class Footer(Control):
     def __init__(self, id=None, controls=[]):
-        Control.__init__(self, id=None)
+        Control.__init__(self, id=id)
     
         self._controls = []
         if controls and len(controls) > 0:
