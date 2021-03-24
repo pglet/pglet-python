@@ -146,6 +146,9 @@ class Control:
             hashes[hash(ctrl)] = ctrl
             current_ints.append(hash(ctrl))
 
+        print("previous_ints:", previous_ints)
+        print("current_ints:", current_ints)
+
         diff = myers_diff(previous_ints, current_ints)
 
         n = 0

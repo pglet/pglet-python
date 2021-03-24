@@ -1,5 +1,8 @@
 from .utils import encode_attr
 from .control import Control
+from .control_event import ControlEvent
+import json
+import threading
 
 class Page(Control):
 
@@ -73,8 +76,25 @@ class Page(Control):
             self.__controls.clear()
             return self.update()
 
-    def __on_event(self, evt):
-        print(evt.target, evt.name, evt.data)
+    def __on_event(self, e):
+        print(e.target, e.name, e.data)
+
+        if e.target == "page" and e.name == "change":
+            all_props = json.loads(e.data)
+
+            for props in all_props:
+                id = props["i"]
+                if id in self.__index:
+                    for name in props:
+                        if name != "i":
+                            self.__index[id]._Control__attrs[name] = (props[name], False)
+        
+        elif e.target in self.__index:
+            handler = self.__index[e.target].event_handlers.get(e.name)
+            if handler:
+                ce = ControlEvent(e.target, e.name, e.data, self.__index[e.target], self)
+                t = threading.Thread(target=handler, args=(ce,), daemon=True)
+                t.start()
 
 # connection
     @property
