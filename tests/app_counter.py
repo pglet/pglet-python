@@ -33,4 +33,4 @@ def main(page):
         ])
     )
 
-pglet.app("inesa-counter-app", target = main, web = True)
+pglet.app("index", target = main, no_window = True)
