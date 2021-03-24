@@ -10,10 +10,6 @@ class Connection:
         self.conn_id = conn_id
         self.lock = threading.Lock()
 
-        self.url = ""
-        self.web = False
-        self.private = False
-
         self.win_command_pipe = None
         self.win_event_pipe = None
 
@@ -175,17 +171,20 @@ class Connection:
         self.send(" ".join(parts))
     
     def send(self, command):
+        with self.lock:
+            return self.__send(command)
+
+    def __send(self, command):
 
         fire_and_forget = False
         cmdName = command.split(' ', 1)[0].strip()
         if cmdName[len(cmdName) - 1] == 'f':
             fire_and_forget = True
 
-        with self.lock:
-            if is_windows():
-                return self.__send_windows(command, fire_and_forget)
-            else:
-                return self.__send_linux(command, fire_and_forget)
+        if is_windows():
+            return self.__send_windows(command, fire_and_forget)
+        else:
+            return self.__send_linux(command, fire_and_forget)
 
     def wait_event(self):
         self.event_available.clear()

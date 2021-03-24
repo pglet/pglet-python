@@ -11,6 +11,7 @@ from threading import Thread
 from time import sleep
 from .utils import is_windows, which
 from .connection import Connection
+from .page import Page
 
 PGLET_VERSION = "0.2.4"
 pglet_exe = ""
@@ -40,10 +41,10 @@ def page(name='', web=False, server='', token='', no_window=False):
     exe_result = subprocess.check_output(pargs).decode("utf-8").strip()
     result_parts = re.split(r"\s", exe_result, 1)
 
-    p = Connection(result_parts[0])
-    p.url = result_parts[1]
-    p.web = web
-    return p
+    url = result_parts[1]
+
+    conn = Connection(result_parts[0])
+    return Page(conn, url)
 
 def app(name='', web=False, server='', token='', target=None, no_window=False):
 
@@ -82,12 +83,11 @@ def app(name='', web=False, server='', token='', target=None, no_window=False):
             conn_id = line
 
             # create connection object
-            p = Connection(conn_id)
-            p.url = page_url
-            p.web = web
+            conn = Connection(conn_id)
+            page = Page(conn, page_url)
             
             # start page session in a new thread
-            thread = Thread(target = target, args = (p,))
+            thread = Thread(target = target, args = (page,))
             thread.start()
 
 

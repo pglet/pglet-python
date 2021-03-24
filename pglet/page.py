@@ -4,23 +4,47 @@ from .alignment import Alignment
 
 class Page(Control):
 
-    def __init__(self, id=None, title=None, vertical_fill=None, horizontal_align=None,
-            vertical_align=None, width=None, padding=None):
+    def __init__(self, conn, url):
         Control.__init__(self, id="page")
+    
+        self.__conn = conn
+        self.__url = url
+        self.__controls = [] # page controls
+        self.__index = {} # index with all page controls
 
-        self.title = title
-        self.vertical_fill = vertical_fill
+    def get_control(self, id):
+        return self.__index.get(id)
 
-        if horizontal_align != None and not isinstance(horizontal_align, Alignment):
-            raise Exception("horizontalAlign must be of Alignment type")
-        self.horizontal_align = horizontal_align
+    def _getChildren(self):
+        return self.__controls
 
-        if vertical_align != None and not isinstance(vertical_align, Alignment):
-            raise Exception("verticalAlign must be of Alignment type")
+    def update(self, *controls):
+        if len(controls) == 0:
+            return self.__update(self)
+        else:
+            return self.__update(*controls)
 
-        self.vertical_align = vertical_align
-        self.width = width
-        self.padding = padding
+    def __update(self, *controls):
+        pass
+
+# connection
+    @property
+    def connection(self):
+        return self.__conn
+
+# url
+    @property
+    def url(self):
+        return self.__url
+
+# controls
+    @property
+    def controls(self):
+        return self.__controls
+
+    @controls.setter
+    def controls(self, value):
+        self.__controls = value
 
 # title
     @property
@@ -78,3 +102,30 @@ class Page(Control):
     @padding.setter
     def padding(self, value):
         self._set_attr("padding", value)
+
+# theme_primary_color
+    @property
+    def theme_primary_color(self):
+        return self._get_attr("themePrimaryColor")
+
+    @theme_primary_color.setter
+    def theme_primary_color(self, value):
+        self._set_attr("themePrimaryColor", value)
+
+# theme_text_color
+    @property
+    def theme_text_color(self):
+        return self._get_attr("themeTextColor")
+
+    @theme_text_color.setter
+    def theme_text_color(self, value):
+        self._set_attr("themeTextColor", value)
+
+# theme_background_color
+    @property
+    def theme_background_color(self):
+        return self._get_attr("themeBackgroundColor")
+
+    @theme_background_color.setter
+    def theme_background_color(self, value):
+        self._set_attr("themeBackgroundColor", value)
