@@ -24,7 +24,7 @@ class Callout(Control):
             for control in controls:
                 self.add_control(control)
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "callout"
 
     def add_control(self, control):
@@ -39,7 +39,7 @@ class Callout(Control):
     # ondismiss
     @property
     def ondismiss(self):
-        return None
+        return self._get_event_handler("dismiss")
 
     @ondismiss.setter
     def ondismiss(self, handler):
@@ -123,5 +123,5 @@ class Callout(Control):
         assert value == None or isinstance(value, bool), "cover must be a boolean"
         self._set_attr("cover", value)
 
-    def _getChildren(self):
+    def _get_children(self):
         return self._controls

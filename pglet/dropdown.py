@@ -9,7 +9,7 @@ class Option(Control):
         self.key = key
         self.text = text
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "option"
 
     # key
@@ -48,7 +48,7 @@ class Dropdown(Control):
             for option in options:
                 self.add_option(option)
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "dropdown"
 
     def add_option(self, option):
@@ -65,7 +65,7 @@ class Dropdown(Control):
     # onchange
     @property
     def onchange(self):
-        return None
+        return self._get_event_handler("change")
 
     @onchange.setter
     def onchange(self, handler):
@@ -107,5 +107,5 @@ class Dropdown(Control):
     def error_message(self, value):
         self._set_attr("errorMessage", value)
 
-    def _getChildren(self):
+    def _get_children(self):
         return self._options

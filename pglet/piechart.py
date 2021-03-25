@@ -11,7 +11,7 @@ class P(Control):
         self.color = color
         self.tooltip = tooltip
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "p"
 
     # value
@@ -66,14 +66,14 @@ class Data(Control):
     def points(self):
         return self._points
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "data"
 
     def add_point(self, point):
         assert isinstance(point, P), ("data can hold points only")
         self._points.append(point)
 
-    def _getChildren(self):
+    def _get_children(self):
         return self._points
 
 
@@ -91,7 +91,7 @@ class PieChart(Control):
         self.inner_value = inner_value
         self.inner_radius = inner_radius
         
-    def _getControlName(self):
+    def _get_control_name(self):
         return "piechart"
 
     # data
@@ -138,5 +138,5 @@ class PieChart(Control):
         assert value == None or isinstance(value, float) or isinstance(value, int), "inner_radius must be a float"  
         self._set_attr("innerRadius", value)
 
-    def _getChildren(self):
+    def _get_children(self):
         return [self._data]

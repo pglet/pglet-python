@@ -23,7 +23,7 @@ class Item(Control):
             for item in items:
                 self.add_item(item)
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "item"
 
     def add_item(self, item):
@@ -35,7 +35,7 @@ class Item(Control):
     # onclick
     @property
     def onclick(self):
-        return None
+        return self._get_event_handler("click")
 
     @onclick.setter
     def onclick(self, handler):
@@ -131,7 +131,7 @@ class Item(Control):
         assert value == None or isinstance(value, bool), "divider must be a boolean"
         self._set_attr("divider", value)
 
-    def _getChildren(self):
+    def _get_children(self):
         return self._items
 
 # Overflow
@@ -149,14 +149,14 @@ class Overflow(Control):
     def items(self):
         return self._items
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "overflow"
 
     def add_item(self, item):
         assert isinstance(item, Item), ("Overflow can hold items only")
         self._items.append(item)
 
-    def _getChildren(self):
+    def _get_children(self):
         return self._items
 
 # Far
@@ -174,14 +174,14 @@ class Far(Control):
     def items(self):
         return self._items
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "far"
 
     def add_item(self, item):
         assert isinstance(item, Item), ("Far can hold items only")
         self._items.append(item)
 
-    def _getChildren(self):
+    def _get_children(self):
         return self._items
 
 
@@ -203,7 +203,7 @@ class Toolbar(Control):
         self._far = Far(items=far)
         self.inverted = inverted
         
-    def _getControlName(self):
+    def _get_control_name(self):
         return "toolbar"
 
     def add_item(self, item):
@@ -235,7 +235,7 @@ class Toolbar(Control):
     def overflow(self):
         return self._overflow
 
-    def _getChildren(self):
+    def _get_children(self):
         result=[]
         if self._items and len(self._items) > 0:
             for item in self._items:

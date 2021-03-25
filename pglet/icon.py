@@ -14,7 +14,7 @@ class Icon(Control):
         self.color = color
         self.size = size
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "icon"
 
 # name

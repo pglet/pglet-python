@@ -20,7 +20,7 @@ class Item(Control):
             for item in items:
                 self.add_item(item)
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "item"
 
     def add_item(self, item):
@@ -99,7 +99,7 @@ class Item(Control):
         assert value == None or isinstance(value, bool), "value must be a boolean"
         self._set_attr("expanded", value)
 
-    def _getChildren(self):
+    def _get_children(self):
         return self._items
 
 class Nav(Control):
@@ -121,7 +121,7 @@ class Nav(Control):
             for item in items:
                 self.add_item(item)
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "nav"
 
     def add_item(self, item):
@@ -138,7 +138,7 @@ class Nav(Control):
     # onchange
     @property
     def onchange(self):
-        return None
+        return self._get_event_handler("change")
 
     @onchange.setter
     def onchange(self, handler):
@@ -147,7 +147,7 @@ class Nav(Control):
     # onexpand
     @property
     def onexpand(self):
-        return None
+        return self._get_event_handler("expand")
 
     @onexpand.setter
     def onexpand(self, handler):
@@ -156,7 +156,7 @@ class Nav(Control):
     # oncollapse
     @property
     def oncollapse(self):
-        return None
+        return self._get_event_handler("collapse")
 
     @oncollapse.setter
     def oncollapse(self, handler):
@@ -171,5 +171,5 @@ class Nav(Control):
     def value(self, value):
         self._set_attr("value", value)
 
-    def _getChildren(self):
+    def _get_children(self):
         return self._items

@@ -15,7 +15,7 @@ class Image(Control):
         self.title = title
         self.maximize_frame = maximize_frame
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "image"
 
 # src

@@ -26,7 +26,7 @@ class Link(Control):
             for control in controls:
                 self.add_control(control)
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "link"
 
     def add_control(self, control):
@@ -41,7 +41,7 @@ class Link(Control):
 # onclick
     @property
     def onclick(self):
-        return None
+        return self._get_event_handler("click")
 
     @onclick.setter
     def onclick(self, handler):
@@ -133,5 +133,5 @@ class Link(Control):
         self._set_attr("align", value)
         
 
-    def _getChildren(self):
+    def _get_children(self):
         return self._controls

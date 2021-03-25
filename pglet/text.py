@@ -35,7 +35,7 @@ class Text(Control):
         self.border_top = border_top
         self.border_bottom = border_bottom
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "text"
 
 # value

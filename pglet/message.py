@@ -8,7 +8,7 @@ class MessageButton(Control):
         self.text = text
         self.action = action
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "button"
 
     # text
@@ -54,7 +54,7 @@ class Message(Control):
                 self.add_button(button)
        
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "message"
 
     def add_button(self, button):
@@ -66,7 +66,7 @@ class Message(Control):
 # ondismiss
     @property
     def ondismiss(self):
-        return None
+        return self._get_event_handler("dismiss")
 
     @ondismiss.setter
     def ondismiss(self, handler):
@@ -129,5 +129,5 @@ class Message(Control):
     def data(self, value):
         self._set_attr("data", value)
 
-    def _getChildren(self):
+    def _get_children(self):
             return self._buttons
