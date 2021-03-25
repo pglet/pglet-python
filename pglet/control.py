@@ -1,5 +1,5 @@
 from .utils import encode_attr
-from .diff import myers_diff, Keep, Insert, Remove
+from difflib import SequenceMatcher
 import datetime as dt
 
 class Control:
@@ -146,29 +146,48 @@ class Control:
             hashes[hash(ctrl)] = ctrl
             current_ints.append(hash(ctrl))
 
-        print("previous_ints:", previous_ints)
-        print("current_ints:", current_ints)
+        # print("previous_ints:", previous_ints)
+        # print("current_ints:", current_ints)
 
-        diff = myers_diff(previous_ints, current_ints)
+        sm = SequenceMatcher(None, previous_ints, current_ints)
 
         n = 0
-        for elem in diff:
-            if isinstance(elem, Keep):
+        for tag, a1, a2, b1, b2 in sm.get_opcodes():
+            if tag == "delete":
+                # deleted controls
+                ids = []
+                for h in previous_ints[a1:a2]:
+                    ctrl = hashes[h]
+                    self.__remove_control_recursively(index, ctrl)
+                    ids.append(ctrl.__gid)
+                commands.append(f'remove {" ".join(ids)}')
+            elif tag == "equal":
                 # unchanged control
-                ctrl = hashes[elem.line]
-                ctrl.build_update_commands(index, added_controls, commands)
-                n += 1
-            elif isinstance(elem, Insert):
-                # added control
-                ctrl = hashes[elem.line]
-                cmd = ctrl.get_cmd_str(index=index,added_controls=added_controls)
-                commands.append(f"add to=\"{self.__gid}\" at=\"{n}\"\n{cmd}")
-                n += 1
-            else:
-                # removed control
-                ctrl = hashes[elem.line]
-                self.__remove_control_recursively(index, ctrl)
-                commands.append(f"remove {ctrl.__gid}")
+                for h in previous_ints[a1:a2]:
+                    ctrl = hashes[h]
+                    ctrl.build_update_commands(index, added_controls, commands)
+                    n += 1
+            elif tag == "replace":
+                ids = []
+                for h in previous_ints[a1:a2]:
+                    # delete
+                    ctrl = hashes[h]
+                    self.__remove_control_recursively(index, ctrl)
+                    ids.append(ctrl.__gid)
+                commands.append(f'remove {" ".join(ids)}')
+                for h in current_ints[b1:b2]:
+                    # add
+                    ctrl = hashes[h]
+                    cmd = ctrl.get_cmd_str(index=index,added_controls=added_controls)
+                    commands.append(f"add to=\"{self.__gid}\" at=\"{n}\"\n{cmd}")                    
+                    n += 1
+            elif tag == "insert":
+                # add
+                for h in current_ints[b1:b2]:
+                    ctrl = hashes[h]
+                    cmd = ctrl.get_cmd_str(index=index,added_controls=added_controls)
+                    commands.append(f"add to=\"{self.__gid}\" at=\"{n}\"\n{cmd}")     
+                    n += 1
         
         self.__previous_children.clear()
         self.__previous_children.extend(current_children)
