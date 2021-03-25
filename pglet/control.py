@@ -217,9 +217,8 @@ class Control:
         # base props
         attrParts = self._get_cmd_attrs(update=False)
 
-        if len(attrParts) > 0:
-            parts.extend(attrParts)
-            lines.append(" ".join(parts))
+        parts.extend(attrParts)
+        lines.append(" ".join(parts))
 
         if added_controls != None:
             added_controls.append(self)
