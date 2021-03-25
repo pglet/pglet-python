@@ -4,7 +4,7 @@ parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 
 import pglet
-from pglet import Page, Text, Button, Stack, Textbox, Checkbox
+from pglet import Page, Text, Button, Stack, Textbox, Checkbox, Tabs, Tab
 
 page = pglet.page("index", no_window = True)
 
@@ -39,6 +39,25 @@ stack = Stack(horizontal = True, controls=[
     ])
 
 page.add(stack)
+
+stack2 = Stack(width='70%', controls=[
+        Text(value='Todos', size='large', align='center'),
+        Stack(horizontal=True, controls=[
+            Textbox(id='new_task', placeholder='Whats needs to be done?', width='100%'),
+            Button(id='add', primary=True, text='Add')]),
+        Stack(gap=25, controls=[
+            Tabs(tabs=[
+                Tab(text='all'),
+                Tab(text='active'),
+                Tab(text='completed')]),
+            Stack(horizontal=True, horizontal_align='space-between', vertical_align='center', controls=[
+                Text(id='items_left', value='0 items left'),
+                Button(id='clear_completed', text='Clear completed')
+            ])
+        ])
+    ])
+
+page.add(stack2)
 
 chk = Checkbox("Check it!", id="check1")
 page.add(chk)
