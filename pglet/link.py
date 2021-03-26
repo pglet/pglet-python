@@ -21,22 +21,19 @@ class Link(Control):
         self.pre = pre
         self.align = align
         self.onclick = onclick
-        self._controls = []
-        if controls and len(controls) > 0:
-            for control in controls:
-                self.add_control(control)
+        self._controls = controls
 
     def _get_control_name(self):
         return "link"
-
-    def add_control(self, control):
-        assert isinstance(control, Control), 'link can hold controls only'
-        self._controls.append(control)
 
 # controls
     @property
     def controls(self):
         return self._controls
+
+    @controls.setter
+    def controls(self, value):
+        self._controls = value
 
 # onclick
     @property

@@ -78,11 +78,7 @@ class Data(Control):
     def __init__(self, id=None, color=None, legend=None, points=[]):
         Control.__init__(self, id=id)
     
-        self._points = []
-        if points and len(points) > 0:
-            for point in points:
-                self.add_point(point)
-
+        self._points = points
         self.color = color
         self.legend = legend
 
@@ -109,12 +105,12 @@ class Data(Control):
     def points(self):
         return self._points
 
+    @points.setter
+    def points(self, value):
+        self._points = value
+
     def _get_control_name(self):
         return "data"
-
-    def add_point(self, point):
-        assert isinstance(point, P), ("data can hold points only")
-        self._points.append(point)
 
     def _get_children(self):
         return self._points
@@ -129,11 +125,7 @@ class LineChart(Control):
             width=width, height=height, padding=padding, margin=margin,
             visible=visible, disabled=disabled)
 
-        self._datas = []
-        if datas and len(datas) > 0:
-            for data in datas:
-                self.add_data(data)
-
+        self._datas = datas
         self.legend = legend
         self.tooltips = tooltips
         self.stroke_width = stroke_width
@@ -146,14 +138,14 @@ class LineChart(Control):
     def _get_control_name(self):
         return "linechart"
 
-    def add_data(self, data):
-        assert isinstance(data, Data), 'datas can hold data only'
-        self._datas.append(data)
-
     # data
     @property
     def data(self):
         return self._datas
+
+    @data.setter
+    def data(self, value):
+        self._datas = value
 
     # legend
     @property

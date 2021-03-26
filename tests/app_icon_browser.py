@@ -52,10 +52,8 @@ def main(page):
     icons = get_icons(None)
         
     search_result = Stack(horizontal=True, wrap=True, controls=icons)
-    #search_box = SearchBox(id='searchbox', onchange=searchbox_changed, onsearch=enter_clicked)
-    search_box = Textbox(id='searchbox')
-    search_button = Button("Search", onclick=searchbox_changed)
-    page.add(search_box, search_button, search_result)
+    search_box = SearchBox(id='searchbox', onchange=searchbox_changed, onsearch=enter_clicked)
+    page.add(search_box, search_result)
 
     #page.wait_close()
 

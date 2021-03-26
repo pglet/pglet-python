@@ -78,46 +78,47 @@ class Data(Control):
     def __init__(self, id=None, points=[]):
         Control.__init__(self, id=id)
     
-        self._points = []
-        if points and len(points) > 0:
-            for point in points:
-                self.add_point(point)
+        self._points = points
 
     # points
     @property
     def points(self):
         return self._points
 
+    @points.setter
+    def points(self, value):
+        self._points = value
+
     def _get_control_name(self):
         return "data"
-
-    def add_point(self, point):
-        assert isinstance(point, P), ("data can hold points only")
-        self._points.append(point)
 
     def _get_children(self):
         return self._points
 
 
 class BarChart(Control):
-    def __init__(self, id=None, tooltips=None, data_mode=None, data=[],
+    def __init__(self, id=None, tooltips=None, data_mode=None, points=[],
             width=None, height=None, padding=None, margin=None, visible=None, disabled=None):
         
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
             visible=visible, disabled=disabled)
 
-        self._data = Data(points=data)
+        self._data = Data(points=points)
         self.tooltips = tooltips
         self.data_mode = data_mode
         
     def _get_control_name(self):
         return "barchart"
 
-    # data
+    # points
     @property
-    def data(self):
-        return self._data
+    def points(self):
+        return self._data.points
+
+    @points.setter
+    def points(self, value):
+        self._data.points = value
 
     # tooltips
     @property

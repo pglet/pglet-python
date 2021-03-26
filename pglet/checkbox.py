@@ -29,7 +29,7 @@ class Checkbox(Control):
 # value
     @property
     def value(self):
-        return self._get_attr("value")
+        return self._get_attr("value", data_type="bool")
 
     @value.setter
     def value(self, value):

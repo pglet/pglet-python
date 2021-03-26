@@ -34,6 +34,9 @@ class Page(Control):
         # build commands
         for control in controls:
             control.build_update_commands(self.__index, added_controls, commands)
+        
+        if len(commands) == 0:
+            return
 
         # execute commands
         ids = self.__conn.send_batch(commands)
@@ -77,7 +80,7 @@ class Page(Control):
             return self.update()
 
     def __on_event(self, e):
-        print(e.target, e.name, e.data)
+        #print(e.target, e.name, e.data)
 
         if e.target == "page" and e.name == "change":
             all_props = json.loads(e.data)
