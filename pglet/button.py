@@ -20,19 +20,10 @@ class Item(Control):
         self.split = split
         self.divider = divider
         self.onclick = onclick
-        self._items = []
-        if items and len(items) > 0:
-            for item in items:
-                self.add_item(item)
+        self._items = items
 
     def _get_control_name(self):
         return "item"
-
-    def add_item(self, item):
-        if isinstance(item, Item):
-            self._items.append(item)
-        else:
-            self._items.append(Item(str(item)))
 
     # onclick
     @property
@@ -47,6 +38,10 @@ class Item(Control):
     @property
     def items(self):
         return self._items
+
+    @items.setter
+    def items(self, value):
+        self._items = value
 
     # text
     @property
@@ -160,17 +155,19 @@ class Button(Control):
         self.icon_color = icon_color
         self.data = data
         self.onclick = onclick
-        self._items = []
-        if items and len(items) > 0:
-            for item in items:
-                self.add_item(item)
+        self._items = items
 
     def _get_control_name(self):
         return "button"
-    
-    def add_item(self, item):
-        assert isinstance(item, Item), 'button can hold items only'
-        self._items.append(item)
+
+# items
+    @property
+    def items(self):
+        return self._items
+
+    @items.setter
+    def items(self, value):
+        self._items = value
 
 # onclick
     @property

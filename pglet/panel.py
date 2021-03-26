@@ -6,22 +6,19 @@ class Footer(Control):
     def __init__(self, id=None, controls=[]):
         Control.__init__(self, id=id)
     
-        self._controls = []
-        if controls and len(controls) > 0:
-            for control in controls:
-                self.add_control(control)
+        self._controls = controls
 
     # controls
     @property
     def controls(self):
         return self._controls
 
+    @controls.setter
+    def controls(self, value):
+        self._controls = value
+
     def _get_control_name(self):
         return "footer"
-
-    def add_control(self, control):
-        assert isinstance(control, Control), ("Footer can hold controls only")
-        self._controls.append(control)
 
     def _get_children(self):
         return self._controls
@@ -46,22 +43,19 @@ class Panel(Control):
         self.data = data
         self.ondismiss = ondismiss
         self._footer = Footer(controls=footer)
-        self._controls = []
-        if controls and len(controls) > 0:
-            for control in controls:
-                self.add_control(control)
+        self._controls = controls
 
     def _get_control_name(self):
         return "panel"
-
-    def add_control(self, control):
-        assert isinstance(control, Control), 'panel can hold controls only'
-        self._controls.append(control)
 
     # controls
     @property
     def controls(self):
         return self._controls
+
+    @controls.setter
+    def controls(self, value):
+        self._controls = value
 
     # footer
     @property

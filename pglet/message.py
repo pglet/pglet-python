@@ -48,20 +48,19 @@ class Message(Control):
         self.dismiss = dismiss
         self.data = data
         self.ondismiss = ondismiss
-        self._buttons = []
-        if buttons and len(buttons) > 0:
-            for button in buttons:
-                self.add_button(button)
+        self._buttons = buttons
        
-
     def _get_control_name(self):
         return "message"
 
-    def add_button(self, button):
-       if isinstance(button, MessageButton):
-            self._buttons.append(button)
-       else:
-            self._buttons.append(MessageButton(str(button)))
+# buttons
+    @property
+    def buttons(self):
+        return self._buttons
+
+    @buttons.setter
+    def buttons(self, value):
+        self._buttons = value
 
 # ondismiss
     @property

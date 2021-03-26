@@ -62,19 +62,19 @@ class ChoiceGroup(Control):
         self.label = label
         self.data = data
         self.onchange = onchange
-        self._options = []
-        if options and len(options) > 0:
-            for option in options:
-                self.add_option(option)
+        self._options = options
 
     def _get_control_name(self):
         return "choicegroup"
 
-    def add_option(self, option):
-        if isinstance(option, Option):
-            self._options.append(option)
-        else:
-            self._options.append(Option(str(option)))
+    # options
+    @property
+    def options(self):
+        return self._options
+
+    @options.setter
+    def options(self, value):
+        self._options = value
 
     # onchange
     @property

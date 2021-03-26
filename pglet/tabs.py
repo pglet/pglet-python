@@ -11,18 +11,19 @@ class Tab(Control):
         self.text = text
         self.icon = icon
         self.count = count
-        self._controls = []
-        if controls and len(controls) > 0:
-            for control in controls:
-                self.add_control(control)
+        self._controls = controls
 
     def _get_control_name(self):
         return "tab"
 
-    def add_control(self, control):
-        if not isinstance(control, Control):
-            raise Exception("Stack can hold controls only")
-        self._controls.append(control)
+    # controls
+    @property
+    def controls(self):
+        return self._controls
+
+    @controls.setter
+    def controls(self, value):
+        self._controls = value        
 
     # key
     @property
@@ -76,22 +77,19 @@ class Tabs(Control):
         self.value = value
         self.solid = solid
         self.onchange = onchange
-        self._tabs = []
-        if tabs and len(tabs) > 0:
-            for tab in tabs:
-                self.add_tab(tab)
+        self._tabs = tabs
 
     def _get_control_name(self):
         return "tabs"
-
-    def add_tab(self, tab):
-        assert isinstance(tab, Tab), 'tabs can hold tab only'
-        self._tabs.append(tab)
 
     # tabs
     @property
     def tabs(self):
         return self._tabs
+
+    @tabs.setter
+    def tabs(self, value):
+        self._tabs = value
         
     # onchange
     @property

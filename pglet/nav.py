@@ -15,24 +15,19 @@ class Item(Control):
         self.url = url
         self.new_window = new_window
         self.expanded = expanded
-        self._items = []
-        if items and len(items) > 0:
-            for item in items:
-                self.add_item(item)
+        self._items = items
 
     def _get_control_name(self):
         return "item"
-
-    def add_item(self, item):
-        if isinstance(item, Item):
-            self._items.append(item)
-        else:
-            self._items.append(Item(str(item)))
 
     # items
     @property
     def items(self):
         return self._items
+
+    @items.setter
+    def items(self, value):
+        self._items = value
 
     # key
     @property
@@ -92,7 +87,7 @@ class Item(Control):
     # expanded
     @property
     def expanded(self):
-        return self._get_attr("expanded")
+        return self._get_attr("expanded", data_type="bool")
 
     @expanded.setter
     def expanded(self, value):
@@ -116,24 +111,19 @@ class Nav(Control):
         self.onchange = onchange
         self.onexpand = onexpand
         self.oncollapse = oncollapse
-        self._items = []
-        if items and len(items) > 0:
-            for item in items:
-                self.add_item(item)
+        self._items = items
 
     def _get_control_name(self):
         return "nav"
-
-    def add_item(self, item):
-        if isinstance(item, Item):
-            self._items.append(item)
-        else:
-            self._items.append(Item(str(item)))
 
     # items
     @property
     def items(self):
         return self._items
+
+    @items.setter
+    def items(self, value):
+        self._items = value
         
     # onchange
     @property

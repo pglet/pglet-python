@@ -80,19 +80,6 @@ class Connection:
                     self.last_event = evt
                     self.event_available.set()
 
-            # # call all event handlers
-            # control_events = self._event_handlers.get(evt.target)
-            # if control_events:
-            #     handler = control_events.get(evt.name)
-            #     if handler:
-            #         t = threading.Thread(target=handler, args=(evt,), daemon=True)
-            #         t.start()
-            
-            # # release wait_event() loop
-            # #print ("EVENT:", evt.target, evt.name, evt.data)
-            # self.last_event = evt
-            # self.event_available.set()
-
     def __init_windows(self):
         self.win_command_pipe = open(rf'\\.\pipe\{self.conn_id}', 'r+b', buffering=0)
         self.win_event_pipe = open(rf'\\.\pipe\{self.conn_id}.events', 'r+b', buffering=0)
@@ -163,14 +150,3 @@ class Connection:
 
     def close(self):
         raise Exception("Not implemented yet")
-
-    # def _add_event_handler(self, control_id, event_name, handler):
-    #     control_events = self._event_handlers.get(control_id)
-    #     if not control_events:
-    #         control_events = {}
-    #         self._event_handlers[control_id] = control_events
-    #     control_events[event_name] = handler
-
-    # def _remove_event_handlers(self, control_id):
-    #     if control_id in self._event_handlers:
-    #         del self._event_handlers[control_id]

@@ -19,22 +19,19 @@ class Callout(Control):
         self.focus = focus
         self.cover = cover
         self.ondismiss = ondismiss
-        self._controls = []
-        if controls and len(controls) > 0:
-            for control in controls:
-                self.add_control(control)
+        self._controls = controls
 
     def _get_control_name(self):
         return "callout"
-
-    def add_control(self, control):
-        assert isinstance(control, Control), 'callout can hold controls only'
-        self._controls.append(control)
 
     # controls
     @property
     def controls(self):
         return self._controls
+
+    @controls.setter
+    def controls(self, value):
+        self._controls = value
     
     # ondismiss
     @property

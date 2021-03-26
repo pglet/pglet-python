@@ -5,7 +5,7 @@ from .control import Control
 class Column(Control):
     def __init__(self, id=None, name=None, icon=None, icon_only=None, 
         field_name=None, sortable=None, sort_field=None, sorted=None, resizable=None,
-        min_width=None, max_width=None, on_click=None, controls=[], onclick=None,
+        min_width=None, max_width=None, on_click=None, template_controls=[], onclick=None,
         new_window=None, expanded=None):
         Control.__init__(self, id=id)
 
@@ -22,17 +22,10 @@ class Column(Control):
         self.on_click = on_click
         #self.onchange = onchange
 
-        self._controls = []
-        if controls and len(controls) > 0:
-            for control in controls:
-                self.add_control(control)
+        self._template_controls = template_controls
 
     def _get_control_name(self):
         return "column"
-
-    def add_control(self, control):
-        assert isinstance(control, Control), 'Column must hold controls'
-        self._controls.append(control)
 
     # onclick
     @property
@@ -43,10 +36,14 @@ class Column(Control):
     def onclick(self, handler):
         self._add_event_handler("click", handler)
     
-    # controls
+    # template_controls
     @property
-    def controls(self):
-        return self._controls
+    def template_controls(self):
+        return self._template_controls
+
+    @template_controls.setter
+    def template_controls(self, value):
+        self._template_controls = value
 
     # name
     @property
@@ -154,7 +151,7 @@ class Column(Control):
         self._set_attr("onClick", value)
 
     def _get_children(self):
-        return self._controls
+        return self._template_controls
 
 # Item
 class Item(Control):
@@ -169,22 +166,19 @@ class Columns(Control):
     def __init__(self, id=None, columns=[]):
         Control.__init__(self, id=id)
     
-        self._columns = []
-        if columns and len(columns) > 0:
-            for column in columns:
-                self.add_column(column)
+        self._columns = columns
 
     # columns
     @property
     def columns(self):
         return self._columns
 
+    @columns.setter
+    def columns(self, value):
+        self._columns = value
+
     def _get_control_name(self):
         return "columns"
-
-    def add_column(self, column):
-        assert isinstance(column, Column), ("Columns can hold columns only")
-        self._columns.append(column)
 
     def _get_children(self):
         return self._columns
@@ -194,21 +188,19 @@ class Items(Control):
     def __init__(self, id=None, items=[]):
         Control.__init__(self, id=None)
     
-        self._items = []
-        if items and len(items) > 0:
-            for item in items:
-                self.add_item(item)
+        self._items = items
 
     # items
     @property
     def items(self):
         return self._items
 
+    @items.setter
+    def items(self, value):
+        self._items = value
+
     def _get_control_name(self):
         return "items"
-
-    def add_item(self, item):
-        self._items.append(item)
 
     def _get_children(self):
         items = []
@@ -246,12 +238,20 @@ class Grid(Control):
     # columns
     @property
     def columns(self):
-        return self._columns
+        return self._columns.columns
+
+    @columns.setter
+    def columns(self, value):
+        self._columns.columns = value
 
     # items
     @property
     def items(self):
-        return self._items
+        return self._items.items
+
+    @items.setter
+    def items(self, value):
+        self._items.items = value
     
     # onselect
     @property

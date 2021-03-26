@@ -32,10 +32,17 @@ class Control:
     def _get_event_handler(self, event_name):
         return self.__event_handlers.get(event_name)
 
-    def _get_attr(self, name, defValue=None):
+    def _get_attr(self, name, defValue=None, data_type='string'):
         if not name in self.__attrs:
             return defValue
-        return self.__attrs[name][0]
+        
+        s_val = self.__attrs[name][0]
+        if data_type == 'bool' and s_val != None:
+            return s_val.lower() == "true"
+        elif data_type == 'float' and s_val != None:
+            return float(s_val)
+        else:
+            return s_val
 
     def _set_attr(self, name, value):
         if value == None:
