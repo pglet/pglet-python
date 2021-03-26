@@ -32,8 +32,11 @@ for n in range(1000):
 
 #page.add(stack)
 
+chk = Checkbox("Check, check!")
+
 page.add(
-    SearchBox(),
+    SearchBox(onsearch=lambda e: print(chk.value)),
+    chk,
     items)
 
 input("Press Enter to exit...")

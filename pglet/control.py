@@ -37,9 +37,9 @@ class Control:
             return defValue
         
         s_val = self.__attrs[name][0]
-        if data_type == 'bool' and s_val != None:
+        if data_type == 'bool' and s_val != None and isinstance(s_val, str):
             return s_val.lower() == "true"
-        elif data_type == 'float' and s_val != None:
+        elif data_type == 'float' and s_val != None and isinstance(s_val, str):
             return float(s_val)
         else:
             return s_val
