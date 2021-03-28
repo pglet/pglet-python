@@ -106,7 +106,7 @@ class Connection:
 
     def __wait_events_windows(self):
         r = self.win_event_pipe.readline().decode('utf-8').strip('\n')
-        return [self.__parse_event_line(r)]
+        yield self.__parse_event_line(r)
 
     def __init_linux(self):
         pass
