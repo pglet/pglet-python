@@ -80,7 +80,7 @@ class Page(Control):
             return self.update()
 
     def __on_event(self, e):
-        #print(e.target, e.name, e.data)
+        #print("on_event:", e.target, e.name, e.data)
 
         if e.target == "page" and e.name == "change":
             all_props = json.loads(e.data)
