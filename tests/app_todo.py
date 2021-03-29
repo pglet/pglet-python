@@ -44,7 +44,6 @@ class Database():
 
     def delete_task(self, task):
         self.tasks.remove(task)
-        print('task deleted')
 
 
 def main(page):
@@ -61,12 +60,13 @@ def main(page):
         
     
     def clear_clicked(e):
-        for task in db.tasks:
-            #if task.checkbox.value == False:
+        for task in db.tasks[:]:
             print(task.checkbox.value)
-        tasks_stack.controls.clear()
-        page.update()
-        print('Clear completed button clicked!')
+            if task.checkbox.value == True:
+                tasks_stack.controls.remove(task.stack_edit)
+                tasks_stack.controls.remove(task.stack_view)
+                db.delete_task(task)
+                page.update()
 
     def edit_clicked(e):
         id = e.control.data
@@ -96,7 +96,6 @@ def main(page):
     def checkbox_changed(e):
         id = e.control.data
         task = db.find_task(id)
-        print(task.checkbox.value)
 
     
     def add_task_stack(task):
@@ -113,10 +112,10 @@ def main(page):
             new_task,
             Button(id='add', primary=True, text='Add', onclick=add_clicked)]),
         Stack(gap=25, controls=[
-            Tabs(tabs=[
-                Tab(text='all'),
-                Tab(text='active'),
-                Tab(text='completed')]),
+            #Tabs(tabs=[
+                #Tab(text='all'),
+                #Tab(text='active'),
+                #Tab(text='completed')]),
             tasks_stack,
             Stack(horizontal=True, horizontal_align='space-between', vertical_align='center', controls=[
                 Text(id='items_left', value='0 items left'),
