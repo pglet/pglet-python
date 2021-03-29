@@ -21,6 +21,8 @@ class Task():
                     Button(icon='Edit', title='Edit todo', data=self.id, onclick=on_edit_clicked),
                     Button(icon='Delete', title='Delete todo', data=self.id, onclick=on_delete_clicked)]),
                 ])
+        
+        #stack displayed when edit is clicked 
         self.stack_edit = Stack(visible=False, horizontal=True, horizontal_align='space-between',
                 vertical_align='center', controls=[
                 self.textbox, Button(text='Save', data=self.id, onclick=on_save_clicked)
