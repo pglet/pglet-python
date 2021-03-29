@@ -98,15 +98,53 @@ def main(page):
     def checkbox_changed(e):
         id = e.control.data
         task = db.find_task(id)
+        #print(tabs.tabs.tab.text)
+        global active_tab
+        if active_tab == 'active':
+            if task.checkbox.value == True:
+                tasks_stack.controls.remove(task.stack_edit)
+                tasks_stack.controls.remove(task.stack_view)  
+        elif active_tab == 'completed':
+            if task.checkbox.value == False:
+                tasks_stack.controls.remove(task.stack_edit)
+                tasks_stack.controls.remove(task.stack_view)
+        page.update()
 
-    
     def add_task_stack(task):
         tasks_stack.controls.append(task.stack_view)
         tasks_stack.controls.append(task.stack_edit)
         page.update()
+
+    def tabs_changed(e):
+        print('tabs changed ', e.data)
+        global active_tab
+        active_tab = e.data
+        tasks_stack.controls.clear()
+        if e.data == 'all':
+            for task in db.tasks:
+                tasks_stack.controls.append(task.stack_view)
+                tasks_stack.controls.append(task.stack_edit)
+        elif e.data == 'active':
+            for task in db.tasks:
+                if task.checkbox.value == False:
+                    tasks_stack.controls.append(task.stack_view)
+                    tasks_stack.controls.append(task.stack_edit)
+        elif e.data == 'completed':
+             for task in db.tasks:
+                if task.checkbox.value == True:
+                    tasks_stack.controls.append(task.stack_view)
+                    tasks_stack.controls.append(task.stack_edit)
+
+        page.update()
+
+
     
     new_task = Textbox(placeholder='Whats needs to be done?', width='100%')
     tasks_stack = Stack()
+    tabs = Tabs(onchange=tabs_changed, tabs=[
+                Tab(text='all'),
+                Tab(text='active'),
+                Tab(text='completed')])
 
     page.add(Stack(width='70%', controls=[
         Text(value='Todos', size='large', align='center'),
@@ -114,10 +152,7 @@ def main(page):
             new_task,
             Button(id='add', primary=True, text='Add', onclick=add_clicked)]),
         Stack(gap=25, controls=[
-            #Tabs(tabs=[
-                #Tab(text='all'),
-                #Tab(text='active'),
-                #Tab(text='completed')]),
+            tabs,
             tasks_stack,
             Stack(horizontal=True, horizontal_align='space-between', vertical_align='center', controls=[
                 Text(id='items_left', value='0 items left'),
