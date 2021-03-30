@@ -4,7 +4,7 @@ import datetime as dt
 
 class Control:
     def __init__(self, id=None, width=None, height=None,
-            padding=None, margin=None, visible=None, disabled=None):
+            padding=None, margin=None, visible=None, disabled=None, data=None):
         self.__page = None
         self.__attrs = {}
         self.__previous_children = []
@@ -18,6 +18,7 @@ class Control:
         self.margin = margin
         self.visible = visible
         self.disabled = disabled
+        self.data = data
         self.__event_handlers = {}
 
     def _get_children(self):
@@ -134,6 +135,15 @@ class Control:
     def disabled(self, value):
         assert value == None or isinstance(value, bool), "disabled must be a boolean"
         self._set_attr("disabled", value)
+
+# data
+    @property
+    def data(self):
+        return self._get_attr("data")
+
+    @data.setter
+    def data(self, value):
+        self._set_attr("data", value)
 
 # public methods
     def build_update_commands(self, index, added_controls, commands):

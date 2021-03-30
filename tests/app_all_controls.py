@@ -80,12 +80,12 @@ page.clean()
 b = Button(primary=False, compound=False, action=False, toolbar=True, split=False, text='This is text', 
     secondary_text='This is secondary text', url='https://google.com', new_window=True, title='This is title',
     icon='Mail', icon_color='red', data='data', onclick=button_clicked, items=[
-        button.Item(text='Item1 text', secondary_text='Item1 secondary text', url='https://google.com', new_window=False,
+        button.MenuItem(text='Item1 text', secondary_text='Item1 secondary text', url='https://google.com', new_window=False,
         icon='Mail', icon_color='blue', icon_only=True, split=False, divider=False, onclick=item_clicked, items=[
-            button.Item('Item1Item1'),
-            button.Item('Item1Item2')
+            button.MenuItem('Item1Item1'),
+            button.MenuItem('Item1Item2')
         ]),
-        button.Item(text='Item2 text')
+        button.MenuItem(text='Item2 text')
     ])
 #page.add(b)
 

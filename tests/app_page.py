@@ -40,9 +40,15 @@ stack = Stack(horizontal = True, controls=[
 
 page.add(stack)
 
-stack2 = Stack(width='70%', controls=[
+def outer_stack_submit(e):
+    print("Stack submit:", e.control.data)
+
+def add_stack_submit(e):
+    print("Stack submit:", e.control.data)
+
+stack2 = Stack(width='70%', onsubmit=outer_stack_submit, controls=[
         Text(value='Todos', size='large', align='center'),
-        Stack(horizontal=True, controls=[
+        Stack(horizontal=True, onsubmit=add_stack_submit, data=222, controls=[
             Textbox(id='new_task', placeholder='Whats needs to be done?', width='100%'),
             Button(id='add', primary=True, text='Add')]),
         Stack(gap=25, controls=[
@@ -54,7 +60,8 @@ stack2 = Stack(width='70%', controls=[
                 Text(id='items_left', value='0 items left'),
                 Button(id='clear_completed', text='Clear completed')
             ])
-        ])
+        ]),
+        Textbox("Da da da")
     ])
 
 page.add(stack2)
