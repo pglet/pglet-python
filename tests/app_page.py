@@ -60,7 +60,8 @@ stack2 = Stack(width='70%', controls=[
 page.add(stack2)
 
 chk = Checkbox("Check it!", id="check1")
-page.add(chk)
+stack.controls.append(chk)
+stack.controls.append(Textbox(multiline=True))
 
 chk.label = "Check it, again!"
 page.update()

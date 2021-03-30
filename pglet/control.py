@@ -9,9 +9,9 @@ class Control:
         self.__attrs = {}
         self.__previous_children = []
         self.id = id
-        self.__gid = None
+        self.__uid = None
         if id == "page":
-            self.__gid = "page"
+            self.__uid = "page"
         self.width = width
         self.height = height
         self.padding = padding
@@ -69,6 +69,11 @@ class Control:
     @property
     def id(self):
         return self._get_attr("id")
+
+# uid
+    @property
+    def uid(self):
+        return self.__uid
 
     @id.setter
     def id(self, value):
@@ -166,7 +171,7 @@ class Control:
                 for h in previous_ints[a1:a2]:
                     ctrl = hashes[h]
                     self.__remove_control_recursively(index, ctrl)
-                    ids.append(ctrl.__gid)
+                    ids.append(ctrl.__uid)
                 commands.append(f'remove {" ".join(ids)}')
             elif tag == "equal":
                 # unchanged control
@@ -180,20 +185,20 @@ class Control:
                     # delete
                     ctrl = hashes[h]
                     self.__remove_control_recursively(index, ctrl)
-                    ids.append(ctrl.__gid)
+                    ids.append(ctrl.__uid)
                 commands.append(f'remove {" ".join(ids)}')
                 for h in current_ints[b1:b2]:
                     # add
                     ctrl = hashes[h]
                     cmd = ctrl.get_cmd_str(index=index,added_controls=added_controls)
-                    commands.append(f"add to=\"{self.__gid}\" at=\"{n}\"\n{cmd}")                    
+                    commands.append(f"add to=\"{self.__uid}\" at=\"{n}\"\n{cmd}")                    
                     n += 1
             elif tag == "insert":
                 # add
                 for h in current_ints[b1:b2]:
                     ctrl = hashes[h]
                     cmd = ctrl.get_cmd_str(index=index,added_controls=added_controls)
-                    commands.append(f"add to=\"{self.__gid}\" at=\"{n}\"\n{cmd}")     
+                    commands.append(f"add to=\"{self.__uid}\" at=\"{n}\"\n{cmd}")     
                     n += 1
         
         self.__previous_children.clear()
@@ -203,15 +208,15 @@ class Control:
         for child in control._get_children():
             self.__remove_control_recursively(index, child)
         
-        if control.__gid in index:
-            del index[control.__gid]
+        if control.__uid in index:
+            del index[control.__uid]
 
 # private methods
     def get_cmd_str(self, indent='', index=None, added_controls=None):
 
         # remove control from index
-        if self.__gid and index != None and self.__gid in index:
-            del index[self.__gid]
+        if self.__uid and index != None and self.__uid in index:
+            del index[self.__uid]
 
         lines = []
 
@@ -245,7 +250,7 @@ class Control:
     def _get_cmd_attrs(self, update=False):
         parts = []
 
-        if update and not self.__gid:
+        if update and not self.__uid:
             return parts
 
         for attrName in sorted(self.__attrs):
@@ -273,6 +278,6 @@ class Control:
         if not update and id != None:
             parts.insert(0, f'id="{encode_attr(id[0])}"')
         elif update and len(parts) > 0:
-            parts.insert(0, f'"{encode_attr(self.__gid)}"')
+            parts.insert(0, f'"{encode_attr(self.__uid)}"')
         
         return parts

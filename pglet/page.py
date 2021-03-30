@@ -45,7 +45,7 @@ class Page(Control):
             n = 0
             for line in ids.split('\n'):
                 for id in line.split(' '):
-                    added_controls[n]._Control__gid = id
+                    added_controls[n]._Control__uid = id
                     added_controls[n].page = self
 
                     # add to index
