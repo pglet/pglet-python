@@ -27,6 +27,7 @@ class Task():
                 vertical_align='center', controls=[
                 self.textbox, Button(text='Save', data=self.id, onclick=on_save_clicked)
                 ])
+        self.stack = Stack(controls=[self.stack_view, self.stack_edit])
 
 class Database():
     def __init__(self):
@@ -68,8 +69,7 @@ def main(page):
         for task in db.tasks[:]:
             print(task.checkbox.value)
             if task.checkbox.value == True:
-                tasks_stack.controls.remove(task.stack_edit)
-                tasks_stack.controls.remove(task.stack_view)
+                tasks_stack.controls.remove(task.stack)
                 db.delete_task(task)
         items_left.value=str(db.items_left) +' items left'
         page.update()
@@ -95,8 +95,7 @@ def main(page):
         id = e.control.data
         task = db.find_task(id)
         db.delete_task(task)
-        tasks_stack.controls.remove(task.stack_edit)
-        tasks_stack.controls.remove(task.stack_view)
+        tasks_stack.controls.remove(task.stack)
         items_left.value=str(db.items_left) +' items left'
         page.update()
 
@@ -107,59 +106,33 @@ def main(page):
         if task.checkbox.value == True:
             db.items_left-=1
             if tabs.value == 'active':
-                tasks_stack.controls.remove(task.stack_edit)
-                tasks_stack.controls.remove(task.stack_view)
+                tasks_stack.controls.remove(task.stack)
         else:
             db.items_left+=1
             if tabs.value == 'completed':
-                tasks_stack.controls.remove(task.stack_edit)
-                tasks_stack.controls.remove(task.stack_view)
+                tasks_stack.controls.remove(task.stack)
 
         items_left.value=str(db.items_left) +' items left'
         page.update()
-
-        '''
-        if tabs.value == 'active':
-            if task.checkbox.value == True:
-                tasks_stack.controls.remove(task.stack_edit)
-                tasks_stack.controls.remove(task.stack_view)
-                db.items_left-=1  
-        elif tabs.value == 'completed':
-            if task.checkbox.value == False:
-                tasks_stack.controls.remove(task.stack_edit)
-                tasks_stack.controls.remove(task.stack_view)
-                db.items_left-=1
-        items_left.value=str(db.items_left) +' items left'
-        page.update()
-        '''
 
     def add_task_stack(task):
-        tasks_stack.controls.append(task.stack_view)
-        tasks_stack.controls.append(task.stack_edit)
+        tasks_stack.controls.append(task.stack)
         items_left.value=str(db.items_left) +' items left'
         page.update()
 
     def tabs_changed(e):
         tasks_stack.controls.clear()
-        #db.items_left = 0
         if e.data == 'all':
             for task in db.tasks:
-                tasks_stack.controls.append(task.stack_view)
-                tasks_stack.controls.append(task.stack_edit)
-                #db.items_left+=1
+                tasks_stack.controls.append(task.stack)
         elif e.data == 'active':
             for task in db.tasks:
                 if task.checkbox.value == False:
-                    tasks_stack.controls.append(task.stack_view)
-                    tasks_stack.controls.append(task.stack_edit)
-                    #db.items_left+=1
+                    tasks_stack.controls.append(task.stack)
         elif e.data == 'completed':
              for task in db.tasks:
                 if task.checkbox.value == True:
-                    tasks_stack.controls.append(task.stack_view)
-                    tasks_stack.controls.append(task.stack_edit)
-                    #db.items_left+=1
-        #items_left.value=str(db.items_left) +' items left'
+                    tasks_stack.controls.append(task.stack)
         page.update()
     
     new_task = Textbox(placeholder='Whats needs to be done?', width='100%')
