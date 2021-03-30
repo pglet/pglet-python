@@ -7,11 +7,10 @@ class Checkbox(Control):
             visible=None, disabled=None):
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
+            visible=visible, disabled=disabled, data=data)
         self.value = value
         self.label = label
         self.box_side = box_side
-        self.data = data
         self.onchange = onchange
 
     def _get_control_name(self):
@@ -53,12 +52,3 @@ class Checkbox(Control):
     @box_side.setter
     def box_side(self, value):
         self._set_attr("boxSide", value)
-
-# data
-    @property
-    def data(self):
-        return self._get_attr("data")
-
-    @data.setter
-    def data(self, value):
-        self._set_attr("data", value)

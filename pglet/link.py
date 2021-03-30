@@ -5,11 +5,11 @@ class Link(Control):
     def __init__(self, url=None, id=None, value=None, new_window=None, title=None,
             size=None, bold=None, italic=None, pre=None, align=None, onclick=None, controls=[],
             width=None, height=None, padding=None, margin=None,
-            visible=None, disabled=None):
+            visible=None, disabled=None, data=None):
         
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
+            visible=visible, disabled=disabled, data=data)
         
         self.value = value
         self.url = url

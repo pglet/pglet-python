@@ -5,7 +5,7 @@ class MenuItem(Control):
     def __init__(self, text=None, id=None, secondary_text=None, url=None, new_window=None, 
             icon=None, icon_color=None, icon_only=None, split=None, divider=None, onclick=None, sub_menu_items=[],
             width=None, height=None, padding=None, margin=None,
-            visible=None, disabled=None):
+            visible=None, disabled=None, data=None):
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
             visible=visible, disabled=disabled)
@@ -20,6 +20,7 @@ class MenuItem(Control):
         self.split = split
         self.divider = divider
         self.onclick = onclick
+        self.data = data
         self._sub_menu_items = sub_menu_items
 
     def _get_control_name(self):
@@ -139,7 +140,7 @@ class Button(Control):
             visible=None, disabled=None):
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
+            visible=visible, disabled=disabled, data=data)
         
         self.primary = primary
         self.compound = compound
@@ -153,7 +154,6 @@ class Button(Control):
         self.title = title
         self.icon = icon
         self.icon_color = icon_color
-        self.data = data
         self.onclick = onclick
         self._menu_items = menu_items
 
@@ -291,15 +291,6 @@ class Button(Control):
     @icon_color.setter
     def icon_color(self, value):
         self._set_attr("iconColor", value)
-
-# data
-    @property
-    def data(self):
-        return self._get_attr("data")
-
-    @data.setter
-    def data(self, value):
-        self._set_attr("data", value)
 
     def _get_children(self):
         return self._menu_items

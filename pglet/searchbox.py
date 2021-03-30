@@ -10,14 +10,13 @@ class SearchBox(Control):
 
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
+            visible=visible, disabled=disabled, data=data)
 
         self.value = value
         self.placeholder = placeholder
         self.underlined = underlined
         self.icon = icon
         self.icon_color = icon_color
-        self.data = data
         self.on_change = on_change
         self.onsearch = onsearch
         self.onclear = onclear
@@ -108,15 +107,6 @@ class SearchBox(Control):
     @icon_color.setter
     def icon_color(self, value):
         self._set_attr("iconColor", value)
-
-# data
-    @property
-    def data(self):
-        return self._get_attr("data")
-
-    @data.setter
-    def data(self, value):
-        self._set_attr("data", value)
 
 # on_change
     @property
