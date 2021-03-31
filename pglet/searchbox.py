@@ -3,7 +3,7 @@ from .control import Control
 
 class SearchBox(Control):
     def __init__(self, id=None, value=None, placeholder=None, underlined=None,
-            icon=None, icon_color=None, data=None, on_change=None, onsearch=None,
+            icon=None, icon_color=None, data=None, onsearch=None,
             onclear=None, onescape=None, onchange=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
@@ -17,7 +17,6 @@ class SearchBox(Control):
         self.underlined = underlined
         self.icon = icon
         self.icon_color = icon_color
-        self.on_change = on_change
         self.onsearch = onsearch
         self.onclear = onclear
         self.onescape = onescape
@@ -61,6 +60,10 @@ class SearchBox(Control):
     @onchange.setter
     def onchange(self, handler):
         self._add_event_handler("change", handler)
+        if handler != None:
+            self._set_attr("onchange", True)
+        else:
+            self._set_attr("onchange", False)
 
 # value
     @property
@@ -107,14 +110,3 @@ class SearchBox(Control):
     @icon_color.setter
     def icon_color(self, value):
         self._set_attr("iconColor", value)
-
-# on_change
-    @property
-    def on_change(self):
-        return self._get_attr("onChange")
-
-    @on_change.setter
-    def on_change(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
-        self._set_attr("onChange", value)
-

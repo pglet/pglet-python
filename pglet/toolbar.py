@@ -212,13 +212,21 @@ class Toolbar(Control):
 
     # far
     @property
-    def far(self):
-        return self._far
+    def far_items(self):
+        return self._far.items
+
+    @far_items.setter
+    def far_items(self, value):
+        self._far.items = value
 
     # overflow
     @property
-    def overflow(self):
-        return self._overflow
+    def overflow_items(self):
+        return self._overflow.items
+
+    @overflow_items.setter
+    def overflow_items(self, value):
+        self._overflow.items = value
 
     def _get_children(self):
         result=[]
