@@ -121,11 +121,14 @@ class VerticalBarChart(Control):
     def _get_control_name(self):
         return "verticalbarchart"
 
-    # data
+    # points
     @property
-    def data(self):
-        return self._data
+    def points(self):
+        return self._data.points
 
+    @points.setter
+    def points(self, value):
+        self._data.points = value
     
     # legend
     @property
