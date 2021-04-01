@@ -118,14 +118,14 @@ class Data(Control):
 
 class LineChart(Control):
     def __init__(self, id=None, legend=None, tooltips=None, stroke_width=None, 
-            y_min=None, y_max=None, y_ticks=None, y_format=None, x_type=None, datas=[],
+            y_min=None, y_max=None, y_ticks=None, y_format=None, x_type=None, lines=[],
             width=None, height=None, padding=None, margin=None, visible=None, disabled=None):
         
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
             visible=visible, disabled=disabled)
 
-        self._datas = datas
+        self._lines = lines
         self.legend = legend
         self.tooltips = tooltips
         self.stroke_width = stroke_width
@@ -138,14 +138,14 @@ class LineChart(Control):
     def _get_control_name(self):
         return "linechart"
 
-    # data
+    # lines
     @property
-    def data(self):
-        return self._datas
+    def lines(self):
+        return self._lines
 
-    @data.setter
-    def data(self, value):
-        self._datas = value
+    @lines.setter
+    def lines(self, value):
+        self._lines = value
 
     # legend
     @property
@@ -226,4 +226,4 @@ class LineChart(Control):
         self._set_attr("xType", value)
 
     def _get_children(self):
-        return self._datas
+        return self._lines

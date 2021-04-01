@@ -9,14 +9,13 @@ class Toggle(Control):
         
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
+            visible=visible, disabled=disabled, data=data)
         
         self.value = value
         self.label = label
         self.inline = inline
         self.on_text = on_text
         self.off_text = off_text
-        self.data = data
         self.onchange = onchange
        
 
@@ -78,13 +77,3 @@ class Toggle(Control):
     @off_text.setter
     def off_text(self, value):
         self._set_attr("offText", value)
-
-# data
-    @property
-    def data(self):
-        return self._get_attr("data")
-
-    @data.setter
-    def data(self, value):
-        self._set_attr("data", value)
-

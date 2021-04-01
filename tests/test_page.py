@@ -6,8 +6,4 @@ def test_page():
     p = pglet.page('test_page', no_window=True)
     
     assert p.url != "" and p.url.startswith('http'), "Test failed"
-    assert p.conn_id != "", "Test failed"
-    assert p.conn_id != "", "Test failed"
-
-    p.update(Page(title="Hello, title!", padding=0))
 

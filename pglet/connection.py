@@ -106,7 +106,7 @@ class Connection:
 
     def __wait_events_windows(self):
         r = self.win_event_pipe.readline().decode('utf-8').strip('\n')
-        return [self.__parse_event_line(r)]
+        yield self.__parse_event_line(r)
 
     def __init_linux(self):
         pass
@@ -136,13 +136,8 @@ class Connection:
         return result
 
     def __wait_events_linux(self):
-        pipe = open(rf'{self.conn_id}.events', "r")
-        events = []
-        lines = pipe.readline()
-        for line in lines:
-            events.append(self.__parse_event_line(line.strip('\n')))
-        pipe.close()
-        return events
+        for line in open(rf'{self.conn_id}.events', "r"):
+            yield self.__parse_event_line(line.strip('\n'))
     
     def __parse_event_line(self, line):
         result_parts = re.split(r"\s", line, 2)

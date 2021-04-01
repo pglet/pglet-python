@@ -31,7 +31,7 @@ class Panel(Control):
         
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
+            visible=visible, disabled=disabled, data=data)
         
         self.open = open
         self.title = title
@@ -40,7 +40,6 @@ class Panel(Control):
         self.light_dismiss = light_dismiss
         self.width = width
         self.blocking = blocking
-        self.data = data
         self.ondismiss = ondismiss
         self._footer = Footer(controls=footer)
         self._controls = controls
@@ -137,15 +136,6 @@ class Panel(Control):
     def blocking(self, value):
         assert value == None or isinstance(value, bool), "blocking must be a boolean"
         self._set_attr("blocking", value)
-
-    # data
-    @property
-    def data(self):
-        return self._get_attr("data")
-
-    @data.setter
-    def data(self, value):
-        self._set_attr("data", value)
 
     def _get_children(self):
         result=[]

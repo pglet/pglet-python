@@ -25,9 +25,10 @@ def test_choicegroup():
     assert isinstance(cgo, Option)
 
 def test_choicegroup_with_just_keys():
-    cg = pglet.ChoiceGroup(id="list1", label="Your favorite color:")
-    cg.add_option("key1")
-    cg.add_option("key2")
+    cg = pglet.ChoiceGroup(id="list1", label="Your favorite color:", options=[
+        Option(key="key1"),
+        Option(key="key2")
+    ])
     assert cg.get_cmd_str(indent='  ') == (
         '  choicegroup id="list1" label="Your favorite color:"\n'
         '    option key="key1"\n'

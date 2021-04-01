@@ -8,7 +8,7 @@ class Slider(Control):
             visible=None, disabled=None):
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
+            visible=visible, disabled=disabled, data=data)
         self.value = value
         self.label = label
         self.min = min
@@ -17,7 +17,6 @@ class Slider(Control):
         self.show_value = show_value
         self.value_format = value_format
         self.vertical = vertical
-        self.data = data
         self.onchange = onchange
 
     def _get_control_name(self):
@@ -109,12 +108,3 @@ class Slider(Control):
     def vertical(self, value):
         assert value == None or isinstance(value, bool), "vertical must be a boolean"
         self._set_attr("vertical", value)
-
-# data
-    @property
-    def data(self):
-        return self._get_attr("data")
-
-    @data.setter
-    def data(self, value):
-        self._set_attr("data", value)

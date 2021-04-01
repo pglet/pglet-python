@@ -57,10 +57,9 @@ class ChoiceGroup(Control):
             visible=None, disabled=None):
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
+            visible=visible, disabled=disabled, data=data)
         self.value = value
         self.label = label
-        self.data = data
         self.onchange = onchange
         self._options = options
 
@@ -102,15 +101,6 @@ class ChoiceGroup(Control):
     @label.setter
     def label(self, value):
         self._set_attr("label", value)
-
-    # data
-    @property
-    def data(self):
-        return self._get_attr("data")
-
-    @data.setter
-    def data(self, value):
-        self._set_attr("data", value)
 
     def _get_children(self):
         return self._options

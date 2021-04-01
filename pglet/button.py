@@ -1,11 +1,11 @@
 from .utils import encode_attr
 from .control import Control
 
-class Item(Control):
+class MenuItem(Control):
     def __init__(self, text=None, id=None, secondary_text=None, url=None, new_window=None, 
-            icon=None, icon_color=None, icon_only=None, split=None, divider=None, onclick=None, items=[],
+            icon=None, icon_color=None, icon_only=None, split=None, divider=None, onclick=None, sub_menu_items=[],
             width=None, height=None, padding=None, margin=None,
-            visible=None, disabled=None):
+            visible=None, disabled=None, data=None):
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
             visible=visible, disabled=disabled)
@@ -20,7 +20,8 @@ class Item(Control):
         self.split = split
         self.divider = divider
         self.onclick = onclick
-        self._items = items
+        self.data = data
+        self._sub_menu_items = sub_menu_items
 
     def _get_control_name(self):
         return "item"
@@ -34,14 +35,14 @@ class Item(Control):
     def onclick(self, handler):
         self._add_event_handler("click", handler)
 
-    # items
+    # sub_menu_items
     @property
-    def items(self):
-        return self._items
+    def sub_menu_items(self):
+        return self._sub_menu_items
 
-    @items.setter
-    def items(self, value):
-        self._items = value
+    @sub_menu_items.setter
+    def sub_menu_items(self, value):
+        self._sub_menu_items = value
 
     # text
     @property
@@ -129,17 +130,17 @@ class Item(Control):
         self._set_attr("divider", value)
 
     def _get_children(self):
-        return self._items
+        return self._sub_menu_items
 
 class Button(Control):
     def __init__(self, text=None, id=None, primary=None, compound=None, action=None, toolbar=None,
             split=None, secondary_text=None, url=None, new_window=None, 
-            title=None, icon=None, icon_color=None, data=None, onclick=None, items=[],
+            title=None, icon=None, icon_color=None, data=None, onclick=None, menu_items=[],
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
+            visible=visible, disabled=disabled, data=data)
         
         self.primary = primary
         self.compound = compound
@@ -153,21 +154,20 @@ class Button(Control):
         self.title = title
         self.icon = icon
         self.icon_color = icon_color
-        self.data = data
         self.onclick = onclick
-        self._items = items
+        self._menu_items = menu_items
 
     def _get_control_name(self):
         return "button"
 
-# items
+# menu_items
     @property
-    def items(self):
-        return self._items
+    def menu_items(self):
+        return self._menu_items
 
-    @items.setter
-    def items(self, value):
-        self._items = value
+    @menu_items.setter
+    def menu_items(self, value):
+        self._menu_items = value
 
 # onclick
     @property
@@ -292,14 +292,5 @@ class Button(Control):
     def icon_color(self, value):
         self._set_attr("iconColor", value)
 
-# data
-    @property
-    def data(self):
-        return self._get_attr("data")
-
-    @data.setter
-    def data(self, value):
-        self._set_attr("data", value)
-
     def _get_children(self):
-        return self._items
+        return self._menu_items

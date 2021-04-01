@@ -31,16 +31,3 @@ def test_add_text_inside_stack():
     # open page
     p = pglet.page('test_text', no_window=True)
     p.clean()
-
-    # add control first time
-    p.add(stack)
-    btnId = btn.id
-    assert btnId.startswith("header:_"), "Test failed"
-    assert txt.id == "header:txt1", "Test failed"
-    assert stack.id == "header", "Test failed"
-
-    # add control second time
-    p.add(stack)
-    assert btn.id.startswith("header:_") and btn.id != btnId, "Test failed"
-    assert txt.id == "header:txt1", "Test failed"
-    assert stack.id == "header", "Test failed"
