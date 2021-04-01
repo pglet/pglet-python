@@ -1,4 +1,5 @@
 import os
+import time
 
 import sys,inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -18,22 +19,21 @@ class TodoApp():
     def __init__(self):
         self.tasks = []
         self.new_task = Textbox(placeholder='Whats needs to be done?', width='100%')
-        self.tasks_view = Stack()
+        self.tasks_view = Stack(data="aaa")
+        self.view2 = Stack(data="aaa")
         self.filter = Tabs(value='all', onchange=self.tabs_changed, tabs=[
-                Tab(text='all'),
-                Tab(text='active'),
-                Tab(text='completed')])
+                Tab(text='all')])
         self.view = Stack(width='70%', controls=[
-            Stack(horizontal=True, controls=[
                 self.new_task,
-                Button(primary=True, text='Add', onclick=self.add_clicked)]),
-            Stack(gap=25, controls=[
+                Button(primary=True, text='Add', onclick=self.add_clicked),
                 self.filter,
                 self.tasks_view
             ])
-        ])
 
     def update(self):
+        # print("TASKS:", self.tasks)
+        # print("VIEW TASKS:", self.tasks_view.controls)
+
         count = 0
         status = self.filter.value
         for task in self.tasks:
@@ -62,6 +62,13 @@ def main(page):
 
     app2 = TodoApp()
     page.add(app2.view)
+
+    time.sleep(5)
+
+    print(app1.tasks_view.controls)
+    print(app2.tasks_view.controls)
+    print(app1.view2.controls)
+    print(app2.view2.controls)
 
 #pglet.app("todo-app", target = main)
 page = pglet.page("todo-app", no_window=True)
