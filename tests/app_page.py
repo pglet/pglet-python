@@ -73,7 +73,7 @@ stack.controls.append(Textbox(multiline=True))
 chk.label = "Check it, again!"
 page.update()
 
-# stack.controls.pop(0)
-# page.update()
+stack.controls.pop(0)
+stack.update()
 
 input("Press Enter to exit...")

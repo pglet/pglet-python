@@ -146,6 +146,10 @@ class Control:
         self._set_attr("data", value)
 
 # public methods
+    def update(self):
+        if self.__page:
+            self.__page.update(self)
+
     def build_update_commands(self, index, added_controls, commands):
         update_attrs = self._get_cmd_attrs(update=True)
 
