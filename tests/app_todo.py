@@ -42,8 +42,6 @@ class Task():
 
     def delete_clicked(self, e):
         self.app.delete_task(self)
-        self.app.tasks_stack.controls.remove(self.stack)
-        self.app.update()
     
     def checkbox_changed(self, e):
         if (self.checkbox.value and self.app.tabs.value=='active') or (self.checkbox.value==False and self.app.tabs.value=='completed'):
@@ -86,27 +84,25 @@ class TodoApp():
 
     def delete_task(self, task):
         self.tasks.remove(task)
+        self.tasks_stack.controls.remove(task.stack)
+        self.update()
     
     def add_clicked(self, e):
         task_name = self.new_task.value
         task = Task(self, task_name)
-        self.new_task.value = ''
+        self.tasks.append(task)
         self.tasks_stack.controls.append(task.stack)
+        self.new_task.value = ''
         self.update()       
     
     def clear_clicked(self, e):
         for task in self.tasks[:]:
             if task.checkbox.value == True:
-                self.tasks_stack.controls.remove(task.stack)
                 self.delete_task(task)
-        self.update()
 
     def tabs_changed(self, e):
         for task in self.tasks:
-            if e.data=='all' or (e.data=='active' and task.checkbox.value==False) or (e.data=='completed' and task.checkbox.value):
-                task.stack.visible = True
-            else:
-                task.stack.visible = False
+            task.stack.visible = e.data=='all' or (e.data=='active' and task.checkbox.value==False) or (e.data=='completed' and task.checkbox.value)
         self.update()
 
 def main(page):
