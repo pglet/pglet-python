@@ -158,8 +158,32 @@ class Column(Control):
 
 # Item
 class Item(Control):
-    def __init__(self):
+    def __init__(self, obj):
         Control.__init__(self)
+        assert obj != None, "Obj cannot be empty"
+        self.__obj = obj
+
+    @property
+    def obj(self):
+        return self.__obj
+
+    def _set_attr(self, name, value, dirty=True):
+        self._Control__set_attr(name, value, dirty=False)
+
+        print("grid item set:", name, value)
+
+    def _fetch_attrs(self):
+        # reflection
+        for property, val in vars(self.__obj).items():
+            data_type = "string"
+            if isinstance(val, bool):
+                data_type = "bool"
+            elif isinstance(val, float):
+                data_type = "float"
+            origVal = self._get_attr(property, data_type=data_type)
+
+            if val != origVal:
+                self._Control__set_attr(property, val, dirty=True)
 
     def _get_control_name(self):
         return "item"
@@ -215,10 +239,8 @@ class Items(Control):
         items = []
         if self.__items and len(self.__items) > 0:
             for obj in self.__items:
-                item = Item()
-                # reflection
-                for property, value in vars(obj).items():
-                    item._set_attr(property, value)
+                item = Item(obj)
+                item._fetch_attrs()
                 items.append(item)
                 
         return items

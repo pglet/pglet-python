@@ -45,12 +45,15 @@ class Control:
         else:
             return s_val
 
-    def _set_attr(self, name, value):
+    def _set_attr(self, name, value, dirty=True):
+        self.__set_attr(name, value, dirty)
+
+    def __set_attr(self, name, value, dirty=True):
         if value == None:
             if name in self.__attrs:
                 del self.__attrs[name]
             return
-        self.__attrs[name] = (value, True)        
+        self.__attrs[name] = (value, dirty)
 
 # event_handlers
     @property

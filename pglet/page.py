@@ -90,7 +90,7 @@ class Page(Control):
                 if id in self.__index:
                     for name in props:
                         if name != "i":
-                            self.__index[id]._Control__attrs[name] = (props[name], False)
+                            self.__index[id]._set_attr(name, props[name], dirty=False)
         
         elif e.target in self.__index:
             handler = self.__index[e.target].event_handlers.get(e.name)
