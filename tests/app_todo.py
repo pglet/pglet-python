@@ -9,34 +9,83 @@ import pglet
 from pglet import Page, Text, Checkbox, Button, Stack, Textbox, Tabs, Tab
 
 class Task():
-    def __init__(self, id, name, on_status_change, on_edit_clicked, on_save_clicked, on_delete_clicked):
+    def __init__(self, app, id, name):
+        self.app = app
         self.id = str(id)
         self.completed = False
-        self.checkbox = Checkbox(value=False, label=name, data=self.id, onchange=on_status_change)
+        self.checkbox = Checkbox(value=False, label=name, data=self.id, onchange=self.checkbox_changed)
         self.textbox = Textbox(value=name, width='100%')
         self.stack_view = Stack(horizontal=True, horizontal_align='space-between',
                 vertical_align='center', controls=[
                 self.checkbox,
                 Stack(horizontal=True, gap='0', controls=[
-                    Button(icon='Edit', title='Edit todo', data=self.id, onclick=on_edit_clicked),
-                    Button(icon='Delete', title='Delete todo', data=self.id, onclick=on_delete_clicked)]),
+                    Button(icon='Edit', title='Edit todo', data=self.id, onclick=self.edit_clicked),
+                    Button(icon='Delete', title='Delete todo', data=self.id, onclick=self.delete_clicked)]),
                 ])
         
         #stack displayed when edit is clicked 
         self.stack_edit = Stack(visible=False, horizontal=True, horizontal_align='space-between',
                 vertical_align='center', controls=[
-                self.textbox, Button(text='Save', data=self.id, onclick=on_save_clicked)
+                self.textbox, Button(text='Save', data=self.id, onclick=self.save_clicked)
                 ])
         self.stack = Stack(controls=[self.stack_view, self.stack_edit])
 
-class Database():
-    def __init__(self):
+    def edit_clicked(self, e):
+        self.stack_view.visible = False
+        self.stack_edit.visible = True
+        self.app.update()
+
+    def save_clicked(self, e):
+        self.checkbox.label = self.textbox.value
+        self.stack_view.visible = True
+        self.stack_edit.visible = False
+        self.app.update()
+
+    def delete_clicked(self, e):
+        self.app.delete_task(self)
+        self.app.tasks_stack.controls.remove(self.stack)
+        self.app.update()
+    
+    def checkbox_changed(self, e):
+        if (self.checkbox.value and self.app.tabs.value=='active') or (self.checkbox.value==False and self.app.tabs.value=='completed'):
+            self.stack.visible = False
+        self.app.update()
+
+class TodoApp():
+    def __init__(self, page):
         self.tasks = []
         self.last_id = 0
+        self.page = page
+        self.new_task = Textbox(placeholder='Whats needs to be done?', width='100%')
+        self.tasks_stack = Stack()
+        self.items_left = Text('0 active items')
+        self.tabs = Tabs(value='all', onchange=self.tabs_changed, tabs=[
+                Tab(text='all'),
+                Tab(text='active'),
+                Tab(text='completed')])
+        self.stack = Stack(width='70%', controls=[
+            Text(value='Todos', size='large', align='center'),
+            Stack(horizontal=True, controls=[
+                self.new_task,
+                Button(id='add', primary=True, text='Add', onclick=self.add_clicked)]),
+            Stack(gap=25, controls=[
+                self.tabs,
+                self.tasks_stack,
+                Stack(horizontal=True, horizontal_align='space-between', vertical_align='center', controls=[
+                    self.items_left,
+                    Button(id='clear_completed', text='Clear completed', onclick=self.clear_clicked)
+                ])
+            ])
+        ])
 
-    def add_task(self, name, on_status_change, on_edit_clicked, on_save_clicked, on_delete_clicked):
+    def update(self):
+        count = self.count_active_tasks()
+        self.items_left.value = f"{count} active items left"
+        self.page.update()
+
+    def add_task(self, name):
         self.last_id += 1
-        task = Task(self.last_id, name, on_status_change, on_edit_clicked, on_save_clicked, on_delete_clicked)
+        task = Task(self, self.last_id, name)
         self.tasks.append(task)
         return task
 
@@ -54,103 +103,39 @@ class Database():
             if task.checkbox.value == False:
                 result += 1
         return result
-
-def main(page):
-    db = Database()
-    page.title = "Python Todo with Pglet"
-    page.update()
-    page.clean(True)
-
-    def update_count():
-        count = db.count_active_tasks()
-        items_left.value = f"{count} active items left"
-
-    def add_clicked(e):
-        task_name = new_task.value
-        t = db.add_task(task_name, checkbox_changed, edit_clicked, save_clicked, delete_clicked)
-        new_task.value = ''
-        add_task_stack(t)       
     
-    def clear_clicked(e):
-        for task in db.tasks[:]:
-            print(task.checkbox.value)
+    def add_clicked(self, e):
+        task_name = self.new_task.value
+        t = self.add_task(task_name)
+        self.new_task.value = ''
+        self.add_task_stack(t)
+        self.update()       
+    
+    def clear_clicked(self, e):
+        for task in self.tasks[:]:
             if task.checkbox.value == True:
-                tasks_stack.controls.remove(task.stack)
-                db.delete_task(task)
-        update_count()
-        page.update()
+                self.tasks_stack.controls.remove(task.stack)
+                self.delete_task(task)
+        self.update()
 
-    def edit_clicked(e):
-        id = e.control.data
-        task = db.find_task(id)
-        task.stack_view.visible = False
-        task.stack_edit.visible = True
-        page.update()
+    def add_task_stack(self, task):
+        self.tasks_stack.controls.append(task.stack)
+        self.update()
 
-    def save_clicked(e):
-        id = e.control.data
-        task = db.find_task(id)
-        task.checkbox.label = task.textbox.value
-        task.stack_view.visible = True
-        task.stack_edit.visible = False
-        page.update()
-
-
-    def delete_clicked(e):
-        id = e.control.data
-        task = db.find_task(id)
-        db.delete_task(task)
-        tasks_stack.controls.remove(task.stack)
-        update_count()
-        page.update()
-
-    def checkbox_changed(e):
-        id = e.control.data
-        task = db.find_task(id)
-
-        if (task.checkbox.value and tabs.value=='active') or (task.checkbox.value==False and tabs.value=='completed'):
-            task.stack.visible = False
-
-        update_count()
-        page.update()
-
-    def add_task_stack(task):
-        tasks_stack.controls.append(task.stack)
-        update_count()
-        page.update()
-
-    def tabs_changed(e):
-        for task in db.tasks:
+    def tabs_changed(self, e):
+        for task in self.tasks:
             if e.data=='all' or (e.data=='active' and task.checkbox.value==False) or (e.data=='completed' and task.checkbox.value):
                 task.stack.visible = True
             else:
                 task.stack.visible = False
+        self.update()
 
-        page.update()
-    
-    new_task = Textbox(placeholder='Whats needs to be done?', width='100%')
-    tasks_stack = Stack()
-
-    items_left = Text('0 active items')
-    tabs = Tabs(value='all', onchange=tabs_changed, tabs=[
-                Tab(text='all'),
-                Tab(text='active'),
-                Tab(text='completed')])
-
-    page.add(Stack(width='70%', controls=[
-        Text(value='Todos', size='large', align='center'),
-        Stack(horizontal=True, controls=[
-            new_task,
-            Button(id='add', primary=True, text='Add', onclick=add_clicked)]),
-        Stack(gap=25, controls=[
-            tabs,
-            tasks_stack,
-            Stack(horizontal=True, horizontal_align='space-between', vertical_align='center', controls=[
-                items_left,
-                Button(id='clear_completed', text='Clear completed', onclick=clear_clicked)
-            ])
-        ])
-    ])) 
+def main(page):
+    db = TodoApp(page)
+    page.title = "Python Todo with Pglet"
+    page.update()
+    page.clean(True)
+    page.add(db.stack)
 
 #pglet.app("todo-app", target = main)
 page = pglet.page("todo-app")
