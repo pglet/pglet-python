@@ -11,10 +11,9 @@ from pglet import Page, Text, Checkbox, Button, Stack, Textbox, Tabs, Tab
 class Task():
     def __init__(self, app, name):
         self.app = app
-        self.completed = False
         self.checkbox = Checkbox(value=False, label=name, onchange=self.checkbox_changed)
-        self.textbox = Textbox(value=name, width='100%')
-        self.stack_view = Stack(horizontal=True, horizontal_align='space-between',
+        self.edit_name = Textbox(width='100%')
+        self.display_control = Stack(horizontal=True, horizontal_align='space-between',
                 vertical_align='center', controls=[
                 self.checkbox,
                 Stack(horizontal=True, gap='0', controls=[
@@ -23,21 +22,22 @@ class Task():
                 ])
         
         #stack displayed when edit is clicked 
-        self.stack_edit = Stack(visible=False, horizontal=True, horizontal_align='space-between',
+        self.edit_control = Stack(visible=False, horizontal=True, horizontal_align='space-between',
                 vertical_align='center', controls=[
-                self.textbox, Button(text='Save', onclick=self.save_clicked)
+                self.edit_name, Button(text='Save', onclick=self.save_clicked)
                 ])
-        self.stack = Stack(controls=[self.stack_view, self.stack_edit])
+        self.view = Stack(controls=[self.display_control, self.edit_control])
 
     def edit_clicked(self, e):
-        self.stack_view.visible = False
-        self.stack_edit.visible = True
+        self.edit_name.value = self.checkbox.label
+        self.display_control.visible = False
+        self.edit_control.visible = True
         self.app.update()
 
     def save_clicked(self, e):
-        self.checkbox.label = self.textbox.value
-        self.stack_view.visible = True
-        self.stack_edit.visible = False
+        self.checkbox.label = self.edit_name.value
+        self.display_control.visible = True
+        self.edit_control.visible = False
         self.app.update()
 
     def delete_clicked(self, e):
@@ -45,7 +45,7 @@ class Task():
     
     def checkbox_changed(self, e):
         if (self.checkbox.value and self.app.tabs.value=='active') or (self.checkbox.value==False and self.app.tabs.value=='completed'):
-            self.stack.visible = False
+            self.view.visible = False
         self.app.update()
 
 class TodoApp():
@@ -59,7 +59,7 @@ class TodoApp():
                 Tab(text='all'),
                 Tab(text='active'),
                 Tab(text='completed')])
-        self.stack = Stack(width='70%', controls=[
+        self.view = Stack(width='70%', controls=[
             Text(value='Todos', size='large', align='center'),
             Stack(horizontal=True, controls=[
                 self.new_task,
@@ -84,14 +84,14 @@ class TodoApp():
 
     def delete_task(self, task):
         self.tasks.remove(task)
-        self.tasks_stack.controls.remove(task.stack)
+        self.tasks_stack.controls.remove(task.view)
         self.update()
     
     def add_clicked(self, e):
         task_name = self.new_task.value
         task = Task(self, task_name)
         self.tasks.append(task)
-        self.tasks_stack.controls.append(task.stack)
+        self.tasks_stack.controls.append(task.view)
         self.new_task.value = ''
         self.update()       
     
@@ -102,7 +102,7 @@ class TodoApp():
 
     def tabs_changed(self, e):
         for task in self.tasks:
-            task.stack.visible = e.data=='all' or (e.data=='active' and task.checkbox.value==False) or (e.data=='completed' and task.checkbox.value)
+            task.view.visible = e.data=='all' or (e.data=='active' and task.checkbox.value==False) or (e.data=='completed' and task.checkbox.value)
         self.update()
 
 def main(page):
@@ -110,7 +110,7 @@ def main(page):
     page.title = "Python Todo with Pglet"
     page.update()
     page.clean(True)
-    page.add(app.stack)
+    page.add(app.view)
 
 #pglet.app("todo-app", target = main)
 page = pglet.page("todo-app")
