@@ -3,7 +3,7 @@ from .control import Control
 
 # Item
 class Item(Control):
-    def __init__(self, key=None, text=None, icon=None, icon_color=None, url=None, items=[],
+    def __init__(self, key=None, text=None, icon=None, icon_color=None, url=None, items=None,
         new_window=None, expanded=None):
         Control.__init__(self)
         #key and text are optional for group item but key or text are required for level 2 and deeper items 
@@ -15,7 +15,10 @@ class Item(Control):
         self.url = url
         self.new_window = new_window
         self.expanded = expanded
-        self._items = items
+        self.__items = []
+        if items != None:
+            for item in items:
+                self.__items.append(item)
 
     def _get_control_name(self):
         return "item"
@@ -23,11 +26,11 @@ class Item(Control):
     # items
     @property
     def items(self):
-        return self._items
+        return self.__items
 
     @items.setter
     def items(self, value):
-        self._items = value
+        self.__items = value
 
     # key
     @property
@@ -95,10 +98,10 @@ class Item(Control):
         self._set_attr("expanded", value)
 
     def _get_children(self):
-        return self._items
+        return self.__items
 
 class Nav(Control):
-    def __init__(self, id=None, value=None, items=[],
+    def __init__(self, id=None, value=None, items=None,
             onchange=None, onexpand=None, oncollapse=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
@@ -111,7 +114,10 @@ class Nav(Control):
         self.onchange = onchange
         self.onexpand = onexpand
         self.oncollapse = oncollapse
-        self._items = items
+        self.__items = []
+        if items != None:
+            for item in items:
+                self.__items.append(item)
 
     def _get_control_name(self):
         return "nav"
@@ -119,11 +125,11 @@ class Nav(Control):
     # items
     @property
     def items(self):
-        return self._items
+        return self.__items
 
     @items.setter
     def items(self, value):
-        self._items = value
+        self.__items = value
         
     # onchange
     @property
@@ -162,4 +168,4 @@ class Nav(Control):
         self._set_attr("value", value)
 
     def _get_children(self):
-        return self._items
+        return self.__items

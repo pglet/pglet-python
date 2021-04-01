@@ -5,7 +5,7 @@ from .control import Control
 class Item(Control):
     def __init__(self, text=None, secondary_text=None, url=None, new_window=None,
     icon=None, icon_color=None, icon_only=None, split=None, divider=None,
-    onclick=None, items=[]):
+    onclick=None, items=None):
         Control.__init__(self)
 
         self.text = text
@@ -18,7 +18,10 @@ class Item(Control):
         self.split = split
         self.divider = divider
         self.onclick = onclick
-        self._items = items
+        self.__items = []
+        if items != None:
+            for item in items:
+                self.__items.append(item)
 
     def _get_control_name(self):
         return "item"
@@ -35,11 +38,11 @@ class Item(Control):
     # items
     @property
     def items(self):
-        return self._items
+        return self.__items
 
     @items.setter
     def items(self, value):
-        self._items = value
+        self.__items = value
 
     # text
     @property
@@ -127,65 +130,73 @@ class Item(Control):
         self._set_attr("divider", value)
 
     def _get_children(self):
-        return self._items
+        return self.__items
 
 # Overflow
 class Overflow(Control):
-    def __init__(self, id=None, items=[]):
+    def __init__(self, id=None, items=None):
         Control.__init__(self, id=id)
     
-        self._items = items
+        self.__items = []
+        if items != None:
+            for item in items:
+                self.__items.append(item)
 
     # items
     @property
     def items(self):
-        return self._items
+        return self.__items
 
     @items.setter
     def items(self, value):
-        self._items = value
+        self.__items = value
 
     def _get_control_name(self):
         return "overflow"
 
     def _get_children(self):
-        return self._items
+        return self.__items
 
 # Far
 class Far(Control):
-    def __init__(self, id=None, items=[]):
+    def __init__(self, id=None, items=None):
         Control.__init__(self, id=id)
     
-        self._items = items
+        self.__items = []
+        if items != None:
+            for item in items:
+                self.__items.append(item)
 
     # items
     @property
     def items(self):
-        return self._items
+        return self.__items
 
     @items.setter
     def items(self, value):
-        self._items = value
+        self.__items = value
 
     def _get_control_name(self):
         return "far"
 
     def _get_children(self):
-        return self._items
-
+        return self.__items
 
 
 class Toolbar(Control):
-    def __init__(self, id=None, inverted=None, items=[], overflow=[], far=[],
+    def __init__(self, id=None, inverted=None, items=None, overflow=None, far=None,
             width=None, height=None, padding=None, margin=None, visible=None, disabled=None):
         
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
             visible=visible, disabled=disabled)
 
-        self._items = items
-        self._overflow = Overflow(items=overflow)
-        self._far = Far(items=far)
+        self.__items = []
+        if items != None:
+            for item in items:
+                self.__items.append(item)
+        self.__overflow = Overflow(items=overflow)
+        self.__far = Far(items=far)
         self.inverted = inverted
         
     def _get_control_name(self):
@@ -204,35 +215,35 @@ class Toolbar(Control):
     # items
     @property
     def items(self):
-        return self._items
+        return self.__items
 
     @items.setter
     def items(self, value):
-        self._items = value
+        self.__items = value
 
     # far
     @property
     def far_items(self):
-        return self._far.items
+        return self.__far.items
 
     @far_items.setter
     def far_items(self, value):
-        self._far.items = value
+        self.__far.items = value
 
     # overflow
     @property
     def overflow_items(self):
-        return self._overflow.items
+        return self.__overflow.items
 
     @overflow_items.setter
     def overflow_items(self, value):
-        self._overflow.items = value
+        self.__overflow.items = value
 
     def _get_children(self):
         result=[]
-        if self._items and len(self._items) > 0:
-            for item in self._items:
+        if self.__items and len(self.__items) > 0:
+            for item in self.__items:
                 result.append(item)
-        result.append(self._overflow)
-        result.append(self._far)
+        result.append(self.__overflow)
+        result.append(self.__far)
         return result

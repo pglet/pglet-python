@@ -74,40 +74,40 @@ class P(Control):
 
 # Data
 class Data(Control):
-    def __init__(self, id=None, points=[]):
+    def __init__(self, id=None, points=None):
         Control.__init__(self, id=id)
     
-        self._points = []
-        if points and len(points) > 0:
+        self.__points = []
+        if points != None:
             for point in points:
-                self.add_point(point)
+                self.__points.append(point)
 
     # points
     @property
     def points(self):
-        return self._points
+        return self.__points
+
+    @points.setter
+    def points(self, value):
+        self.__points = value
 
     def _get_control_name(self):
         return "data"
 
-    def add_point(self, point):
-        assert isinstance(point, P), ("data can hold points only")
-        self._points.append(point)
-
     def _get_children(self):
-        return self._points
+        return self.__points
 
 
 class VerticalBarChart(Control):
     def __init__(self, id=None, legend=None, tooltips=None, bar_width=None, colors=None, 
-            y_min=None, y_max=None, y_ticks=None, y_format=None, x_type=None, data=[],
+            y_min=None, y_max=None, y_ticks=None, y_format=None, x_type=None, points=None,
             width=None, height=None, padding=None, margin=None, visible=None, disabled=None):
         
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
             visible=visible, disabled=disabled)
 
-        self._data = Data(points=data)
+        self.__data = Data(points=points)
         self.ledend = legend
         self.tooltips = tooltips
         self.bar_width = bar_width
@@ -124,11 +124,11 @@ class VerticalBarChart(Control):
     # points
     @property
     def points(self):
-        return self._data.points
+        return self.__data.points
 
     @points.setter
     def points(self, value):
-        self._data.points = value
+        self.__data.points = value
     
     # legend
     @property
@@ -208,4 +208,4 @@ class VerticalBarChart(Control):
         self._set_attr("xType", value)
 
     def _get_children(self):
-        return [self._data]
+        return [self.__data]

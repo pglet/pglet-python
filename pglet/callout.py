@@ -3,7 +3,7 @@ from .control import Control
 
 class Callout(Control):
     def __init__(self, id=None, target=None, position=None, gap=None, beak=None, beak_width=None,
-            page_padding=None, focus=None, cover=None, visible=None, controls=[], ondismiss=None,
+            page_padding=None, focus=None, cover=None, visible=None, controls=None, ondismiss=None,
             width=None, height=None, padding=None, margin=None, disabled=None):
         
         Control.__init__(self, id=id,
@@ -19,7 +19,10 @@ class Callout(Control):
         self.focus = focus
         self.cover = cover
         self.ondismiss = ondismiss
-        self._controls = controls
+        self.__controls = []
+        if controls != None:
+            for control in controls:
+                self.__controls.append(control)
 
     def _get_control_name(self):
         return "callout"
@@ -27,11 +30,11 @@ class Callout(Control):
     # controls
     @property
     def controls(self):
-        return self._controls
+        return self.__controls
 
     @controls.setter
     def controls(self, value):
-        self._controls = value
+        self.__controls = value
     
     # ondismiss
     @property
@@ -121,4 +124,4 @@ class Callout(Control):
         self._set_attr("cover", value)
 
     def _get_children(self):
-        return self._controls
+        return self.__controls

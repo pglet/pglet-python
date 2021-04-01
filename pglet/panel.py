@@ -3,30 +3,33 @@ from .control import Control
 
 # Footer
 class Footer(Control):
-    def __init__(self, id=None, controls=[]):
+    def __init__(self, id=None, controls=None):
         Control.__init__(self, id=id)
     
-        self._controls = controls
+        self.__controls = []
+        if controls != None:
+            for control in controls:
+                self.__controls.append(control)
 
     # controls
     @property
     def controls(self):
-        return self._controls
+        return self.__controls
 
     @controls.setter
     def controls(self, value):
-        self._controls = value
+        self.__controls = value
 
     def _get_control_name(self):
         return "footer"
 
     def _get_children(self):
-        return self._controls
+        return self.__controls
 
 class Panel(Control):
     def __init__(self, id=None, open=None, title=None, type=None,
             auto_dismiss=None, light_dismiss=None, width=None, blocking=None, data=None, 
-            controls=[], footer=[], ondismiss=None, height=None,
+            controls=None, footer=None, ondismiss=None, height=None,
             padding=None, margin=None, visible=None, disabled=None):
         
         Control.__init__(self, id=id,
@@ -41,8 +44,11 @@ class Panel(Control):
         self.width = width
         self.blocking = blocking
         self.ondismiss = ondismiss
-        self._footer = Footer(controls=footer)
-        self._controls = controls
+        self.__footer = Footer(controls=footer)
+        self.__controls = []
+        if controls != None:
+            for control in controls:
+                self.__controls.append(control)
 
     def _get_control_name(self):
         return "panel"
@@ -50,16 +56,16 @@ class Panel(Control):
     # controls
     @property
     def controls(self):
-        return self._controls
+        return self.__controls
 
     @controls.setter
     def controls(self, value):
-        self._controls = value
+        self.__controls = value
 
     # footer
     @property
     def footer(self):
-        return self._footer 
+        return self.__footer 
     
     # ondismiss
     @property
@@ -139,8 +145,8 @@ class Panel(Control):
 
     def _get_children(self):
         result=[]
-        if self._controls and len(self._controls) > 0:
-            for control in self._controls:
+        if self.__controls and len(self.__controls) > 0:
+            for control in self.__controls:
                 result.append(control)
-        result.append(self._footer)
+        result.append(self.__footer)
         return result
