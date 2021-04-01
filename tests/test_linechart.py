@@ -5,7 +5,7 @@ from pglet.linechart import P, Data
 
 def test_verticalbarchart_add():
     lc = LineChart(legend=True, tooltips=True, stroke_width=4, y_min=0, y_max=100, y_ticks=2, y_format='{y}%', 
-                x_type='number', datas=[
+                x_type='number', lines=[
                     Data(color='yellow', legend='yellow color', points=[
                         P(x=1, y=100),
                         P(x=5, y=50)]),

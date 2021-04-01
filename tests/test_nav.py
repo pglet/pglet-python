@@ -26,9 +26,10 @@ def test_nav():
     assert isinstance(ni, Item)
 
 def test_nav_with_just_keys():
-    n = pglet.Nav(id="list1", value="list1")
-    n.add_item("key1")
-    n.add_item("key2")
+    n = pglet.Nav(id="list1", value="list1", items=[
+        Item(key="key1"),
+        Item(key="key2")
+    ])
     assert n.get_cmd_str(indent='  ') == (
         '  nav id="list1" value="list1"\n'
         '    item key="key1"\n'
@@ -37,22 +38,3 @@ def test_nav_with_just_keys():
 
     ni = Item("key1")
     assert isinstance(ni, Item)
-
-def test_nav_update():
-    n = pglet.Nav(id="list1", value="list1", items=[
-        Item("key1"),
-        Item("key2")
-    ])
-
-    p = pglet.page(no_window=True)
-    p.add(n)
-
-    assert n.get_cmd_str(update=True) == '', "Test failed"
-
-    n.items[0].key = 1
-    n.items[1].text = "Key 2"
-
-    assert n.get_cmd_str(update=True) == (
-        '"list1:_1" key="1"\n'
-        '"list1:_2" text="Key 2"'
-    ), "Test failed"

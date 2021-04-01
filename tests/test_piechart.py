@@ -4,7 +4,7 @@ from pglet.piechart import P
 
 
 def test_piechart_add():
-    pc = PieChart(legend=True, tooltips=True, inner_value=40, inner_radius=42, width='100%', data=[
+    pc = PieChart(legend=True, tooltips=True, inner_value=40, inner_radius=42, width='100%', points=[
                     P(value=20, color='yellow', legend='Yellow color', tooltip='20%'),
                     P(value=30, color='green', legend='Green color', tooltip='30%')])
 

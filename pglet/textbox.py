@@ -119,4 +119,4 @@ class Textbox(Control):
         if handler != None:
             self._set_attr("onchange", True)
         else:
-            self._set_attr("onchange", False)
+            self._set_attr("onchange", None)

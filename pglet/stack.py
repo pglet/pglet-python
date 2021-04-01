@@ -235,7 +235,7 @@ class Stack(Control):
         if handler != None:
             self._set_attr("onsubmit", True)
         else:
-            self._set_attr("onsubmit", False)
+            self._set_attr("onsubmit", None)
 
     def _get_children(self):
         return self._controls
