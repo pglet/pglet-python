@@ -27,6 +27,14 @@ def display_items(e):
     for item in items:
         print(item.first_name, item.last_name, item.employee)
 
+n = 1
+def add_item(e):
+    global n
+    grid.items.pop(0)
+    grid.items.append(Contact(first_name=f'First {n}', last_name=f'Last {n}', employee=False))
+    grid.update()
+    n += 1
+
 grid = Grid(selection='multiple', compact=True, header_visible=True, shimmer_lines=1, columns=[
     Column(field_name="first_name", name='First name', icon='mail', icon_only=True,
     sortable='True', sort_field='sort field name', sorted='false', resizable=False, min_width=100, max_width=200),
@@ -39,7 +47,8 @@ grid = Grid(selection='multiple', compact=True, header_visible=True, shimmer_lin
 ], items=items)
 
 btn = Button("Show items", onclick=display_items)
+btnAdd = Button("Add item", onclick=add_item)
 
-page.add(grid, btn)
+page.add(grid, btn, btnAdd)
 
 input("Press Enter to exit...")

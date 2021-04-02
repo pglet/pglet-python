@@ -221,6 +221,7 @@ class Items(Control):
     def __init__(self, id=None, items=None):
         Control.__init__(self, id=None)
     
+        self.__map = {}
         self.__items = []
         if items != None:
             for item in items:
@@ -242,9 +243,20 @@ class Items(Control):
         items = []
         if self.__items and len(self.__items) > 0:
             for obj in self.__items:
-                item = Item(obj)
+                item = self.__map.get(obj)
+                if item == None:
+                    item = Item(obj)
+                    self.__map[obj] = item
                 item._fetch_attrs()
                 items.append(item)
+        
+        del_objs = []
+        for obj, item in self.__map.items():
+            if item not in items:
+                del_objs.append(obj)
+
+        for obj in del_objs:
+            del self.__map[obj]
                 
         return items
 
