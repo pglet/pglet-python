@@ -17,14 +17,8 @@ class Contact():
         self.last_name = last_name
         self.employee = employee
 
-items = [
-    Contact(first_name='John', last_name='Smith', employee=False),
-    Contact(first_name='Jack', last_name='Brown', employee=True),
-    Contact(first_name='Alice', last_name='Fox', employee=False)
-]
-
 def display_items(e):
-    for item in items:
+    for item in grid.items:
         print(item.first_name, item.last_name, item.employee)
 
 n = 1
@@ -44,7 +38,11 @@ grid = Grid(selection='multiple', compact=True, header_visible=True, shimmer_lin
     Column(field_name="employee", name='Is employee', template_controls=[
         Checkbox(value_field="employee")
     ])    
-], items=items)
+], items=[
+    Contact(first_name='John', last_name='Smith', employee=False),
+    Contact(first_name='Jack', last_name='Brown', employee=True),
+    Contact(first_name='Alice', last_name='Fox', employee=False)
+])
 
 btn = Button("Show items", onclick=display_items)
 btnAdd = Button("Add item", onclick=add_item)
