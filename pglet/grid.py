@@ -168,9 +168,12 @@ class Item(Control):
         return self.__obj
 
     def _set_attr(self, name, value, dirty=True):
-        self._Control__set_attr(name, value, dirty=False)
 
-        print("grid item set:", name, value)
+        if value == None:
+            return
+
+        self._set_attr_internal(name, value, dirty=False)
+        setattr(self.__obj, name, value)
 
     def _fetch_attrs(self):
         # reflection
@@ -183,7 +186,7 @@ class Item(Control):
             origVal = self._get_attr(property, data_type=data_type)
 
             if val != origVal:
-                self._Control__set_attr(property, val, dirty=True)
+                self._set_attr_internal(property, val, dirty=True)
 
     def _get_control_name(self):
         return "item"

@@ -46,9 +46,9 @@ class Control:
             return s_val
 
     def _set_attr(self, name, value, dirty=True):
-        self.__set_attr(name, value, dirty)
+        self._set_attr_internal(name, value, dirty)
 
-    def __set_attr(self, name, value, dirty=True):
+    def _set_attr_internal(self, name, value, dirty=True):
         if value == None:
             if name in self.__attrs:
                 del self.__attrs[name]
