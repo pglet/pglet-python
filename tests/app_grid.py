@@ -3,6 +3,8 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 
+from typing import get_type_hints
+from dataclasses import dataclass
 import pglet
 from pglet import Grid, Column, Textbox, Checkbox, Button
 
@@ -12,10 +14,12 @@ page.title = "Grid test"
 page.update()
 
 class Contact():
-    def __init__(self, first_name, last_name, employee):
-        self.first_name: str = first_name
+    def __init__(self, first_name: str, last_name: str, employee: int):
+        self.first_name = first_name
         self.last_name = last_name
         self.employee = employee
+
+print(get_type_hints(Contact))
 
 def display_items(e):
     for item in grid.items:
