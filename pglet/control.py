@@ -53,7 +53,9 @@ class Control:
             if name in self.__attrs:
                 del self.__attrs[name]
             return
-        self.__attrs[name] = (value, dirty)
+        orig_val = self.__attrs.get(name)
+        if orig_val == None or orig_val[0] != value:
+            self.__attrs[name] = (value, dirty)
 
 # event_handlers
     @property
