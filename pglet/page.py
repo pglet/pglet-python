@@ -80,7 +80,7 @@ class Page(Control):
             return self.update()
 
     def close(self):
-        self.__conn.send("close")
+        self.__conn.close()
 
     def __on_event(self, e):
         #print("on_event:", e.target, e.name, e.data)
