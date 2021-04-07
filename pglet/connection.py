@@ -42,7 +42,7 @@ class Connection:
     def __send(self, command):
         fire_and_forget = False
         cmdName = command.split(' ', 1)[0].strip()
-        if cmdName[len(cmdName) - 1] == 'f':
+        if cmdName[len(cmdName) - 1] == 'f' or cmdName.lower() == 'close':
             fire_and_forget = True
 
         if is_windows():

@@ -79,6 +79,9 @@ class Page(Control):
             self.__controls.clear()
             return self.update()
 
+    def close(self):
+        self.__conn.send("close")
+
     def __on_event(self, e):
         #print("on_event:", e.target, e.name, e.data)
 
