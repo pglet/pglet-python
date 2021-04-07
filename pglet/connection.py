@@ -73,6 +73,11 @@ class Connection:
                 evts = self.__wait_events_linux()
 
             for evt in evts:
+                if evt == None:
+                    return
+
+                print(evt.target, evt.name, evt.data)
+
                 if self.on_event != None:
                     self.on_event(evt)
                 
@@ -140,6 +145,8 @@ class Connection:
             yield self.__parse_event_line(line.strip('\n'))
     
     def __parse_event_line(self, line):
+        if line == "":
+            return None
         result_parts = re.split(r"\s", line, 2)
         return Event(result_parts[0], result_parts[1], result_parts[2])
 
