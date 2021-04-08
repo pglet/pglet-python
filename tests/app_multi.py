@@ -102,9 +102,21 @@ class TodoApp():
         self.update()
 
 def main(page):
+
+    print("Initial hash:", page.hash)
+
     page.title = "Python Todo with Pglet"
     page.update()
     page.clean(True)
+
+    def on_close(e):
+        print("session closed")
+
+    def on_hash_change(e):
+        print("hash changed:", e.data)
+
+    page.onclose = on_close
+    page.onhashchange = on_hash_change
 
     app1 = TodoApp()
     page.add(app1.view)

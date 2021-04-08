@@ -74,16 +74,15 @@ class Connection:
 
             for e in evts:
                 if e == None:
-                    return
-
-                if e.target == "page" and e.name == "close":
-                    self.close()
-                    return                    
+                    return                 
 
                 if self.on_event != None:
                     self.on_event(e)
-                
-                if e.target != "page" or e.name != "change":
+
+                if e.target == "page" and e.name == "close":
+                    self.close()
+                    return
+                elif e.target != "page" or e.name != "change":
                     self.last_event = e
                     self.event_available.set()
 
