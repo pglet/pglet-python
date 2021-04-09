@@ -42,7 +42,7 @@ class Connection:
     def __send(self, command):
         fire_and_forget = False
         cmdName = command.split(' ', 1)[0].strip()
-        if cmdName[len(cmdName) - 1] == 'f':
+        if cmdName[len(cmdName) - 1] == 'f' or cmdName.lower() == 'close':
             fire_and_forget = True
 
         if is_windows():
@@ -72,12 +72,18 @@ class Connection:
             else:
                 evts = self.__wait_events_linux()
 
-            for evt in evts:
+            for e in evts:
+                if e == None:
+                    return                 
+
                 if self.on_event != None:
-                    self.on_event(evt)
-                
-                if evt.target != "page" or evt.name != "change":
-                    self.last_event = evt
+                    self.on_event(e)
+
+                if e.target == "page" and e.name == "close":
+                    self.close()
+                    return
+                elif e.target != "page" or e.name != "change":
+                    self.last_event = e
                     self.event_available.set()
 
     def __init_windows(self):
@@ -140,8 +146,13 @@ class Connection:
             yield self.__parse_event_line(line.strip('\n'))
     
     def __parse_event_line(self, line):
+        if line == "":
+            return None
         result_parts = re.split(r"\s", line, 2)
         return Event(result_parts[0], result_parts[1], result_parts[2])
 
     def close(self):
-        raise Exception("Not implemented yet")
+        if self.win_command_pipe != None:
+            self.win_command_pipe.close()
+        if self.win_event_pipe != None:
+            self.win_event_pipe.close()

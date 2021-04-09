@@ -75,12 +75,15 @@ class P(Control):
 
 # Data
 class Data(Control):
-    def __init__(self, id=None, color=None, legend=None, points=[]):
+    def __init__(self, id=None, color=None, legend=None, points=None):
         Control.__init__(self, id=id)
     
-        self._points = points
         self.color = color
         self.legend = legend
+        self.__points = []
+        if points != None:
+            for point in points:
+                self.__points.append(point)
 
     # color
     @property
@@ -103,29 +106,33 @@ class Data(Control):
     # points
     @property
     def points(self):
-        return self._points
+        return self.__points
 
     @points.setter
     def points(self, value):
-        self._points = value
+        self.__points = value
 
     def _get_control_name(self):
         return "data"
 
     def _get_children(self):
-        return self._points
+        return self.__points
 
 
 class LineChart(Control):
     def __init__(self, id=None, legend=None, tooltips=None, stroke_width=None, 
-            y_min=None, y_max=None, y_ticks=None, y_format=None, x_type=None, lines=[],
+            y_min=None, y_max=None, y_ticks=None, y_format=None, x_type=None, lines=None,
             width=None, height=None, padding=None, margin=None, visible=None, disabled=None):
         
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
             visible=visible, disabled=disabled)
 
-        self._lines = lines
+        self.__lines = []
+        if lines != None:
+            for line in lines:
+                self.__lines.append(line)
+
         self.legend = legend
         self.tooltips = tooltips
         self.stroke_width = stroke_width
@@ -141,11 +148,11 @@ class LineChart(Control):
     # lines
     @property
     def lines(self):
-        return self._lines
+        return self.__lines
 
     @lines.setter
     def lines(self, value):
-        self._lines = value
+        self.__lines = value
 
     # legend
     @property
@@ -226,4 +233,4 @@ class LineChart(Control):
         self._set_attr("xType", value)
 
     def _get_children(self):
-        return self._lines
+        return self.__lines

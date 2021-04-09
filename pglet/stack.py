@@ -4,7 +4,7 @@ from .control import Control
 
 class Stack(Control):
 
-    def __init__(self, controls=[], id=None, horizontal=None, vertical_fill=None, horizontal_align=None,
+    def __init__(self, controls=None, id=None, horizontal=None, vertical_fill=None, horizontal_align=None,
             vertical_align=None, min_width=None, max_width=None, min_height=None, max_height=None, 
             gap=None, wrap=None, bgcolor=None, border=None, border_radius=None, border_left=None, 
             border_right=None, border_top=None, border_bottom=None, scrollx=None, scrolly=None, onsubmit=None,
@@ -34,7 +34,11 @@ class Stack(Control):
         self.scrollx = scrollx
         self.scrolly = scrolly
         self.onsubmit = onsubmit
-        self._controls = controls
+
+        self.__controls = []
+        if controls != None:
+            for control in controls:
+                self.__controls.append(control)
 
     def _get_control_name(self):
         return "stack"
@@ -42,11 +46,11 @@ class Stack(Control):
 # controls
     @property
     def controls(self):
-        return self._controls
+        return self.__controls
 
     @controls.setter
     def controls(self, value):
-        self._controls = value
+        self.__controls = value
 
 # horizontal
     @property
@@ -238,4 +242,4 @@ class Stack(Control):
             self._set_attr("onsubmit", None)
 
     def _get_children(self):
-        return self._controls
+        return self.__controls

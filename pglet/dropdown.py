@@ -32,7 +32,7 @@ class Option(Control):
 
 class Dropdown(Control):
     def __init__(self, label=None, id=None, value=None, placeholder=None,
-            error_message=None, onchange=None, options=[],
+            error_message=None, onchange=None, options=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None, data=None):
         Control.__init__(self, id=id,
@@ -43,7 +43,10 @@ class Dropdown(Control):
         self.placeholder = placeholder
         self.error_message = error_message
         self.onchange = onchange
-        self._options = options
+        self.__options = []
+        if options != None:
+            for option in options:
+                self.__options.append(option)
 
     def _get_control_name(self):
         return "dropdown"
@@ -51,11 +54,11 @@ class Dropdown(Control):
     # options
     @property
     def options(self):
-        return self._options
+        return self.__options
 
     @options.setter
     def options(self, value):
-        self._options = value
+        self.__options = value
         
     # onchange
     @property
@@ -103,4 +106,4 @@ class Dropdown(Control):
         self._set_attr("errorMessage", value)
 
     def _get_children(self):
-        return self._options
+        return self.__options

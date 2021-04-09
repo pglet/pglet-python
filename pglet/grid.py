@@ -5,7 +5,7 @@ from .control import Control
 class Column(Control):
     def __init__(self, id=None, name=None, icon=None, icon_only=None, 
         field_name=None, sortable=None, sort_field=None, sorted=None, resizable=None,
-        min_width=None, max_width=None, on_click=None, template_controls=[], onclick=None,
+        min_width=None, max_width=None, on_click=None, template_controls=None, onclick=None,
         new_window=None, expanded=None):
         Control.__init__(self, id=id)
 
@@ -22,7 +22,10 @@ class Column(Control):
         self.on_click = on_click
         #self.onchange = onchange
 
-        self._template_controls = template_controls
+        self.__template_controls = []
+        if template_controls != None:
+            for control in template_controls:
+                self.__template_controls.append(control)
 
     def _get_control_name(self):
         return "column"
@@ -39,11 +42,11 @@ class Column(Control):
     # template_controls
     @property
     def template_controls(self):
-        return self._template_controls
+        return self.__template_controls
 
     @template_controls.setter
     def template_controls(self, value):
-        self._template_controls = value
+        self.__template_controls = value
 
     # name
     @property
@@ -151,72 +154,121 @@ class Column(Control):
         self._set_attr("onClick", value)
 
     def _get_children(self):
-        return self._template_controls
+        return self.__template_controls
 
 # Item
 class Item(Control):
-    def __init__(self):
+    def __init__(self, obj):
         Control.__init__(self)
+        assert obj != None, "Obj cannot be empty"
+        self.__obj = obj
+
+    @property
+    def obj(self):
+        return self.__obj
+
+    def _set_attr(self, name, value, dirty=True):
+
+        if value == None:
+            return
+
+        orig_val = self._get_attr(name)
+        if orig_val != None and isinstance(orig_val, bool):
+            value = str(value).lower() == "true"
+        elif orig_val != None and isinstance(orig_val, float):
+            value = float(str(value))
+
+        self._set_attr_internal(name, value, dirty=False)
+        setattr(self.__obj, name, value)
+
+    def _fetch_attrs(self):
+        # reflection
+        for name, val in vars(self.__obj).items():
+            data_type = "string"
+            if isinstance(val, bool):
+                data_type = "bool"
+            elif isinstance(val, float):
+                data_type = "float"
+            orig_val = self._get_attr(name, data_type=data_type)
+
+            if val != orig_val:
+                self._set_attr_internal(name, val, dirty=True)
 
     def _get_control_name(self):
         return "item"
 
 # Columns
 class Columns(Control):
-    def __init__(self, id=None, columns=[]):
+    def __init__(self, id=None, columns=None):
         Control.__init__(self, id=id)
     
-        self._columns = columns
+        self.__columns = []
+        if columns != None:
+            for column in columns:
+                self.__columns.append(column)
 
     # columns
     @property
     def columns(self):
-        return self._columns
+        return self.__columns
 
     @columns.setter
     def columns(self, value):
-        self._columns = value
+        self.__columns = value
 
     def _get_control_name(self):
         return "columns"
 
     def _get_children(self):
-        return self._columns
+        return self.__columns
 
 # Items
 class Items(Control):
-    def __init__(self, id=None, items=[]):
+    def __init__(self, id=None, items=None):
         Control.__init__(self, id=None)
     
-        self._items = items
+        self.__map = {}
+        self.__items = []
+        if items != None:
+            for item in items:
+                self.__items.append(item)
 
     # items
     @property
     def items(self):
-        return self._items
+        return self.__items
 
     @items.setter
     def items(self, value):
-        self._items = value
+        self.__items = value
 
     def _get_control_name(self):
         return "items"
 
     def _get_children(self):
         items = []
-        if self._items and len(self._items) > 0:
-            for obj in self._items:
-                item = Item()
-                # reflection
-                for property, value in vars(obj).items():
-                    item._set_attr(property, value)
+        if self.__items and len(self.__items) > 0:
+            for obj in self.__items:
+                item = self.__map.get(obj)
+                if item == None:
+                    item = Item(obj)
+                    self.__map[obj] = item
+                item._fetch_attrs()
                 items.append(item)
+        
+        del_objs = []
+        for obj, item in self.__map.items():
+            if item not in items:
+                del_objs.append(obj)
+
+        for obj in del_objs:
+            del self.__map[obj]
                 
         return items
 
 class Grid(Control):
     def __init__(self, id=None, selection=None, compact=None, header_visible=None, shimmer_lines=None,
-            columns=[], items=[], onselect=None, onitem_invoke=None,
+            columns=None, items=None, onselect=None, onitem_invoke=None,
             width=None, height=None, padding=None, margin=None, visible=None, disabled=None):
         
         Control.__init__(self, id=id,

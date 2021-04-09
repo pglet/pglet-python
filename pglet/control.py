@@ -45,17 +45,27 @@ class Control:
         else:
             return s_val
 
-    def _set_attr(self, name, value):
+    def _set_attr(self, name, value, dirty=True):
+        self._set_attr_internal(name, value, dirty)
+
+    def _set_attr_internal(self, name, value, dirty=True):
         if value == None:
             if name in self.__attrs:
                 del self.__attrs[name]
             return
-        self.__attrs[name] = (value, True)        
+        orig_val = self.__attrs.get(name)
+        if orig_val == None or orig_val[0] != value:
+            self.__attrs[name] = (value, dirty)
 
 # event_handlers
     @property
     def event_handlers(self):
         return self.__event_handlers
+
+# _previous_children
+    @property
+    def _previous_children(self):
+        return self.__previous_children
 
 # page
     @property

@@ -75,36 +75,39 @@ class P(Control):
 
 # Data
 class Data(Control):
-    def __init__(self, id=None, points=[]):
+    def __init__(self, id=None, points=None):
         Control.__init__(self, id=id)
     
-        self._points = points
+        self.__points = []
+        if points != None:
+            for point in points:
+                self.__points.append(point)
 
     # points
     @property
     def points(self):
-        return self._points
+        return self.__points
 
     @points.setter
     def points(self, value):
-        self._points = value
+        self.__points = value
 
     def _get_control_name(self):
         return "data"
 
     def _get_children(self):
-        return self._points
+        return self.__points
 
 
 class BarChart(Control):
-    def __init__(self, id=None, tooltips=None, data_mode=None, points=[],
+    def __init__(self, id=None, tooltips=None, data_mode=None, points=None,
             width=None, height=None, padding=None, margin=None, visible=None, disabled=None):
         
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
             visible=visible, disabled=disabled)
 
-        self._data = Data(points=points)
+        self.__data = Data(points=points)
         self.tooltips = tooltips
         self.data_mode = data_mode
         
@@ -114,11 +117,11 @@ class BarChart(Control):
     # points
     @property
     def points(self):
-        return self._data.points
+        return self.__data.points
 
     @points.setter
     def points(self, value):
-        self._data.points = value
+        self.__data.points = value
 
     # tooltips
     @property
@@ -140,4 +143,4 @@ class BarChart(Control):
         self._set_attr("dataMode", value)
 
     def _get_children(self):
-        return [self._data]
+        return [self.__data]

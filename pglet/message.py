@@ -33,7 +33,7 @@ class MessageButton(Control):
 class Message(Control):
     def __init__(self, value=None, type=None, id=None,
             multiline=None, truncated=None, dismiss=None,
-            data=None, ondismiss=None, buttons=[],
+            data=None, ondismiss=None, buttons=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
         
@@ -47,7 +47,10 @@ class Message(Control):
         self.truncated = truncated
         self.dismiss = dismiss
         self.ondismiss = ondismiss
-        self._buttons = buttons
+        self.__buttons = []
+        if buttons != None:
+            for button in buttons:
+                self.__buttons.append(button)
        
     def _get_control_name(self):
         return "message"
@@ -55,11 +58,11 @@ class Message(Control):
 # buttons
     @property
     def buttons(self):
-        return self._buttons
+        return self.__buttons
 
     @buttons.setter
     def buttons(self, value):
-        self._buttons = value
+        self.__buttons = value
 
 # ondismiss
     @property
@@ -119,4 +122,4 @@ class Message(Control):
         self._set_attr("dismiss", value)
 
     def _get_children(self):
-            return self._buttons
+            return self.__buttons

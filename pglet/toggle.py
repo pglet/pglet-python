@@ -2,7 +2,7 @@ from .utils import encode_attr
 from .control import Control
 
 class Toggle(Control):
-    def __init__(self, label=None, id=None, value=None, inline=None,
+    def __init__(self, label=None, id=None, value=None, value_field=None, inline=None,
             on_text=None, off_text=None, data=None, onchange=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
@@ -12,6 +12,7 @@ class Toggle(Control):
             visible=visible, disabled=disabled, data=data)
         
         self.value = value
+        self.value_field = value_field
         self.label = label
         self.inline = inline
         self.on_text = on_text
@@ -40,6 +41,16 @@ class Toggle(Control):
     def value(self, value):
         assert value == None or isinstance(value, bool), "value must be a boolean"
         self._set_attr("value", value)
+
+# value_field
+    @property
+    def value_field(self):
+        return self._get_attr("value")
+
+    @value_field.setter
+    def value_field(self, value):
+        if value != None:
+            self._set_attr("value", f"{{{value}}}")
 
 # label
     @property

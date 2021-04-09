@@ -3,7 +3,7 @@ from .control import Control
 
 # Tab
 class Tab(Control):
-    def __init__(self, text, controls=[], id=None, key=None, icon=None, count=None):
+    def __init__(self, text, controls=None, id=None, key=None, icon=None, count=None):
         Control.__init__(self, id=id)
         #key or text are required 
         assert key != None or text != None, "key or text must be specified"
@@ -11,7 +11,10 @@ class Tab(Control):
         self.text = text
         self.icon = icon
         self.count = count
-        self._controls = controls
+        self.__controls = []
+        if controls != None:
+            for control in controls:
+                self.__controls.append(control)        
 
     def _get_control_name(self):
         return "tab"
@@ -19,11 +22,11 @@ class Tab(Control):
     # controls
     @property
     def controls(self):
-        return self._controls
+        return self.__controls
 
     @controls.setter
     def controls(self, value):
-        self._controls = value        
+        self.__controls = value        
 
     # key
     @property
@@ -62,10 +65,10 @@ class Tab(Control):
         self._set_attr("count", value)
 
     def _get_children(self):
-        return self._controls
+        return self.__controls
 
 class Tabs(Control):
-    def __init__(self, tabs=[], id=None, value=None, solid=None,
+    def __init__(self, tabs=None, id=None, value=None, solid=None,
             onchange=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
@@ -77,7 +80,10 @@ class Tabs(Control):
         self.value = value
         self.solid = solid
         self.onchange = onchange
-        self._tabs = tabs
+        self.__tabs = []
+        if tabs != None:
+            for tab in tabs:
+                self.__tabs.append(tab)                
 
     def _get_control_name(self):
         return "tabs"
@@ -85,11 +91,11 @@ class Tabs(Control):
     # tabs
     @property
     def tabs(self):
-        return self._tabs
+        return self.__tabs
 
     @tabs.setter
     def tabs(self, value):
-        self._tabs = value
+        self.__tabs = value
         
     # onchange
     @property
@@ -120,4 +126,4 @@ class Tabs(Control):
         self._set_attr("solid", value)
 
     def _get_children(self):
-        return self._tabs
+        return self.__tabs

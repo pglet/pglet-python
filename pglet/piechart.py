@@ -53,36 +53,39 @@ class P(Control):
 
 # Data
 class Data(Control):
-    def __init__(self, id=None, points=[]):
+    def __init__(self, id=None, points=None):
         Control.__init__(self, id=id)
     
-        self._points = points
+        self.__points = []
+        if points != None:
+            for point in points:
+                self.__points.append(point)
 
     # points
     @property
     def points(self):
-        return self._points
+        return self.__points
 
     @points.setter
     def points(self, value):
-        self._points = value
+        self.__points = value
 
     def _get_control_name(self):
         return "data"
 
     def _get_children(self):
-        return self._points
+        return self.__points
 
 
 class PieChart(Control):
-    def __init__(self, id=None, legend=None, tooltips=None, inner_value=None, inner_radius=None, points=[],
+    def __init__(self, id=None, legend=None, tooltips=None, inner_value=None, inner_radius=None, points=None,
             width=None, height=None, padding=None, margin=None, visible=None, disabled=None):
         
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
             visible=visible, disabled=disabled)
 
-        self._data = Data(points=points)
+        self.__data = Data(points=points)
         self.legend = legend
         self.tooltips = tooltips
         self.inner_value = inner_value
@@ -94,11 +97,11 @@ class PieChart(Control):
     # data
     @property
     def points(self):
-        return self._data.points
+        return self.__data.points
 
     @points.setter
     def points(self, value):
-        self._data.points = value        
+        self.__data.points = value
 
     # legend
     @property
@@ -140,4 +143,4 @@ class PieChart(Control):
         self._set_attr("innerRadius", value)
 
     def _get_children(self):
-        return [self._data]
+        return [self.__data]

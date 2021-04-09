@@ -14,6 +14,8 @@ class Page(Control):
         self.__url = url
         self.__controls = [] # page controls
         self.__index = {} # index with all page controls
+        self.__index[self.id] = self
+        self.hash = self.__conn.send("get page hash")
 
     def get_control(self, id):
         return self.__index.get(id)
@@ -74,10 +76,18 @@ class Page(Control):
 
     def clean(self, force=False):
         if force:
+            self.__controls.clear()
+            self.event_handlers.clear()
+            self._previous_children.clear()
+            self.__index.clear()
+            self.__index[self.id] = self
             return self.__conn.send("clean page")
         else:
             self.__controls.clear()
             return self.update()
+
+    def close(self):
+        self.__conn.send("close")
 
     def __on_event(self, e):
         #print("on_event:", e.target, e.name, e.data)
@@ -90,7 +100,7 @@ class Page(Control):
                 if id in self.__index:
                     for name in props:
                         if name != "i":
-                            self.__index[id]._Control__attrs[name] = (props[name], False)
+                            self.__index[id]._set_attr(name, props[name], dirty=False)
         
         elif e.target in self.__index:
             handler = self.__index[e.target].event_handlers.get(e.name)
@@ -199,3 +209,30 @@ class Page(Control):
     @theme_background_color.setter
     def theme_background_color(self, value):
         self._set_attr("themeBackgroundColor", value)
+
+# hash
+    @property
+    def hash(self):
+        return self._get_attr("hash")
+
+    @hash.setter
+    def hash(self, value):
+        self._set_attr("hash", value)
+
+# onclose
+    @property
+    def onclose(self):
+        return self._get_event_handler("close")
+
+    @onclose.setter
+    def onclose(self, handler):
+        self._add_event_handler("close", handler)
+
+# onhashchange
+    @property
+    def onhashchange(self):
+        return self._get_event_handler("hashChange")
+
+    @onhashchange.setter
+    def onhashchange(self, handler):
+        self._add_event_handler("hashChange", handler)

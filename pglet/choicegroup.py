@@ -52,7 +52,7 @@ class Option(Control):
         self._set_attr("iconColor", value)
 
 class ChoiceGroup(Control):
-    def __init__(self, label=None, id=None, value=None, data=None, options=[],
+    def __init__(self, label=None, id=None, value=None, data=None, options=None,
             width=None, height=None, padding=None, margin=None, onchange=None,
             visible=None, disabled=None):
         Control.__init__(self, id=id,
@@ -61,7 +61,10 @@ class ChoiceGroup(Control):
         self.value = value
         self.label = label
         self.onchange = onchange
-        self._options = options
+        self.__options = []
+        if options != None:
+            for option in options:
+                self.__options.append(option)
 
     def _get_control_name(self):
         return "choicegroup"
@@ -69,11 +72,11 @@ class ChoiceGroup(Control):
     # options
     @property
     def options(self):
-        return self._options
+        return self.__options
 
     @options.setter
     def options(self, value):
-        self._options = value
+        self.__options = value
 
     # onchange
     @property
@@ -103,4 +106,4 @@ class ChoiceGroup(Control):
         self._set_attr("label", value)
 
     def _get_children(self):
-        return self._options
+        return self.__options
