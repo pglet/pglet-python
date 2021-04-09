@@ -76,6 +76,11 @@ class Page(Control):
 
     def clean(self, force=False):
         if force:
+            self.__controls.clear()
+            self.event_handlers.clear()
+            self._previous_children.clear()
+            self.__index.clear()
+            self.__index[self.id] = self
             return self.__conn.send("clean page")
         else:
             self.__controls.clear()

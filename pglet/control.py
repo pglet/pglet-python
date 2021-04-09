@@ -62,6 +62,11 @@ class Control:
     def event_handlers(self):
         return self.__event_handlers
 
+# _previous_children
+    @property
+    def _previous_children(self):
+        return self.__previous_children
+
 # page
     @property
     def page(self):
