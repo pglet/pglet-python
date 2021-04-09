@@ -109,8 +109,8 @@ def main(page):
     app = TodoApp()
     page.add(app.view)
 
-#pglet.app("todo-app", target = main)
-page = pglet.page("todo-app")
-main(page)
+pglet.app("todo-app", target = main)
+#page = pglet.page("todo-app")
+#main(page)
 
 input("Press Enter to exit...")
