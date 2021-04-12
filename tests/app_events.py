@@ -22,13 +22,13 @@ def say_hello_click(e):
         page.update(txt, btn)
     else:
         page.remove(txt, btn)
-        page.add(Text(value=f'Hello, {name}!'), at=0)
+        page.add(Text(value=f'Hello, {name}!'))
 
 txt = Textbox(label="Your name", required=True)
 psw = Textbox(label="Password", password=True)
 btn = Button(text="Say hello", primary=True)
-btn.onclick = say_hello_click_wrong
-cancel = Button(text="Cancel", onclick=lambda e: print("Cancel clicked"))
+btn.on_click = say_hello_click_wrong
+cancel = Button(text="Cancel", on_click=lambda e: print("Cancel clicked"))
 
 page.add(txt, psw, btn, cancel)
 print("added #1")
@@ -36,7 +36,7 @@ print("added #1")
 time.sleep(5)
 
 page.clean()
-btn.onclick = say_hello_click
+btn.on_click = say_hello_click
 page.add(txt, btn, cancel)
 print("added #2")
 

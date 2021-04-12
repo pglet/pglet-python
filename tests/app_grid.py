@@ -48,8 +48,8 @@ grid = Grid(selection='multiple', compact=True, header_visible=True, shimmer_lin
     Contact(first_name='Alice', last_name='Fox', employee=False)
 ])
 
-btn = Button("Show items", onclick=display_items)
-btnAdd = Button("Add item", onclick=add_item)
+btn = Button("Show items", on_click=display_items)
+btnAdd = Button("Add item", on_click=add_item)
 
 page.add(grid, btn, btnAdd)
 

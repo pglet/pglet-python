@@ -3,7 +3,7 @@ from .control import Control
 
 class Callout(Control):
     def __init__(self, id=None, target=None, position=None, gap=None, beak=None, beak_width=None,
-            page_padding=None, focus=None, cover=None, visible=None, controls=None, ondismiss=None,
+            page_padding=None, focus=None, cover=None, visible=None, controls=None, on_dismiss=None,
             width=None, height=None, padding=None, margin=None, disabled=None):
         
         Control.__init__(self, id=id,
@@ -18,7 +18,7 @@ class Callout(Control):
         self.page_padding = page_padding
         self.focus = focus
         self.cover = cover
-        self.ondismiss = ondismiss
+        self.on_dismiss = on_dismiss
         self.__controls = []
         if controls != None:
             for control in controls:
@@ -36,13 +36,13 @@ class Callout(Control):
     def controls(self, value):
         self.__controls = value
     
-    # ondismiss
+    # on_dismiss
     @property
-    def ondismiss(self):
+    def on_dismiss(self):
         return self._get_event_handler("dismiss")
 
-    @ondismiss.setter
-    def ondismiss(self, handler):
+    @on_dismiss.setter
+    def on_dismiss(self, handler):
         self._add_event_handler("dismiss", handler)
 
     # target

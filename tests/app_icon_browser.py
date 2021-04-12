@@ -52,7 +52,7 @@ def main(page):
     icons = get_icons(None)
         
     search_result = Stack(horizontal=True, wrap=True, controls=icons)
-    search_box = SearchBox(id='searchbox', onchange=searchbox_changed, onsearch=enter_clicked)
+    search_box = SearchBox(id='searchbox', on_change=searchbox_changed, on_search=enter_clicked)
     page.add(search_box, search_result)
 
     #page.wait_close()

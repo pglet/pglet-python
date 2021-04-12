@@ -29,7 +29,7 @@ class Footer(Control):
 class Dialog(Control):
     def __init__(self, id=None, open=None, title=None, sub_text=None, large_header=None,
             auto_dismiss=None, width=None, max_width=None, height=None, fixed_top=None,
-            blocking=None, data=None, controls=None, footer=None, ondismiss=None,
+            blocking=None, data=None, controls=None, footer=None, on_dismiss=None,
             padding=None, margin=None, visible=None, disabled=None):
         
         Control.__init__(self, id=id,
@@ -44,7 +44,7 @@ class Dialog(Control):
         self.max_width = max_width
         self.fixed_top = fixed_top
         self.blocking = blocking
-        self.ondismiss = ondismiss
+        self.on_dismiss = on_dismiss
         self.__footer = Footer(controls=footer)
         self.__controls = []
         if controls != None:
@@ -68,13 +68,13 @@ class Dialog(Control):
     def footer(self):
         return self.__footer 
     
-    # ondismiss
+    # on_dismiss
     @property
-    def ondismiss(self):
+    def on_dismiss(self):
         return self._get_event_handler("dismiss")
 
-    @ondismiss.setter
-    def ondismiss(self, handler):
+    @on_dismiss.setter
+    def on_dismiss(self, handler):
         self._add_event_handler("dismiss", handler)
 
     # open

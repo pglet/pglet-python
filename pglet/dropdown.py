@@ -32,7 +32,7 @@ class Option(Control):
 
 class Dropdown(Control):
     def __init__(self, label=None, id=None, value=None, placeholder=None,
-            error_message=None, onchange=None, options=None,
+            error_message=None, on_change=None, options=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None, data=None):
         Control.__init__(self, id=id,
@@ -42,7 +42,7 @@ class Dropdown(Control):
         self.value = value
         self.placeholder = placeholder
         self.error_message = error_message
-        self.onchange = onchange
+        self.on_change = on_change
         self.__options = []
         if options != None:
             for option in options:
@@ -60,13 +60,13 @@ class Dropdown(Control):
     def options(self, value):
         self.__options = value
         
-    # onchange
+    # on_change
     @property
-    def onchange(self):
+    def on_change(self):
         return self._get_event_handler("change")
 
-    @onchange.setter
-    def onchange(self, handler):
+    @on_change.setter
+    def on_change(self, handler):
         self._add_event_handler("change", handler)
 
     # label

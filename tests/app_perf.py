@@ -35,7 +35,7 @@ for n in range(1000):
 chk = Checkbox("Check, check!")
 
 page.add(
-    SearchBox(onsearch=lambda e: print(chk.value)),
+    SearchBox(on_search=lambda e: print(chk.value)),
     chk,
     items)
 

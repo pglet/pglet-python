@@ -3,7 +3,7 @@ from .control import Control
 
 class SpinButton(Control):
     def __init__(self, label=None, id=None, value=None, min=None, max=None, step=None,
-            icon=None, data=None, onchange=None,
+            icon=None, data=None, on_change=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
         Control.__init__(self, id=id,
@@ -15,18 +15,18 @@ class SpinButton(Control):
         self.max = max
         self.step = step
         self.icon = icon
-        self.onchange = onchange
+        self.on_change = on_change
 
     def _get_control_name(self):
         return "spinbutton"
 
-# onchange
+# on_change
     @property
-    def onchange(self):
+    def on_change(self):
         return self._get_event_handler("change")
 
-    @onchange.setter
-    def onchange(self, handler):
+    @on_change.setter
+    def on_change(self, handler):
         self._add_event_handler("change", handler)
 
 # value

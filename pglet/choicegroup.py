@@ -53,14 +53,14 @@ class Option(Control):
 
 class ChoiceGroup(Control):
     def __init__(self, label=None, id=None, value=None, data=None, options=None,
-            width=None, height=None, padding=None, margin=None, onchange=None,
+            width=None, height=None, padding=None, margin=None, on_change=None,
             visible=None, disabled=None):
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
             visible=visible, disabled=disabled, data=data)
         self.value = value
         self.label = label
-        self.onchange = onchange
+        self.on_change = on_change
         self.__options = []
         if options != None:
             for option in options:
@@ -78,13 +78,13 @@ class ChoiceGroup(Control):
     def options(self, value):
         self.__options = value
 
-    # onchange
+    # on_change
     @property
-    def onchange(self):
+    def on_change(self):
         return self._get_event_handler("change")
 
-    @onchange.setter
-    def onchange(self, handler):
+    @on_change.setter
+    def on_change(self, handler):
         self._add_event_handler("change", handler)
 
     # value

@@ -3,8 +3,8 @@ from .control import Control
 
 class SearchBox(Control):
     def __init__(self, id=None, value=None, placeholder=None, underlined=None,
-            icon=None, icon_color=None, data=None, onsearch=None,
-            onclear=None, onescape=None, onchange=None,
+            icon=None, icon_color=None, data=None, on_search=None,
+            on_clear=None, on_escape=None, on_change=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
 
@@ -17,53 +17,53 @@ class SearchBox(Control):
         self.underlined = underlined
         self.icon = icon
         self.icon_color = icon_color
-        self.onsearch = onsearch
-        self.onclear = onclear
-        self.onescape = onescape
-        self.onchange = onchange
+        self.on_search = on_search
+        self.on_clear = on_clear
+        self.on_escape = on_escape
+        self.on_change = on_change
 
     def _get_control_name(self):
         return "searchbox"
 
-# onsearch
+# on_search
     @property
-    def onsearch(self):
+    def on_search(self):
         return self._get_event_handler("search")
 
-    @onsearch.setter
-    def onsearch(self, handler):
+    @on_search.setter
+    def on_search(self, handler):
         self._add_event_handler("search", handler)
 
-# onclear
+# on_clear
     @property
-    def onclear(self):
+    def on_clear(self):
         return self._get_event_handler("clear")
 
-    @onclear.setter
-    def onclear(self, handler):
+    @on_clear.setter
+    def on_clear(self, handler):
         self._add_event_handler("clear", handler)
 
-# onescape
+# on_escape
     @property
-    def onescape(self):
+    def on_escape(self):
         return self._get_event_handler("escape")
 
-    @onescape.setter
-    def onescape(self, handler):
+    @on_escape.setter
+    def on_escape(self, handler):
         self._add_event_handler("escape", handler)
 
-# onchange
+# on_change
     @property
-    def onchange(self):
+    def on_change(self):
         return self._get_event_handler("change")
 
-    @onchange.setter
-    def onchange(self, handler):
+    @on_change.setter
+    def on_change(self, handler):
         self._add_event_handler("change", handler)
         if handler != None:
-            self._set_attr("onchange", True)
+            self._set_attr("on_change", True)
         else:
-            self._set_attr("onchange", False)
+            self._set_attr("on_change", False)
 
 # value
     @property

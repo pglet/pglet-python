@@ -27,9 +27,9 @@ def main(page):
 
     page.add(
         Stack(horizontal = True, controls=[
-            Button(text='-', onclick=on_click, data='-'),
+            Button(text='-', on_click=on_click, data='-'),
             Textbox(id='number', value = '0', align = 'right'),
-            Button(text='+', onclick=on_click, data='+'),
+            Button(text='+', on_click=on_click, data='+'),
         ])
     )
 

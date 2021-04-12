@@ -3,7 +3,7 @@ from .control import Control
 
 class Link(Control):
     def __init__(self, url=None, id=None, value=None, new_window=None, title=None,
-            size=None, bold=None, italic=None, pre=None, align=None, onclick=None, controls=None,
+            size=None, bold=None, italic=None, pre=None, align=None, on_click=None, controls=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None, data=None):
         
@@ -20,7 +20,7 @@ class Link(Control):
         self.italic = italic
         self.pre = pre
         self.align = align
-        self.onclick = onclick
+        self.on_click = on_click
         self.__controls = []
         if controls != None:
             for control in controls:
@@ -38,13 +38,13 @@ class Link(Control):
     def controls(self, value):
         self.__controls = value
 
-# onclick
+# on_click
     @property
-    def onclick(self):
+    def on_click(self):
         return self._get_event_handler("click")
 
-    @onclick.setter
-    def onclick(self, handler):
+    @on_click.setter
+    def on_click(self, handler):
         self._add_event_handler("click", handler)
 
 # value

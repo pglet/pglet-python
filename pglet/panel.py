@@ -29,7 +29,7 @@ class Footer(Control):
 class Panel(Control):
     def __init__(self, id=None, open=None, title=None, type=None,
             auto_dismiss=None, light_dismiss=None, width=None, blocking=None, data=None, 
-            controls=None, footer=None, ondismiss=None, height=None,
+            controls=None, footer=None, on_dismiss=None, height=None,
             padding=None, margin=None, visible=None, disabled=None):
         
         Control.__init__(self, id=id,
@@ -43,7 +43,7 @@ class Panel(Control):
         self.light_dismiss = light_dismiss
         self.width = width
         self.blocking = blocking
-        self.ondismiss = ondismiss
+        self.on_dismiss = on_dismiss
         self.__footer = Footer(controls=footer)
         self.__controls = []
         if controls != None:
@@ -67,13 +67,13 @@ class Panel(Control):
     def footer(self):
         return self.__footer 
     
-    # ondismiss
+    # on_dismiss
     @property
-    def ondismiss(self):
+    def on_dismiss(self):
         return self._get_event_handler("dismiss")
 
-    @ondismiss.setter
-    def ondismiss(self, handler):
+    @on_dismiss.setter
+    def on_dismiss(self, handler):
         self._add_event_handler("dismiss", handler)
 
     # open

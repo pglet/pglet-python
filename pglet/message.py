@@ -33,7 +33,7 @@ class MessageButton(Control):
 class Message(Control):
     def __init__(self, value=None, type=None, id=None,
             multiline=None, truncated=None, dismiss=None,
-            data=None, ondismiss=None, buttons=None,
+            data=None, on_dismiss=None, buttons=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
         
@@ -46,7 +46,7 @@ class Message(Control):
         self.multiline = multiline
         self.truncated = truncated
         self.dismiss = dismiss
-        self.ondismiss = ondismiss
+        self.on_dismiss = on_dismiss
         self.__buttons = []
         if buttons != None:
             for button in buttons:
@@ -64,13 +64,13 @@ class Message(Control):
     def buttons(self, value):
         self.__buttons = value
 
-# ondismiss
+# on_dismiss
     @property
-    def ondismiss(self):
+    def on_dismiss(self):
         return self._get_event_handler("dismiss")
 
-    @ondismiss.setter
-    def ondismiss(self, handler):
+    @on_dismiss.setter
+    def on_dismiss(self, handler):
         self._add_event_handler("dismiss", handler)
 
 # value

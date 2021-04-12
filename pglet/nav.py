@@ -102,7 +102,7 @@ class Item(Control):
 
 class Nav(Control):
     def __init__(self, id=None, value=None, items=None,
-            onchange=None, onexpand=None, oncollapse=None,
+            on_change=None, on_expand=None, on_collapse=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
         
@@ -111,9 +111,9 @@ class Nav(Control):
             visible=visible, disabled=disabled)
         
         self.value = value
-        self.onchange = onchange
-        self.onexpand = onexpand
-        self.oncollapse = oncollapse
+        self.on_change = on_change
+        self.on_expand = on_expand
+        self.on_collapse = on_collapse
         self.__items = []
         if items != None:
             for item in items:
@@ -131,31 +131,31 @@ class Nav(Control):
     def items(self, value):
         self.__items = value
         
-    # onchange
+    # on_change
     @property
-    def onchange(self):
+    def on_change(self):
         return self._get_event_handler("change")
 
-    @onchange.setter
-    def onchange(self, handler):
+    @on_change.setter
+    def on_change(self, handler):
         self._add_event_handler("change", handler)
 
-    # onexpand
+    # on_expand
     @property
-    def onexpand(self):
+    def on_expand(self):
         return self._get_event_handler("expand")
 
-    @onexpand.setter
-    def onexpand(self, handler):
+    @on_expand.setter
+    def on_expand(self, handler):
         self._add_event_handler("expand", handler)
 
-    # oncollapse
+    # on_collapse
     @property
-    def oncollapse(self):
+    def on_collapse(self):
         return self._get_event_handler("collapse")
 
-    @oncollapse.setter
-    def oncollapse(self, handler):
+    @on_collapse.setter
+    def on_collapse(self, handler):
         self._add_event_handler("collapse", handler)
 
     # value

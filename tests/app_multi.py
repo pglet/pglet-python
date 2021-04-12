@@ -11,20 +11,20 @@ from pglet import Page, Text, Checkbox, Button, Stack, Textbox, Tabs, Tab
 class Task():
     def __init__(self, app, name):
         self.app = app
-        self.display_task = Checkbox(value=False, label=name, onchange=self.status_changed)
+        self.display_task = Checkbox(value=False, label=name, on_change=self.status_changed)
         self.edit_name = Textbox(width='100%')
         self.display_view = Stack(horizontal=True, horizontal_align='space-between',
                 vertical_align='center', controls=[
                 self.display_task,
                 Stack(horizontal=True, gap='0', controls=[
-                    Button(icon='Edit', title='Edit todo', onclick=self.edit_clicked),
-                    Button(icon='Delete', title='Delete todo', onclick=self.delete_clicked)]),
+                    Button(icon='Edit', title='Edit todo', on_click=self.edit_clicked),
+                    Button(icon='Delete', title='Delete todo', on_click=self.delete_clicked)]),
                 ])
         
         #stack displayed when edit is clicked 
         self.edit_view = Stack(visible=False, horizontal=True, horizontal_align='space-between',
                 vertical_align='center', controls=[
-                self.edit_name, Button(text='Save', onclick=self.save_clicked)
+                self.edit_name, Button(text='Save', on_click=self.save_clicked)
                 ])
         self.view = Stack(controls=[self.display_view, self.edit_view])
 
@@ -52,7 +52,7 @@ class TodoApp():
         self.new_task = Textbox(placeholder='Whats needs to be done?', width='100%')
         self.tasks_view = Stack()
         self.items_left = Text('0 active items')
-        self.filter = Tabs(value='all', onchange=self.tabs_changed, tabs=[
+        self.filter = Tabs(value='all', on_change=self.tabs_changed, tabs=[
                 Tab(text='all'),
                 Tab(text='active'),
                 Tab(text='completed')])
@@ -60,13 +60,13 @@ class TodoApp():
             Text(value='Todos', size='large', align='center'),
             Stack(horizontal=True, controls=[
                 self.new_task,
-                Button(primary=True, text='Add', onclick=self.add_clicked)]),
+                Button(primary=True, text='Add', on_click=self.add_clicked)]),
             Stack(gap=25, controls=[
                 self.filter,
                 self.tasks_view,
                 Stack(horizontal=True, horizontal_align='space-between', vertical_align='center', controls=[
                     self.items_left,
-                    Button(text='Clear completed', onclick=self.clear_clicked)
+                    Button(text='Clear completed', on_click=self.clear_clicked)
                 ])
             ])
         ])

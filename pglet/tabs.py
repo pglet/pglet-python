@@ -69,7 +69,7 @@ class Tab(Control):
 
 class Tabs(Control):
     def __init__(self, tabs=None, id=None, value=None, solid=None,
-            onchange=None,
+            on_change=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
         
@@ -79,7 +79,7 @@ class Tabs(Control):
         
         self.value = value
         self.solid = solid
-        self.onchange = onchange
+        self.on_change = on_change
         self.__tabs = []
         if tabs != None:
             for tab in tabs:
@@ -97,13 +97,13 @@ class Tabs(Control):
     def tabs(self, value):
         self.__tabs = value
         
-    # onchange
+    # on_change
     @property
-    def onchange(self):
+    def on_change(self):
         return self._get_event_handler("change")
 
-    @onchange.setter
-    def onchange(self, handler):
+    @on_change.setter
+    def on_change(self, handler):
         self._add_event_handler("change", handler)
 
     # value

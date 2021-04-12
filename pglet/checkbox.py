@@ -3,7 +3,7 @@ from .control import Control
 
 class Checkbox(Control):
     def __init__(self, label=None, id=None, value=None, value_field=None, box_side=None, data=None,
-            width=None, height=None, padding=None, margin=None, onchange=None,
+            width=None, height=None, padding=None, margin=None, on_change=None,
             visible=None, disabled=None):
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
@@ -12,18 +12,18 @@ class Checkbox(Control):
         self.value_field = value_field
         self.label = label
         self.box_side = box_side
-        self.onchange = onchange
+        self.on_change = on_change
 
     def _get_control_name(self):
         return "checkbox"
 
-# onchange
+# on_change
     @property
-    def onchange(self):
+    def on_change(self):
         return self._get_event_handler("change")
 
-    @onchange.setter
-    def onchange(self, handler):
+    @on_change.setter
+    def on_change(self, handler):
         self._add_event_handler("change", handler)
 
 # value

@@ -5,7 +5,7 @@ from .control import Control
 class Column(Control):
     def __init__(self, id=None, name=None, icon=None, icon_only=None, 
         field_name=None, sortable=None, sort_field=None, sorted=None, resizable=None,
-        min_width=None, max_width=None, on_click=None, template_controls=None, onclick=None,
+        min_width=None, max_width=None, on_click=None, template_controls=None,
         new_window=None, expanded=None):
         Control.__init__(self, id=id)
 
@@ -20,7 +20,6 @@ class Column(Control):
         self.min_width = min_width
         self.max_width = max_width
         self.on_click = on_click
-        #self.onchange = onchange
 
         self.__template_controls = []
         if template_controls != None:
@@ -29,15 +28,6 @@ class Column(Control):
 
     def _get_control_name(self):
         return "column"
-
-    # onclick
-    @property
-    def onclick(self):
-        return self._get_event_handler("click")
-
-    @onclick.setter
-    def onclick(self, handler):
-        self._add_event_handler("click", handler)
     
     # template_controls
     @property
@@ -146,12 +136,12 @@ class Column(Control):
     # on_click
     @property
     def on_click(self):
-        return self._get_attr("onClick")
+        return self._get_attr("on_click")
 
     @on_click.setter
     def on_click(self, value):
         assert value == None or isinstance(value, bool), "resizable must be a boolean"
-        self._set_attr("onClick", value)
+        self._set_attr("on_click", value)
 
     def _get_children(self):
         return self.__template_controls
@@ -268,7 +258,7 @@ class Items(Control):
 
 class Grid(Control):
     def __init__(self, id=None, selection=None, compact=None, header_visible=None, shimmer_lines=None,
-            columns=None, items=None, onselect=None, onitem_invoke=None,
+            columns=None, items=None, on_select=None, onitem_invoke=None,
             width=None, height=None, padding=None, margin=None, visible=None, disabled=None):
         
         Control.__init__(self, id=id,
@@ -279,7 +269,7 @@ class Grid(Control):
         self.compact = compact
         self.header_visible = header_visible
         self.shimmer_lines = shimmer_lines
-        self.onselect = onselect
+        self.on_select = on_select
         self.onitem_invoke = onitem_invoke
         self._columns = Columns(columns=columns)
         self._items = Items(items=items)
@@ -305,13 +295,13 @@ class Grid(Control):
     def items(self, value):
         self._items.items = value
     
-    # onselect
+    # on_select
     @property
-    def onselect(self):
+    def on_select(self):
         return self._get_event_handler("select")
 
-    @onselect.setter
-    def onselect(self, handler):
+    @on_select.setter
+    def on_select(self, handler):
         self._add_event_handler("select", handler)
 
     # onitem_invoke

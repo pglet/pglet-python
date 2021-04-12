@@ -3,7 +3,7 @@ from .control import Control
 
 class MenuItem(Control):
     def __init__(self, text=None, id=None, secondary_text=None, url=None, new_window=None, 
-            icon=None, icon_color=None, icon_only=None, split=None, divider=None, onclick=None, sub_menu_items=None,
+            icon=None, icon_color=None, icon_only=None, split=None, divider=None, on_click=None, sub_menu_items=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None, data=None):
         Control.__init__(self, id=id,
@@ -19,7 +19,7 @@ class MenuItem(Control):
         self.icon_only = icon_only
         self.split = split
         self.divider = divider
-        self.onclick = onclick
+        self.on_click = on_click
         self.data = data
         self.__sub_menu_items = []
         if sub_menu_items != None:
@@ -29,13 +29,13 @@ class MenuItem(Control):
     def _get_control_name(self):
         return "item"
 
-    # onclick
+    # on_click
     @property
-    def onclick(self):
+    def on_click(self):
         return self._get_event_handler("click")
 
-    @onclick.setter
-    def onclick(self, handler):
+    @on_click.setter
+    def on_click(self, handler):
         self._add_event_handler("click", handler)
 
     # sub_menu_items
@@ -138,7 +138,7 @@ class MenuItem(Control):
 class Button(Control):
     def __init__(self, text=None, id=None, primary=None, compound=None, action=None, toolbar=None,
             split=None, secondary_text=None, url=None, new_window=None, 
-            title=None, icon=None, icon_color=None, data=None, onclick=None, menu_items=None,
+            title=None, icon=None, icon_color=None, data=None, on_click=None, menu_items=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
         Control.__init__(self, id=id,
@@ -157,7 +157,7 @@ class Button(Control):
         self.title = title
         self.icon = icon
         self.icon_color = icon_color
-        self.onclick = onclick
+        self.on_click = on_click
         self.__menu_items = []
         if menu_items != None:
             for item in menu_items:
@@ -175,13 +175,13 @@ class Button(Control):
     def menu_items(self, value):
         self.__menu_items = value
 
-# onclick
+# on_click
     @property
-    def onclick(self):
+    def on_click(self):
         return self._get_event_handler("click")
 
-    @onclick.setter
-    def onclick(self, handler):
+    @on_click.setter
+    def on_click(self, handler):
         self._add_event_handler("click", handler)
 
 # primary

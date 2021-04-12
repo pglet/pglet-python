@@ -7,7 +7,7 @@ class Stack(Control):
     def __init__(self, controls=None, id=None, horizontal=None, vertical_fill=None, horizontal_align=None,
             vertical_align=None, min_width=None, max_width=None, min_height=None, max_height=None, 
             gap=None, wrap=None, bgcolor=None, border=None, border_radius=None, border_left=None, 
-            border_right=None, border_top=None, border_bottom=None, scrollx=None, scrolly=None, onsubmit=None,
+            border_right=None, border_top=None, border_bottom=None, scrollx=None, scrolly=None, on_submit=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None, data=None):
         Control.__init__(self, id=id,
@@ -33,7 +33,7 @@ class Stack(Control):
         self.border_bottom = border_bottom
         self.scrollx = scrollx
         self.scrolly = scrolly
-        self.onsubmit = onsubmit
+        self.on_submit = on_submit
 
         self.__controls = []
         if controls != None:
@@ -228,18 +228,18 @@ class Stack(Control):
         assert value == None or isinstance(value, bool), "scrolly must be a bool"
         self._set_attr("scrolly", value)
 
-# onsubmit
+# on_submit
     @property
-    def onsubmit(self):
+    def on_submit(self):
         return self._get_event_handler("submit")
 
-    @onsubmit.setter
-    def onsubmit(self, handler):
+    @on_submit.setter
+    def on_submit(self, handler):
         self._add_event_handler("submit", handler)
         if handler != None:
-            self._set_attr("onsubmit", True)
+            self._set_attr("on_submit", True)
         else:
-            self._set_attr("onsubmit", None)
+            self._set_attr("on_submit", None)
 
     def _get_children(self):
         return self.__controls

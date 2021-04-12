@@ -27,7 +27,7 @@ def main(page):
     # on the page we need a textbox
     # and a button
     txt_name = Textbox("Your name")
-    btn_hello = Button("Say hello!", onclick=on_click)
+    btn_hello = Button("Say hello!", on_click=on_click)
 
     # then we add controls to the page
     page.add(txt_name, btn_hello)

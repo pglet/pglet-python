@@ -5,7 +5,7 @@ from .control import Control
 class Item(Control):
     def __init__(self, text=None, secondary_text=None, url=None, new_window=None,
     icon=None, icon_color=None, icon_only=None, split=None, divider=None,
-    onclick=None, items=None):
+    on_click=None, items=None):
         Control.__init__(self)
 
         self.text = text
@@ -17,7 +17,7 @@ class Item(Control):
         self.icon_only = icon_only
         self.split = split
         self.divider = divider
-        self.onclick = onclick
+        self.on_click = on_click
         self.__items = []
         if items != None:
             for item in items:
@@ -26,13 +26,13 @@ class Item(Control):
     def _get_control_name(self):
         return "item"
 
-    # onclick
+    # on_click
     @property
-    def onclick(self):
+    def on_click(self):
         return self._get_event_handler("click")
 
-    @onclick.setter
-    def onclick(self, handler):
+    @on_click.setter
+    def on_click(self, handler):
         self._add_event_handler("click", handler)
 
     # items

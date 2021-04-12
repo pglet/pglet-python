@@ -33,9 +33,9 @@ def on_click(e):
     page.update()
 
 stack = Stack(horizontal = True, controls=[
-        Button('-', onclick=on_click, data='-'),
+        Button('-', on_click=on_click, data='-'),
         txtNum,
-        Button('+', onclick=on_click, data='+'),
+        Button('+', on_click=on_click, data='+'),
     ])
 
 page.add(stack)
@@ -46,9 +46,9 @@ def outer_stack_submit(e):
 def add_stack_submit(e):
     print("Stack submit:", e.control.data)
 
-stack2 = Stack(width='70%', onsubmit=outer_stack_submit, controls=[
+stack2 = Stack(width='70%', on_submit=outer_stack_submit, controls=[
         Text(value='Todos', size='large', align='center'),
-        Stack(horizontal=True, onsubmit=add_stack_submit, data=222, controls=[
+        Stack(horizontal=True, on_submit=add_stack_submit, data=222, controls=[
             Textbox(id='new_task', placeholder='Whats needs to be done?', width='100%'),
             Button(id='add', primary=True, text='Add')]),
         Stack(gap=25, controls=[

@@ -3,7 +3,7 @@ from .control import Control
 
 class Toggle(Control):
     def __init__(self, label=None, id=None, value=None, value_field=None, inline=None,
-            on_text=None, off_text=None, data=None, onchange=None,
+            on_text=None, off_text=None, data=None, on_change=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
         
@@ -17,19 +17,19 @@ class Toggle(Control):
         self.inline = inline
         self.on_text = on_text
         self.off_text = off_text
-        self.onchange = onchange
+        self.on_change = on_change
        
 
     def _get_control_name(self):
         return "toggle"
 
-# onchange
+# on_change
     @property
-    def onchange(self):
+    def on_change(self):
         return self._get_event_handler("change")
 
-    @onchange.setter
-    def onchange(self, handler):
+    @on_change.setter
+    def on_change(self, handler):
         self._add_event_handler("change", handler)
 
 # value
