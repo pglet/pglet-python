@@ -13,7 +13,7 @@ from .utils import is_windows, which
 from .connection import Connection
 from .page import Page
 
-PGLET_VERSION = "0.2.4"
+PGLET_VERSION = "0.3.0"
 pglet_exe = ""
 
 def page(name='', web=False, server='', token='', no_window=False):
