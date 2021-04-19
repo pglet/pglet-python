@@ -4,7 +4,7 @@ from pglet.barchart import P
 
 
 def test_barchart_add():
-    bc = BarChart(data_mode='default', tooltips=False, data=[
+    bc = BarChart(data_mode='default', tooltips=False, points=[
         P(x=1, y=100, legend='legend', color='green', x_tooltip='x tooltip', y_tooltip='y tooltip'),
         P(x=80, y=200), 
         P(x=100, y=300),

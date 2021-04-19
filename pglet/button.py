@@ -1,11 +1,11 @@
 from .utils import encode_attr
 from .control import Control
 
-class Item(Control):
+class MenuItem(Control):
     def __init__(self, text=None, id=None, secondary_text=None, url=None, new_window=None, 
-            icon=None, icon_color=None, icon_only=None, split=None, divider=None, onclick=None, items=[],
+            icon=None, icon_color=None, icon_only=None, split=None, divider=None, on_click=None, sub_menu_items=None,
             width=None, height=None, padding=None, margin=None,
-            visible=None, disabled=None):
+            visible=None, disabled=None, data=None):
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
             visible=visible, disabled=disabled)
@@ -19,34 +19,33 @@ class Item(Control):
         self.icon_only = icon_only
         self.split = split
         self.divider = divider
-        self.onclick = onclick
-        self._items = []
-        if items and len(items) > 0:
-            for item in items:
-                self.add_item(item)
+        self.on_click = on_click
+        self.data = data
+        self.__sub_menu_items = []
+        if sub_menu_items != None:
+            for item in sub_menu_items:
+                self.__sub_menu_items.append(item)
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "item"
 
-    def add_item(self, item):
-        if isinstance(item, Item):
-            self._items.append(item)
-        else:
-            self._items.append(Item(str(item)))
-
-    # onclick
+    # on_click
     @property
-    def onclick(self):
-        return None
+    def on_click(self):
+        return self._get_event_handler("click")
 
-    @onclick.setter
-    def onclick(self, handler):
+    @on_click.setter
+    def on_click(self, handler):
         self._add_event_handler("click", handler)
 
-    # items
+    # sub_menu_items
     @property
-    def items(self):
-        return self._items
+    def sub_menu_items(self):
+        return self.__sub_menu_items
+
+    @sub_menu_items.setter
+    def sub_menu_items(self, value):
+        self.__sub_menu_items = value
 
     # text
     @property
@@ -133,18 +132,18 @@ class Item(Control):
         assert value == None or isinstance(value, bool), "divider must be a boolean"
         self._set_attr("divider", value)
 
-    def _getChildren(self):
-        return self._items
+    def _get_children(self):
+        return self.__sub_menu_items
 
 class Button(Control):
     def __init__(self, text=None, id=None, primary=None, compound=None, action=None, toolbar=None,
             split=None, secondary_text=None, url=None, new_window=None, 
-            title=None, icon=None, icon_color=None, data=None, onclick=None, items=[],
+            title=None, icon=None, icon_color=None, data=None, on_click=None, menu_items=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
+            visible=visible, disabled=disabled, data=data)
         
         self.primary = primary
         self.compound = compound
@@ -158,27 +157,31 @@ class Button(Control):
         self.title = title
         self.icon = icon
         self.icon_color = icon_color
-        self.data = data
-        self.onclick = onclick
-        self._items = []
-        if items and len(items) > 0:
-            for item in items:
-                self.add_item(item)
+        self.on_click = on_click
+        self.__menu_items = []
+        if menu_items != None:
+            for item in menu_items:
+                self.__menu_items.append(item)
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "button"
-    
-    def add_item(self, item):
-        assert isinstance(item, Item), 'button can hold items only'
-        self._items.append(item)
 
-# onclick
+# menu_items
     @property
-    def onclick(self):
-        return None
+    def menu_items(self):
+        return self.__menu_items
 
-    @onclick.setter
-    def onclick(self, handler):
+    @menu_items.setter
+    def menu_items(self, value):
+        self.__menu_items = value
+
+# on_click
+    @property
+    def on_click(self):
+        return self._get_event_handler("click")
+
+    @on_click.setter
+    def on_click(self, handler):
         self._add_event_handler("click", handler)
 
 # primary
@@ -295,14 +298,5 @@ class Button(Control):
     def icon_color(self, value):
         self._set_attr("iconColor", value)
 
-# data
-    @property
-    def data(self):
-        return self._get_attr("data")
-
-    @data.setter
-    def data(self, value):
-        self._set_attr("data", value)
-
-    def _getChildren(self):
-        return self._items
+    def _get_children(self):
+        return self.__menu_items

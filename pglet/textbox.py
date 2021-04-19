@@ -4,7 +4,7 @@ from .control import Control
 class Textbox(Control):
     def __init__(self, label=None, id=None, value=None, placeholder=None,
             error_message=None, description=None, multiline=None, password=None,
-            required=None,
+            required=None, on_change=None,
             width=None, height=None, padding=None, margin=None, align=None,
             visible=None, disabled=None):
         Control.__init__(self, id=id,
@@ -19,8 +19,9 @@ class Textbox(Control):
         self.multiline = multiline
         self.password = password
         self.required = required
+        self.on_change = on_change
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "textbox"
 
 # label
@@ -106,3 +107,16 @@ class Textbox(Control):
     def required(self, value):
         assert value == None or isinstance(value, bool), "required must be a boolean"
         self._set_attr("required", value)
+
+# on_change
+    @property
+    def on_change(self):
+        return self._get_event_handler("change")
+
+    @on_change.setter
+    def on_change(self, handler):
+        self._add_event_handler("change", handler)
+        if handler != None:
+            self._set_attr("on_change", True)
+        else:
+            self._set_attr("on_change", None)

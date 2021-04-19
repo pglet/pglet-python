@@ -25,9 +25,10 @@ def test_dropdown():
     assert isinstance(do, Option)
 
 def test_dropdown_with_just_keys():
-    dd = pglet.Dropdown(id="list1", label="Your favorite color:")
-    dd.add_option("key1")
-    dd.add_option("key2")
+    dd = pglet.Dropdown(id="list1", label="Your favorite color:", options=[
+        Option(key="key1"),
+        Option(key="key2")
+    ])
     assert dd.get_cmd_str(indent='  ') == (
         '  dropdown id="list1" label="Your favorite color:"\n'
         '    option key="key1"\n'
@@ -36,22 +37,3 @@ def test_dropdown_with_just_keys():
 
     do = Option("key1")
     assert isinstance(do, Option)
-
-def test_dropdown_update():
-    dd = pglet.Dropdown(id="list1", label="Your favorite color:", options=[
-        Option("key1"),
-        Option("key2")
-    ])
-
-    p = pglet.page(no_window=True)
-    p.add(dd)
-
-    assert dd.get_cmd_str(update=True) == '', "Test failed"
-
-    dd.options[0].key = 1
-    dd.options[1].text = "Key 2"
-
-    assert dd.get_cmd_str(update=True) == (
-        '"list1:_1" key="1"\n'
-        '"list1:_2" text="Key 2"'
-    ), "Test failed"

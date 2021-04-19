@@ -3,7 +3,7 @@ from .control import Control
 
 # Item
 class Item(Control):
-    def __init__(self, key=None, text=None, icon=None, icon_color=None, url=None, items=[],
+    def __init__(self, key=None, text=None, icon=None, icon_color=None, url=None, items=None,
         new_window=None, expanded=None):
         Control.__init__(self)
         #key and text are optional for group item but key or text are required for level 2 and deeper items 
@@ -15,24 +15,22 @@ class Item(Control):
         self.url = url
         self.new_window = new_window
         self.expanded = expanded
-        self._items = []
-        if items and len(items) > 0:
+        self.__items = []
+        if items != None:
             for item in items:
-                self.add_item(item)
+                self.__items.append(item)
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "item"
-
-    def add_item(self, item):
-        if isinstance(item, Item):
-            self._items.append(item)
-        else:
-            self._items.append(Item(str(item)))
 
     # items
     @property
     def items(self):
-        return self._items
+        return self.__items
+
+    @items.setter
+    def items(self, value):
+        self.__items = value
 
     # key
     @property
@@ -92,19 +90,19 @@ class Item(Control):
     # expanded
     @property
     def expanded(self):
-        return self._get_attr("expanded")
+        return self._get_attr("expanded", data_type="bool")
 
     @expanded.setter
     def expanded(self, value):
         assert value == None or isinstance(value, bool), "value must be a boolean"
         self._set_attr("expanded", value)
 
-    def _getChildren(self):
-        return self._items
+    def _get_children(self):
+        return self.__items
 
 class Nav(Control):
-    def __init__(self, id=None, value=None, items=[],
-            onchange=None, onexpand=None, oncollapse=None,
+    def __init__(self, id=None, value=None, items=None,
+            on_change=None, on_expand=None, on_collapse=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
         
@@ -113,53 +111,51 @@ class Nav(Control):
             visible=visible, disabled=disabled)
         
         self.value = value
-        self.onchange = onchange
-        self.onexpand = onexpand
-        self.oncollapse = oncollapse
-        self._items = []
-        if items and len(items) > 0:
+        self.on_change = on_change
+        self.on_expand = on_expand
+        self.on_collapse = on_collapse
+        self.__items = []
+        if items != None:
             for item in items:
-                self.add_item(item)
+                self.__items.append(item)
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "nav"
-
-    def add_item(self, item):
-        if isinstance(item, Item):
-            self._items.append(item)
-        else:
-            self._items.append(Item(str(item)))
 
     # items
     @property
     def items(self):
-        return self._items
-        
-    # onchange
-    @property
-    def onchange(self):
-        return None
+        return self.__items
 
-    @onchange.setter
-    def onchange(self, handler):
+    @items.setter
+    def items(self, value):
+        self.__items = value
+        
+    # on_change
+    @property
+    def on_change(self):
+        return self._get_event_handler("change")
+
+    @on_change.setter
+    def on_change(self, handler):
         self._add_event_handler("change", handler)
 
-    # onexpand
+    # on_expand
     @property
-    def onexpand(self):
-        return None
+    def on_expand(self):
+        return self._get_event_handler("expand")
 
-    @onexpand.setter
-    def onexpand(self, handler):
+    @on_expand.setter
+    def on_expand(self, handler):
         self._add_event_handler("expand", handler)
 
-    # oncollapse
+    # on_collapse
     @property
-    def oncollapse(self):
-        return None
+    def on_collapse(self):
+        return self._get_event_handler("collapse")
 
-    @oncollapse.setter
-    def oncollapse(self, handler):
+    @on_collapse.setter
+    def on_collapse(self, handler):
         self._add_event_handler("collapse", handler)
 
     # value
@@ -171,5 +167,5 @@ class Nav(Control):
     def value(self, value):
         self._set_attr("value", value)
 
-    def _getChildren(self):
-        return self._items
+    def _get_children(self):
+        return self.__items

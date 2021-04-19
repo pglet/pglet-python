@@ -5,7 +5,7 @@ from .control import Control
 class Item(Control):
     def __init__(self, text=None, secondary_text=None, url=None, new_window=None,
     icon=None, icon_color=None, icon_only=None, split=None, divider=None,
-    onclick=None, items=[]):
+    on_click=None, items=None):
         Control.__init__(self)
 
         self.text = text
@@ -17,34 +17,32 @@ class Item(Control):
         self.icon_only = icon_only
         self.split = split
         self.divider = divider
-        self.onclick = onclick
-        self._items = []
-        if items and len(items) > 0:
+        self.on_click = on_click
+        self.__items = []
+        if items != None:
             for item in items:
-                self.add_item(item)
+                self.__items.append(item)
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "item"
 
-    def add_item(self, item):
-        if isinstance(item, Item):
-            self._items.append(item)
-        else:
-            self._items.append(Item(str(item)))
-
-    # onclick
+    # on_click
     @property
-    def onclick(self):
-        return None
+    def on_click(self):
+        return self._get_event_handler("click")
 
-    @onclick.setter
-    def onclick(self, handler):
+    @on_click.setter
+    def on_click(self, handler):
         self._add_event_handler("click", handler)
 
     # items
     @property
     def items(self):
-        return self._items
+        return self.__items
+
+    @items.setter
+    def items(self, value):
+        self.__items = value
 
     # text
     @property
@@ -131,84 +129,78 @@ class Item(Control):
         assert value == None or isinstance(value, bool), "divider must be a boolean"
         self._set_attr("divider", value)
 
-    def _getChildren(self):
-        return self._items
+    def _get_children(self):
+        return self.__items
 
 # Overflow
 class Overflow(Control):
-    def __init__(self, id=None, items=[]):
+    def __init__(self, id=None, items=None):
         Control.__init__(self, id=id)
     
-        self._items = []
-        if items and len(items) > 0:
+        self.__items = []
+        if items != None:
             for item in items:
-                self.add_item(item)
+                self.__items.append(item)
 
     # items
     @property
     def items(self):
-        return self._items
+        return self.__items
 
-    def _getControlName(self):
+    @items.setter
+    def items(self, value):
+        self.__items = value
+
+    def _get_control_name(self):
         return "overflow"
 
-    def add_item(self, item):
-        assert isinstance(item, Item), ("Overflow can hold items only")
-        self._items.append(item)
-
-    def _getChildren(self):
-        return self._items
+    def _get_children(self):
+        return self.__items
 
 # Far
 class Far(Control):
-    def __init__(self, id=None, items=[]):
+    def __init__(self, id=None, items=None):
         Control.__init__(self, id=id)
     
-        self._items = []
-        if items and len(items) > 0:
+        self.__items = []
+        if items != None:
             for item in items:
-                self.add_item(item)
+                self.__items.append(item)
 
     # items
     @property
     def items(self):
-        return self._items
+        return self.__items
 
-    def _getControlName(self):
+    @items.setter
+    def items(self, value):
+        self.__items = value
+
+    def _get_control_name(self):
         return "far"
 
-    def add_item(self, item):
-        assert isinstance(item, Item), ("Far can hold items only")
-        self._items.append(item)
-
-    def _getChildren(self):
-        return self._items
-
+    def _get_children(self):
+        return self.__items
 
 
 class Toolbar(Control):
-    def __init__(self, id=None, inverted=None, items=[], overflow=[], far=[],
+    def __init__(self, id=None, inverted=None, items=None, overflow=None, far=None,
             width=None, height=None, padding=None, margin=None, visible=None, disabled=None):
         
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
             visible=visible, disabled=disabled)
 
-        self._items = []
-        if items and len(items) > 0:
+        self.__items = []
+        if items != None:
             for item in items:
-                self.add_item(item)
-
-        self._overflow = Overflow(items=overflow)
-        self._far = Far(items=far)
+                self.__items.append(item)
+        self.__overflow = Overflow(items=overflow)
+        self.__far = Far(items=far)
         self.inverted = inverted
         
-    def _getControlName(self):
+    def _get_control_name(self):
         return "toolbar"
-
-    def add_item(self, item):
-        assert isinstance(item, Item), 'toolbar can hold items only'
-        self._items.append(item)
 
     # inverted
     @property
@@ -223,23 +215,35 @@ class Toolbar(Control):
     # items
     @property
     def items(self):
-        return self._items
+        return self.__items
+
+    @items.setter
+    def items(self, value):
+        self.__items = value
 
     # far
     @property
-    def far(self):
-        return self._far
+    def far_items(self):
+        return self.__far.items
+
+    @far_items.setter
+    def far_items(self, value):
+        self.__far.items = value
 
     # overflow
     @property
-    def overflow(self):
-        return self._overflow
+    def overflow_items(self):
+        return self.__overflow.items
 
-    def _getChildren(self):
+    @overflow_items.setter
+    def overflow_items(self, value):
+        self.__overflow.items = value
+
+    def _get_children(self):
         result=[]
-        if self._items and len(self._items) > 0:
-            for item in self._items:
+        if self.__items and len(self.__items) > 0:
+            for item in self.__items:
                 result.append(item)
-        result.append(self._overflow)
-        result.append(self._far)
+        result.append(self.__overflow)
+        result.append(self.__far)
         return result

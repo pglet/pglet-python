@@ -79,13 +79,13 @@ page.clean()
 
 b = Button(primary=False, compound=False, action=False, toolbar=True, split=False, text='This is text', 
     secondary_text='This is secondary text', url='https://google.com', new_window=True, title='This is title',
-    icon='Mail', icon_color='red', data='data', onclick=button_clicked, items=[
-        button.Item(text='Item1 text', secondary_text='Item1 secondary text', url='https://google.com', new_window=False,
-        icon='Mail', icon_color='blue', icon_only=True, split=False, divider=False, onclick=item_clicked, items=[
-            button.Item('Item1Item1'),
-            button.Item('Item1Item2')
+    icon='Mail', icon_color='red', data='data', on_click=button_clicked, items=[
+        button.MenuItem(text='Item1 text', secondary_text='Item1 secondary text', url='https://google.com', new_window=False,
+        icon='Mail', icon_color='blue', icon_only=True, split=False, divider=False, on_click=item_clicked, items=[
+            button.MenuItem('Item1Item1'),
+            button.MenuItem('Item1Item2')
         ]),
-        button.Item(text='Item2 text')
+        button.MenuItem(text='Item2 text')
     ])
 #page.add(b)
 
@@ -103,27 +103,27 @@ title='Link title', controls=[
 ])
 #page.add(l)
 
-#page.add(Link(value='Start action', url=None, new_window=False, onclick=link_click))
+#page.add(Link(value='Start action', url=None, new_window=False, on_click=link_click))
 #page.add(Toggle(value=True, label='This is toggle', on_text='On text', off_text='Off text', 
-#    inline=True, onchange=toggle_change))
+#    inline=True, on_change=toggle_change))
 
-#page.add(Message(value='This is message', dismiss=True, ondismiss=message_dismissed, buttons=[
+#page.add(Message(value='This is message', dismiss=True, on_dismiss=message_dismissed, buttons=[
 #    MessageButton(text='Yes, I agree', action='Yes'),
 #    MessageButton(text='No, I disagree', action='No')
 #]))
 
-#page.add(Checkbox(value=True, label='I am a human', box_side='start', data='data to pass', onchange=checkbox_changed))
+#page.add(Checkbox(value=True, label='I am a human', box_side='start', data='data to pass', on_change=checkbox_changed))
 
 #page.add(ChoiceGroup(value='colour', label='Select a colour:', data='data to pass', options=[
 #    choicegroup.Option(key='Green', icon='Shop', icon_color='Green'),
 #    choicegroup.Option(key='Yellow')], 
-#    onchange=choicegroup_changed))
+#    on_change=choicegroup_changed))
 
 #page.add(Dropdown(id='dd1', label='Choose your weapon', options=[
 #    dropdown.Option('Sword'),
 #    dropdown.Option('Word'),
 #    dropdown.Option('Poison')],
-#    onchange=dropdown_changed))
+#    on_change=dropdown_changed))
     
 #page.add(Nav(id='n1', value='n1', items=[
 #    nav.Item(key='Item1', items=[
@@ -134,16 +134,16 @@ title='Link title', controls=[
 #    ]),
 #    nav.Item('Item2'),
 #    nav.Item('Item3'),],
-#    onchange=navitem_changed, onexpand=navitem_expanded, oncollapse=navitem_collapsed))
+#    on_change=navitem_changed, on_expand=navitem_expanded, on_collapse=navitem_collapsed))
 
 #page.add(SearchBox(value='', placeholder='search for something', underlined=True, icon='mail', 
-#    icon_color='red', data='data', on_change=True, onchange=searchbox_changed))
+#    icon_color='red', data='data', on_change=True, on_change=searchbox_changed))
 
 #page.add(Slider(value=1, label='To what extend you agree', min=0, max=10, step=1, 
-#    show_value=True, value_format='current_value is {value}', vertical=False, onchange=slider_changed))
+#    show_value=True, value_format='current_value is {value}', vertical=False, on_change=slider_changed))
 
 #page.add(SpinButton(value=1, label='Level of satisfaction', min=0, max=10, step=1, 
-#    icon='mail', width=200, onchange=spinbutton_changed))
+#    icon='mail', width=200, on_change=spinbutton_changed))
 
 #page.add(Tabs(id='t1', value='Tabs101', tabs=[
 #    Tab(text='Tab1', controls=[
@@ -153,7 +153,7 @@ title='Link title', controls=[
 #        Text(value='this is text')
 #    ]),
 #    Tab(text='Tab3')],
-#    onchange=tabs_changed))
+#    on_change=tabs_changed))
 
 #d = Dialog(title='Hello', open=True, controls=[
 #    Text(value='Are you sure?')
@@ -221,7 +221,7 @@ def button1_clicked(event):
     page.update(c)
     #page.send('set callout1 visible"True"')
 
-button1 = Button(id='button1', text='Click to see callout', onclick=button1_clicked)
+button1 = Button(id='button1', text='Click to see callout', on_click=button1_clicked)
 c = Callout(target='button1', position='leftBottom', gap=100, beak=True, beak_width=10, page_padding=10,
     focus=False, cover=True, visible=True, controls=[
         Text(value='This is callout')

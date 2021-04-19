@@ -12,7 +12,7 @@ class Option(Control):
         self.icon = icon
         self.icon_color = icon_color
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "option"
 
     # key
@@ -52,37 +52,39 @@ class Option(Control):
         self._set_attr("iconColor", value)
 
 class ChoiceGroup(Control):
-    def __init__(self, label=None, id=None, value=None, data=None, options=[],
-            width=None, height=None, padding=None, margin=None, onchange=None,
+    def __init__(self, label=None, id=None, value=None, data=None, options=None,
+            width=None, height=None, padding=None, margin=None, on_change=None,
             visible=None, disabled=None):
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
+            visible=visible, disabled=disabled, data=data)
         self.value = value
         self.label = label
-        self.data = data
-        self.onchange = onchange
-        self._options = []
-        if options and len(options) > 0:
+        self.on_change = on_change
+        self.__options = []
+        if options != None:
             for option in options:
-                self.add_option(option)
+                self.__options.append(option)
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "choicegroup"
 
-    def add_option(self, option):
-        if isinstance(option, Option):
-            self._options.append(option)
-        else:
-            self._options.append(Option(str(option)))
-
-    # onchange
+    # options
     @property
-    def onchange(self):
-        return None
+    def options(self):
+        return self.__options
 
-    @onchange.setter
-    def onchange(self, handler):
+    @options.setter
+    def options(self, value):
+        self.__options = value
+
+    # on_change
+    @property
+    def on_change(self):
+        return self._get_event_handler("change")
+
+    @on_change.setter
+    def on_change(self, handler):
         self._add_event_handler("change", handler)
 
     # value
@@ -103,14 +105,5 @@ class ChoiceGroup(Control):
     def label(self, value):
         self._set_attr("label", value)
 
-    # data
-    @property
-    def data(self):
-        return self._get_attr("data")
-
-    @data.setter
-    def data(self, value):
-        self._set_attr("data", value)
-
-    def _getChildren(self):
-        return self._options
+    def _get_children(self):
+        return self.__options

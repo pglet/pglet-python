@@ -3,7 +3,7 @@ from .control import Control
 
 class Callout(Control):
     def __init__(self, id=None, target=None, position=None, gap=None, beak=None, beak_width=None,
-            page_padding=None, focus=None, cover=None, visible=None, controls=[], ondismiss=None,
+            page_padding=None, focus=None, cover=None, visible=None, controls=None, on_dismiss=None,
             width=None, height=None, padding=None, margin=None, disabled=None):
         
         Control.__init__(self, id=id,
@@ -18,31 +18,31 @@ class Callout(Control):
         self.page_padding = page_padding
         self.focus = focus
         self.cover = cover
-        self.ondismiss = ondismiss
-        self._controls = []
-        if controls and len(controls) > 0:
+        self.on_dismiss = on_dismiss
+        self.__controls = []
+        if controls != None:
             for control in controls:
-                self.add_control(control)
+                self.__controls.append(control)
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "callout"
-
-    def add_control(self, control):
-        assert isinstance(control, Control), 'callout can hold controls only'
-        self._controls.append(control)
 
     # controls
     @property
     def controls(self):
-        return self._controls
-    
-    # ondismiss
-    @property
-    def ondismiss(self):
-        return None
+        return self.__controls
 
-    @ondismiss.setter
-    def ondismiss(self, handler):
+    @controls.setter
+    def controls(self, value):
+        self.__controls = value
+    
+    # on_dismiss
+    @property
+    def on_dismiss(self):
+        return self._get_event_handler("dismiss")
+
+    @on_dismiss.setter
+    def on_dismiss(self, handler):
         self._add_event_handler("dismiss", handler)
 
     # target
@@ -123,5 +123,5 @@ class Callout(Control):
         assert value == None or isinstance(value, bool), "cover must be a boolean"
         self._set_attr("cover", value)
 
-    def _getChildren(self):
-        return self._controls
+    def _get_children(self):
+        return self.__controls

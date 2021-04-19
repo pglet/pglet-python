@@ -14,7 +14,7 @@ class P(Control):
         self.x_tooltip = x_tooltip
         self.y_tooltip = y_tooltip
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "p"
 
     # x
@@ -75,16 +75,15 @@ class P(Control):
 
 # Data
 class Data(Control):
-    def __init__(self, id=None, color=None, legend=None, points=[]):
+    def __init__(self, id=None, color=None, legend=None, points=None):
         Control.__init__(self, id=id)
     
-        self._points = []
-        if points and len(points) > 0:
-            for point in points:
-                self.add_point(point)
-
         self.color = color
         self.legend = legend
+        self.__points = []
+        if points != None:
+            for point in points:
+                self.__points.append(point)
 
     # color
     @property
@@ -107,32 +106,32 @@ class Data(Control):
     # points
     @property
     def points(self):
-        return self._points
+        return self.__points
 
-    def _getControlName(self):
+    @points.setter
+    def points(self, value):
+        self.__points = value
+
+    def _get_control_name(self):
         return "data"
 
-    def add_point(self, point):
-        assert isinstance(point, P), ("data can hold points only")
-        self._points.append(point)
-
-    def _getChildren(self):
-        return self._points
+    def _get_children(self):
+        return self.__points
 
 
 class LineChart(Control):
     def __init__(self, id=None, legend=None, tooltips=None, stroke_width=None, 
-            y_min=None, y_max=None, y_ticks=None, y_format=None, x_type=None, datas=[],
+            y_min=None, y_max=None, y_ticks=None, y_format=None, x_type=None, lines=None,
             width=None, height=None, padding=None, margin=None, visible=None, disabled=None):
         
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
             visible=visible, disabled=disabled)
 
-        self._datas = []
-        if datas and len(datas) > 0:
-            for data in datas:
-                self.add_data(data)
+        self.__lines = []
+        if lines != None:
+            for line in lines:
+                self.__lines.append(line)
 
         self.legend = legend
         self.tooltips = tooltips
@@ -143,17 +142,17 @@ class LineChart(Control):
         self.y_format = y_format
         self.x_type = x_type
         
-    def _getControlName(self):
+    def _get_control_name(self):
         return "linechart"
 
-    def add_data(self, data):
-        assert isinstance(data, Data), 'datas can hold data only'
-        self._datas.append(data)
-
-    # data
+    # lines
     @property
-    def data(self):
-        return self._datas
+    def lines(self):
+        return self.__lines
+
+    @lines.setter
+    def lines(self, value):
+        self.__lines = value
 
     # legend
     @property
@@ -233,5 +232,5 @@ class LineChart(Control):
     def x_type(self, value):
         self._set_attr("xType", value)
 
-    def _getChildren(self):
-        return self._datas
+    def _get_children(self):
+        return self.__lines

@@ -11,7 +11,7 @@ class P(Control):
         self.color = color
         self.tooltip = tooltip
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "p"
 
     # value
@@ -53,51 +53,55 @@ class P(Control):
 
 # Data
 class Data(Control):
-    def __init__(self, id=None, points=[]):
+    def __init__(self, id=None, points=None):
         Control.__init__(self, id=id)
     
-        self._points = []
-        if points and len(points) > 0:
+        self.__points = []
+        if points != None:
             for point in points:
-                self.add_point(point)
+                self.__points.append(point)
 
     # points
     @property
     def points(self):
-        return self._points
+        return self.__points
 
-    def _getControlName(self):
+    @points.setter
+    def points(self, value):
+        self.__points = value
+
+    def _get_control_name(self):
         return "data"
 
-    def add_point(self, point):
-        assert isinstance(point, P), ("data can hold points only")
-        self._points.append(point)
-
-    def _getChildren(self):
-        return self._points
+    def _get_children(self):
+        return self.__points
 
 
 class PieChart(Control):
-    def __init__(self, id=None, legend=None, tooltips=None, inner_value=None, inner_radius=None, data=[],
+    def __init__(self, id=None, legend=None, tooltips=None, inner_value=None, inner_radius=None, points=None,
             width=None, height=None, padding=None, margin=None, visible=None, disabled=None):
         
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
             visible=visible, disabled=disabled)
 
-        self._data = Data(points=data)
+        self.__data = Data(points=points)
         self.legend = legend
         self.tooltips = tooltips
         self.inner_value = inner_value
         self.inner_radius = inner_radius
         
-    def _getControlName(self):
+    def _get_control_name(self):
         return "piechart"
 
     # data
     @property
-    def data(self):
-        return self._data
+    def points(self):
+        return self.__data.points
+
+    @points.setter
+    def points(self, value):
+        self.__data.points = value
 
     # legend
     @property
@@ -138,5 +142,5 @@ class PieChart(Control):
         assert value == None or isinstance(value, float) or isinstance(value, int), "inner_radius must be a float"  
         self._set_attr("innerRadius", value)
 
-    def _getChildren(self):
-        return [self._data]
+    def _get_children(self):
+        return [self.__data]

@@ -4,15 +4,15 @@ from .control import Control
 
 class Stack(Control):
 
-    def __init__(self, controls=[], id=None, horizontal=None, vertical_fill=None, horizontal_align=None,
+    def __init__(self, controls=None, id=None, horizontal=None, vertical_fill=None, horizontal_align=None,
             vertical_align=None, min_width=None, max_width=None, min_height=None, max_height=None, 
             gap=None, wrap=None, bgcolor=None, border=None, border_radius=None, border_left=None, 
-            border_right=None, border_top=None, border_bottom=None, scrollx=None, scrolly=None,
+            border_right=None, border_top=None, border_bottom=None, scrollx=None, scrolly=None, on_submit=None,
             width=None, height=None, padding=None, margin=None,
-            visible=None, disabled=None):
+            visible=None, disabled=None, data=None):
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
+            visible=visible, disabled=disabled, data=data)
 
         self.horizontal = horizontal
         self.vertical_fill = vertical_fill
@@ -33,20 +33,24 @@ class Stack(Control):
         self.border_bottom = border_bottom
         self.scrollx = scrollx
         self.scrolly = scrolly
+        self.on_submit = on_submit
 
-        self._controls = []
-        if controls and len(controls) > 0:
+        self.__controls = []
+        if controls != None:
             for control in controls:
-                self.add_control(control)
+                self.__controls.append(control)
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "stack"
 
-    def add_control(self, control):
-        if not isinstance(control, Control):
-            raise Exception("Stack can hold controls only")
+# controls
+    @property
+    def controls(self):
+        return self.__controls
 
-        self._controls.append(control)
+    @controls.setter
+    def controls(self, value):
+        self.__controls = value
 
 # horizontal
     @property
@@ -75,7 +79,6 @@ class Stack(Control):
 
     @horizontal_align.setter
     def horizontal_align(self, value):
-        #assert value == None or isinstance(value, Alignment), "horizontalAlign must be an Alignment"
         self._set_attr("horizontalAlign", value)
 
 # vertical_align
@@ -85,7 +88,6 @@ class Stack(Control):
 
     @vertical_align.setter
     def vertical_align(self, value):
-        #assert value == None or isinstance(value, Alignment), "verticalAlign must be an Alignment"
         self._set_attr("verticalAlign", value)
 
 # min_width
@@ -226,7 +228,18 @@ class Stack(Control):
         assert value == None or isinstance(value, bool), "scrolly must be a bool"
         self._set_attr("scrolly", value)
 
+# on_submit
+    @property
+    def on_submit(self):
+        return self._get_event_handler("submit")
 
+    @on_submit.setter
+    def on_submit(self, handler):
+        self._add_event_handler("submit", handler)
+        if handler != None:
+            self._set_attr("on_submit", True)
+        else:
+            self._set_attr("on_submit", None)
 
-    def _getChildren(self):
-        return self._controls
+    def _get_children(self):
+        return self.__controls

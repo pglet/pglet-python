@@ -2,39 +2,49 @@ from .utils import encode_attr
 from .control import Control
 
 class Checkbox(Control):
-    def __init__(self, label=None, id=None, value=None, box_side=None, data=None,
-            width=None, height=None, padding=None, margin=None, onchange=None,
+    def __init__(self, label=None, id=None, value=None, value_field=None, box_side=None, data=None,
+            width=None, height=None, padding=None, margin=None, on_change=None,
             visible=None, disabled=None):
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
+            visible=visible, disabled=disabled, data=data)
         self.value = value
+        self.value_field = value_field
         self.label = label
         self.box_side = box_side
-        self.data = data
-        self.onchange = onchange
+        self.on_change = on_change
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "checkbox"
 
-# onchange
+# on_change
     @property
-    def onchange(self):
-        return None
+    def on_change(self):
+        return self._get_event_handler("change")
 
-    @onchange.setter
-    def onchange(self, handler):
+    @on_change.setter
+    def on_change(self, handler):
         self._add_event_handler("change", handler)
 
 # value
     @property
     def value(self):
-        return self._get_attr("value")
+        return self._get_attr("value", data_type="bool")
 
     @value.setter
     def value(self, value):
         assert value == None or isinstance(value, bool), "value must be a boolean"
         self._set_attr("value", value)
+
+# value_field
+    @property
+    def value_field(self):
+        return self._get_attr("value")
+
+    @value_field.setter
+    def value_field(self, value):
+        if value != None:
+            self._set_attr("value", f"{{{value}}}")
 
 # label
     @property
@@ -53,12 +63,3 @@ class Checkbox(Control):
     @box_side.setter
     def box_side(self, value):
         self._set_attr("boxSide", value)
-
-# data
-    @property
-    def data(self):
-        return self._get_attr("data")
-
-    @data.setter
-    def data(self, value):
-        self._set_attr("data", value)

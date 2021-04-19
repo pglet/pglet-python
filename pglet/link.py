@@ -3,13 +3,13 @@ from .control import Control
 
 class Link(Control):
     def __init__(self, url=None, id=None, value=None, new_window=None, title=None,
-            size=None, bold=None, italic=None, pre=None, align=None, onclick=None, controls=[],
+            size=None, bold=None, italic=None, pre=None, align=None, on_click=None, controls=None,
             width=None, height=None, padding=None, margin=None,
-            visible=None, disabled=None):
+            visible=None, disabled=None, data=None):
         
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
+            visible=visible, disabled=disabled, data=data)
         
         self.value = value
         self.url = url
@@ -20,31 +20,31 @@ class Link(Control):
         self.italic = italic
         self.pre = pre
         self.align = align
-        self.onclick = onclick
-        self._controls = []
-        if controls and len(controls) > 0:
+        self.on_click = on_click
+        self.__controls = []
+        if controls != None:
             for control in controls:
-                self.add_control(control)
+                self.__controls.append(control)
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "link"
-
-    def add_control(self, control):
-        assert isinstance(control, Control), 'link can hold controls only'
-        self._controls.append(control)
 
 # controls
     @property
     def controls(self):
-        return self._controls
+        return self.__controls
 
-# onclick
+    @controls.setter
+    def controls(self, value):
+        self.__controls = value
+
+# on_click
     @property
-    def onclick(self):
-        return None
+    def on_click(self):
+        return self._get_event_handler("click")
 
-    @onclick.setter
-    def onclick(self, handler):
+    @on_click.setter
+    def on_click(self, handler):
         self._add_event_handler("click", handler)
 
 # value
@@ -133,5 +133,5 @@ class Link(Control):
         self._set_attr("align", value)
         
 
-    def _getChildren(self):
-        return self._controls
+    def _get_children(self):
+        return self.__controls

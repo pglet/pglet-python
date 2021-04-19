@@ -3,7 +3,7 @@ from .control import Control
 
 # Tab
 class Tab(Control):
-    def __init__(self, text, controls=[], id=None, key=None, icon=None, count=None):
+    def __init__(self, text, controls=None, id=None, key=None, icon=None, count=None):
         Control.__init__(self, id=id)
         #key or text are required 
         assert key != None or text != None, "key or text must be specified"
@@ -11,18 +11,22 @@ class Tab(Control):
         self.text = text
         self.icon = icon
         self.count = count
-        self._controls = []
-        if controls and len(controls) > 0:
+        self.__controls = []
+        if controls != None:
             for control in controls:
-                self.add_control(control)
+                self.__controls.append(control)        
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "tab"
 
-    def add_control(self, control):
-        if not isinstance(control, Control):
-            raise Exception("Stack can hold controls only")
-        self._controls.append(control)
+    # controls
+    @property
+    def controls(self):
+        return self.__controls
+
+    @controls.setter
+    def controls(self, value):
+        self.__controls = value        
 
     # key
     @property
@@ -60,12 +64,12 @@ class Tab(Control):
     def count(self, value):
         self._set_attr("count", value)
 
-    def _getChildren(self):
-        return self._controls
+    def _get_children(self):
+        return self.__controls
 
 class Tabs(Control):
-    def __init__(self, tabs=[], id=None, value=None, solid=None,
-            onchange=None,
+    def __init__(self, tabs=None, id=None, value=None, solid=None,
+            on_change=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
         
@@ -75,31 +79,31 @@ class Tabs(Control):
         
         self.value = value
         self.solid = solid
-        self.onchange = onchange
-        self._tabs = []
-        if tabs and len(tabs) > 0:
+        self.on_change = on_change
+        self.__tabs = []
+        if tabs != None:
             for tab in tabs:
-                self.add_tab(tab)
+                self.__tabs.append(tab)                
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "tabs"
-
-    def add_tab(self, tab):
-        assert isinstance(tab, Tab), 'tabs can hold tab only'
-        self._tabs.append(tab)
 
     # tabs
     @property
     def tabs(self):
-        return self._tabs
-        
-    # onchange
-    @property
-    def onchange(self):
-        return None
+        return self.__tabs
 
-    @onchange.setter
-    def onchange(self, handler):
+    @tabs.setter
+    def tabs(self, value):
+        self.__tabs = value
+        
+    # on_change
+    @property
+    def on_change(self):
+        return self._get_event_handler("change")
+
+    @on_change.setter
+    def on_change(self, handler):
         self._add_event_handler("change", handler)
 
     # value
@@ -121,5 +125,5 @@ class Tabs(Control):
         assert value == None or isinstance(value, bool), "show_value must be a boolean"
         self._set_attr("solid", value)
 
-    def _getChildren(self):
-        return self._tabs
+    def _get_children(self):
+        return self.__tabs

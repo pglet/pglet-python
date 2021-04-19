@@ -2,45 +2,55 @@ from .utils import encode_attr
 from .control import Control
 
 class Toggle(Control):
-    def __init__(self, label=None, id=None, value=None, inline=None,
-            on_text=None, off_text=None, data=None, onchange=None,
+    def __init__(self, label=None, id=None, value=None, value_field=None, inline=None,
+            on_text=None, off_text=None, data=None, on_change=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
         
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
+            visible=visible, disabled=disabled, data=data)
         
         self.value = value
+        self.value_field = value_field
         self.label = label
         self.inline = inline
         self.on_text = on_text
         self.off_text = off_text
-        self.data = data
-        self.onchange = onchange
+        self.on_change = on_change
        
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "toggle"
 
-# onchange
+# on_change
     @property
-    def onchange(self):
-        return None
+    def on_change(self):
+        return self._get_event_handler("change")
 
-    @onchange.setter
-    def onchange(self, handler):
+    @on_change.setter
+    def on_change(self, handler):
         self._add_event_handler("change", handler)
 
 # value
     @property
     def value(self):
-        return self._get_attr("value")
+        return self._get_attr("value", data_type="bool")
 
     @value.setter
     def value(self, value):
         assert value == None or isinstance(value, bool), "value must be a boolean"
         self._set_attr("value", value)
+
+# value_field
+    @property
+    def value_field(self):
+        return self._get_attr("value")
+
+    @value_field.setter
+    def value_field(self, value):
+        if value != None:
+            self._set_attr("value", f"{{{value}}}")
 
 # label
     @property
@@ -78,13 +88,3 @@ class Toggle(Control):
     @off_text.setter
     def off_text(self, value):
         self._set_attr("offText", value)
-
-# data
-    @property
-    def data(self):
-        return self._get_attr("data")
-
-    @data.setter
-    def data(self, value):
-        self._set_attr("data", value)
-

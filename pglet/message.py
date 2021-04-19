@@ -8,7 +8,7 @@ class MessageButton(Control):
         self.text = text
         self.action = action
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "button"
 
     # text
@@ -33,43 +33,44 @@ class MessageButton(Control):
 class Message(Control):
     def __init__(self, value=None, type=None, id=None,
             multiline=None, truncated=None, dismiss=None,
-            data=None, ondismiss=None, buttons=[],
+            data=None, on_dismiss=None, buttons=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
         
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
+            visible=visible, disabled=disabled, data=data)
         
         self.type = type
         self.value = value
         self.multiline = multiline
         self.truncated = truncated
         self.dismiss = dismiss
-        self.data = data
-        self.ondismiss = ondismiss
-        self._buttons = []
-        if buttons and len(buttons) > 0:
+        self.on_dismiss = on_dismiss
+        self.__buttons = []
+        if buttons != None:
             for button in buttons:
-                self.add_button(button)
+                self.__buttons.append(button)
        
-
-    def _getControlName(self):
+    def _get_control_name(self):
         return "message"
 
-    def add_button(self, button):
-       if isinstance(button, MessageButton):
-            self._buttons.append(button)
-       else:
-            self._buttons.append(MessageButton(str(button)))
-
-# ondismiss
+# buttons
     @property
-    def ondismiss(self):
-        return None
+    def buttons(self):
+        return self.__buttons
 
-    @ondismiss.setter
-    def ondismiss(self, handler):
+    @buttons.setter
+    def buttons(self, value):
+        self.__buttons = value
+
+# on_dismiss
+    @property
+    def on_dismiss(self):
+        return self._get_event_handler("dismiss")
+
+    @on_dismiss.setter
+    def on_dismiss(self, handler):
         self._add_event_handler("dismiss", handler)
 
 # value
@@ -120,14 +121,5 @@ class Message(Control):
         assert value == None or isinstance(value, bool), "value must be a boolean"
         self._set_attr("dismiss", value)
 
-# data
-    @property
-    def data(self):
-        return self._get_attr("data")
-
-    @data.setter
-    def data(self, value):
-        self._set_attr("data", value)
-
-    def _getChildren(self):
-            return self._buttons
+    def _get_children(self):
+            return self.__buttons

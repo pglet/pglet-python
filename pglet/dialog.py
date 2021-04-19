@@ -3,38 +3,38 @@ from .control import Control
 
 # Footer
 class Footer(Control):
-    def __init__(self, id=None, controls=[]):
+    def __init__(self, id=None, controls=None):
         Control.__init__(self, id=id)
     
-        self._controls = []
-        if controls and len(controls) > 0:
+        self.__controls = []
+        if controls != None:
             for control in controls:
-                self.add_control(control)
+                self.__controls.append(control)
 
     # controls
     @property
     def controls(self):
-        return self._controls
+        return self.__controls
 
-    def _getControlName(self):
+    @controls.setter
+    def controls(self, value):
+        self.__controls = value
+
+    def _get_control_name(self):
         return "footer"
 
-    def add_control(self, control):
-        assert isinstance(control, Control), ("Footer can hold controls only")
-        self._controls.append(control)
-
-    def _getChildren(self):
-        return self._controls
+    def _get_children(self):
+        return self.__controls
 
 class Dialog(Control):
     def __init__(self, id=None, open=None, title=None, sub_text=None, large_header=None,
             auto_dismiss=None, width=None, max_width=None, height=None, fixed_top=None,
-            blocking=None, data=None, controls=[], footer=[], ondismiss=None,
+            blocking=None, data=None, controls=None, footer=None, on_dismiss=None,
             padding=None, margin=None, visible=None, disabled=None):
         
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
+            visible=visible, disabled=disabled, data=data)
         
         self.open = open
         self.title = title
@@ -44,38 +44,37 @@ class Dialog(Control):
         self.max_width = max_width
         self.fixed_top = fixed_top
         self.blocking = blocking
-        self.data = data
-        self.ondismiss = ondismiss
-        self._footer = Footer(controls=footer)
-        self._controls = []
-        if controls and len(controls) > 0:
+        self.on_dismiss = on_dismiss
+        self.__footer = Footer(controls=footer)
+        self.__controls = []
+        if controls != None:
             for control in controls:
-                self.add_control(control)
+                self.__controls.append(control)
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "dialog"
-
-    def add_control(self, control):
-        assert isinstance(control, Control), 'dialog can hold controls only'
-        self._controls.append(control)
 
     # controls
     @property
     def controls(self):
-        return self._controls
+        return self.__controls
+
+    @controls.setter
+    def controls(self, value):
+        self.__controls = value
 
     # footer
     @property
     def footer(self):
-        return self._footer 
+        return self.__footer 
     
-    # ondismiss
+    # on_dismiss
     @property
-    def ondismiss(self):
-        return None
+    def on_dismiss(self):
+        return self._get_event_handler("dismiss")
 
-    @ondismiss.setter
-    def ondismiss(self, handler):
+    @on_dismiss.setter
+    def on_dismiss(self, handler):
         self._add_event_handler("dismiss", handler)
 
     # open
@@ -155,19 +154,10 @@ class Dialog(Control):
         assert value == None or isinstance(value, bool), "blocking must be a boolean"
         self._set_attr("blocking", value)
 
-    # data
-    @property
-    def data(self):
-        return self._get_attr("data")
-
-    @data.setter
-    def data(self, value):
-        self._set_attr("data", value)
-
-    def _getChildren(self):
+    def _get_children(self):
         result=[]
-        if self._controls and len(self._controls) > 0:
-            for control in self._controls:
+        if self.__controls and len(self.__controls) > 0:
+            for control in self.__controls:
                 result.append(control)
-        result.append(self._footer)
+        result.append(self.__footer)
         return result

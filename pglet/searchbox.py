@@ -3,65 +3,67 @@ from .control import Control
 
 class SearchBox(Control):
     def __init__(self, id=None, value=None, placeholder=None, underlined=None,
-            icon=None, icon_color=None, data=None, on_change=None, onsearch=None,
-            onclear=None, onescape=None, onchange=None,
+            icon=None, icon_color=None, data=None, on_search=None,
+            on_clear=None, on_escape=None, on_change=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
 
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
+            visible=visible, disabled=disabled, data=data)
 
         self.value = value
         self.placeholder = placeholder
         self.underlined = underlined
         self.icon = icon
         self.icon_color = icon_color
-        self.data = data
+        self.on_search = on_search
+        self.on_clear = on_clear
+        self.on_escape = on_escape
         self.on_change = on_change
-        self.onsearch = onsearch
-        self.onclear = onclear
-        self.onescape = onescape
-        self.onchange = onchange
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "searchbox"
 
-# onsearch
+# on_search
     @property
-    def onsearch(self):
-        return None
+    def on_search(self):
+        return self._get_event_handler("search")
 
-    @onsearch.setter
-    def onsearch(self, handler):
+    @on_search.setter
+    def on_search(self, handler):
         self._add_event_handler("search", handler)
 
-# onclear
+# on_clear
     @property
-    def onclear(self):
-        return None
+    def on_clear(self):
+        return self._get_event_handler("clear")
 
-    @onclear.setter
-    def onclear(self, handler):
+    @on_clear.setter
+    def on_clear(self, handler):
         self._add_event_handler("clear", handler)
 
-# onescape
+# on_escape
     @property
-    def onescape(self):
-        return None
+    def on_escape(self):
+        return self._get_event_handler("escape")
 
-    @onescape.setter
-    def onescape(self, handler):
+    @on_escape.setter
+    def on_escape(self, handler):
         self._add_event_handler("escape", handler)
 
-# onchange
+# on_change
     @property
-    def onchange(self):
-        return None
+    def on_change(self):
+        return self._get_event_handler("change")
 
-    @onchange.setter
-    def onchange(self, handler):
+    @on_change.setter
+    def on_change(self, handler):
         self._add_event_handler("change", handler)
+        if handler != None:
+            self._set_attr("on_change", True)
+        else:
+            self._set_attr("on_change", False)
 
 # value
     @property
@@ -108,23 +110,3 @@ class SearchBox(Control):
     @icon_color.setter
     def icon_color(self, value):
         self._set_attr("iconColor", value)
-
-# data
-    @property
-    def data(self):
-        return self._get_attr("data")
-
-    @data.setter
-    def data(self, value):
-        self._set_attr("data", value)
-
-# on_change
-    @property
-    def on_change(self):
-        return self._get_attr("onChange")
-
-    @on_change.setter
-    def on_change(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
-        self._set_attr("onChange", value)
-

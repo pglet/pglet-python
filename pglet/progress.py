@@ -12,7 +12,7 @@ class Progress(Control):
         self.description = description
         self.label = label
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "progress"
 
 # value

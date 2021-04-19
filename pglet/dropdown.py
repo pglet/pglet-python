@@ -9,7 +9,7 @@ class Option(Control):
         self.key = key
         self.text = text
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "option"
 
     # key
@@ -32,43 +32,41 @@ class Option(Control):
 
 class Dropdown(Control):
     def __init__(self, label=None, id=None, value=None, placeholder=None,
-            error_message=None, onchange=None, options=[],
+            error_message=None, on_change=None, options=None,
             width=None, height=None, padding=None, margin=None,
-            visible=None, disabled=None):
+            visible=None, disabled=None, data=None):
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
+            visible=visible, disabled=disabled, data=data)
         self.label = label
         self.value = value
         self.placeholder = placeholder
         self.error_message = error_message
-        self.onchange = onchange
-        self._options = []
-        if options and len(options) > 0:
+        self.on_change = on_change
+        self.__options = []
+        if options != None:
             for option in options:
-                self.add_option(option)
+                self.__options.append(option)
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "dropdown"
-
-    def add_option(self, option):
-        if isinstance(option, Option):
-            self._options.append(option)
-        else:
-            self._options.append(Option(str(option)))
 
     # options
     @property
     def options(self):
-        return self._options
-        
-    # onchange
-    @property
-    def onchange(self):
-        return None
+        return self.__options
 
-    @onchange.setter
-    def onchange(self, handler):
+    @options.setter
+    def options(self, value):
+        self.__options = value
+        
+    # on_change
+    @property
+    def on_change(self):
+        return self._get_event_handler("change")
+
+    @on_change.setter
+    def on_change(self, handler):
         self._add_event_handler("change", handler)
 
     # label
@@ -107,5 +105,5 @@ class Dropdown(Control):
     def error_message(self, value):
         self._set_attr("errorMessage", value)
 
-    def _getChildren(self):
-        return self._options
+    def _get_children(self):
+        return self.__options

@@ -5,7 +5,7 @@ from .control import Control
 class Column(Control):
     def __init__(self, id=None, name=None, icon=None, icon_only=None, 
         field_name=None, sortable=None, sort_field=None, sorted=None, resizable=None,
-        min_width=None, max_width=None, on_click=None, controls=[], onclick=None,
+        min_width=None, max_width=None, on_click=None, template_controls=None,
         new_window=None, expanded=None):
         Control.__init__(self, id=id)
 
@@ -20,33 +20,23 @@ class Column(Control):
         self.min_width = min_width
         self.max_width = max_width
         self.on_click = on_click
-        #self.onchange = onchange
 
-        self._controls = []
-        if controls and len(controls) > 0:
-            for control in controls:
-                self.add_control(control)
+        self.__template_controls = []
+        if template_controls != None:
+            for control in template_controls:
+                self.__template_controls.append(control)
 
-    def _getControlName(self):
+    def _get_control_name(self):
         return "column"
-
-    def add_control(self, control):
-        assert isinstance(control, Control), 'Column must hold controls'
-        self._controls.append(control)
-
-    # onclick
-    @property
-    def onclick(self):
-        return None
-
-    @onclick.setter
-    def onclick(self, handler):
-        self._add_event_handler("click", handler)
     
-    # controls
+    # template_controls
     @property
-    def controls(self):
-        return self._controls
+    def template_controls(self):
+        return self.__template_controls
+
+    @template_controls.setter
+    def template_controls(self, value):
+        self.__template_controls = value
 
     # name
     @property
@@ -146,85 +136,129 @@ class Column(Control):
     # on_click
     @property
     def on_click(self):
-        return self._get_attr("onClick")
+        return self._get_attr("on_click")
 
     @on_click.setter
     def on_click(self, value):
         assert value == None or isinstance(value, bool), "resizable must be a boolean"
-        self._set_attr("onClick", value)
+        self._set_attr("on_click", value)
 
-    def _getChildren(self):
-        return self._controls
+    def _get_children(self):
+        return self.__template_controls
 
 # Item
 class Item(Control):
-    def __init__(self):
+    def __init__(self, obj):
         Control.__init__(self)
+        assert obj != None, "Obj cannot be empty"
+        self.__obj = obj
 
-    def _getControlName(self):
+    @property
+    def obj(self):
+        return self.__obj
+
+    def _set_attr(self, name, value, dirty=True):
+
+        if value == None:
+            return
+
+        orig_val = self._get_attr(name)
+        if orig_val != None and isinstance(orig_val, bool):
+            value = str(value).lower() == "true"
+        elif orig_val != None and isinstance(orig_val, float):
+            value = float(str(value))
+
+        self._set_attr_internal(name, value, dirty=False)
+        setattr(self.__obj, name, value)
+
+    def _fetch_attrs(self):
+        # reflection
+        for name, val in vars(self.__obj).items():
+            data_type = "string"
+            if isinstance(val, bool):
+                data_type = "bool"
+            elif isinstance(val, float):
+                data_type = "float"
+            orig_val = self._get_attr(name, data_type=data_type)
+
+            if val != orig_val:
+                self._set_attr_internal(name, val, dirty=True)
+
+    def _get_control_name(self):
         return "item"
 
 # Columns
 class Columns(Control):
-    def __init__(self, id=None, columns=[]):
+    def __init__(self, id=None, columns=None):
         Control.__init__(self, id=id)
     
-        self._columns = []
-        if columns and len(columns) > 0:
+        self.__columns = []
+        if columns != None:
             for column in columns:
-                self.add_column(column)
+                self.__columns.append(column)
 
     # columns
     @property
     def columns(self):
-        return self._columns
+        return self.__columns
 
-    def _getControlName(self):
+    @columns.setter
+    def columns(self, value):
+        self.__columns = value
+
+    def _get_control_name(self):
         return "columns"
 
-    def add_column(self, column):
-        assert isinstance(column, Column), ("Columns can hold columns only")
-        self._columns.append(column)
-
-    def _getChildren(self):
-        return self._columns
+    def _get_children(self):
+        return self.__columns
 
 # Items
 class Items(Control):
-    def __init__(self, id=None, items=[]):
+    def __init__(self, id=None, items=None):
         Control.__init__(self, id=None)
     
-        self._items = []
-        if items and len(items) > 0:
+        self.__map = {}
+        self.__items = []
+        if items != None:
             for item in items:
-                self.add_item(item)
+                self.__items.append(item)
 
     # items
     @property
     def items(self):
-        return self._items
+        return self.__items
 
-    def _getControlName(self):
+    @items.setter
+    def items(self, value):
+        self.__items = value
+
+    def _get_control_name(self):
         return "items"
 
-    def add_item(self, item):
-        self._items.append(item)
-
-    def _getChildren(self):
+    def _get_children(self):
         items = []
-        if self._items and len(self._items) > 0:
-            for obj in self._items:
-                item = Item()
-                # reflection
-                for property, value in vars(obj).items():
-                    item._set_attr(property, value)
+        if self.__items and len(self.__items) > 0:
+            for obj in self.__items:
+                item = self.__map.get(obj)
+                if item == None:
+                    item = Item(obj)
+                    self.__map[obj] = item
+                item._fetch_attrs()
                 items.append(item)
+        
+        del_objs = []
+        for obj, item in self.__map.items():
+            if item not in items:
+                del_objs.append(obj)
+
+        for obj in del_objs:
+            del self.__map[obj]
                 
         return items
 
 class Grid(Control):
     def __init__(self, id=None, selection=None, compact=None, header_visible=None, shimmer_lines=None,
-            columns=[], items=[], onselect=None, onitem_invoke=None,
+            columns=None, items=None, on_select=None, onitem_invoke=None,
             width=None, height=None, padding=None, margin=None, visible=None, disabled=None):
         
         Control.__init__(self, id=id,
@@ -235,37 +269,56 @@ class Grid(Control):
         self.compact = compact
         self.header_visible = header_visible
         self.shimmer_lines = shimmer_lines
-        self.onselect = onselect
+        self._on_select_handler = None
+        self.on_select = on_select
         self.onitem_invoke = onitem_invoke
         self._columns = Columns(columns=columns)
         self._items = Items(items=items)
+        self._selected_items = []
         
-    def _getControlName(self):
+    def _get_control_name(self):
         return "grid"
 
     # columns
     @property
     def columns(self):
-        return self._columns
+        return self._columns.columns
+
+    @columns.setter
+    def columns(self, value):
+        self._columns.columns = value
 
     # items
     @property
     def items(self):
-        return self._items
-    
-    # onselect
-    @property
-    def onselect(self):
-        return None
+        return self._items.items
 
-    @onselect.setter
-    def onselect(self, handler):
-        self._add_event_handler("select", handler)
+    @items.setter
+    def items(self, value):
+        self._items.items = value
+    
+    # on_select
+    @property
+    def on_select(self):
+        return self._on_select_handler
+
+    @on_select.setter
+    def on_select(self, handler):
+        self._on_select_handler = handler
+        if handler != None:
+            self._add_event_handler("select", self._on_select_internal)
+        else:
+            self._add_event_handler("select", None)
+
+    # selected_items
+    @property
+    def selected_items(self):
+        return self._selected_items
 
     # onitem_invoke
     @property
     def onitem_invoke(self):
-        return None
+        return self._get_event_handler("itemInvoke")
 
     @onitem_invoke.setter
     def onitem_invoke(self, handler):
@@ -310,7 +363,17 @@ class Grid(Control):
         assert value == None or isinstance(value, int), "shimmerLines must be an int"
         self._set_attr("shimmerLines", value)
 
-    def _getChildren(self):
+    def _on_select_internal(self, e):
+
+        self._selected_items = []
+        for id in e.data.split(' '):
+            if id != "":
+                self._selected_items.append(self.page.get_control(id))
+
+        if self._on_select_handler != None:
+            self._on_select_handler(e)
+
+    def _get_children(self):
         result=[]
         result.append(self._columns)
         result.append(self._items)
