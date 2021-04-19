@@ -269,10 +269,12 @@ class Grid(Control):
         self.compact = compact
         self.header_visible = header_visible
         self.shimmer_lines = shimmer_lines
+        self._on_select_handler = None
         self.on_select = on_select
         self.onitem_invoke = onitem_invoke
         self._columns = Columns(columns=columns)
         self._items = Items(items=items)
+        self._selected_items = []
         
     def _get_control_name(self):
         return "grid"
@@ -298,11 +300,20 @@ class Grid(Control):
     # on_select
     @property
     def on_select(self):
-        return self._get_event_handler("select")
+        return self._on_select_handler
 
     @on_select.setter
     def on_select(self, handler):
-        self._add_event_handler("select", handler)
+        self._on_select_handler = handler
+        if handler != None:
+            self._add_event_handler("select", self._on_select_internal)
+        else:
+            self._add_event_handler("select", None)
+
+    # selected_items
+    @property
+    def selected_items(self):
+        return self._selected_items
 
     # onitem_invoke
     @property
@@ -351,6 +362,16 @@ class Grid(Control):
     def shimmer_lines(self, value):
         assert value == None or isinstance(value, int), "shimmerLines must be an int"
         self._set_attr("shimmerLines", value)
+
+    def _on_select_internal(self, e):
+
+        self._selected_items = []
+        for id in e.data.split(' '):
+            if id != "":
+                self._selected_items.append(self.page.get_control(id))
+
+        if self._on_select_handler != None:
+            self._on_select_handler(e)
 
     def _get_children(self):
         result=[]

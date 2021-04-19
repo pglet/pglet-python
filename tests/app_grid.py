@@ -8,7 +8,7 @@ from dataclasses import dataclass
 import pglet
 from pglet import Grid, Column, Textbox, Checkbox, Button
 
-page = pglet.page("index", no_window = True)
+page = pglet.page("index")
 page.clean(force=True)
 page.title = "Grid test"
 page.update()
@@ -33,6 +33,9 @@ def add_item(e):
     grid.update()
     n += 1
 
+def grid_selected(e):
+    print(e.control.selected_items)
+
 grid = Grid(selection='multiple', compact=True, header_visible=True, shimmer_lines=1, columns=[
     Column(field_name="first_name", name='First name', icon='mail', icon_only=True,
     sortable='True', sort_field='sort field name', sorted='false', resizable=False, min_width=100, max_width=200),
@@ -46,7 +49,7 @@ grid = Grid(selection='multiple', compact=True, header_visible=True, shimmer_lin
     Contact(first_name='John', last_name='Smith', employee=False),
     Contact(first_name='Jack', last_name='Brown', employee=True),
     Contact(first_name='Alice', last_name='Fox', employee=False)
-])
+], on_select=grid_selected)
 
 btn = Button("Show items", on_click=display_items)
 btnAdd = Button("Add item", on_click=add_item)
