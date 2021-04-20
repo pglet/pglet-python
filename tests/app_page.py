@@ -8,7 +8,7 @@ from pglet import Page, Text, Button, Stack, Textbox, Checkbox, Tabs, Tab
 
 page = pglet.page("index", no_window = True)
 
-page.clean(force=True)
+page.clean()
 
 page.title = "Counter"
 page.update()

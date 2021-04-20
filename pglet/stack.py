@@ -43,6 +43,10 @@ class Stack(Control):
     def _get_control_name(self):
         return "stack"
 
+    def clean(self):
+        Control.clean(self)
+        self.__controls.clear()
+
 # controls
     @property
     def controls(self):

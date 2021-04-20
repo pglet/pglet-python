@@ -8,7 +8,7 @@ from pglet import Page, Text, Button, Stack, Textbox, SearchBox, Checkbox, Tabs,
 
 page = pglet.page("index", no_window = True)
 
-page.clean(force=True)
+page.clean()
 
 page.title = "Perf tuning"
 page.update()
