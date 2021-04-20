@@ -115,8 +115,8 @@ def main(page):
     def on_hash_change(e):
         print("hash changed:", e.data)
 
-    page.onclose = on_close
-    page.onhashchange = on_hash_change
+    page.on_close = on_close
+    page.on_hash_change = on_hash_change
 
     app1 = TodoApp()
     page.add(app1.view)

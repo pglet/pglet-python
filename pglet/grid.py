@@ -257,7 +257,8 @@ class Items(Control):
         return items
 
 class Grid(Control):
-    def __init__(self, id=None, selection=None, compact=None, header_visible=None, shimmer_lines=None,
+    def __init__(self, id=None, selection_mode=None, compact=None, header_visible=None, shimmer_lines=None,
+            preserve_selection=None,
             columns=None, items=None, on_select=None, onitem_invoke=None,
             width=None, height=None, padding=None, margin=None, visible=None, disabled=None):
         
@@ -265,10 +266,11 @@ class Grid(Control):
             width=width, height=height, padding=padding, margin=margin,
             visible=visible, disabled=disabled)
         
-        self.selection = selection
+        self.selection_mode = selection_mode
         self.compact = compact
         self.header_visible = header_visible
         self.shimmer_lines = shimmer_lines
+        self.preserve_selection = preserve_selection
         self._on_select_handler = None
         self.on_select = on_select
         self.onitem_invoke = onitem_invoke
@@ -324,13 +326,13 @@ class Grid(Control):
     def onitem_invoke(self, handler):
         self._add_event_handler("itemInvoke", handler)
 
-    # selection
+    # selection_mode
     @property
-    def selection(self):
+    def selection_mode(self):
         return self._get_attr("selection")
 
-    @selection.setter
-    def selection(self, value):
+    @selection_mode.setter
+    def selection_mode(self, value):
         self._set_attr("selection", value)
 
     # compact
@@ -350,8 +352,18 @@ class Grid(Control):
 
     @header_visible.setter
     def header_visible(self, value):
-        assert value == None or isinstance(value, bool), "headerVisible must be a boolean"
+        assert value == None or isinstance(value, bool), "header_visible must be a boolean"
         self._set_attr("headerVisible", value)
+
+    # preserve_selection
+    @property
+    def preserve_selection(self):
+        return self._get_attr("preserveSelection")
+
+    @preserve_selection.setter
+    def preserve_selection(self, value):
+        assert value == None or isinstance(value, bool), "preserve_selection must be a boolean"
+        self._set_attr("preserveSelection", value)
 
     # shimmer_lines
     @property

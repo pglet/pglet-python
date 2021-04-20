@@ -219,20 +219,20 @@ class Page(Control):
     def hash(self, value):
         self._set_attr("hash", value)
 
-# onclose
+# on_close
     @property
-    def onclose(self):
+    def on_close(self):
         return self._get_event_handler("close")
 
-    @onclose.setter
-    def onclose(self, handler):
+    @on_close.setter
+    def on_close(self, handler):
         self._add_event_handler("close", handler)
 
-# onhashchange
+# on_hash_change
     @property
-    def onhashchange(self):
+    def on_hash_change(self):
         return self._get_event_handler("hashChange")
 
-    @onhashchange.setter
-    def onhashchange(self, handler):
+    @on_hash_change.setter
+    def on_hash_change(self, handler):
         self._add_event_handler("hashChange", handler)
