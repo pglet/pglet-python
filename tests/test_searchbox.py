@@ -8,4 +8,4 @@ def test_searchbox_add():
     assert isinstance(sb, pglet.Control)
     assert isinstance(sb, pglet.SearchBox)
     assert sb.get_cmd_str() == ('searchbox data="data1" icon="icon1" iconColor="color1" '
-        'on_change="false" placeholder="search for something" underlined="true" value=""'), "Test failed"
+        'onchange="false" placeholder="search for something" underlined="true" value=""'), "Test failed"
