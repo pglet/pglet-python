@@ -157,8 +157,15 @@ class Control:
 
 # public methods
     def update(self):
-        if self.__page:
-            self.__page.update(self)
+        if not self.__page:
+            raise Exception("Control must be added to the page first.")
+        self.__page.update(self)
+
+    def clean(self):
+        self._previous_children.clear()
+        for child in self._get_children():
+            self._remove_control_recursively(self.__page.index, child)
+        return self.__page.connection.send(f"clean {self.uid}")
 
     def build_update_commands(self, index, added_controls, commands):
         update_attrs = self._get_cmd_attrs(update=True)
@@ -194,7 +201,7 @@ class Control:
                 ids = []
                 for h in previous_ints[a1:a2]:
                     ctrl = hashes[h]
-                    self.__remove_control_recursively(index, ctrl)
+                    self._remove_control_recursively(index, ctrl)
                     ids.append(ctrl.__uid)
                 commands.append(f'remove {" ".join(ids)}')
             elif tag == "equal":
@@ -208,7 +215,7 @@ class Control:
                 for h in previous_ints[a1:a2]:
                     # delete
                     ctrl = hashes[h]
-                    self.__remove_control_recursively(index, ctrl)
+                    self._remove_control_recursively(index, ctrl)
                     ids.append(ctrl.__uid)
                 commands.append(f'remove {" ".join(ids)}')
                 for h in current_ints[b1:b2]:
@@ -228,9 +235,9 @@ class Control:
         self.__previous_children.clear()
         self.__previous_children.extend(current_children)
 
-    def __remove_control_recursively(self, index, control):
+    def _remove_control_recursively(self, index, control):
         for child in control._get_children():
-            self.__remove_control_recursively(index, child)
+            self._remove_control_recursively(index, child)
         
         if control.__uid in index:
             del index[control.__uid]

@@ -9,7 +9,7 @@ import pglet
 from pglet import Grid, Column, Textbox, Checkbox, Button
 
 page = pglet.page("index")
-page.clean(force=True)
+page.clean()
 page.title = "Grid test"
 page.update()
 
@@ -36,7 +36,7 @@ def add_item(e):
 def grid_selected(e):
     print(e.control.selected_items)
 
-grid = Grid(selection='multiple', compact=True, header_visible=True, shimmer_lines=1, columns=[
+grid = Grid(selection_mode='multiple', compact=True, header_visible=True, shimmer_lines=1, columns=[
     Column(field_name="first_name", name='First name', icon='mail', icon_only=True,
     sortable='True', sort_field='sort field name', sorted='false', resizable=False, min_width=100, max_width=200),
     Column(field_name="last_name", name='Last name', template_controls=[
