@@ -117,6 +117,6 @@ class Textbox(Control):
     def on_change(self, handler):
         self._add_event_handler("change", handler)
         if handler != None:
-            self._set_attr("on_change", True)
+            self._set_attr("onchange", True)
         else:
-            self._set_attr("on_change", None)
+            self._set_attr("onchange", None)
