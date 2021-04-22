@@ -12,28 +12,37 @@ def textboxes():
     basic_textboxes(),
     
     Text("Multiline textboxes", size="xLarge"),
-    multiline_textboxes()  
+    multiline_textboxes(),
+
+    Text("Underlined and borderless Textboxes", size="xLarge"),
+    underlined_borderless_textboxes(), 
+
+    Text("TextField with prefix and/or suffix", size="xLarge"),
+    suffix_prefix_textboxes()
   ])
 
 def basic_textboxes():
   return Stack(controls=[
-    Stack(horizontal=True, controls=[
+    Stack(gap=25, horizontal=True, controls=[
       Textbox(label='Standard'),
       Textbox(label='Disabled', disabled=True)
     ]),
-    Stack(horizontal=True, controls=[
-      Textbox(label='Read-only'), #need to add read-only property  
+    Stack(gap=25, horizontal=True, controls=[
+      Textbox(label='Read-only', read_only=True),  
       Textbox(label="With placeholder", placeholder='Please enter text here')
     ]),
-    Stack(horizontal=True, controls=[
-      Textbox(label='Required *'), #need to add required property. How to dispay * in red?
+    Stack(gap=25, horizontal=True, controls=[
+      Stack(controls=[
+         Textbox(label='Required:', required=True),
+         Textbox(required=True) 
+      ]),
       Textbox(label="With error message", error_message='Error message')
     ]),
-    Stack(horizontal=True, controls=[
-      Textbox(label='With an icon'), #need icon property
+    Stack(gap=25, horizontal=True, controls=[
+      Textbox(label='With an icon', icon='Emoji2'), #need icon property
       Textbox(label='Password with reveal button', password=True)
     ]),
-    Stack(horizontal=True, controls=[
+    Stack(gap=25, horizontal=True, controls=[
       textbox_with_onchange()
     ])
 
@@ -42,7 +51,6 @@ def basic_textboxes():
 def textbox_with_onchange():
     
     def textbox_changed(e):
-      print(e)
       displayed_text.value = entered_text.value
       stack.update()
 
@@ -53,13 +61,31 @@ def textbox_with_onchange():
 
 def multiline_textboxes():
   return Stack(controls=[
-    Stack(horizontal=True, controls=[
+    Stack(gap=25, horizontal=True, controls=[
       Textbox(label='standard', multiline=True),
       Textbox(label='disabled', multiline=True, disabled=True)
     ]),
+    Stack(gap=25, horizontal=True, controls=[
+      Textbox(label='With auto adjusted height', multiline=True, auto_adjust_height=True) #need auto-adjusted height property
+    ])
+  ])
+
+def underlined_borderless_textboxes():
+  return Stack(controls=[
+    Stack(gap=25, controls=[
+      Textbox(label='Underlined', underlined=True, placeholder='Enter text here'),
+      Textbox(label='Borderless', borderless=True, placeholder='Enter text here')
+    ])
+  ])
+
+def suffix_prefix_textboxes():
+  return Stack(controls=[
+    Stack(gap=25, horizontal=True, controls=[
+      Textbox(label='With prefix', prefix='https://'),
+      Textbox(label='With suffix', suffix='.com')
+    ]),
     Stack(horizontal=True, controls=[
-      Textbox(label='Non-resizable', multiline=True), #need non-resizable property
-      Textbox(label='With auto adjusted height', multiline=True) #need auto-adjusted height property
+      Textbox(label='With prefix and suffix', prefix='https://', suffix='.com')
     ])
   ])
 
