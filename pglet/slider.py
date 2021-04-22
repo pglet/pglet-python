@@ -39,7 +39,7 @@ class Slider(Control):
     @value.setter
     def value(self, value):
         assert value == None or isinstance(value, float) or isinstance(value, int), "value must be a float"
-        self._set_attr("value", float(value))
+        self._set_attr("value", value)
 
 # label
     @property
@@ -58,7 +58,7 @@ class Slider(Control):
     @min.setter
     def min(self, value):
         assert value == None or isinstance(value, float) or isinstance(value, int), "min must be a float"
-        self._set_attr("min", float(value))
+        self._set_attr("min", value)
 
 # max
     @property
@@ -68,7 +68,7 @@ class Slider(Control):
     @max.setter
     def max(self, value):
         assert value == None or isinstance(value, float) or isinstance(value, int), "max must be a float"
-        self._set_attr("max", float(value))
+        self._set_attr("max", value)
 
 # step
     @property
@@ -78,7 +78,7 @@ class Slider(Control):
     @step.setter
     def step(self, value):
         assert value == None or isinstance(value, float) or isinstance(value, int), "step must be a float"
-        self._set_attr("step", float(value))
+        self._set_attr("step", value)
 
 # show_value
     @property
