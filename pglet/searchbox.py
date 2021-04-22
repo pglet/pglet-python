@@ -4,7 +4,7 @@ from .control import Control
 class SearchBox(Control):
     def __init__(self, id=None, value=None, placeholder=None, underlined=None,
             icon=None, icon_color=None, data=None, on_search=None,
-            on_clear=None, on_escape=None, on_change=None,
+            on_clear=None, on_change=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
 
@@ -19,7 +19,6 @@ class SearchBox(Control):
         self.icon_color = icon_color
         self.on_search = on_search
         self.on_clear = on_clear
-        self.on_escape = on_escape
         self.on_change = on_change
 
     def _get_control_name(self):
@@ -42,15 +41,6 @@ class SearchBox(Control):
     @on_clear.setter
     def on_clear(self, handler):
         self._add_event_handler("clear", handler)
-
-# on_escape
-    @property
-    def on_escape(self):
-        return self._get_event_handler("escape")
-
-    @on_escape.setter
-    def on_escape(self, handler):
-        self._add_event_handler("escape", handler)
 
 # on_change
     @property
