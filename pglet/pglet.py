@@ -1,3 +1,4 @@
+import sys
 import os
 import pathlib
 import platform
@@ -74,6 +75,13 @@ def app(name='', web=False, server='', token='', target=None, no_window=False):
     
     pargs.append("--all-events")
 
+    def session_wrapper(target, page):
+        try:
+            target(page)
+        except Exception as e:
+            print(f"Unhandled error processing page session {page.connection.conn_id}:", e)
+            page.error(f"There was an error while processing your request: {e}")
+
     # execute pglet.exe and get connection ID
     page_url = ""
     proc = subprocess.Popen(pargs, bufsize=0, stdout = subprocess.PIPE)
@@ -91,7 +99,7 @@ def app(name='', web=False, server='', token='', target=None, no_window=False):
             page = Page(conn, page_url)
             
             # start page session in a new thread
-            thread = Thread(target = target, args = (page,))
+            thread = Thread(target = session_wrapper, args = (target, page,))
             thread.start()
 
 
