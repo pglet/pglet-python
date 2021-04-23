@@ -4,7 +4,7 @@ from .control import Control
 # Item
 class Item(Control):
     def __init__(self, id=None, key=None, text=None, icon=None, icon_color=None, url=None, items=None,
-        new_window=None, expanded=None, visible=None, disabled=None):
+        new_window=None, expanded=None, visible=None, disabled=None, data=None):
         Control.__init__(self, id=id, visible=visible, disabled=disabled)
         #key and text are optional for group item but key or text are required for level 2 and deeper items 
         #assert key != None or text != None, "key or text must be specified"
@@ -13,6 +13,7 @@ class Item(Control):
         self.icon = icon
         self.icon_color = icon_color
         self.url = url
+        self.data = data
         self.new_window = new_window
         self.expanded = expanded
         self.__items = []
@@ -99,6 +100,15 @@ class Item(Control):
 
     def _get_children(self):
         return self.__items
+
+    # data
+    @property
+    def data(self):
+        return self._get_attr("data")
+
+    @data.setter
+    def data(self, value):
+        self._set_attr("data", value)
 
 class Nav(Control):
     def __init__(self, id=None, value=None, items=None,
