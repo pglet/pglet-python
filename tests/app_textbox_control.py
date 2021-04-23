@@ -93,8 +93,6 @@ def main(page):
 
     page.title = "Textbox control samples"
     page.update()
-    #page.clean(True)
-
     page.add(textboxes())
 
 pglet.app("textbox-control-samples", target = main)
