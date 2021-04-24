@@ -107,7 +107,7 @@ def main(page):
 
     page.title = "Python Todo with Pglet"
     page.update()
-    page.clean(True)
+    page.clean()
 
     def on_close(e):
         print("session closed")
