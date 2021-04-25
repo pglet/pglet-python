@@ -22,7 +22,7 @@ def main(page):
     tasks_view = Stack()
 
     page.add(Stack(width='70%', controls=[
-        Stack(horizontal=True, controls=[
+        Stack(horizontal=True, on_submit=add_clicked, controls=[
             new_task,
             Button('Add', on_click=add_clicked)
         ]),
