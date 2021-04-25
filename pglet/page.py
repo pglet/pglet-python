@@ -80,8 +80,11 @@ class Page(Control):
             self._remove_control_recursively(self.__index, child)
         return self.__conn.send(f"clean {self.uid}")
 
+    def error(self, message=""):
+        self.__conn.send(f"error \"{encode_attr(message)}\"")
+
     def close(self):
-        self.__conn.send("close")
+        self.__conn.send("close")        
 
     def __on_event(self, e):
         #print("on_event:", e.target, e.name, e.data)

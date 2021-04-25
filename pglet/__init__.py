@@ -16,6 +16,7 @@ from .nav import Nav
 from .searchbox import SearchBox
 from .slider import Slider
 from .spinbutton import SpinButton
+from .spinner import Spinner
 from .tabs import Tabs, Tab
 from .dialog import Dialog
 from .grid import Grid, Columns, Items, Column, Item

@@ -1,8 +1,8 @@
 from .utils import encode_attr
 from .control import Control
 
-# P
-class P(Control):
+# Point
+class Point(Control):
     def __init__(self, id=None, value=None, legend=None, color=None, tooltip=None):
         Control.__init__(self, id=id)
 
