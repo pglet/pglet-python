@@ -74,20 +74,17 @@ class Page(Control):
         self.__controls.pop(index)
         return self.update()
 
-    def clean(self, force=False):
-        if force:
-            self.__controls.clear()
-            self.event_handlers.clear()
-            self._previous_children.clear()
-            self.__index.clear()
-            self.__index[self.id] = self
-            return self.__conn.send("clean page")
-        else:
-            self.__controls.clear()
-            return self.update()
+    def clean(self):
+        self._previous_children.clear()
+        for child in self._get_children():
+            self._remove_control_recursively(self.__index, child)
+        return self.__conn.send(f"clean {self.uid}")
+
+    def error(self, message=""):
+        self.__conn.send(f"error \"{encode_attr(message)}\"")
 
     def close(self):
-        self.__conn.send("close")
+        self.__conn.send("close")        
 
     def __on_event(self, e):
         #print("on_event:", e.target, e.name, e.data)
@@ -113,6 +110,11 @@ class Page(Control):
     @property
     def connection(self):
         return self.__conn
+
+# index
+    @property
+    def index(self):
+        return self.__index
 
 # url
     @property

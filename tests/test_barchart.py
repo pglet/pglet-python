@@ -1,13 +1,13 @@
 import pglet
 from pglet import BarChart
-from pglet.barchart import P
+from pglet.barchart import Point
 
 
 def test_barchart_add():
     bc = BarChart(data_mode='default', tooltips=False, points=[
-        P(x=1, y=100, legend='legend', color='green', x_tooltip='x tooltip', y_tooltip='y tooltip'),
-        P(x=80, y=200), 
-        P(x=100, y=300),
+        Point(x=1, y=100, legend='legend', color='green', x_tooltip='x tooltip', y_tooltip='y tooltip'),
+        Point(x=80, y=200), 
+        Point(x=100, y=300),
     ])
     assert isinstance(bc, pglet.Control)
     assert isinstance(bc, pglet.BarChart)

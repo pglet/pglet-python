@@ -3,8 +3,9 @@ from .control import Control
 
 class Textbox(Control):
     def __init__(self, label=None, id=None, value=None, placeholder=None,
-            error_message=None, description=None, multiline=None, password=None,
-            required=None, on_change=None,
+            error_message=None, description=None, icon=None, icon_color=None, prefix=None, suffix=None,
+            multiline=None, password=None, required=None, read_only=None, auto_adjust_height=None, underlined=None, borderless=None,
+            on_change=None,
             width=None, height=None, padding=None, margin=None, align=None,
             visible=None, disabled=None):
         Control.__init__(self, id=id,
@@ -15,8 +16,16 @@ class Textbox(Control):
         self.placeholder = placeholder
         self.error_message = error_message
         self.description = description
+        self.icon = icon
+        self.icon_color = icon_color
+        self.suffix = suffix
+        self.prefix = prefix
         self.align = align
         self.multiline = multiline
+        self.read_only = read_only
+        self.auto_adjust_height = auto_adjust_height
+        self.underlined = underlined
+        self.borderless = borderless
         self.password = password
         self.required = required
         self.on_change = on_change
@@ -69,6 +78,42 @@ class Textbox(Control):
     def description(self, value):
         self._set_attr("description", value)
 
+# icon
+    @property
+    def icon(self):
+        return self._get_attr("icon")
+
+    @icon.setter
+    def icon(self, value):
+        self._set_attr("icon", value)
+
+# icon_color
+    @property
+    def icon_color(self):
+        return self._get_attr("iconColor")
+
+    @icon_color.setter
+    def icon_color(self, value):
+        self._set_attr("iconColor", value)
+
+# prefix
+    @property
+    def prefix(self):
+        return self._get_attr("prefix")
+
+    @prefix.setter
+    def prefix(self, value):
+        self._set_attr("prefix", value)
+
+# suffix
+    @property
+    def suffix(self):
+        return self._get_attr("suffix")
+
+    @suffix.setter
+    def suffix(self, value):
+        self._set_attr("suffix", value)        
+
 # align
     @property
     def align(self):
@@ -87,6 +132,46 @@ class Textbox(Control):
     def multiline(self, value):
         assert value == None or isinstance(value, bool), "multiline must be a boolean"
         self._set_attr("multiline", value)
+
+# read_only
+    @property
+    def read_only(self):
+        return self._get_attr("readOnly")
+
+    @read_only.setter
+    def read_only(self, value):
+        assert value == None or isinstance(value, bool), "read_only must be a boolean"
+        self._set_attr("readOnly", value)
+
+# auto_adjust_height
+    @property
+    def auto_adjust_height(self):
+        return self._get_attr("autoadjustheight")
+
+    @auto_adjust_height.setter
+    def auto_adjust_height(self, value):
+        assert value == None or isinstance(value, bool), "auto_adjust_height must be a boolean"
+        self._set_attr("autoadjustheight", value)
+
+# underlined
+    @property
+    def underlined(self):
+        return self._get_attr("underlined")
+
+    @underlined.setter
+    def underlined(self, value):
+        assert value == None or isinstance(value, bool), "underlined must be a boolean"
+        self._set_attr("underlined", value)
+
+# borderless
+    @property
+    def borderless(self):
+        return self._get_attr("borderless")
+
+    @borderless.setter
+    def borderless(self, value):
+        assert value == None or isinstance(value, bool), "borderless must be a boolean"
+        self._set_attr("borderless", value)                                
 
 # password
     @property

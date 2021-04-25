@@ -88,6 +88,10 @@ class Tabs(Control):
     def _get_control_name(self):
         return "tabs"
 
+    def clean(self):
+        Control.clean(self)
+        self.__tabs.clear()
+
     # tabs
     @property
     def tabs(self):

@@ -7,30 +7,34 @@ import pglet
 from pglet import Page, Text, Button, Stack, Textbox
 
 def main(page):
-    page.update(Page(title="Counter"))
-    page.clean()
+    page.title = "Counter"
+    page.update()
 
     def on_click(e):
         try:
-            count = int(page.get_value('number'))
-            #if we get here the number is int
-            page.send('set number errorMessage=""')
+            count = int(txt_number.value)
+
+            txt_number.error_message = ""
 
             if e.data == '+':
-                page.set_value('number', count + 1)
+                txt_number.value = count + 1
 
             elif e.data =='-':
-                page.set_value('number', count - 1)
+                txt_number.value = count - 1
 
         except ValueError:
-            page.send('set number errorMessage="Please enter a number"')  
+            txt_number.error_message = "Please enter a number"
+
+        page.update()
+
+    txt_number = Textbox(value='0', align='right')
 
     page.add(
         Stack(horizontal = True, controls=[
-            Button(text='-', on_click=on_click, data='-'),
-            Textbox(id='number', value = '0', align = 'right'),
-            Button(text='+', on_click=on_click, data='+'),
+            Button('-', on_click=on_click, data='-'),
+            txt_number,
+            Button('+', on_click=on_click, data='+'),
         ])
     )
 
-pglet.app("index", target = main, no_window = True)
+pglet.app("counter", target=main)

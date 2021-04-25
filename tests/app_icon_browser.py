@@ -11,7 +11,6 @@ from pglet import Page, Text, Stack, SearchBox, Textbox, Icon, Button
 def main(page):
     icon_names = load_icon_names()
     page.title = "Icon Browser"
-    page.clean(True)
     page.update()
 
     def search_icons(search_name):
@@ -70,8 +69,8 @@ def load_icon_names():
     input_file.close()
     return icon_names
 
-#pglet.app("icon-browser-app", target=main, no_window=True)
-page = pglet.page("index", no_window=True)
-main(page)
+pglet.app("icon-browser-app", target=main)
+# page = pglet.page("index", no_window=True)
+# main(page)
 
 input("Press Enter to exit...")

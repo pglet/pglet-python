@@ -27,7 +27,7 @@ class Footer(Control):
         return self.__controls
 
 class Dialog(Control):
-    def __init__(self, id=None, open=None, title=None, sub_text=None, large_header=None,
+    def __init__(self, id=None, open=None, title=None, sub_text=None, type=None,
             auto_dismiss=None, width=None, max_width=None, height=None, fixed_top=None,
             blocking=None, data=None, controls=None, footer=None, on_dismiss=None,
             padding=None, margin=None, visible=None, disabled=None):
@@ -39,7 +39,7 @@ class Dialog(Control):
         self.open = open
         self.title = title
         self.sub_text = sub_text
-        self.large_header = large_header
+        self.type = type
         self.auto_dismiss = auto_dismiss
         self.max_width = max_width
         self.fixed_top = fixed_top
@@ -105,15 +105,14 @@ class Dialog(Control):
     def sub_text(self, value):
         self._set_attr("subText", value)
 
-    # large_header
+    # type
     @property
-    def large_header(self):
-        return self._get_attr("largeHeader")
+    def type(self):
+        return self._get_attr("type")
 
-    @large_header.setter
-    def large_header(self, value):
-        assert value == None or isinstance(value, bool), "large_header must be a boolean"
-        self._set_attr("largeHeader", value)
+    @type.setter
+    def type(self, value):
+        self._set_attr("type", value)
 
     # auto_dismiss
     @property
