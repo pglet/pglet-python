@@ -8,7 +8,7 @@ class MenuItem(Control):
             visible=None, disabled=None, data=None):
         Control.__init__(self, id=id,
             width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
+            visible=visible, disabled=disabled, data=data)
         
         self.text = text
         self.secondary_text = secondary_text
@@ -20,7 +20,6 @@ class MenuItem(Control):
         self.split = split
         self.divider = divider
         self.on_click = on_click
-        self.data = data
         self.__sub_menu_items = []
         if sub_menu_items != None:
             for item in sub_menu_items:

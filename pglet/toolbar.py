@@ -3,10 +3,10 @@ from .control import Control
 
 # Item
 class Item(Control):
-    def __init__(self, text=None, secondary_text=None, url=None, new_window=None,
+    def __init__(self, id=None, text=None, secondary_text=None, url=None, new_window=None,
     icon=None, icon_color=None, icon_only=None, split=None, divider=None,
-    on_click=None, items=None):
-        Control.__init__(self)
+    on_click=None, items=None, visible=None, disabled=None, data=None):
+        Control.__init__(self, id=id, visible=visible, disabled=disabled, data=data)
 
         self.text = text
         self.secondary_text = secondary_text

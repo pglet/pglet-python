@@ -3,9 +3,9 @@ from .control import Control
 
 # Item
 class Item(Control):
-    def __init__(self, key=None, text=None, icon=None, icon_color=None, url=None, items=None,
-        new_window=None, expanded=None):
-        Control.__init__(self)
+    def __init__(self, id=None, key=None, text=None, icon=None, icon_color=None, url=None, items=None,
+        new_window=None, expanded=None, visible=None, disabled=None, data=None):
+        Control.__init__(self, id=id, visible=visible, disabled=disabled, data=data)
         #key and text are optional for group item but key or text are required for level 2 and deeper items 
         #assert key != None or text != None, "key or text must be specified"
         self.key = key
