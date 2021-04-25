@@ -9,18 +9,22 @@ from pglet import nav
 
 def navs(page):
 
-  nav1 = None
+  message = Message(dismiss=True, visible=False)
+
 
   def menu_item_expanded(e):
-    page.controls.insert(0, Message(value=f'Menu item "{e.data}" was expanded', dismiss=True))
+    message.visible = True
+    message.value = f'Menu item "{e.data}" was expanded'
     page.update()
 
   def menu_item_collapsed(e):
-    page.controls.insert(0, Message(value=f'Menu item "{e.data}" was collapsed', dismiss=True))
+    message.visible = True
+    message.value = f'Menu item "{e.data}" was collapsed'
     page.update()
 
   def menu_item_changed(e):
-    page.controls.insert(0, Message(value=f'Menu item was changed to "{nav1.value}"', dismiss=True))
+    message.visible = True
+    message.value = f'Menu item was changed to "{e.control.value}"'
     page.update()
 
   nav1 = Nav(on_collapse=menu_item_collapsed, on_expand=menu_item_expanded, on_change=menu_item_changed, items=[
@@ -56,11 +60,9 @@ def navs(page):
 
               ])
             ])
-  
-
-    
 
   return Stack(gap=30, controls=[
+      message,
       Stack(controls=[
           Text("Nav with groups and Expand, Collapse and Change events", size="xLarge"),
           nav1
@@ -70,28 +72,6 @@ def navs(page):
           nav2
       ])
   ])
-
-
-'''
-
-def toggle_with_on_change(page):
-    
-    def toggle_changed(e):
-      if t.value:
-        # Dark theme
-        page.theme_background_color = '#262626'
-        page.theme_primary_color = '#3ee66d'
-        page.theme_text_color = '#edd2b7'
-      else:
-        page.theme_background_color = ''
-        page.theme_primary_color = ''
-        page.theme_text_color = ''
-      
-      page.update()
-
-    t = Toggle(label="With Change event", on_text="Dark theme", off_text="Light theme", value=False, on_change=toggle_changed)
-    return t
-'''
 
 def main(page):
     
