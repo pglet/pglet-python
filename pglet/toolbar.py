@@ -6,7 +6,7 @@ class Item(Control):
     def __init__(self, id=None, text=None, secondary_text=None, url=None, new_window=None,
     icon=None, icon_color=None, icon_only=None, split=None, divider=None,
     on_click=None, items=None, visible=None, disabled=None, data=None):
-        Control.__init__(self, id=id, visible=visible, disabled=disabled)
+        Control.__init__(self, id=id, visible=visible, disabled=disabled, data=data)
 
         self.text = text
         self.secondary_text = secondary_text
@@ -17,7 +17,6 @@ class Item(Control):
         self.icon_only = icon_only
         self.split = split
         self.divider = divider
-        self.data = data
         self.on_click = on_click
         self.__items = []
         if items != None:
@@ -132,15 +131,6 @@ class Item(Control):
 
     def _get_children(self):
         return self.__items
-
-    # data
-    @property
-    def data(self):
-        return self._get_attr("data")
-
-    @data.setter
-    def data(self, value):
-        self._set_attr("data", value)
 
 # Overflow
 class Overflow(Control):

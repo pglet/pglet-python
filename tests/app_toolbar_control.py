@@ -64,9 +64,6 @@ def toolbars(page):
             toolbar.Item(text='Info', icon='Info', icon_color='green', icon_only=True)
     ])
 
-
-
-
   return Stack(gap=30, controls=[
       Stack(controls=[
           Text("Standard toolbar with Click events", size="xLarge"),
