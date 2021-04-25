@@ -50,7 +50,7 @@ class TodoApp():
 
         # application's root control (i.e. "view") containing all other controls
         self.view = Stack(width='70%', controls=[
-            Stack(horizontal=True, controls=[
+            Stack(horizontal=True, on_submit=self.add_clicked, controls=[
                 self.new_task,
                 Button('Add', on_click=self.add_clicked)
             ]),
