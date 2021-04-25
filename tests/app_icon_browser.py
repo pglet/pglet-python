@@ -11,6 +11,7 @@ from pglet import Page, Text, Stack, SearchBox, Textbox, Icon, Button
 def main(page):
     icon_names = load_icon_names()
     page.title = "Icon Browser"
+    page.horizontalAlign = 'stretch'
     page.update()
 
     def search_icons(search_name):
@@ -22,12 +23,6 @@ def main(page):
                 if search_name.lower() in icon_name.lower():
                     found_icon_names.append(icon_name)
         return found_icon_names
-
-    def searchbox_changed(e):
-        icons = get_icons(search_box.value)
-        search_result.controls.clear()
-        search_result.controls.extend(icons)
-        page.update()
 
     def enter_clicked(e):
         icons = get_icons(search_box.value)
@@ -51,16 +46,13 @@ def main(page):
     icons = get_icons(None)
         
     search_result = Stack(horizontal=True, wrap=True, controls=icons)
-    search_box = SearchBox(id='searchbox', on_change=searchbox_changed, on_search=enter_clicked)
+    search_box = SearchBox(id='searchbox', width='100%', placeholder='Search icons', on_search=enter_clicked)
     page.add(search_box, search_result)
-
-    #page.wait_close()
-
 
 # load list of icon names from file
 def load_icon_names():
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    file_path = os.path.join(dir_path, "fluent-icons-clean.txt")
+    file_path = os.path.join(dir_path, "fluent-icons.txt")
     input_file = open(file_path, 'r')   
     icon_names = []
     for line in input_file:
@@ -69,8 +61,6 @@ def load_icon_names():
     input_file.close()
     return icon_names
 
-pglet.app("icon-browser-app", target=main)
-# page = pglet.page("index", no_window=True)
-# main(page)
+pglet.app("index", target=main)
 
 input("Press Enter to exit...")

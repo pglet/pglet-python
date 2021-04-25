@@ -241,9 +241,9 @@ class Stack(Control):
     def on_submit(self, handler):
         self._add_event_handler("submit", handler)
         if handler != None:
-            self._set_attr("on_submit", True)
+            self._set_attr("onsubmit", True)
         else:
-            self._set_attr("on_submit", None)
+            self._set_attr("onsubmit", None)
 
     def _get_children(self):
         return self.__controls

@@ -207,5 +207,15 @@ class VerticalBarChart(Control):
     def x_type(self, value):
         self._set_attr("xType", value)
 
+    # bar_width
+    @property
+    def bar_width(self):
+        return self._get_attr("barWidth")
+
+    @bar_width.setter
+    def bar_width(self, value):
+        assert value == None or isinstance(value, int), "bar_width must be an int"
+        self._set_attr("barWidth", value)        
+
     def _get_children(self):
         return [self.__data]

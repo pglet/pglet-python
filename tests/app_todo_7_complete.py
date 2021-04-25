@@ -52,7 +52,7 @@ class TodoApp():
         self.items_left = Text('0 items left')
         self.view = Stack(width='70%', controls=[
             Text(value='Todos', size='large', align='center'),
-            Stack(horizontal=True, controls=[
+            Stack(horizontal=True, on_submit=self.add_clicked, controls=[
                 self.new_task,
                 Button(primary=True, text='Add', on_click=self.add_clicked)]),
             Stack(gap=25, controls=[
