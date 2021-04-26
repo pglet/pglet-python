@@ -3,8 +3,6 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 
-from typing import get_type_hints
-from dataclasses import dataclass
 import pglet
 from pglet import Text, Stack, Grid, Column, Textbox, Checkbox, Button, Toolbar
 from pglet import toolbar
