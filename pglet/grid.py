@@ -380,7 +380,7 @@ class Grid(Control):
         self._selected_items = []
         for id in e.data.split(' '):
             if id != "":
-                self._selected_items.append(self.page.get_control(id))
+                self._selected_items.append(self.page.get_control(id).obj)
 
         if self._on_select_handler != None:
             self._on_select_handler(e)
