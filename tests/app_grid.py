@@ -6,54 +6,122 @@ sys.path.insert(0,parentdir)
 from typing import get_type_hints
 from dataclasses import dataclass
 import pglet
-from pglet import Grid, Column, Textbox, Checkbox, Button
+from pglet import Text, Stack, Grid, Column, Textbox, Checkbox, Button, Toolbar
+from pglet import toolbar
 
-page = pglet.page("index")
-page.clean()
-page.title = "Grid test"
-page.update()
-
-class Contact():
-    def __init__(self, first_name: str, last_name: str, employee: int):
+class Person():
+    def __init__(self, first_name: str, last_name: str, age: int = None, employee: bool = False):
         self.first_name = first_name
         self.last_name = last_name
+        self.age = age
         self.employee = employee
 
-print(get_type_hints(Contact))
+def main(page):
+    page.title = "Grid test"
+    page.update()
 
-def display_items(e):
-    for item in grid.items:
-        print(item.first_name, item.last_name, item.employee)
+    # Basic grid
+    page.add(
+        Text("Basic grid", size='large'),
+        Stack(width='50%', controls=[
+            Grid(columns=[
+                Column(name="First name", field_name="first_name"),
+                Column(name="Last name", field_name="last_name"),
+                Column(name="Age", field_name="age")
+            ], items=[
+                Person(first_name='John', last_name='Smith', age=30),
+                Person(first_name='Samantha', last_name='Fox', age=43),
+                Person(first_name='Alice', last_name='Brown', age=25)
+            ])
+        ])
+    )
 
-n = 1
-def add_item(e):
-    global n
-    grid.items.pop(0)
-    grid.items.append(Contact(first_name=f'First {n}', last_name=f'Last {n}', employee=False))
-    grid.update()
-    n += 1
+    # Sortable grid
+    page.add(
+        Text("Sortable grid with resizable columns and selectable rows", size='large'),
+        Grid(selection_mode='single', preserve_selection=True, columns=[
+            Column(resizable=True, sortable='string', name="First name", field_name="first_name"),
+            Column(resizable=True, sortable='string', sorted='asc', name="Last name", field_name="last_name"),
+            Column(resizable=True, sortable='number', name="Age", field_name="age")
+        ], items=[
+            Person(first_name='John', last_name='Smith', age=30),
+            Person(first_name='Samantha', last_name='Fox', age=43),
+            Person(first_name='Alice', last_name='Brown', age=25)
+        ])
+    )
 
-def grid_selected(e):
-    print(e.control.selected_items)
+    # Compact grid
+    page.add(
+        Text("Compact grid with no header and multiple selection", size='large'),
+        Grid(compact=True, header_visible=False, selection_mode='multiple', preserve_selection=True, columns=[
+            Column(max_width=100, field_name="first_name"),
+            Column(max_width=100, field_name="last_name"),
+            Column(max_width=100, field_name="age")
+        ], items=[
+            Person(first_name='John', last_name='Smith', age=30),
+            Person(first_name='Samantha', last_name='Fox', age=43),
+            Person(first_name='Alice', last_name='Brown', age=25)
+        ])
+    )    
 
-grid = Grid(selection_mode='multiple', compact=True, header_visible=True, shimmer_lines=1, columns=[
-    Column(field_name="first_name", name='First name', icon='mail', icon_only=True,
-    sortable='True', sort_field='sort field name', sorted='false', resizable=False, min_width=100, max_width=200),
-    Column(field_name="last_name", name='Last name', template_controls=[
-        Textbox(value="{last_name}")
-    ]),
-    Column(field_name="employee", name='Is employee', template_controls=[
-        Checkbox(value_field="employee")
-    ])    
-], items=[
-    Contact(first_name='John', last_name='Smith', employee=False),
-    Contact(first_name='Jack', last_name='Brown', employee=True),
-    Contact(first_name='Alice', last_name='Fox', employee=False)
-], on_select=grid_selected)
+    # Dynamic grid
+    grid = None
 
-btn = Button("Show items", on_click=display_items)
-btnAdd = Button("Add item", on_click=add_item)
+    def delete_records(e):
+        for r in grid.selected_items:
+            grid.items.remove(r)
+        page.update()
 
-page.add(grid, btn, btnAdd)
+    delete_records = toolbar.Item(text="Delete records", icon='Delete', disabled=True, on_click=delete_records)
+    grid_toolbar = Toolbar(items=[
+        delete_records
+    ])
 
-input("Press Enter to exit...")
+    def grid_items_selected(e):
+        delete_records.disabled = (len(e.control.selected_items) == 0)
+        delete_records.update()
+
+    grid = Grid(selection_mode='multiple', compact=True, header_visible=True, columns=[
+        Column(name='First name', template_controls=[
+            Textbox(value="{first_name}")
+        ]),
+        Column(name='Last name', template_controls=[
+            Textbox(value="{last_name}")
+        ]),
+        Column(name='Age', template_controls=[
+            Text(value="{age}")
+        ]),        
+        Column(name='Is employee', template_controls=[
+            Checkbox(value_field="employee")
+        ])
+    ], items=[
+        Person(first_name='John', last_name='Smith', age=30, employee=False),
+        Person(first_name='Jack', last_name='Brown', age=43, employee=True),
+        Person(first_name='Alice', last_name='Fox', age=25, employee=False)
+    ], margin=0, on_select=grid_items_selected)
+
+    first_name = Textbox('First name')
+    last_name = Textbox('Last name')
+    age = Textbox('Age')
+
+    def add_record(e):
+        grid.items.append(Person(first_name=first_name.value, last_name=last_name.value, age=age.value, employee=True))
+        first_name.value = ''
+        last_name.value = ''
+        age.value = ''
+        page.update()
+
+    page.add(
+        Text("Dynamic grid with template columns", size='large'),
+        grid_toolbar,
+        grid,
+        Text("Add new employee record", size='medium'),
+        Stack(horizontal=True, controls=[
+            first_name,
+            last_name,
+            age
+        ]),
+        Button("Add record", on_click=add_record)
+    )
+
+pglet.app("python-grid", target=main)
