@@ -12,10 +12,10 @@ def main(page):
     page.update()
 
     page.add(
-        Image(src='http://placehold.it/350x150', title='sample image', alt='Example with no image fit value and no height or width is specified.'),
-        Image(src='http://placehold.it/350x150', width=600, title='sample image', alt='Example with no image fit value and only width is specified.'),
-        Image(src='http://placehold.it/350x150', height=100, title='sample image', alt='Example with no image fit value and only height is specified.'),
-        Image(src='http://placehold.it/350x150', width=100, height=100, title='sample image', alt='Example with no image fit value and height or width is specified.')
+        Image(src='https://via.placeholder.com/350x150', title='sample image', alt='Example with no image fit value and no height or width is specified.'),
+        Image(src='https://via.placeholder.com/350x150', width=600, title='sample image', alt='Example with no image fit value and only width is specified.'),
+        Image(src='https://via.placeholder.com/350x150', height=100, title='sample image', alt='Example with no image fit value and only height is specified.'),
+        Image(src='https://via.placeholder.com/350x150', width=100, height=100, title='sample image', alt='Example with no image fit value and height or width is specified.')
     )
 
 pglet.app("python-image", target=main)
