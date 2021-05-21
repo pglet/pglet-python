@@ -21,4 +21,4 @@ def main(page):
         Button('Add', on_click=add_clicked)
     )
 
-pglet.app("todo-app", target=main)
+pglet.app("todo-app", target=main, permissions="*", local=True)

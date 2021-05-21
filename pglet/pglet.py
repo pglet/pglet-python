@@ -10,30 +10,34 @@ import re
 import signal
 from threading import Thread
 from time import sleep
-from .utils import is_windows, which
+from .utils import is_windows, which, encode_attr
 from .connection import Connection
 from .page import Page
 
 PGLET_VERSION = "0.3.1"
 pglet_exe = ""
 
-def page(name='', local=False, server='', token='', no_window=False):
+def page(name=None, local=False, server=None, token=None, permissions=None, no_window=False):
 
     pargs = [pglet_exe, "page"]
 
-    if name != "":
+    if name != None:
         pargs.append(name)
     
     if local:
         pargs.append("--local")
 
-    if server != "":
+    if server != None:
         pargs.append("--server")
         pargs.append(server)
 
-    if token != "":
+    if token != None:
         pargs.append("--token")
         pargs.append(token)
+
+    if permissions != None:
+        pargs.append("--permissions")
+        pargs.append(permissions)
 
     if no_window:
         pargs.append("--no-window")
@@ -49,26 +53,30 @@ def page(name='', local=False, server='', token='', no_window=False):
     conn = Connection(result_parts[0])
     return Page(conn, url)
 
-def app(name='', local=False, server='', token='', target=None, no_window=False):
+def app(name=None, local=False, server=None, token=None, target=None, permissions=None, no_window=False):
 
     if target == None:
         raise Exception("target argument is not specified")
 
     pargs = [pglet_exe, "app"]
 
-    if name != "":
+    if name != None:
         pargs.append(name)
     
     if local:
         pargs.append("--local")
 
-    if server != "":
+    if server != None:
         pargs.append("--server")
         pargs.append(server)
 
-    if token != "":
+    if token != None:
         pargs.append("--token")
         pargs.append(token)
+
+    if permissions != None:
+        pargs.append("--permissions")
+        pargs.append(permissions)
 
     if no_window:
         pargs.append("--no-window")
