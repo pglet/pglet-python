@@ -49,6 +49,7 @@ def page(name=None, local=False, server=None, token=None, permissions=None, no_w
     result_parts = re.split(r"\s", exe_result, 1)
 
     url = result_parts[1]
+    print(url)
 
     conn = Connection(result_parts[0])
     return Page(conn, url)
@@ -98,6 +99,7 @@ def app(name=None, local=False, server=None, token=None, target=None, permission
         if page_url == "":
             # 1st is URL
             page_url = line
+            print(page_url)
         else:
             # connection ID
             conn_id = line
