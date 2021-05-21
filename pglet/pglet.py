@@ -17,15 +17,15 @@ from .page import Page
 PGLET_VERSION = "0.3.1"
 pglet_exe = ""
 
-def page(name='', web=False, server='', token='', no_window=False):
+def page(name='', local=False, server='', token='', no_window=False):
 
     pargs = [pglet_exe, "page"]
 
     if name != "":
         pargs.append(name)
     
-    if web:
-        pargs.append("--web")
+    if local:
+        pargs.append("--local")
 
     if server != "":
         pargs.append("--server")
@@ -49,7 +49,7 @@ def page(name='', web=False, server='', token='', no_window=False):
     conn = Connection(result_parts[0])
     return Page(conn, url)
 
-def app(name='', web=False, server='', token='', target=None, no_window=False):
+def app(name='', local=False, server='', token='', target=None, no_window=False):
 
     if target == None:
         raise Exception("target argument is not specified")
@@ -59,8 +59,8 @@ def app(name='', web=False, server='', token='', target=None, no_window=False):
     if name != "":
         pargs.append(name)
     
-    if web:
-        pargs.append("--web")
+    if local:
+        pargs.append("--local")
 
     if server != "":
         pargs.append("--server")
