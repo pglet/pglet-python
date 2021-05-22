@@ -25,4 +25,4 @@ def main(page):
         DatePicker(label='Wrong date should set to empty', value=now)
     )
 
-pglet.app("pglet-datepicker", target=main)
+pglet.app("pglet-datepicker", target=main, local=True)

@@ -59,4 +59,4 @@ def main(page):
     prog2.update()
 
 
-pglet.app("pglet-progress", target=main)
+pglet.app("pglet-progress", target=main, local=True)

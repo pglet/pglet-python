@@ -61,4 +61,4 @@ def main(page):
     page.update()
     page.add(messages())
 
-pglet.app("python-message", target = main)
+pglet.app("python-message", target = main, local=True)
