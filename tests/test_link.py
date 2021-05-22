@@ -13,7 +13,7 @@ def test_link_add():
     l = Link(value="search", url="http://google.com", align="left", new_window=True)
     assert isinstance(l, pglet.Control)
     assert isinstance(l, pglet.Link)
-    assert l.get_cmd_str() == ('link align="left" newWindow="true" url="http://google.com" value="search"'), "Test failed"
+    assert l.get_cmd_str() == ('link align="left" newwindow="true" url="http://google.com" value="search"'), "Test failed"
 
 def test_link_with_controls():
     l = Link(value='Visit google', url='https://google.com', pre=True, align='right', width='100', size='large1', 

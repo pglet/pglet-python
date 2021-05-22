@@ -28,10 +28,10 @@ def test_button_with_all_properties():
     assert isinstance(b, pglet.Control)
     assert isinstance(b, pglet.Button)
     assert b.get_cmd_str() == ('button action="false" compound="false" data="data" icon="Mail" '
-    'iconColor="red" newWindow="true" primary="false" secondaryText="This is secondary text" '
+    'iconcolor="red" newwindow="true" primary="false" secondarytext="This is secondary text" '
     'split="false" text="This is text" title="This is title" toolbar="true" url="https://google.com"\n'
-    '  item divider="false" icon="Mail" iconColor="blue" iconOnly="true" newWindow="false" '
-    'secondaryText="Item1 secondary text" split="false" text="Item1 text" url="https://google.com"\n'
+    '  item divider="false" icon="Mail" iconcolor="blue" icononly="true" newwindow="false" '
+    'secondarytext="Item1 secondary text" split="false" text="Item1 text" url="https://google.com"\n'
     '    item text="Item1Item1"\n'
     '    item text="Item1Item2"\n'
     '  item text="Item2 text"'), "Test failed"

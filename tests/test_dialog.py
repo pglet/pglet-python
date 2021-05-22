@@ -15,8 +15,8 @@ def test_dialog_add():
     assert isinstance(d, pglet.Control)
     assert isinstance(d, pglet.Dialog)
     assert d.get_cmd_str() == (
-        'dialog autoDismiss="true" blocking="false" data="data1" fixedTop="true" '
-        'height="100" maxWidth="200" open="true" subText="sub_text1" '
+        'dialog autodismiss="true" blocking="false" data="data1" fixedtop="true" '
+        'height="100" maxwidth="200" open="true" subtext="sub_text1" '
         'title="Hello" type="close" width="100"\n'
         '  text value="Are you sure?"\n'
         '  footer\n'

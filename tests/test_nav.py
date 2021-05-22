@@ -18,7 +18,7 @@ def test_nav():
     assert isinstance(n, pglet.Nav)
     assert n.get_cmd_str() == (
         'nav id="list1" value="list1"\n'
-        '  item expanded="true" icon="mail" iconColor="green" key="key1" newWindow="true" text="item1" url="https://google.com"\n'
+        '  item expanded="true" icon="mail" iconcolor="green" key="key1" newwindow="true" text="item1" url="https://google.com"\n'
         '  item key="key2" text="item2"'
         ), "Test failed"
 

@@ -14,8 +14,8 @@ def test_panel_add():
     assert isinstance(p, pglet.Control)
     assert isinstance(p, pglet.Panel)
     assert p.get_cmd_str() == (
-        'panel Width="100" autoDismiss="true" blocking="false" data="data1" lightDismiss="false" '
-        'open="true" title="Hello" type="small"\n'
+        'panel autodismiss="true" blocking="false" data="data1" lightdismiss="false" '
+        'open="true" title="Hello" type="small" width="100"\n'
         '  text value="Are you sure?"\n'
         '  footer\n'
         '    button text="OK"\n'
