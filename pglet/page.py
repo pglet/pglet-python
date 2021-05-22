@@ -15,13 +15,29 @@ class Page(Control):
         self.__controls = [] # page controls
         self.__index = {} # index with all page controls
         self.__index[self.id] = self
-        self.hash = self.__conn.send("get page hash")
+        self.__fetch_page_details()
 
     def get_control(self, id):
         return self.__index.get(id)
 
     def _get_children(self):
         return self.__controls
+
+    def __fetch_page_details(self):
+        values = self.__conn.send_batch([
+            'get page hash',
+            'get page userid',
+            'get page userlogin',
+            'get page username',
+            'get page useremail',
+            'get page userclientip'
+        ])
+        self.hash = values[0]
+        self.user_id = values[1]
+        self.user_login = values[2]
+        self.user_name = values[3]
+        self.user_email = values[4]
+        self.user_client_ip = values[5]
 
     def update(self, *controls):
         if len(controls) == 0:
@@ -41,11 +57,11 @@ class Page(Control):
             return
 
         # execute commands
-        ids = self.__conn.send_batch(commands)
+        result = self.__conn.send_batch(commands)
 
-        if ids != "":
+        if len(result) > 0:
             n = 0
-            for line in ids.split('\n'):
+            for line in result:
                 for id in line.split(' '):
                     added_controls[n]._Control__uid = id
                     added_controls[n].page = self
@@ -285,25 +301,45 @@ class Page(Control):
     def user_id(self):
         return self._get_attr("userId")
 
+    @user_id.setter
+    def user_id(self, value):
+        self._set_attr("userId", value)        
+
 # user_login
     @property
     def user_login(self):
         return self._get_attr("userLogin")
+
+    @user_login.setter
+    def user_login(self, value):
+        self._set_attr("userLogin", value)                
 
 # user_name
     @property
     def user_name(self):
         return self._get_attr("userName")
 
+    @user_name.setter
+    def user_name(self, value):
+        self._set_attr("userName", value)
+
 # user_email
     @property
     def user_email(self):
         return self._get_attr("userEmail")
 
+    @user_email.setter
+    def user_email(self, value):
+        self._set_attr("userEmail", value)
+
 # user_client_ip
     @property
     def user_client_ip(self):
         return self._get_attr("userClientIP")
+
+    @user_client_ip.setter
+    def user_client_ip(self, value):
+        self._set_attr("userClientIP", value)
 
 # on_signin
     @property

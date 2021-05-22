@@ -10,15 +10,14 @@ from pglet import Text, Textbox, Button, Checkbox
 
 def main(page):
     
-    logged_user = Text(f"Welcome, {page.user_login}!")
+    logged_user = Text(page.user_name)
 
     def signout_clicked(e):
-        page.signout()    
+        page.signout()
 
     def page_signin(e):
-        print("Sign in event")
-        logged_user.value = page.user_login
-        page.update()
+        logged_user.value = page.user_name
+        page.update()        
 
     def page_signout(e):
         logged_user.value = "Not logged in"
