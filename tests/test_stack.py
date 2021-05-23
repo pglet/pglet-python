@@ -11,8 +11,8 @@ def test_stack_add():
     assert isinstance(s, pglet.Stack)
     #raise Exception(s.get_cmd_str())
     assert s.get_cmd_str() == (
-        'stack gap="large" horizontal="true" horizontalAlign="center" '
-        'scrollx="true" scrolly="true" verticalAlign="baseline" verticalFill="true" wrap="true"\n'
+        'stack gap="large" horizontal="true" horizontalalign="center" '
+        'scrollx="true" scrolly="true" verticalalign="baseline" verticalfill="true" wrap="true"\n'
         '  textbox id="firstName"\n'
         '  textbox id="lastName"'
     ), "Test failed"

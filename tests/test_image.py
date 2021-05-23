@@ -6,5 +6,5 @@ def test_image_add():
  maximize_frame=False)
     assert isinstance(i, pglet.Control)
     assert isinstance(i, pglet.Image)
-    assert i.get_cmd_str() == ('image alt="This is image" maximizeFrame="false" '
+    assert i.get_cmd_str() == ('image alt="This is image" maximizeframe="false" '
     'src="https://www.w3schools.com/css/img_5terre.jpg" title="This is title"'), "Test failed"

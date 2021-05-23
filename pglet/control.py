@@ -34,6 +34,7 @@ class Control:
         return self.__event_handlers.get(event_name)
 
     def _get_attr(self, name, defValue=None, data_type='string'):
+        name = name.lower()
         if not name in self.__attrs:
             return defValue
         
@@ -49,6 +50,7 @@ class Control:
         self._set_attr_internal(name, value, dirty)
 
     def _set_attr_internal(self, name, value, dirty=True):
+        name =  name.lower()
         if value == None:
             if name in self.__attrs:
                 del self.__attrs[name]

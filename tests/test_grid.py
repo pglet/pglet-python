@@ -20,10 +20,10 @@ def test_grid_add():
     assert isinstance(g, pglet.Control)
     assert isinstance(g, pglet.Grid)
     assert g.get_cmd_str() == (
-        'grid compact="true" headerVisible="true" selection="multiple" shimmerLines="1"\n'
+        'grid compact="true" headervisible="true" selection="multiple" shimmerlines="1"\n'
         '  columns\n'
-        '    column fieldName="first_name" icon="mail" iconOnly="true" maxWidth="200" minWidth="100" name="First name" resizable="false" sortField="sort field name" sortable="True" sorted="false"\n'
-        '    column fieldName="last_name" name="Last name"\n'
+        '    column fieldname="first_name" icon="mail" icononly="true" maxwidth="200" minwidth="100" name="First name" resizable="false" sortable="True" sorted="false" sortfield="sort field name"\n'
+        '    column fieldname="last_name" name="Last name"\n'
         '  items\n'
         '    item first_name="Inesa" last_name="Fitsner"\n'
         '    item first_name="Fiodar" last_name="Fitsner"'

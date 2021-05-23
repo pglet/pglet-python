@@ -18,17 +18,4 @@ Run the sample above with Python 3 and in a new browser window you'll get:
 
 ![Sample app in a browser](https://pglet.io/img/docs/quickstart-hello-world.png "Sample app in a browser")
 
-Here is a local page served by an instance of Pglet server started in the background on your computer.
-
-## Make it web
-
-Add `web=True` to `pglet.page` call:
-
-```python
-p = pglet.page(web=True)
-p.add(Text(value="Hello, world!"))
-```
-
-This time page will be created on [Pglet hosted service](https://pglet.io/docs/pglet-service).
-
 Read [Python tutorial](https://pglet.io/docs/tutorials/python) for further information and more examples.

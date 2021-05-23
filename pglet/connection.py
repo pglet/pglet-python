@@ -33,7 +33,11 @@ class Connection:
             self.__send("begin")
             for command in commands:
                 self.__send(command)
-            return self.__send("end")
+            result = self.__send("end")
+            if result == "":
+                return []
+            else:
+                return result.split('\n')
 
     def send(self, command):
         with self.lock:

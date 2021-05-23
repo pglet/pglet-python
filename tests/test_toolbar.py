@@ -19,11 +19,11 @@ def test_toolbar_add():
     assert isinstance(t, pglet.Toolbar)
     assert t.get_cmd_str() == (
         'toolbar inverted="true"\n'
-        '  item divider="true" icon="icon" iconColor="green" iconOnly="false" newWindow="true" '
-        'secondaryText="text2" split="true" text="text1" url="url"\n'
+        '  item divider="true" icon="icon" iconcolor="green" icononly="false" newwindow="true" '
+        'secondarytext="text2" split="true" text="text1" url="url"\n'
         '  overflow\n'
-        '    item divider="true" icon="icon" iconColor="green" iconOnly="false" newWindow="true" '
-        'secondaryText="text22" split="true" text="text12" url="url2"\n'
+        '    item divider="true" icon="icon" iconcolor="green" icononly="false" newwindow="true" '
+        'secondarytext="text22" split="true" text="text12" url="url2"\n'
         '    item text="overflow"\n'
         '  far\n'
         '    item text="far"'

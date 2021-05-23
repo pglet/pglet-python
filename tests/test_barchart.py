@@ -12,9 +12,9 @@ def test_barchart_add():
     assert isinstance(bc, pglet.Control)
     assert isinstance(bc, pglet.BarChart)
     assert bc.get_cmd_str() == (
-        'barchart dataMode="default" tooltips="false"\n'
+        'barchart datamode="default" tooltips="false"\n'
         '  data\n'
-        '    p color="green" legend="legend" x="1" xTooltip="x tooltip" y="100" yTooltip="y tooltip"\n'
+        '    p color="green" legend="legend" x="1" xtooltip="x tooltip" y="100" ytooltip="y tooltip"\n'
         '    p x="80" y="200"\n'
         '    p x="100" y="300"'
     ), "Test failed"

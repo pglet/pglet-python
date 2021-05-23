@@ -10,7 +10,7 @@ def test_callout_add():
     assert isinstance(c, pglet.Control)
     assert isinstance(c, pglet.Callout)
     assert c.get_cmd_str() == (
-        'callout beak="true" beakWidth="10" cover="true" focus="false" gap="100" pagePadding="10" '
+        'callout beak="true" beakwidth="10" cover="true" focus="false" gap="100" pagepadding="10" '
         'position="leftBottom" target="button1" visible="true"\n'
         '  text value="This is callout"'
     ), "Test failed"

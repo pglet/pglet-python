@@ -95,6 +95,6 @@ def main(page):
     page.update()
     page.add(textboxes())
 
-pglet.app("textbox-control-samples", target = main)
+pglet.app("textbox-control-samples", target = main, local=True)
 
 input("Press Enter to exit...")

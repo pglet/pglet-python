@@ -15,13 +15,29 @@ class Page(Control):
         self.__controls = [] # page controls
         self.__index = {} # index with all page controls
         self.__index[self.id] = self
-        self.hash = self.__conn.send("get page hash")
+        self.__fetch_page_details()
 
     def get_control(self, id):
         return self.__index.get(id)
 
     def _get_children(self):
         return self.__controls
+
+    def __fetch_page_details(self):
+        values = self.__conn.send_batch([
+            'get page hash',
+            'get page userid',
+            'get page userlogin',
+            'get page username',
+            'get page useremail',
+            'get page userclientip'
+        ])
+        self.hash = values[0]
+        self.user_id = values[1]
+        self.user_login = values[2]
+        self.user_name = values[3]
+        self.user_email = values[4]
+        self.user_client_ip = values[5]
 
     def update(self, *controls):
         if len(controls) == 0:
@@ -41,11 +57,11 @@ class Page(Control):
             return
 
         # execute commands
-        ids = self.__conn.send_batch(commands)
+        result = self.__conn.send_batch(commands)
 
-        if ids != "":
+        if len(result) > 0:
             n = 0
-            for line in ids.split('\n'):
+            for line in result:
                 for id in line.split(' '):
                     added_controls[n]._Control__uid = id
                     added_controls[n].page = self
@@ -105,6 +121,29 @@ class Page(Control):
                 ce = ControlEvent(e.target, e.name, e.data, self.__index[e.target], self)
                 t = threading.Thread(target=handler, args=(ce,), daemon=True)
                 t.start()
+
+    def wait_event(self):
+        e = self.__conn.wait_event()
+        return ControlEvent(e.target, e.name, e.data, self.__index[e.target], self)
+
+    def show_signin(self, auth_providers="*", auth_groups=False, allow_dismiss=False):
+        self.signin = auth_providers
+        self.signin_groups = auth_groups
+        self.signin_allow_dismiss = allow_dismiss
+        self.update()
+
+        while True:
+            e = self.wait_event()
+            if e.control == self and e.name.lower() == "signin":
+                return True
+            elif e.control == self and e.name.lower() == "dismisssignin":
+                return False
+    
+    def signout(self):
+        return self.__conn.send("signout")
+
+    def can_access(self, users_and_groups):
+        return self.__conn.send(f"canAccess \"{encode_attr(users_and_groups)}\"").lower() == "true"
 
 # connection
     @property
@@ -185,6 +224,15 @@ class Page(Control):
     def padding(self, value):
         self._set_attr("padding", value)
 
+# theme
+    @property
+    def theme(self):
+        return self._get_attr("theme")
+
+    @theme.setter
+    def theme(self, value):
+        self._set_attr("theme", value)
+
 # theme_primary_color
     @property
     def theme_primary_color(self):
@@ -220,6 +268,105 @@ class Page(Control):
     @hash.setter
     def hash(self, value):
         self._set_attr("hash", value)
+
+# signin
+    @property
+    def signin(self):
+        return self._get_attr("signin")
+
+    @signin.setter
+    def signin(self, value):
+        self._set_attr("signin", value)
+
+# signin_allow_dismiss
+    @property
+    def signin_allow_dismiss(self):
+        return self._get_attr("signinAllowDismiss")
+
+    @signin_allow_dismiss.setter
+    def signin_allow_dismiss(self, value):
+        self._set_attr("signinAllowDismiss", value)
+
+# signin_groups
+    @property
+    def signin_groups(self):
+        return self._get_attr("signinGroups")
+
+    @signin_groups.setter
+    def signin_groups(self, value):
+        self._set_attr("signinGroups", value)
+
+# user_id
+    @property
+    def user_id(self):
+        return self._get_attr("userId")
+
+    @user_id.setter
+    def user_id(self, value):
+        self._set_attr("userId", value)        
+
+# user_login
+    @property
+    def user_login(self):
+        return self._get_attr("userLogin")
+
+    @user_login.setter
+    def user_login(self, value):
+        self._set_attr("userLogin", value)                
+
+# user_name
+    @property
+    def user_name(self):
+        return self._get_attr("userName")
+
+    @user_name.setter
+    def user_name(self, value):
+        self._set_attr("userName", value)
+
+# user_email
+    @property
+    def user_email(self):
+        return self._get_attr("userEmail")
+
+    @user_email.setter
+    def user_email(self, value):
+        self._set_attr("userEmail", value)
+
+# user_client_ip
+    @property
+    def user_client_ip(self):
+        return self._get_attr("userClientIP")
+
+    @user_client_ip.setter
+    def user_client_ip(self, value):
+        self._set_attr("userClientIP", value)
+
+# on_signin
+    @property
+    def on_signin(self):
+        return self._get_event_handler("signin")
+
+    @on_signin.setter
+    def on_signin(self, handler):
+        self._add_event_handler("signin", handler)
+
+# on_dismiss_signin
+    @property
+    def on_dismiss_signin(self):
+        return self._get_event_handler("dismissSignin")
+
+    @on_dismiss_signin.setter
+    def on_dismiss_signin(self, handler):
+        self._add_event_handler("dismissSignin", handler)
+
+# on_signout
+    @property
+    def on_signout(self):
+        return self._get_event_handler("signout")
+
+    @on_signout.setter
+    def on_signout(self, handler):
+        self._add_event_handler("signout", handler)        
 
 # on_close
     @property

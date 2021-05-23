@@ -14,10 +14,10 @@ def test_verticalbarchart_add():
     assert isinstance(vbc, pglet.Control)
     assert isinstance(vbc, pglet.VerticalBarChart)
     assert vbc.get_cmd_str() == (
-        'verticalbarchart barWidth="56" colors="green yellow" legend="true" tooltips="false" '
-        'xType="number" yFormat="format{y}" yMax="1000" yMin="0" yTicks="200"\n'
+        'verticalbarchart barwidth="56" colors="green yellow" legend="true" tooltips="false" '
+        'xtype="number" yformat="format{y}" ymax="1000" ymin="0" yticks="200"\n'
         '  data\n'
-        '    p color="green" legend="legend" x="1" xTooltip="x tooltip" y="100" yTooltip="y tooltip"\n'
+        '    p color="green" legend="legend" x="1" xtooltip="x tooltip" y="100" ytooltip="y tooltip"\n'
         '    p x="80" y="200"\n'
         '    p x="100" y="300"'
     ), "Test failed"

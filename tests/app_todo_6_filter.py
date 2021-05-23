@@ -1,6 +1,7 @@
 import os
 
 import sys,inspect
+from threading import local
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
@@ -101,4 +102,4 @@ def main(page):
     # add application's root control to the page
     page.add(app.view)
 
-pglet.app("todo-app", target=main)
+pglet.app("todo-app", target=main, local=True)

@@ -13,4 +13,4 @@ def test_toggle_add():
     t = Toggle(value=True, label="This is toggle", inline=True, on_text='on text', off_text='off text')
     assert isinstance(t, pglet.Control)
     assert isinstance(t, pglet.Toggle)
-    assert t.get_cmd_str() == ('toggle inline="true" label="This is toggle" offText="off text" onText="on text" value="true"'), "Test failed"
+    assert t.get_cmd_str() == ('toggle inline="true" label="This is toggle" offtext="off text" ontext="on text" value="true"'), "Test failed"

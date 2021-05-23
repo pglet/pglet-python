@@ -29,4 +29,4 @@ def main(page):
         Spinner("Nope, still loading...", label_position='Left')
     )
 
-pglet.app("pglet-spinner", target=main)
+pglet.app(target=main, local=True)

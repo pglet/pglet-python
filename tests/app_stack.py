@@ -118,4 +118,4 @@ def main(page):
         form1
     )
 
-pglet.app("python-stack", target=main)
+pglet.app("python-stack", target=main, local=True)

@@ -16,8 +16,8 @@ def test_verticalbarchart_add():
     assert isinstance(lc, pglet.Control)
     assert isinstance(lc, pglet.LineChart)
     assert lc.get_cmd_str() == (
-        'linechart legend="true" strokeWidth="4" tooltips="true" xType="number" '
-        'yFormat="{y}%" yMax="100" yMin="0" yTicks="2"\n'
+        'linechart legend="true" strokewidth="4" tooltips="true" xtype="number" '
+        'yformat="{y}%" ymax="100" ymin="0" yticks="2"\n'
         '  data color="yellow" legend="yellow color"\n'
         '    p x="1" y="100"\n'
         '    p x="5" y="50"\n'
