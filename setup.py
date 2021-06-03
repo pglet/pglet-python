@@ -17,6 +17,7 @@ setuptools.setup(
     packages=setuptools.find_packages(exclude=("tests",)),
     python_requires='>=3.7',
     install_requires=[],
+    include_package_data=True,
     classifiers=[
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.7',
