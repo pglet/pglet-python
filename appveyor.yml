@@ -23,18 +23,21 @@ install:
 - echo Using Pglet ${PGLET_VERSION}
 
 # downloading binaries
-- mkdir -p pglet/bin/windows-amd64
-- curl -L https://github.com/pglet/pglet/releases/download/v${PGLET_VERSION}/pglet-${PGLET_VERSION}-windows-amd64.exe -o pglet/bin/windows-amd64/pglet.exe
+- sh: |
+    function download_binary() {
+      mkdir -p pglet/bin/$1
+      curl -L https://github.com/pglet/pglet/releases/download/v${PGLET_VERSION}/pglet-${PGLET_VERSION}-$1 -o pglet/bin/$1/pglet
+      chmod +x pglet/bin/$1/pglet
+    }
 
-- mkdir -p pglet/bin/linux-amd64
-- curl -L https://github.com/pglet/pglet/releases/download/v${PGLET_VERSION}/pglet-${PGLET_VERSION}-linux-amd64 -o pglet/bin/linux-amd64/pglet
-- chmod +x pglet/bin/linux-amd64/pglet
+    mkdir -p pglet/bin/windows-amd64
+    curl -L https://github.com/pglet/pglet/releases/download/v${PGLET_VERSION}/pglet-${PGLET_VERSION}-windows-amd64.exe -o pglet/bin/windows-amd64/pglet.exe
 
-- mkdir -p pglet/bin/linux-arm64
-- curl -L https://github.com/pglet/pglet/releases/download/v${PGLET_VERSION}/pglet-${PGLET_VERSION}-linux-arm64 -o pglet/bin/linux-arm64/pglet
-- chmod +x pglet/bin/linux-arm64/pglet
-
-- ls -alR .
+    download_binary "linux-amd64"
+    download_binary "linux-arm64"
+    download_binary "linux-arm"
+    download_binary "darwin-amd64"
+    download_binary "darwin-arm64"
 
 build_script:
 # run tests
