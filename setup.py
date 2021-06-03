@@ -9,7 +9,7 @@ setuptools.setup(
     version="0.1.0",
     license="MIT",
     author="Appveyor Systems Inc.",
-    author_email="pglet@appveyor.com",
+    author_email="hello@pglet.io",
     description="Pglet client for Python - easily build interactive web apps in Python",
     long_description=long_description,
     long_description_content_type="text/markdown",

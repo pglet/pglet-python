@@ -1,11 +1,6 @@
-import sys
 import os
-import pathlib
 import platform
 import subprocess
-import urllib.request
-import zipfile
-import tarfile
 import re
 import signal
 from threading import Thread
@@ -14,7 +9,6 @@ from .utils import is_windows, which, encode_attr
 from .connection import Connection
 from .page import Page
 
-PGLET_VERSION = "0.4.2"
 pglet_exe = ""
 
 def page(name=None, local=False, server=None, token=None, permissions=None, no_window=False):
@@ -112,8 +106,7 @@ def app(name=None, local=False, server=None, token=None, target=None, permission
             thread = Thread(target = session_wrapper, args = (target, page,))
             thread.start()
 
-
-def install():
+def init():
     global pglet_exe
 
     if is_windows():
@@ -127,72 +120,32 @@ def install():
         pglet_exe = pglet_in_path
         return
 
-    home = str(pathlib.Path.home())
-    pglet_dir = os.path.join(home, ".pglet")
-    pglet_bin = os.path.join(pglet_dir, "bin")
+    bin_dir = os.path.join(os.path.dirname(__file__), "bin")
 
-    if not os.path.exists(pglet_bin):
-        os.makedirs(pglet_bin)
-    
+    p = platform.system()
     if is_windows():
-        pglet_exe = os.path.join(pglet_bin, pglet_exe)
+        plat = "windows"
+    elif p == "Linux":
+        plat = "linux"
+    elif p == "Darwin":
+        plat = "darwin"
     else:
-        pglet_exe = os.path.join(pglet_bin, pglet_exe)
+        raise Exception(f"Unsupported platform: {p}")
 
-    ver = PGLET_VERSION
+    a = platform.machine().lower()
+    if a == "x86_64" or a == "amd64":
+        arch = "amd64"
+    elif a == "arm64" or a == "aarch64":
+        arch = "arm64"
+    elif a.startswith("arm"):
+        arch = "arm"
+    else:
+        raise Exception(f"Unsupported architecture: {a}")
 
-    installed_ver=None
+    pglet_exe = os.path.join(bin_dir, f"{plat}-{arch}", pglet_exe)
 
-    if os.path.exists(pglet_exe):
-        # get installed pglet version
-        installed_ver = subprocess.check_output([pglet_exe, "--version"]).decode("utf-8")
-        #print(f'Found Pglet v{installed_ver}')
-    
-    if not installed_ver or installed_ver != ver:
-        #print(f'Installing Pglet v{PGLET_VERSION}...')
-
-        a = platform.machine().lower()
-        if a == "x86_64" or a == "amd64":
-            arch = "amd64"
-        elif a == "arm64" or a == "aarch64":
-            arch = "arm64"
-        elif a.startswith("arm"):
-            arch = "arm"
-        else:
-            raise Exception(f"Unsupported architecture: {a}")
-
-        p = platform.system()
-        if is_windows():
-            plat = "windows"
-            ext = "zip"
-        elif p == "Linux":
-            plat = "linux"
-            ext = "tar.gz"
-        elif p == "Darwin":
-            plat = "darwin"
-            ext = "tar.gz"
-        else:
-            raise Exception(f"Unsupported platform: {p}")
-
-        # download archive
-        pglet_url = f"https://github.com/pglet/pglet/releases/download/v{ver}/pglet-{ver}-{plat}-{arch}.{ext}"
-        temp_arch = os.path.join(pglet_dir, f"pglet-{ver}-{plat}-{arch}.{ext}")
-
-        #print (pglet_url)
-
-        urllib.request.urlretrieve(pglet_url, temp_arch)
-
-        if is_windows():
-            with zipfile.ZipFile(temp_arch, 'r') as zip_arch:
-                zip_arch.extractall(pglet_bin)
-        else:
-            with tarfile.open(temp_arch, 'r:gz') as tar_arch:
-                tar_arch.extractall(pglet_bin)
-
-        os.remove(temp_arch)
-
-# install Pglet during import
-install()
+# init Pglet during import
+init()
 
 # Fix: https://bugs.python.org/issue35935
 signal.signal(signal.SIGINT, signal.SIG_DFL)
