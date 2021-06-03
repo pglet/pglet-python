@@ -15,10 +15,8 @@ environment:
   test_pypi_key: 
     secure: LAsjCb0tqzjUEPxHTq8TPmTDzERQpSS0po96HhXEEczG8EaWqCUdtb+bhT3QLihy+4X4MvErEYXYieUT+KjpuVdgjc/UrqDEuQngBL9r7k5cRMV878c232zbLGljHckNr4TCzHJosANrYBrx0sNg9gVnAoJOxNbu40A1rVB8Qj9ob/eCKwXHHRxfrf0d/NwoLZViCE4toV333tVr5vshlLkQA3oRiS2OZG3VKagTI4nsKCaOFqJHFlvy2a0LEUdc
 
-init:
-- python --version
-
 install:
+- python --version
 - pip install -r requirements.txt
 - pip install --upgrade setuptools wheel twine
 
@@ -59,6 +57,9 @@ build_script:
 - python setup.py sdist bdist_wheel
 
 # publish package
-- IF "%APPVEYOR_PULL_REQUEST_NUMBER%"=="" twine upload dist/*
+- sh: |
+    if [[ "$APPVEYOR_PULL_REQUEST_NUMBER" == "" ]]; then
+        twine upload dist/*
+    fi
 
 test: off
