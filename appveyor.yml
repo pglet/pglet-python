@@ -3,8 +3,12 @@ version: 0.1.{build}
 
 skip_branch_with_pr: true
 
+image: ubuntu
+
+stack: python 3.9
+
 environment:
-  PYTHON: C:\Python39-x64
+  PGLET_VERSION: 0.4.4
   TWINE_USERNAME: __token__
   TWINE_NON_INTERACTIVE: true
   pypi_key: 
@@ -12,12 +16,28 @@ environment:
   test_pypi_key: 
     secure: LAsjCb0tqzjUEPxHTq8TPmTDzERQpSS0po96HhXEEczG8EaWqCUdtb+bhT3QLihy+4X4MvErEYXYieUT+KjpuVdgjc/UrqDEuQngBL9r7k5cRMV878c232zbLGljHckNr4TCzHJosANrYBrx0sNg9gVnAoJOxNbu40A1rVB8Qj9ob/eCKwXHHRxfrf0d/NwoLZViCE4toV333tVr5vshlLkQA3oRiS2OZG3VKagTI4nsKCaOFqJHFlvy2a0LEUdc
 
-init:
-- SET PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%
-
 install:
+- python --version
 - pip install -r requirements.txt
 - pip install --upgrade setuptools wheel twine
+- echo Using Pglet ${PGLET_VERSION}
+
+# downloading binaries
+- sh: |
+    function download_binary() {
+      mkdir -p pglet/bin/$1
+      curl -L https://github.com/pglet/pglet/releases/download/v${PGLET_VERSION}/pglet-${PGLET_VERSION}-$1 -o pglet/bin/$1/pglet
+      chmod +x pglet/bin/$1/pglet
+    }
+
+    mkdir -p pglet/bin/windows-amd64
+    curl -L https://github.com/pglet/pglet/releases/download/v${PGLET_VERSION}/pglet-${PGLET_VERSION}-windows-amd64.exe -o pglet/bin/windows-amd64/pglet.exe
+
+    download_binary "linux-amd64"
+    download_binary "linux-arm64"
+    download_binary "linux-arm"
+    download_binary "darwin-amd64"
+    download_binary "darwin-arm64"
 
 build_script:
 # run tests
@@ -56,6 +76,9 @@ build_script:
 - python setup.py sdist bdist_wheel
 
 # publish package
-- IF "%APPVEYOR_PULL_REQUEST_NUMBER%"=="" twine upload dist/*
+- sh: |
+    if [[ "$APPVEYOR_PULL_REQUEST_NUMBER" == "" ]]; then
+        twine upload dist/*
+    fi
 
 test: off
