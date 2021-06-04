@@ -39,24 +39,7 @@ def main(page):
     prog2.update()
     time.sleep(2)
 
-    prog2.description = "Creatring database entities..."
-    prog2.value = 40
+    prog2.value = None
     prog2.update()
-    time.sleep(2)
-
-    prog2.description = "Verifying the data..."
-    prog2.value = 60
-    prog2.update()
-    time.sleep(2)
-
-    prog2.description = "Finishing the process, almost done..."
-    prog2.value = 80
-    prog2.update()
-    time.sleep(2)
-
-    prog2.description = "Your account has been created!"
-    prog2.value = 100
-    prog2.update()
-
 
 pglet.app("pglet-progress", target=main, local=True)

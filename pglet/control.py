@@ -51,11 +51,14 @@ class Control:
 
     def _set_attr_internal(self, name, value, dirty=True):
         name =  name.lower()
-        if value == None:
-            if name in self.__attrs:
-                del self.__attrs[name]
-            return
         orig_val = self.__attrs.get(name)
+
+        if orig_val == None and value == None:
+            return
+
+        if value == None:
+            value = ''
+        
         if orig_val == None or orig_val[0] != value:
             self.__attrs[name] = (value, dirty)
 
