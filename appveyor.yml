@@ -8,7 +8,7 @@ image: ubuntu
 stack: python 3.9
 
 environment:
-  PGLET_VERSION: 0.4.4
+  PGLET_VERSION: 0.4.5
   TWINE_USERNAME: __token__
   TWINE_NON_INTERACTIVE: true
   pypi_key: 
