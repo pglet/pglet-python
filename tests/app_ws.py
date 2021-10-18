@@ -12,7 +12,7 @@ def connect_loop(wsapp):
         try:
             print("Connecting...")
             r = wsapp.run_forever()
-        except Exception as e:
+        except (Exception, KeyboardInterrupt, SystemExit) as e:
             #gc.collect()
             print("Websocket connection Error  : {0}".format(e))
         print("run_forever result", r)
@@ -29,6 +29,9 @@ wst.start()
 time.sleep(1)
 wsapp.send("{ \"action\": \"test\" }")
 
-input("Press Enter to exit...")
+try:
+    input("Press Enter to exit...")
+except (Exception, KeyboardInterrupt, SystemExit) as e:
+    print ("Interrupted!")
 
 wsapp.close()
