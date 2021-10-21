@@ -1,37 +1,31 @@
-import websocket
-import threading, time
+import os,sys,inspect
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0,parentdir)
 
-def on_message(wsapp, message):
+import time
+from pglet import reconnecting_websocket
+
+
+exit()
+
+
+
+def on_message(message):
     print(message)
 
-def on_open(wsapp):
+def on_open():
     print("Connection opened!")
 
-def connect_loop(wsapp):
-    while True:
-        try:
-            print("Connecting...")
-            r = wsapp.run_forever()
-        except (Exception, KeyboardInterrupt, SystemExit) as e:
-            #gc.collect()
-            print("Websocket connection Error  : {0}".format(e))
-        print("run_forever result", r)
-        if r != True:
-            return
-        print("Reconnecting websocket after 5 sec")
-        time.sleep(5)
-
-
-wsapp = websocket.WebSocketApp("ws://127.0.0.1:5000/ws", on_message=on_message, on_open=on_open)
-wst = threading.Thread(target=connect_loop, args=(wsapp,), daemon=True)
-wst.start()
+rws = reconnecting_websocket.ReconnectingWebSocket("ws://localhost:5000/ws", on_open, on_message)
+rws.connect()
 
 time.sleep(1)
-wsapp.send("{ \"action\": \"test\" }")
+rws.send("{ \"action\": \"test\" }")
 
 try:
     input("Press Enter to exit...")
 except (Exception, KeyboardInterrupt, SystemExit) as e:
     print ("Interrupted!")
 
-wsapp.close()
+rws.close()

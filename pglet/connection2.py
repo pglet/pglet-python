@@ -3,6 +3,17 @@ import time
 import threading
 from .utils import is_windows, encode_attr
 from .event import Event
+from .protocol import *
+
+# cmd = Command(0, "add", ["v1", "v2"])
+# cmd.commands = [Command(1, "remove"), Command(1, "insert")]
+# j = json.dumps(cmd, default=vars)
+
+# cmd_dict = json.loads(j)
+# cmd_object = Command(**cmd_dict)
+
+# #print(j)
+# print(cmd_object)
 
 class Connection:
     def __init__(self, conn_id):
