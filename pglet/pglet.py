@@ -4,12 +4,19 @@ import subprocess
 import re
 import signal
 from threading import Thread
+import threading
 from time import sleep
+from urllib.parse import urlparse, urlunparse
+
+from pglet.connection2 import Connection2
+
+from .reconnecting_websocket import ReconnectingWebSocket
 from .utils import is_windows, which, encode_attr
 from .connection import Connection
 from .page import Page
 
 pglet_exe = ""
+HOSTED_SERVICE_URL = "https://console.pglet.io"
 
 def page(name=None, local=False, server=None, token=None, permissions=None, no_window=False):
 
@@ -49,6 +56,42 @@ def page(name=None, local=False, server=None, token=None, permissions=None, no_w
     return Page(conn, url)
 
 def app(name=None, local=False, server=None, token=None, target=None, permissions=None, no_window=False):
+
+    if target == None:
+        raise Exception("target argument is not specified")
+
+    if server == None:
+        server = HOSTED_SERVICE_URL
+    
+    ws = ReconnectingWebSocket(_get_ws_url(server))
+    ws.connect()
+
+    conn = Connection2(ws)
+    conn.register_host_client("", "page2")
+
+    try:
+        print("Waiting for new app sessions. Press Enter to exit...")
+        input()
+    except (KeyboardInterrupt) as e:
+        pass
+
+    ws.close()
+
+def on_ws_message(data):
+    print(f"message: {data}")
+
+def _get_ws_url(server: str):
+    url = server.removesuffix('/')
+    if server.startswith('https://'):
+        url = url.replace('https://', 'wss://')
+    elif server.startswith('http://'):
+        url = url.replace('http://', 'ws://')
+    else:
+        url = 'ws://' + url
+    return url + "/ws"
+
+
+def app2(name=None, local=False, server=None, token=None, target=None, permissions=None, no_window=False):
 
     if target == None:
         raise Exception("target argument is not specified")
@@ -145,7 +188,7 @@ def init():
     pglet_exe = os.path.join(bin_dir, f"{plat}-{arch}", pglet_exe)
 
 # init Pglet during import
-init()
+#init()
 
 # Fix: https://bugs.python.org/issue35935
-signal.signal(signal.SIGINT, signal.SIG_DFL)
+#signal.signal(signal.SIGINT, signal.SIG_DFL)

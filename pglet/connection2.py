@@ -1,6 +1,8 @@
 import re
 import time
 import threading
+
+from pglet.reconnecting_websocket import ReconnectingWebSocket
 from .utils import is_windows, encode_attr
 from .event import Event
 from .protocol import *
@@ -15,25 +17,16 @@ from .protocol import *
 # #print(j)
 # print(cmd_object)
 
-class Connection:
-    def __init__(self, conn_id):
-        self.conn_id = conn_id
-        self.lock = threading.Lock()
+class Connection2:
+    def __init__(self, ws: ReconnectingWebSocket):
+        self.ws = ws
+        self.ws.on_message = self._on_message
 
-        self.win_command_pipe = None
-        self.win_event_pipe = None
+    def register_host_client(self, host_client_id: str, page_name: str):
+        self.ws.send('{ "action": "registerHostClient", "payload": { "pageName": "page1" }}')
 
-        self.event_available = threading.Event()
-        self.last_event = None
-        self._event_handlers = {}        
-
-        if is_windows():
-            self.__init_windows()
-        else:
-            self.__init_linux()
-
-        self.__start_event_loop()
-        self.on_event = self.__on_event
+    def _on_message(self, data):
+        print(f"message1: {data}")
 
     def __on_event(self, evt):
         pass
