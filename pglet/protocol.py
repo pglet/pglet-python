@@ -1,5 +1,11 @@
-import json
 from dataclasses import dataclass, field
+
+class Actions:
+    REGISTER_HOST_CLIENT = "registerHostClient"
+    SESSION_CREATED = "sessionCreated"
+    PAGE_COMMAND_FROM_HOST = "pageCommandFromHost"
+    PAGE_COMMANDS_BATCH_FROM_HOST = "pageCommandsBatchFromHost"
+    PAGE_EVENT_TO_HOST = "pageEventToHost"
 
 @dataclass
 class Command:

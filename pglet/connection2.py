@@ -1,6 +1,8 @@
+import json
 import re
 import time
 import threading
+import uuid
 
 from pglet.reconnecting_websocket import ReconnectingWebSocket
 from .utils import is_windows, encode_attr
@@ -21,12 +23,36 @@ class Connection2:
     def __init__(self, ws: ReconnectingWebSocket):
         self.ws = ws
         self.ws.on_message = self._on_message
+        self.ws_callbacks = {}
 
-    def register_host_client(self, host_client_id: str, page_name: str):
-        self.ws.send('{ "action": "registerHostClient", "payload": { "pageName": "page1" }}')
+    def register_host_client(self, host_client_id: str, page_name: str, is_app: bool, auth_token: str, permissions: str):
+        payload = RegisterHostClientRequestPayload(host_client_id, page_name, is_app, auth_token, permissions)
+        result = self._send_message_with_result(Actions.REGISTER_HOST_CLIENT, payload)
+        return RegisterHostClientResponsePayload(**result)
 
     def _on_message(self, data):
-        print(f"message1: {data}")
+        print(f"_on_message: {data}")
+        msg_dict = json.loads(data)
+        msg = Message(**msg_dict)
+        if msg.id != "":
+            # callback
+            evt = self.ws_callbacks[msg.id][0]
+            self.ws_callbacks[msg.id] = (None, msg.payload)
+            evt.set()
+        else:
+            print(msg.payload)
+
+    def _send_message_with_result(self, action_name, payload):
+        msg_id = uuid.uuid4().hex
+        msg = Message(msg_id, action_name, payload)
+        j = json.dumps(msg, default=vars)
+        evt = threading.Event()
+        self.ws_callbacks[msg_id] = (evt, None)
+        self.ws.send(j)
+        evt.wait()
+        return self.ws_callbacks.pop(msg_id)[1]
+
+# ============================================
 
     def __on_event(self, evt):
         pass

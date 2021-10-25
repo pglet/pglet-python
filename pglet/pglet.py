@@ -67,7 +67,8 @@ def app(name=None, local=False, server=None, token=None, target=None, permission
     ws.connect()
 
     conn = Connection2(ws)
-    conn.register_host_client("", "page2")
+    result = conn.register_host_client("", "page2", True, None, None)
+    print(result)
 
     try:
         print("Waiting for new app sessions. Press Enter to exit...")
