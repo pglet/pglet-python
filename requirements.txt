@@ -1,1 +1,2 @@
 pytest>=6.1.2
+websocket-client>=1.2.1
