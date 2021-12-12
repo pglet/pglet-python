@@ -68,6 +68,6 @@ class RegisterHostClientResponsePayload:
     error: str
 
 @dataclass
-class SessionCreatedPayload:
+class PageSessionCreatedPayload:
     pageName: str    
     sessionID: str

@@ -4,23 +4,36 @@ import threading, random, time
 class ReconnectingWebSocket:
     def __init__(self, url) -> None:
         self.url = url
-        self.on_open = None
-        self.on_message = None
+        self._on_open_handler = None
+        self._on_message_handler = None
         self.connected = threading.Event()
         self.retry = 0
-    
+
+    @property
+    def on_open(self, handler):
+        return self._on_open_handler
+
+    @on_open.setter
+    def on_open(self, handler):
+        self._on_open_handler = handler
+
+    @property
     def on_message(self, handler):
-        self.on_message = handler
+        return self._on_message_handler
+
+    @on_message.setter
+    def on_message(self, handler):
+        self._on_message_handler = handler        
     
     def _on_open(self, wsapp) -> None:
         self.connected.set()
         self.retry = 0
-        if self.on_open != None:
-            self.on_open()
+        if self._on_open_handler != None:
+            self._on_open_handler()
 
     def _on_message(self, wsapp, data) -> None:
-        if self.on_message != None:
-            self.on_message(data)
+        if self._on_message_handler != None:
+            self._on_message_handler(data)
 
     def connect(self) -> None:
         self.wsapp = websocket.WebSocketApp(self.url, on_message=self._on_message, on_open=self._on_open)

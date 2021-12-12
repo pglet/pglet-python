@@ -25,11 +25,13 @@ install:
 # downloading binaries
 - sh: |
     function download_binary() {
+      echo "Downloading $1"
       mkdir -p pglet/bin/$1
       curl -L https://github.com/pglet/pglet/releases/download/v${PGLET_VERSION}/pglet-${PGLET_VERSION}-$1 -o pglet/bin/$1/pglet
       chmod +x pglet/bin/$1/pglet
     }
 
+    echo "Downloading windows-amd64"
     mkdir -p pglet/bin/windows-amd64
     curl -L https://github.com/pglet/pglet/releases/download/v${PGLET_VERSION}/pglet-${PGLET_VERSION}-windows-amd64.exe -o pglet/bin/windows-amd64/pglet.exe
 

@@ -9,21 +9,29 @@ from .utils import is_windows, encode_attr
 from .event import Event
 from .protocol import *
 
-# cmd = Command(0, "add", ["v1", "v2"])
-# cmd.commands = [Command(1, "remove"), Command(1, "insert")]
-# j = json.dumps(cmd, default=vars)
-
-# cmd_dict = json.loads(j)
-# cmd_object = Command(**cmd_dict)
-
-# #print(j)
-# print(cmd_object)
-
 class Connection2:
     def __init__(self, ws: ReconnectingWebSocket):
         self.ws = ws
         self.ws.on_message = self._on_message
         self.ws_callbacks = {}
+        self._on_event = None
+        self._on_session_created = None
+
+    @property
+    def on_event(self):
+        return self._on_event
+
+    @on_event.setter
+    def on_event(self, handler):
+        self._on_session_created = handler
+
+    @property
+    def on_session_created(self):
+        return self._on_session_created              
+
+    @on_session_created.setter
+    def on_session_created(self, handler):
+        self._on_session_created = handler
 
     def register_host_client(self, host_client_id: str, page_name: str, is_app: bool, auth_token: str, permissions: str):
         payload = RegisterHostClientRequestPayload(host_client_id, page_name, is_app, auth_token, permissions)
@@ -39,6 +47,10 @@ class Connection2:
             evt = self.ws_callbacks[msg.id][0]
             self.ws_callbacks[msg.id] = (None, msg.payload)
             evt.set()
+        elif msg.action == Actions.PAGE_EVENT_TO_HOST and self._on_event != None:
+            self._on_event(PageEventPayload(**msg.payload))
+        elif msg.action == Actions.SESSION_CREATED and self._on_session_created != None:
+            self._on_session_created(PageSessionCreatedPayload(**msg.payload))
         else:
             print(msg.payload)
 

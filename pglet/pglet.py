@@ -62,11 +62,15 @@ def app(name=None, local=False, server=None, token=None, target=None, permission
 
     if server == None:
         server = HOSTED_SERVICE_URL
-    
+
+    def _on_session_created(session_data):
+        print("Session created!", session_data)
+
     ws = ReconnectingWebSocket(_get_ws_url(server))
     ws.connect()
 
     conn = Connection2(ws)
+    conn.on_session_created = _on_session_created
     result = conn.register_host_client("", "page2", True, None, None)
     print(result)
 
