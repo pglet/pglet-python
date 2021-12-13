@@ -10,4 +10,4 @@ import pglet
 def main(page):
     print('new session!')
 
-pglet.app(target=main, server="localhost:5000")
+pglet.app(target=main)

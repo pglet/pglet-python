@@ -11,20 +11,19 @@ from urllib.parse import urlparse, urlunparse
 from pglet.connection2 import Connection2
 
 from .reconnecting_websocket import ReconnectingWebSocket
-from .utils import is_windows, which, encode_attr
+from .utils import is_localhost_url, is_windows, open_browser, which, encode_attr
 from .connection import Connection
 from .page import Page
 
-pglet_exe = ""
-HOSTED_SERVICE_URL = "https://console.pglet.io"
+HOSTED_SERVICE_URL = "https://app.pglet.io"
 
-def page(name=None, local=False, server=None, token=None, permissions=None, no_window=False):
+def page(name=None, local=False,  web=False, server=None, token=None, permissions=None, no_window=False):
 
     pargs = [pglet_exe, "page"]
 
     if name != None:
         pargs.append(name)
-    
+
     if local:
         pargs.append("--local")
 
@@ -55,24 +54,42 @@ def page(name=None, local=False, server=None, token=None, permissions=None, no_w
     conn = Connection(result_parts[0])
     return Page(conn, url)
 
-def app(name=None, local=False, server=None, token=None, target=None, permissions=None, no_window=False):
+def app(name=None, local=False, web=False, server=None, token=None, target=None, permissions=None, no_window=False):
 
     if target == None:
         raise Exception("target argument is not specified")
 
-    if server == None:
+    if server == None and web:
         server = HOSTED_SERVICE_URL
+    elif server == None:
+        server = "http://localhost:5000"
 
     def _on_session_created(session_data):
         print("Session created!", session_data)
 
-    ws = ReconnectingWebSocket(_get_ws_url(server))
-    ws.connect()
-
+    ws_url = _get_ws_url(server)
+    ws = ReconnectingWebSocket(ws_url)
     conn = Connection2(ws)
     conn.on_session_created = _on_session_created
-    result = conn.register_host_client("", "page2", True, None, None)
-    print(result)
+
+    #browser_opened = False
+
+    def _on_ws_connect():
+        print("Connected!")
+        result = conn.register_host_client("", "page2", True, None, None)
+        page_url = f"{server}/{result.pageName}"
+        if not no_window:
+            open_browser(page_url)
+            #browser_opened = True
+
+    def _on_ws_failed_connect():
+        print(f"Failed to connect: {ws_url}")
+        if is_localhost_url(ws_url):
+            _start_pglet_server()
+
+    ws.on_connect = _on_ws_connect
+    ws.on_failed_connect = _on_ws_failed_connect
+    ws.connect()
 
     try:
         print("Waiting for new app sessions. Press Enter to exit...")
@@ -84,6 +101,45 @@ def app(name=None, local=False, server=None, token=None, target=None, permission
 
 def on_ws_message(data):
     print(f"message: {data}")
+
+def _start_pglet_server():
+    print("Starting Pglet Server in local mode...")
+
+    if is_windows():
+        pglet_exe = "pglet.exe"
+    else:
+        pglet_exe = "pglet"
+
+    # check if pglet.exe is in PATH already (development mode)
+    pglet_in_path = which(pglet_exe)
+    if pglet_in_path:
+        pglet_exe = pglet_in_path
+    else:
+        bin_dir = os.path.join(os.path.dirname(__file__), "bin")
+
+        p = platform.system()
+        if is_windows():
+            plat = "windows"
+        elif p == "Linux":
+            plat = "linux"
+        elif p == "Darwin":
+            plat = "darwin"
+        else:
+            raise Exception(f"Unsupported platform: {p}")
+
+        a = platform.machine().lower()
+        if a == "x86_64" or a == "amd64":
+            arch = "amd64"
+        elif a == "arm64" or a == "aarch64":
+            arch = "arm64"
+        elif a.startswith("arm"):
+            arch = "arm"
+        else:
+            raise Exception(f"Unsupported architecture: {a}")
+
+        pglet_exe = os.path.join(bin_dir, f"{plat}-{arch}", pglet_exe)
+
+    subprocess.run([pglet_exe, "server", "--background"], check=True)
 
 def _get_ws_url(server: str):
     url = server.removesuffix('/')
@@ -105,7 +161,7 @@ def app2(name=None, local=False, server=None, token=None, target=None, permissio
 
     if name != None:
         pargs.append(name)
-    
+
     if local:
         pargs.append("--local")
 
@@ -123,7 +179,7 @@ def app2(name=None, local=False, server=None, token=None, target=None, permissio
 
     if no_window:
         pargs.append("--no-window")
-    
+
     pargs.append("--all-events")
 
     def session_wrapper(target, page):
@@ -149,48 +205,10 @@ def app2(name=None, local=False, server=None, token=None, target=None, permissio
             # create connection object
             conn = Connection(conn_id)
             page = Page(conn, page_url)
-            
+
             # start page session in a new thread
             thread = Thread(target = session_wrapper, args = (target, page,))
             thread.start()
-
-def init():
-    global pglet_exe
-
-    if is_windows():
-        pglet_exe = "pglet.exe"
-    else:
-        pglet_exe = "pglet"
-
-    # check if pglet.exe is in PATH already (development mode)
-    pglet_in_path = which(pglet_exe)
-    if pglet_in_path:
-        pglet_exe = pglet_in_path
-        return
-
-    bin_dir = os.path.join(os.path.dirname(__file__), "bin")
-
-    p = platform.system()
-    if is_windows():
-        plat = "windows"
-    elif p == "Linux":
-        plat = "linux"
-    elif p == "Darwin":
-        plat = "darwin"
-    else:
-        raise Exception(f"Unsupported platform: {p}")
-
-    a = platform.machine().lower()
-    if a == "x86_64" or a == "amd64":
-        arch = "amd64"
-    elif a == "arm64" or a == "aarch64":
-        arch = "arm64"
-    elif a.startswith("arm"):
-        arch = "arm"
-    else:
-        raise Exception(f"Unsupported architecture: {a}")
-
-    pglet_exe = os.path.join(bin_dir, f"{plat}-{arch}", pglet_exe)
 
 # init Pglet during import
 #init()

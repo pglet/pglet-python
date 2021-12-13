@@ -1,5 +1,6 @@
 import platform
 import re
+import subprocess
 
 def encode_attr(attr):
     attr = str(attr)
@@ -7,6 +8,9 @@ def encode_attr(attr):
 
 def is_windows():
     return platform.system() == "Windows"
+
+def is_macos():
+    return platform.system() == "Darwin"    
 
 # https://stackoverflow.com/questions/377017/test-if-executable-exists-in-python
 def which(program):
@@ -33,6 +37,12 @@ def ver_cmp(version1, version2):
     def normalize(v):
         return [int(x) for x in re.sub(r'(\.0+)*$','', v).split(".")]
     return cmp(normalize(version1), normalize(version2))
+
+def open_browser(url):
+    if is_windows():
+        subprocess.run(["explorer.exe", url])
+    elif is_macos():
+        subprocess.run(["open", url])
 
 def is_localhost_url(url):
     return "://localhost/" in url or "://localhost:" in url

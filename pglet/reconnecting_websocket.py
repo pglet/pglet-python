@@ -8,7 +8,8 @@ _LOCAL_CONNECT_TIMEOUT_SEC = 0.2
 class ReconnectingWebSocket:
     def __init__(self, url) -> None:
         self._url = url
-        self._on_open_handler = None
+        self._on_connect_handler = None
+        self._on_failed_connect_handler = None
         self._on_message_handler = None
         self.connected = threading.Event()
         self.exit = threading.Event()
@@ -16,12 +17,20 @@ class ReconnectingWebSocket:
         websocket.setdefaulttimeout(_LOCAL_CONNECT_TIMEOUT_SEC if is_localhost_url(url) else _REMOTE_CONNECT_TIMEOUT_SEC)
 
     @property
-    def on_open(self, handler):
-        return self._on_open_handler
+    def on_connect(self, handler):
+        return self._on_connect_handler
 
-    @on_open.setter
-    def on_open(self, handler):
-        self._on_open_handler = handler
+    @on_connect.setter
+    def on_connect(self, handler):
+        self._on_connect_handler = handler
+
+    @property
+    def on_failed_connect(self, handler):
+        return self._on_failed_connect_handler
+
+    @on_failed_connect.setter
+    def on_failed_connect(self, handler):
+        self._on_failed_connect_handler = handler
 
     @property
     def on_message(self, handler):
@@ -34,8 +43,9 @@ class ReconnectingWebSocket:
     def _on_open(self, wsapp) -> None:
         self.connected.set()
         self.retry = 0
-        if self._on_open_handler != None:
-            self._on_open_handler()
+        if self._on_connect_handler != None:
+            th = threading.Thread(target=self._on_connect_handler, args=(), daemon=True)
+            th.start()
 
     def _on_message(self, wsapp, data) -> None:
         if self._on_message_handler != None:
@@ -63,6 +73,11 @@ class ReconnectingWebSocket:
             self.connected.clear()
             if r != True:
                 return
+
+            if self.retry == 0 and self._on_failed_connect_handler != None:
+                th = threading.Thread(target=self._on_failed_connect_handler, args=(), daemon=True)
+                th.start()
+
             backoff_in_seconds = 1
             sleep = 0.1
             if not is_localhost_url(self._url):
