@@ -196,4 +196,5 @@ def init():
 #init()
 
 # Fix: https://bugs.python.org/issue35935
-#signal.signal(signal.SIGINT, signal.SIG_DFL)
+if is_windows():
+    signal.signal(signal.SIGINT, signal.SIG_DFL)

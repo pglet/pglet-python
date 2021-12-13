@@ -7,8 +7,6 @@ sys.path.insert(0,parentdir)
 
 import pglet
 
-
-
 def main(page):
     print('new session!')
 
