@@ -64,23 +64,35 @@ def app(name=None, local=False, web=False, server=None, token=None, target=None,
     elif server == None:
         server = "http://localhost:5000"
 
-    def _on_session_created(session_data):
-        print("Session created!", session_data)
+    def session_wrapper(target, page):
+        try:
+            target(page)
+        except Exception as e:
+            print(f"Unhandled error processing page session {page.connection.conn_id}:", e)
+            page.error(f"There was an error while processing your request: {e}")        
+
+    def on_session_created(conn, session_data):
+        page = Page(conn, session_data.sessionID)
+
+        # start page session in a new thread
+        thread = Thread(target = session_wrapper, args = (target, page,))
+        thread.start()
 
     ws_url = _get_ws_url(server)
     ws = ReconnectingWebSocket(ws_url)
     conn = Connection2(ws)
-    conn.on_session_created = _on_session_created
-
-    #browser_opened = False
+    conn.on_session_created = on_session_created
 
     def _on_ws_connect():
         print("Connected!")
-        result = conn.register_host_client("", "page2", True, None, None)
-        page_url = f"{server}/{result.pageName}"
-        if not no_window:
-            open_browser(page_url)
-            #browser_opened = True
+        page_name = "*" if name == "" or name == None else name
+        result = conn.register_host_client(conn.host_client_id, page_name, True, token, permissions)
+        conn.host_client_id = result.hostClientID
+        conn.page_name = result.pageName
+        conn.page_url = f"{server}/{result.pageName}"
+        if not no_window and not conn.browser_opened:
+            open_browser(conn.page_url)
+            conn.browser_opened = True
 
     def _on_ws_failed_connect():
         print(f"Failed to connect: {ws_url}")
@@ -98,9 +110,6 @@ def app(name=None, local=False, web=False, server=None, token=None, target=None,
         pass
 
     ws.close()
-
-def on_ws_message(data):
-    print(f"message: {data}")
 
 def _start_pglet_server():
     print("Starting Pglet Server in local mode...")
@@ -150,68 +159,6 @@ def _get_ws_url(server: str):
     else:
         url = 'ws://' + url
     return url + "/ws"
-
-
-def app2(name=None, local=False, server=None, token=None, target=None, permissions=None, no_window=False):
-
-    if target == None:
-        raise Exception("target argument is not specified")
-
-    pargs = [pglet_exe, "app"]
-
-    if name != None:
-        pargs.append(name)
-
-    if local:
-        pargs.append("--local")
-
-    if server != None:
-        pargs.append("--server")
-        pargs.append(server)
-
-    if token != None:
-        pargs.append("--token")
-        pargs.append(token)
-
-    if permissions != None:
-        pargs.append("--permissions")
-        pargs.append(permissions)
-
-    if no_window:
-        pargs.append("--no-window")
-
-    pargs.append("--all-events")
-
-    def session_wrapper(target, page):
-        try:
-            target(page)
-        except Exception as e:
-            print(f"Unhandled error processing page session {page.connection.conn_id}:", e)
-            page.error(f"There was an error while processing your request: {e}")
-
-    # execute pglet.exe and get connection ID
-    page_url = ""
-    proc = subprocess.Popen(pargs, bufsize=0, stdout = subprocess.PIPE)
-    for bline in proc.stdout:
-        line = bline.decode('utf-8').rstrip()
-        if page_url == "":
-            # 1st is URL
-            page_url = line
-            print(page_url)
-        else:
-            # connection ID
-            conn_id = line
-
-            # create connection object
-            conn = Connection(conn_id)
-            page = Page(conn, page_url)
-
-            # start page session in a new thread
-            thread = Thread(target = session_wrapper, args = (target, page,))
-            thread.start()
-
-# init Pglet during import
-#init()
 
 # Fix: https://bugs.python.org/issue35935
 if is_windows():

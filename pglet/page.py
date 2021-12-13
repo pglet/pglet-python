@@ -6,16 +6,15 @@ import threading
 
 class Page(Control):
 
-    def __init__(self, conn, url):
+    def __init__(self, conn, session_id):
         Control.__init__(self, id="page")
     
         self.__conn = conn
-        self.__conn.on_event = self.__on_event
-        self.__url = url
+        self.__session_id = session_id
         self.__controls = [] # page controls
         self.__index = {} # index with all page controls
         self.__index[self.id] = self
-        self.__fetch_page_details()
+        #self.__fetch_page_details()
 
     def get_control(self, id):
         return self.__index.get(id)
@@ -155,10 +154,10 @@ class Page(Control):
     def index(self):
         return self.__index
 
-# url
+# session_id
     @property
-    def url(self):
-        return self.__url
+    def session_id(self):
+        return self.__session_id
 
 # controls
     @property

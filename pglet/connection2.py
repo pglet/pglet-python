@@ -16,6 +16,10 @@ class Connection2:
         self.ws_callbacks = {}
         self._on_event = None
         self._on_session_created = None
+        self.host_client_id = None
+        self.page_name = None
+        self.page_url = None
+        self.browser_opened = False
 
     @property
     def on_event(self):
@@ -48,9 +52,11 @@ class Connection2:
             self.ws_callbacks[msg.id] = (None, msg.payload)
             evt.set()
         elif msg.action == Actions.PAGE_EVENT_TO_HOST and self._on_event != None:
-            self._on_event(PageEventPayload(**msg.payload))
+            th = threading.Thread(target=self._on_event, args=(PageEventPayload(**msg.payload),), daemon=True)
+            th.start()            
         elif msg.action == Actions.SESSION_CREATED and self._on_session_created != None:
-            self._on_session_created(PageSessionCreatedPayload(**msg.payload))
+            th = threading.Thread(target=self._on_session_created, args=(self, PageSessionCreatedPayload(**msg.payload),), daemon=True)
+            th.start()
         else:
             print(msg.payload)
 
