@@ -12,5 +12,6 @@ from pglet.page import Page
 def main(page: Page):
     print('new session!')
     print("Hash:", page.hash)
+    page.on_hash_change = lambda e: print("New page hash", page.hash)
 
 pglet.app(target=main, web=False)

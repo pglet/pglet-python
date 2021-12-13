@@ -1,6 +1,5 @@
-from pglet.connection2 import Connection2
 from pglet.protocol import Command
-from .utils import encode_attr
+from pglet.connection import Connection
 from .control import Control
 from .control_event import ControlEvent
 from .constants import *
@@ -9,17 +8,17 @@ import threading
 
 class Page(Control):
 
-    def __init__(self, conn: Connection2, session_id):
+    def __init__(self, conn: Connection, session_id):
         Control.__init__(self, id="page")
     
-        self.__conn = conn
-        self.__session_id = session_id
-        self.__controls = [] # page controls
-        self.__index = {} # index with all page controls
-        self.__index[self.id] = self
-        self.__last_event = None
-        self.__event_available = threading.Event()
-        self.__fetch_page_details()
+        self._conn = conn
+        self._session_id = session_id
+        self._controls = [] # page controls
+        self._index = {} # index with all page controls
+        self._index[self.id] = self
+        self._last_event = None
+        self._event_available = threading.Event()
+        self._fetch_page_details()
 
     def __enter__(self):
         return self
@@ -28,13 +27,13 @@ class Page(Control):
         self.close()
 
     def get_control(self, id):
-        return self.__index.get(id)
+        return self._index.get(id)
 
     def _get_children(self):
-        return self.__controls
+        return self._controls
 
-    def __fetch_page_details(self):
-        values = self.__conn.send_commands(self.__conn.page_name, self.__session_id, [
+    def _fetch_page_details(self):
+        values = self._conn.send_commands(self._conn.page_name, self._session_id, [
             Command(0, 'get', ['page', 'hash'], None, None, None),
             Command(0, 'get', ['page', 'userid'], None, None, None),
             Command(0, 'get', ['page', 'userlogin'], None, None, None),
@@ -61,13 +60,13 @@ class Page(Control):
 
         # build commands
         for control in controls:
-            control.build_update_commands(self.__index, added_controls, commands)
+            control.build_update_commands(self._index, added_controls, commands)
         
         if len(commands) == 0:
             return
 
         # execute commands
-        result = self.__conn.send_batch(commands)
+        result = self._conn.send_batch(commands)
 
         if len(result) > 0:
             n = 0
@@ -77,33 +76,33 @@ class Page(Control):
                     added_controls[n].page = self
 
                     # add to index
-                    self.__index[id] = added_controls[n]
+                    self._index[id] = added_controls[n]
                     n += 1
 
     def add(self, *controls):
-        self.__controls.extend(controls)
+        self._controls.extend(controls)
         return self.update()
 
     def insert(self, at, *controls):
         n = at
         for control in controls:
-            self.__controls.insert(n, control)
+            self._controls.insert(n, control)
             n += 1
         return self.update()
 
     def remove(self, *controls):
         for control in controls:
-            self.__controls.remove(control)
+            self._controls.remove(control)
         return self.update()
 
     def remove_at(self, index):
-        self.__controls.pop(index)
+        self._controls.pop(index)
         return self.update()
 
     def clean(self):
         self._previous_children.clear()
         for child in self._get_children():
-            self._remove_control_recursively(self.__index, child)
+            self._remove_control_recursively(self._index, child)
         return self._send_command("clean", [self.uid])
 
     def error(self, message=""):
@@ -113,30 +112,30 @@ class Page(Control):
         self._send_command("close", None)
 
     def on_event(self, e):
-        #print("on_event:", e.target, e.name, e.data)
+        print("page.on_event:", e.target, e.name, e.data)
 
         if e.target == "page" and e.name == "change":
             all_props = json.loads(e.data)
 
             for props in all_props:
                 id = props["i"]
-                if id in self.__index:
+                if id in self._index:
                     for name in props:
                         if name != "i":
-                            self.__index[id]._set_attr(name, props[name], dirty=False)
+                            self._index[id]._set_attr(name, props[name], dirty=False)
         
-        elif e.target in self.__index:
-            self.__last_event = ControlEvent(e.target, e.name, e.data, self.__index[e.target], self)
-            handler = self.__index[e.target].event_handlers.get(e.name)
+        elif e.target in self._index:
+            self._last_event = ControlEvent(e.target, e.name, e.data, self._index[e.target], self)
+            handler = self._index[e.target].event_handlers.get(e.name)
             if handler:
-                t = threading.Thread(target=handler, args=(self.__last_event,), daemon=True)
+                t = threading.Thread(target=handler, args=(self._last_event,), daemon=True)
                 t.start()
-            self.__event_available.set()
+            self._event_available.set()
 
     def wait_event(self):
-        self.__event_available.clear()
-        self.__event_available.wait()
-        return self.__last_event
+        self._event_available.clear()
+        self._event_available.wait()
+        return self._last_event
 
     def show_signin(self, auth_providers="*", auth_groups=False, allow_dismiss=False):
         self.signin = auth_providers
@@ -158,45 +157,45 @@ class Page(Control):
         return self._send_command("canAccess", [users_and_groups]).result.lower() == "true"
     
     def close(self):
-        if self.__session_id == ZERO_SESSION:
-            self.__conn.close()
+        if self._session_id == ZERO_SESSION:
+            self._conn.close()
         
     def _send_command(self, name: str, values: list[str]):
-        return self.__conn.send_command(self.__conn.page_name, self.__session_id, Command(0, name, values, None, None, None))      
+        return self._conn.send_command(self._conn.page_name, self._session_id, Command(0, name, values, None, None, None))      
 
 # url
     @property
     def url(self):
-        return self.__conn.page_url
+        return self._conn.page_url
 
 # name
     @property
     def name(self):
-        return self.__conn.page_name
+        return self._conn.page_name
 
 # connection
     @property
     def connection(self):
-        return self.__conn
+        return self._conn
 
 # index
     @property
     def index(self):
-        return self.__index
+        return self._index
 
 # session_id
     @property
     def session_id(self):
-        return self.__session_id
+        return self._session_id
 
 # controls
     @property
     def controls(self):
-        return self.__controls
+        return self._controls
 
     @controls.setter
     def controls(self, value):
-        self.__controls = value
+        self._controls = value
 
 # title
     @property

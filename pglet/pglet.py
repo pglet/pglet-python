@@ -5,13 +5,15 @@ import re
 import signal
 from threading import Thread
 import threading
+import traceback
 from time import sleep
 from urllib.parse import urlparse, urlunparse
 
 from .reconnecting_websocket import ReconnectingWebSocket
 from .utils import is_localhost_url, is_windows, open_browser, which, encode_attr
-from .connection2 import Connection2
+from .connection import Connection
 from .page import Page
+from .event import Event
 from .constants import *
 
 HOSTED_SERVICE_URL = "https://app.pglet.io"
@@ -26,19 +28,13 @@ def app(name=None, local=False, web=False, server=None, token=None, target=None,
     if target == None:
         raise Exception("target argument is not specified")
 
-    def session_wrapper(target, page):
-        try:
-            target(page)
-        except Exception as e:
-            print(f"Unhandled error processing page session {page.connection.conn_id}:", e)
-            page.error(f"There was an error while processing your request: {e}")        
-
     def on_session_created(conn, session_data):
         page = Page(conn, session_data.sessionID)
+        conn.sessions[session_data.sessionID] = page
         try:
             target(page)
         except Exception as e:
-            print(f"Unhandled error processing page session {page.connection.conn_id}:", e)
+            print(f"Unhandled error processing page session {page.session_id}:", traceback.format_exc())
             page.error(f"There was an error while processing your request: {e}")
 
     conn = _connect_internal(name, True, web, server, token, permissions, no_window)
@@ -61,11 +57,14 @@ def _connect_internal(name=None, is_app=False, web=False, server=None, token=Non
     connected = threading.Event()
 
     def on_event(conn, e):
-        print("PAGE EVENT", e)
+        if e.sessionID in conn.sessions:
+            conn.sessions[e.sessionID].on_event(Event(e.eventTarget, e.eventName, e.eventData))
+            if e.eventTarget == "page" and e.eventName == "close":
+                del conn.sessions[e.sessionID]
 
     ws_url = _get_ws_url(server)
     ws = ReconnectingWebSocket(ws_url)
-    conn = Connection2(ws)
+    conn = Connection(ws)
     conn.on_event = on_event
 
     def _on_ws_connect():
