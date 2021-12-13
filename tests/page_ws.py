@@ -7,5 +7,8 @@ sys.path.insert(0,parentdir)
 
 import pglet
 
-with pglet.page(web=False) as page:
-    print(page)
+with pglet.page(web=False, permissions="*") as page:
+    print(page.name, page.url)
+    time.sleep(10)
+    page.clean()
+    print("can_access:", page.can_access("test_user"))

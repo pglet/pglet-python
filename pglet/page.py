@@ -1,3 +1,5 @@
+from pglet.connection2 import Connection2
+from pglet.protocol import Command
 from .utils import encode_attr
 from .control import Control
 from .control_event import ControlEvent
@@ -7,7 +9,7 @@ import threading
 
 class Page(Control):
 
-    def __init__(self, conn, session_id):
+    def __init__(self, conn: Connection2, session_id):
         Control.__init__(self, id="page")
     
         self.__conn = conn
@@ -15,7 +17,9 @@ class Page(Control):
         self.__controls = [] # page controls
         self.__index = {} # index with all page controls
         self.__index[self.id] = self
-        #self.__fetch_page_details()
+        self.__last_event = None
+        self.__event_available = threading.Event()
+        self.__fetch_page_details()
 
     def __enter__(self):
         return self
@@ -30,14 +34,14 @@ class Page(Control):
         return self.__controls
 
     def __fetch_page_details(self):
-        values = self.__conn.send_batch([
-            'get page hash',
-            'get page userid',
-            'get page userlogin',
-            'get page username',
-            'get page useremail',
-            'get page userclientip'
-        ])
+        values = self.__conn.send_commands(self.__conn.page_name, self.__session_id, [
+            Command(0, 'get', ['page', 'hash'], None, None, None),
+            Command(0, 'get', ['page', 'userid'], None, None, None),
+            Command(0, 'get', ['page', 'userlogin'], None, None, None),
+            Command(0, 'get', ['page', 'username'], None, None, None),
+            Command(0, 'get', ['page', 'useremail'], None, None, None),
+            Command(0, 'get', ['page', 'userclientip'], None, None, None)
+        ]).results
         self.hash = values[0]
         self.user_id = values[1]
         self.user_login = values[2]
@@ -100,15 +104,15 @@ class Page(Control):
         self._previous_children.clear()
         for child in self._get_children():
             self._remove_control_recursively(self.__index, child)
-        return self.__conn.send(f"clean {self.uid}")
+        return self._send_command("clean", [self.uid])
 
     def error(self, message=""):
-        self.__conn.send(f"error \"{encode_attr(message)}\"")
+        self._send_command("error", [message])
 
     def close(self):
-        self.__conn.send("close")        
+        self._send_command("close", None)
 
-    def __on_event(self, e):
+    def on_event(self, e):
         #print("on_event:", e.target, e.name, e.data)
 
         if e.target == "page" and e.name == "change":
@@ -122,15 +126,17 @@ class Page(Control):
                             self.__index[id]._set_attr(name, props[name], dirty=False)
         
         elif e.target in self.__index:
+            self.__last_event = ControlEvent(e.target, e.name, e.data, self.__index[e.target], self)
             handler = self.__index[e.target].event_handlers.get(e.name)
             if handler:
-                ce = ControlEvent(e.target, e.name, e.data, self.__index[e.target], self)
-                t = threading.Thread(target=handler, args=(ce,), daemon=True)
+                t = threading.Thread(target=handler, args=(self.__last_event,), daemon=True)
                 t.start()
+            self.__event_available.set()
 
     def wait_event(self):
-        e = self.__conn.wait_event()
-        return ControlEvent(e.target, e.name, e.data, self.__index[e.target], self)
+        self.__event_available.clear()
+        self.__event_available.wait()
+        return self.__last_event
 
     def show_signin(self, auth_providers="*", auth_groups=False, allow_dismiss=False):
         self.signin = auth_providers
@@ -146,14 +152,27 @@ class Page(Control):
                 return False
     
     def signout(self):
-        return self.__conn.send("signout")
+        return self._send_command("signout", None)
 
     def can_access(self, users_and_groups):
-        return self.__conn.send(f"canAccess \"{encode_attr(users_and_groups)}\"").lower() == "true"
+        return self._send_command("canAccess", [users_and_groups]).result.lower() == "true"
     
     def close(self):
         if self.__session_id == ZERO_SESSION:
             self.__conn.close()
+        
+    def _send_command(self, name: str, values: list[str]):
+        return self.__conn.send_command(self.__conn.page_name, self.__session_id, Command(0, name, values, None, None, None))      
+
+# url
+    @property
+    def url(self):
+        return self.__conn.page_url
+
+# name
+    @property
+    def name(self):
+        return self.__conn.page_name
 
 # connection
     @property

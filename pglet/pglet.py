@@ -8,15 +8,14 @@ import threading
 from time import sleep
 from urllib.parse import urlparse, urlunparse
 
-from pglet.connection2 import Connection2
-
 from .reconnecting_websocket import ReconnectingWebSocket
 from .utils import is_localhost_url, is_windows, open_browser, which, encode_attr
-from .connection import Connection
+from .connection2 import Connection2
 from .page import Page
 from .constants import *
 
 HOSTED_SERVICE_URL = "https://app.pglet.io"
+CONNECT_TIMEOUT_SECONDS = 10
 
 def page(name=None, local=False,  web=False, server=None, token=None, permissions=None, no_window=False):
     conn = _connect_internal(name, False, web, server, token, permissions, no_window)
@@ -36,10 +35,11 @@ def app(name=None, local=False, web=False, server=None, token=None, target=None,
 
     def on_session_created(conn, session_data):
         page = Page(conn, session_data.sessionID)
-
-        # start page session in a new thread
-        thread = Thread(target = session_wrapper, args = (target, page,))
-        thread.start()
+        try:
+            target(page)
+        except Exception as e:
+            print(f"Unhandled error processing page session {page.connection.conn_id}:", e)
+            page.error(f"There was an error while processing your request: {e}")
 
     conn = _connect_internal(name, True, web, server, token, permissions, no_window)
     conn.on_session_created = on_session_created
@@ -58,12 +58,17 @@ def _connect_internal(name=None, is_app=False, web=False, server=None, token=Non
     elif server == None:
         server = "http://localhost:5000"
 
+    connected = threading.Event()
+
+    def on_event(conn, e):
+        print("PAGE EVENT", e)
+
     ws_url = _get_ws_url(server)
     ws = ReconnectingWebSocket(ws_url)
     conn = Connection2(ws)
+    conn.on_event = on_event
 
     def _on_ws_connect():
-        print("Connected!")
         if conn.page_name == None:
             conn.page_name = "*" if name == "" or name == None else name
         result = conn.register_host_client(conn.host_client_id, conn.page_name, is_app, token, permissions)
@@ -73,15 +78,17 @@ def _connect_internal(name=None, is_app=False, web=False, server=None, token=Non
         if not no_window and not conn.browser_opened:
             open_browser(conn.page_url)
             conn.browser_opened = True
+        connected.set()
 
     def _on_ws_failed_connect():
-        print(f"Failed to connect: {ws_url}")
+        #print(f"Failed to connect: {ws_url}")
         if is_localhost_url(ws_url):
             _start_pglet_server()
 
     ws.on_connect = _on_ws_connect
     ws.on_failed_connect = _on_ws_failed_connect
     ws.connect()
+    connected.wait(CONNECT_TIMEOUT_SECONDS)
     return conn
 
 def _start_pglet_server():
