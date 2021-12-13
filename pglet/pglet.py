@@ -14,55 +14,18 @@ from .reconnecting_websocket import ReconnectingWebSocket
 from .utils import is_localhost_url, is_windows, open_browser, which, encode_attr
 from .connection import Connection
 from .page import Page
+from .constants import *
 
 HOSTED_SERVICE_URL = "https://app.pglet.io"
 
 def page(name=None, local=False,  web=False, server=None, token=None, permissions=None, no_window=False):
-
-    pargs = [pglet_exe, "page"]
-
-    if name != None:
-        pargs.append(name)
-
-    if local:
-        pargs.append("--local")
-
-    if server != None:
-        pargs.append("--server")
-        pargs.append(server)
-
-    if token != None:
-        pargs.append("--token")
-        pargs.append(token)
-
-    if permissions != None:
-        pargs.append("--permissions")
-        pargs.append(permissions)
-
-    if no_window:
-        pargs.append("--no-window")
-
-    pargs.append("--all-events")
-
-    # execute pglet.exe and get connection ID
-    exe_result = subprocess.check_output(pargs).decode("utf-8").strip()
-    result_parts = re.split(r"\s", exe_result, 1)
-
-    url = result_parts[1]
-    print(url)
-
-    conn = Connection(result_parts[0])
-    return Page(conn, url)
+    conn = _connect_internal(name, False, web, server, token, permissions, no_window)
+    return Page(conn, ZERO_SESSION)
 
 def app(name=None, local=False, web=False, server=None, token=None, target=None, permissions=None, no_window=False):
 
     if target == None:
         raise Exception("target argument is not specified")
-
-    if server == None and web:
-        server = HOSTED_SERVICE_URL
-    elif server == None:
-        server = "http://localhost:5000"
 
     def session_wrapper(target, page):
         try:
@@ -78,15 +41,32 @@ def app(name=None, local=False, web=False, server=None, token=None, target=None,
         thread = Thread(target = session_wrapper, args = (target, page,))
         thread.start()
 
+    conn = _connect_internal(name, True, web, server, token, permissions, no_window)
+    conn.on_session_created = on_session_created
+
+    try:
+        print("Waiting for new app sessions. Press Enter to exit...")
+        input()
+    except (KeyboardInterrupt) as e:
+        pass
+
+    conn.close()
+
+def _connect_internal(name=None, is_app=False, web=False, server=None, token=None, permissions=None, no_window=False):
+    if server == None and web:
+        server = HOSTED_SERVICE_URL
+    elif server == None:
+        server = "http://localhost:5000"
+
     ws_url = _get_ws_url(server)
     ws = ReconnectingWebSocket(ws_url)
     conn = Connection2(ws)
-    conn.on_session_created = on_session_created
 
     def _on_ws_connect():
         print("Connected!")
-        page_name = "*" if name == "" or name == None else name
-        result = conn.register_host_client(conn.host_client_id, page_name, True, token, permissions)
+        if conn.page_name == None:
+            conn.page_name = "*" if name == "" or name == None else name
+        result = conn.register_host_client(conn.host_client_id, conn.page_name, is_app, token, permissions)
         conn.host_client_id = result.hostClientID
         conn.page_name = result.pageName
         conn.page_url = f"{server}/{result.pageName}"
@@ -102,14 +82,7 @@ def app(name=None, local=False, web=False, server=None, token=None, target=None,
     ws.on_connect = _on_ws_connect
     ws.on_failed_connect = _on_ws_failed_connect
     ws.connect()
-
-    try:
-        print("Waiting for new app sessions. Press Enter to exit...")
-        input()
-    except (KeyboardInterrupt) as e:
-        pass
-
-    ws.close()
+    return conn
 
 def _start_pglet_server():
     print("Starting Pglet Server in local mode...")

@@ -11,9 +11,9 @@ from .protocol import *
 
 class Connection2:
     def __init__(self, ws: ReconnectingWebSocket):
-        self.ws = ws
-        self.ws.on_message = self._on_message
-        self.ws_callbacks = {}
+        self._ws = ws
+        self._ws.on_message = self._on_message
+        self._ws_callbacks = {}
         self._on_event = None
         self._on_session_created = None
         self.host_client_id = None
@@ -48,8 +48,8 @@ class Connection2:
         msg = Message(**msg_dict)
         if msg.id != "":
             # callback
-            evt = self.ws_callbacks[msg.id][0]
-            self.ws_callbacks[msg.id] = (None, msg.payload)
+            evt = self._ws_callbacks[msg.id][0]
+            self._ws_callbacks[msg.id] = (None, msg.payload)
             evt.set()
         elif msg.action == Actions.PAGE_EVENT_TO_HOST and self._on_event != None:
             th = threading.Thread(target=self._on_event, args=(PageEventPayload(**msg.payload),), daemon=True)
@@ -65,10 +65,10 @@ class Connection2:
         msg = Message(msg_id, action_name, payload)
         j = json.dumps(msg, default=vars)
         evt = threading.Event()
-        self.ws_callbacks[msg_id] = (evt, None)
-        self.ws.send(j)
+        self._ws_callbacks[msg_id] = (evt, None)
+        self._ws.send(j)
         evt.wait()
-        return self.ws_callbacks.pop(msg_id)[1]
+        return self._ws_callbacks.pop(msg_id)[1]
 
 # ============================================
 
@@ -203,7 +203,5 @@ class Connection2:
         return Event(result_parts[0], result_parts[1], result_parts[2])
 
     def close(self):
-        if self.win_command_pipe != None:
-            self.win_command_pipe.close()
-        if self.win_event_pipe != None:
-            self.win_event_pipe.close()
+        if self._ws != None:
+            self._ws.close()

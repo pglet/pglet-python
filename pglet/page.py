@@ -1,6 +1,7 @@
 from .utils import encode_attr
 from .control import Control
 from .control_event import ControlEvent
+from .constants import *
 import json
 import threading
 
@@ -15,6 +16,12 @@ class Page(Control):
         self.__index = {} # index with all page controls
         self.__index[self.id] = self
         #self.__fetch_page_details()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        self.close()
 
     def get_control(self, id):
         return self.__index.get(id)
@@ -143,6 +150,10 @@ class Page(Control):
 
     def can_access(self, users_and_groups):
         return self.__conn.send(f"canAccess \"{encode_attr(users_and_groups)}\"").lower() == "true"
+    
+    def close(self):
+        if self.__session_id == ZERO_SESSION:
+            self.__conn.close()
 
 # connection
     @property
