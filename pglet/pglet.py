@@ -3,6 +3,7 @@ import platform
 import subprocess
 import re
 import signal
+import traceback
 from threading import Thread
 from time import sleep
 from .utils import is_windows, which, encode_attr
@@ -82,7 +83,7 @@ def app(name=None, local=False, server=None, token=None, target=None, permission
         try:
             target(page)
         except Exception as e:
-            print(f"Unhandled error processing page session {page.connection.conn_id}:", e)
+            print(f"Unhandled error processing page session {page.connection.conn_id}:", traceback.format_exc())
             page.error(f"There was an error while processing your request: {e}")
 
     # execute pglet.exe and get connection ID
