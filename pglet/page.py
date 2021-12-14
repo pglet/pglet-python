@@ -66,11 +66,11 @@ class Page(Control):
             return
 
         # execute commands
-        result = self._conn.send_batch(commands)
+        results = self._conn.send_commands(self._conn.page_name, self._session_id, commands).results
 
-        if len(result) > 0:
+        if len(results) > 0:
             n = 0
-            for line in result:
+            for line in results:
                 for id in line.split(' '):
                     added_controls[n]._Control__uid = id
                     added_controls[n].page = self
@@ -112,7 +112,7 @@ class Page(Control):
         self._send_command("close", None)
 
     def on_event(self, e):
-        print("page.on_event:", e.target, e.name, e.data)
+        #print("page.on_event:", e.target, e.name, e.data)
 
         if e.target == "page" and e.name == "change":
             all_props = json.loads(e.data)

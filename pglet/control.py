@@ -1,3 +1,4 @@
+from pglet.protocol import Command
 from .utils import encode_attr
 from difflib import SequenceMatcher
 import datetime as dt
@@ -173,10 +174,11 @@ class Control:
         return self.__page.connection.send(f"clean {self.uid}")
 
     def build_update_commands(self, index, added_controls, commands):
-        update_attrs = self._get_cmd_attrs(update=True)
+        update_cmd = self._get_cmd_attrs(update=True)
 
-        if len(update_attrs) > 0:
-            commands.append(f'set {" ".join(update_attrs)}')
+        if len(update_cmd.attrs) > 0:
+            update_cmd.name = "set"
+            commands.append(update_cmd)
 
         # go through children
         previous_children = self.__previous_children
@@ -208,7 +210,7 @@ class Control:
                     ctrl = hashes[h]
                     self._remove_control_recursively(index, ctrl)
                     ids.append(ctrl.__uid)
-                commands.append(f'remove {" ".join(ids)}')
+                commands.append(Command(0, "remove", ids, None, None, None))
             elif tag == "equal":
                 # unchanged control
                 for h in previous_ints[a1:a2]:
@@ -222,19 +224,25 @@ class Control:
                     ctrl = hashes[h]
                     self._remove_control_recursively(index, ctrl)
                     ids.append(ctrl.__uid)
-                commands.append(f'remove {" ".join(ids)}')
+                commands.append(Command(0, "remove", ids, None, None, None))
                 for h in current_ints[b1:b2]:
                     # add
                     ctrl = hashes[h]
-                    cmd = ctrl.get_cmd_str(index=index,added_controls=added_controls)
-                    commands.append(f"add to=\"{self.__uid}\" at=\"{n}\"\n{cmd}")                    
+                    innerCmds = ctrl.get_cmd_str(index=index,added_controls=added_controls)
+                    commands.append(Command(0, "add", None, {
+                        "to": self.__uid,
+                        "at": str(n)
+                    }, None, innerCmds))  
                     n += 1
             elif tag == "insert":
                 # add
                 for h in current_ints[b1:b2]:
                     ctrl = hashes[h]
-                    cmd = ctrl.get_cmd_str(index=index,added_controls=added_controls)
-                    commands.append(f"add to=\"{self.__uid}\" at=\"{n}\"\n{cmd}")     
+                    innerCmds = ctrl.get_cmd_str(index=index,added_controls=added_controls)
+                    commands.append(Command(0, "add", None, {
+                        "to": self.__uid,
+                        "at": str(n)
+                    }, None, innerCmds))           
                     n += 1
         
         self.__previous_children.clear()
@@ -248,25 +256,19 @@ class Control:
             del index[control.__uid]
 
 # private methods
-    def get_cmd_str(self, indent='', index=None, added_controls=None):
+    def get_cmd_str(self, indent=0, index=None, added_controls=None):
 
         # remove control from index
         if self.__uid and index != None and self.__uid in index:
             del index[self.__uid]
 
-        lines = []
+        commands = []
 
         # main command
-        parts = []
-
-        # control name
-        parts.append(indent + self._get_control_name())
-        
-        # base props
-        attrParts = self._get_cmd_attrs(update=False)
-
-        parts.extend(attrParts)
-        lines.append(" ".join(parts))
+        command = self._get_cmd_attrs(False)
+        command.indent = indent
+        command.values.append(self._get_control_name())
+        commands.append(command)
 
         if added_controls != None:
             added_controls.append(self)
@@ -274,28 +276,25 @@ class Control:
         # controls
         children = self._get_children()
         for control in children:
-            childCmd = control.get_cmd_str(indent=indent+"  ", index=index, added_controls=added_controls)
-            if childCmd != "":
-                lines.append(childCmd)
+            childCmd = control.get_cmd_str(indent=indent + 2, index=index, added_controls=added_controls)
+            commands.extend(childCmd)
 
         self.__previous_children.clear()
         self.__previous_children.extend(children)
 
-        return "\n".join(lines)
+        return commands
 
     def _get_cmd_attrs(self, update=False):
-        parts = []
+        command = Command(0, None, [], {}, [], [])
 
         if update and not self.__uid:
-            return parts
+            return command
 
         for attrName in sorted(self.__attrs):
+            attrName = attrName.lower()
             dirty = self.__attrs[attrName][1]
 
-            if attrName == "id":
-                continue
-
-            if update and not dirty:
+            if (update and not dirty) or attrName == "id":
                 continue
 
             val = self.__attrs[attrName][0]
@@ -306,14 +305,13 @@ class Control:
                 sval = val.isoformat()
             else:
                 sval = encode_attr(val)
-
-            parts.append(f'{attrName}="{sval}"')
+            command.attrs[attrName] = sval
             self.__attrs[attrName] = (val, False)
 
         id = self.__attrs.get("id")
         if not update and id != None:
-            parts.insert(0, f'id="{encode_attr(id[0])}"')
-        elif update and len(parts) > 0:
-            parts.insert(0, f'"{encode_attr(self.__uid)}"')
+            command.attrs["id"] = id
+        elif update and len(command.attrs) > 0:
+            command.values.append(self.__uid)
         
-        return parts
+        return command
