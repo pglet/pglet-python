@@ -87,7 +87,12 @@ def _connect_internal(name=None, is_app=False, web=False, server=None, token=Non
     ws.on_connect = _on_ws_connect
     ws.on_failed_connect = _on_ws_failed_connect
     ws.connect()
-    connected.wait(CONNECT_TIMEOUT_SECONDS)
+    for n in range(0, CONNECT_TIMEOUT_SECONDS):
+        if not connected.is_set():
+            sleep(1)
+    if not connected.is_set():
+        ws.close()
+        raise Exception(f"Could not connected to Pglet server in {CONNECT_TIMEOUT_SECONDS} seconds.")
     return conn
 
 def _start_pglet_server():
