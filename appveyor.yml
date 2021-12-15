@@ -43,7 +43,7 @@ install:
 
 build_script:
 # run tests
-- pytest
+#- pytest
 
 # build and publish package
 - ps: |
