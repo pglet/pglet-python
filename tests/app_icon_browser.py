@@ -61,6 +61,4 @@ def load_icon_names():
     input_file.close()
     return icon_names
 
-pglet.app("index", target=main)
-
-input("Press Enter to exit...")
+pglet.app("icon-browser", target=main)

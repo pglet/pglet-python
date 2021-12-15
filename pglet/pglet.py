@@ -140,5 +140,5 @@ def _get_ws_url(server: str):
     return url + "/ws"
 
 # Fix: https://bugs.python.org/issue35935
-if is_windows():
-    signal.signal(signal.SIGINT, signal.SIG_DFL)
+#if is_windows():
+#    signal.signal(signal.SIGINT, signal.SIG_DFL)

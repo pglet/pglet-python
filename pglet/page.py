@@ -103,16 +103,16 @@ class Page(Control):
         self._previous_children.clear()
         for child in self._get_children():
             self._remove_control_recursively(self._index, child)
+
+        self._controls.clear()
+
         return self._send_command("clean", [self.uid])
 
     def error(self, message=""):
         self._send_command("error", [message])
 
-    def close(self):
-        self._send_command("close", None)
-
     def on_event(self, e):
-        #print("page.on_event:", e.target, e.name, e.data)
+        print("page.on_event:", e.target, e.name, e.data)
 
         if e.target == "page" and e.name == "change":
             all_props = json.loads(e.data)

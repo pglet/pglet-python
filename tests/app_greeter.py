@@ -10,7 +10,7 @@ def main(page):
 
     def btn_click(e):
         name = txt_name.value
-        page.clean(True)
+        page.clean()
         page.add(Text(f"Hello, {name}!"))
 
     txt_name = Textbox("Your name")
