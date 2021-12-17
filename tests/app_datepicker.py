@@ -11,7 +11,7 @@ def main(page):
     def on_change(e):
         print(e.control.value)
 
-    now = datetime.now()
+    now = datetime.utcnow()
 
     picker = DatePicker(label="Allow text input", allow_text_input=True)
 
