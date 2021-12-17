@@ -21,7 +21,9 @@ CONNECT_TIMEOUT_SECONDS = 10
 
 def page(name=None, local=False,  web=False, server=None, token=None, permissions=None, no_window=False):
     conn = _connect_internal(name, False, web, server, token, permissions, no_window)
-    return Page(conn, ZERO_SESSION)
+    page = Page(conn, ZERO_SESSION)
+    conn.sessions[ZERO_SESSION] = page
+    return page
 
 def app(name=None, local=False, web=False, server=None, token=None, target=None, permissions=None, no_window=False):
 

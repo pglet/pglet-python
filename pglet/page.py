@@ -112,7 +112,7 @@ class Page(Control):
         self._send_command("error", [message])
 
     def on_event(self, e):
-        print("page.on_event:", e.target, e.name, e.data)
+        #print("page.on_event:", e.target, e.name, e.data)
 
         if e.target == "page" and e.name == "change":
             all_props = json.loads(e.data)
