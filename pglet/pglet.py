@@ -54,7 +54,9 @@ def _connect_internal(name=None, is_app=False, web=False, server=None, token=Non
     if server == None and web:
         server = HOSTED_SERVICE_URL
     elif server == None:
-        server = "http://localhost:5000"
+        env_port = os.getenv('PGLET_SERVER_PORT')
+        port = env_port if env_port != None and env_port != "" else "5000"
+        server = f"http://localhost:{port}"
 
     connected = threading.Event()
 
