@@ -1,3 +1,4 @@
+from typing import List
 from pglet.protocol import Command
 from pglet.connection import Connection
 from .control import Control
@@ -160,7 +161,7 @@ class Page(Control):
         if self._session_id == ZERO_SESSION:
             self._conn.close()
         
-    def _send_command(self, name: str, values: list[str]):
+    def _send_command(self, name: str, values: List[str]):
         return self._conn.send_command(self._conn.page_name, self._session_id, Command(0, name, values, None, None, None))      
 
 # url

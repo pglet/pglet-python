@@ -139,7 +139,9 @@ def _start_pglet_server():
     subprocess.run([pglet_exe, "server", "--background"], check=True)
 
 def _get_ws_url(server: str):
-    url = server.removesuffix('/')
+    url = server
+    if url.endswith('/'):
+        url = url[:-1]
     if server.startswith('https://'):
         url = url.replace('https://', 'wss://')
     elif server.startswith('http://'):

@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from typing import Dict, List
 
 class Actions:
     REGISTER_HOST_CLIENT = "registerHostClient"
@@ -11,10 +12,10 @@ class Actions:
 class Command:
     indent: int
     name: str
-    values: list[str] = field(default_factory=list)
-    attrs: dict[str, str] = field(default_factory=dict)
-    lines: list[str] = field(default_factory=list)
-    commands: list[any] = field(default_factory=list)
+    values: List[str] = field(default_factory=list)
+    attrs: Dict[str, str] = field(default_factory=dict)
+    lines: List[str] = field(default_factory=list)
+    commands: List[any] = field(default_factory=list)
 
 @dataclass
 class Message:
@@ -37,11 +38,11 @@ class PageCommandResponsePayload:
 class PageCommandsBatchRequestPayload:
     pageName: str
     sessionID: str
-    commands: list[Command]
+    commands: List[Command]
 
 @dataclass
 class PageCommandsBatchResponsePayload:
-    results: list[str]
+    results: List[str]
     error: str
 
 @dataclass

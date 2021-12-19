@@ -71,7 +71,7 @@ class Connection:
             raise Exception(result.error)
         return result
 
-    def send_commands(self, page_name: str, session_id: str, commands: list[Command]):
+    def send_commands(self, page_name: str, session_id: str, commands: List[Command]):
         payload = PageCommandsBatchRequestPayload(page_name, session_id, commands)
         response = self._send_message_with_result(Actions.PAGE_COMMANDS_BATCH_FROM_HOST, payload)
         result = PageCommandsBatchResponsePayload(**response)
