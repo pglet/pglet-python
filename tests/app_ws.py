@@ -12,7 +12,9 @@ from pglet import Page, Stack, Text, Toolbar, Message
 def main(page: Page):
     print('new session!')
     print("Hash:", page.hash)
+    print("Width:", page.width, "Height:", page.height)
     page.on_hash_change = lambda e: print("New page hash", page.hash)
+    page.on_resize = lambda e: print("New page size:", page.width, page.height)
 
     txt = Text("Line 1")
     page.add(txt)
@@ -26,4 +28,4 @@ def main(page: Page):
     page.controls.pop(1)
     page.update()
 
-pglet.app(target=main, web=False)
+pglet.app("page1", target=main, web=False)

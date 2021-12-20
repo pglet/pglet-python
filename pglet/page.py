@@ -36,18 +36,22 @@ class Page(Control):
     def _fetch_page_details(self):
         values = self._conn.send_commands(self._conn.page_name, self._session_id, [
             Command(0, 'get', ['page', 'hash'], None, None, None),
+            Command(0, 'get', ['page', 'width'], None, None, None),
+            Command(0, 'get', ['page', 'height'], None, None, None),
             Command(0, 'get', ['page', 'userid'], None, None, None),
             Command(0, 'get', ['page', 'userlogin'], None, None, None),
             Command(0, 'get', ['page', 'username'], None, None, None),
             Command(0, 'get', ['page', 'useremail'], None, None, None),
             Command(0, 'get', ['page', 'userclientip'], None, None, None)
         ]).results
-        self.hash = values[0]
-        self.user_id = values[1]
-        self.user_login = values[2]
-        self.user_name = values[3]
-        self.user_email = values[4]
-        self.user_client_ip = values[5]
+        self._set_attr("hash", values[0], False)
+        self._set_attr("width", int(values[1]), False)
+        self._set_attr("height", int(values[2]), False)
+        self._set_attr("user_id", values[3], False)
+        self._set_attr("user_login", values[4], False)
+        self._set_attr("user_name", values[5], False)
+        self._set_attr("user_email", values[6], False)
+        self._set_attr("user_client_ip", values[7], False)
 
     def update(self, *controls):
         if len(controls) == 0:
@@ -235,15 +239,6 @@ class Page(Control):
     def vertical_align(self, value):
         self._set_attr("verticalAlign", value)
 
-# width
-    @property
-    def width(self):
-        return self._get_attr("width")
-
-    @width.setter
-    def width(self, value):
-        self._set_attr("width", value)
-
 # padding
     @property
     def padding(self):
@@ -297,6 +292,30 @@ class Page(Control):
     @hash.setter
     def hash(self, value):
         self._set_attr("hash", value)
+
+# width
+    @property
+    def width(self):
+        w = self._get_attr("width")
+        if w != None and w != "":
+            return int(w)
+        return w
+
+    @width.setter
+    def width(self, value):
+        self._set_attr("width", value)        
+
+# height
+    @property
+    def height(self):
+        h = self._get_attr("height")
+        if h != None and h != "":
+            return int(h)
+        return h
+
+    @height.setter
+    def height(self, value):
+        self._set_attr("height", value)   
 
 # signin
     @property
@@ -414,3 +433,12 @@ class Page(Control):
     @on_hash_change.setter
     def on_hash_change(self, handler):
         self._add_event_handler("hashChange", handler)
+
+# on_resize
+    @property
+    def on_resize(self):
+        return self._get_event_handler("resize")
+
+    @on_resize.setter
+    def on_resize(self, handler):
+        self._add_event_handler("resize", handler)
