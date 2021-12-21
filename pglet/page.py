@@ -1,43 +1,58 @@
-from .utils import encode_attr
+import logging
+from typing import List
+from pglet.protocol import Command
+from pglet.connection import Connection
 from .control import Control
 from .control_event import ControlEvent
+from .constants import *
 import json
 import threading
 
 class Page(Control):
 
-    def __init__(self, conn, url):
+    def __init__(self, conn: Connection, session_id):
         Control.__init__(self, id="page")
     
-        self.__conn = conn
-        self.__conn.on_event = self.__on_event
-        self.__url = url
-        self.__controls = [] # page controls
-        self.__index = {} # index with all page controls
-        self.__index[self.id] = self
-        self.__fetch_page_details()
+        self._conn = conn
+        self._session_id = session_id
+        self._controls = [] # page controls
+        self._index = {} # index with all page controls
+        self._index[self.id] = self
+        self._last_event = None
+        self._event_available = threading.Event()
+        self._fetch_page_details()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        self.close()
 
     def get_control(self, id):
-        return self.__index.get(id)
+        return self._index.get(id)
 
     def _get_children(self):
-        return self.__controls
+        return self._controls
 
-    def __fetch_page_details(self):
-        values = self.__conn.send_batch([
-            'get page hash',
-            'get page userid',
-            'get page userlogin',
-            'get page username',
-            'get page useremail',
-            'get page userclientip'
-        ])
-        self.hash = values[0]
-        self.user_id = values[1]
-        self.user_login = values[2]
-        self.user_name = values[3]
-        self.user_email = values[4]
-        self.user_client_ip = values[5]
+    def _fetch_page_details(self):
+        values = self._conn.send_commands(self._conn.page_name, self._session_id, [
+            Command(0, 'get', ['page', 'hash'], None, None, None),
+            Command(0, 'get', ['page', 'width'], None, None, None),
+            Command(0, 'get', ['page', 'height'], None, None, None),
+            Command(0, 'get', ['page', 'userid'], None, None, None),
+            Command(0, 'get', ['page', 'userlogin'], None, None, None),
+            Command(0, 'get', ['page', 'username'], None, None, None),
+            Command(0, 'get', ['page', 'useremail'], None, None, None),
+            Command(0, 'get', ['page', 'userclientip'], None, None, None)
+        ]).results
+        self._set_attr("hash", values[0], False)
+        self._set_attr("width", int(values[1]), False)
+        self._set_attr("height", int(values[2]), False)
+        self._set_attr("user_id", values[3], False)
+        self._set_attr("user_login", values[4], False)
+        self._set_attr("user_name", values[5], False)
+        self._set_attr("user_email", values[6], False)
+        self._set_attr("user_client_ip", values[7], False)
 
     def update(self, *controls):
         if len(controls) == 0:
@@ -51,80 +66,82 @@ class Page(Control):
 
         # build commands
         for control in controls:
-            control.build_update_commands(self.__index, added_controls, commands)
+            control.build_update_commands(self._index, added_controls, commands)
         
         if len(commands) == 0:
             return
 
         # execute commands
-        result = self.__conn.send_batch(commands)
+        results = self._conn.send_commands(self._conn.page_name, self._session_id, commands).results
 
-        if len(result) > 0:
+        if len(results) > 0:
             n = 0
-            for line in result:
+            for line in results:
                 for id in line.split(' '):
                     added_controls[n]._Control__uid = id
                     added_controls[n].page = self
 
                     # add to index
-                    self.__index[id] = added_controls[n]
+                    self._index[id] = added_controls[n]
                     n += 1
 
     def add(self, *controls):
-        self.__controls.extend(controls)
+        self._controls.extend(controls)
         return self.update()
 
     def insert(self, at, *controls):
         n = at
         for control in controls:
-            self.__controls.insert(n, control)
+            self._controls.insert(n, control)
             n += 1
         return self.update()
 
     def remove(self, *controls):
         for control in controls:
-            self.__controls.remove(control)
+            self._controls.remove(control)
         return self.update()
 
     def remove_at(self, index):
-        self.__controls.pop(index)
+        self._controls.pop(index)
         return self.update()
 
     def clean(self):
         self._previous_children.clear()
         for child in self._get_children():
-            self._remove_control_recursively(self.__index, child)
-        return self.__conn.send(f"clean {self.uid}")
+            self._remove_control_recursively(self._index, child)
+
+        self._controls.clear()
+
+        return self._send_command("clean", [self.uid])
 
     def error(self, message=""):
-        self.__conn.send(f"error \"{encode_attr(message)}\"")
+        self._send_command("error", [message])
 
-    def close(self):
-        self.__conn.send("close")        
-
-    def __on_event(self, e):
-        #print("on_event:", e.target, e.name, e.data)
+    def on_event(self, e):
+        logging.info(f"page.on_event: {e.target} {e.name} {e.data}")
 
         if e.target == "page" and e.name == "change":
             all_props = json.loads(e.data)
 
             for props in all_props:
                 id = props["i"]
-                if id in self.__index:
+                if id in self._index:
                     for name in props:
                         if name != "i":
-                            self.__index[id]._set_attr(name, props[name], dirty=False)
+                            self._index[id]._set_attr(name, props[name], dirty=False)
         
-        elif e.target in self.__index:
-            handler = self.__index[e.target].event_handlers.get(e.name)
+        elif e.target in self._index:
+            self._last_event = ControlEvent(e.target, e.name, e.data, self._index[e.target], self)
+            handler = self._index[e.target].event_handlers.get(e.name)
             if handler:
-                ce = ControlEvent(e.target, e.name, e.data, self.__index[e.target], self)
-                t = threading.Thread(target=handler, args=(ce,), daemon=True)
+                t = threading.Thread(target=handler, args=(self._last_event,), daemon=True)
                 t.start()
+            self._event_available.set()
 
     def wait_event(self):
-        e = self.__conn.wait_event()
-        return ControlEvent(e.target, e.name, e.data, self.__index[e.target], self)
+        self._event_available.clear()
+        self._event_available.wait()
+        return self._last_event
 
     def show_signin(self, auth_providers="*", auth_groups=False, allow_dismiss=False):
         self.signin = auth_providers
@@ -140,34 +157,51 @@ class Page(Control):
                 return False
     
     def signout(self):
-        return self.__conn.send("signout")
+        return self._send_command("signout", None)
 
     def can_access(self, users_and_groups):
-        return self.__conn.send(f"canAccess \"{encode_attr(users_and_groups)}\"").lower() == "true"
-
-# connection
-    @property
-    def connection(self):
-        return self.__conn
-
-# index
-    @property
-    def index(self):
-        return self.__index
+        return self._send_command("canAccess", [users_and_groups]).result.lower() == "true"
+    
+    def close(self):
+        if self._session_id == ZERO_SESSION:
+            self._conn.close()
+        
+    def _send_command(self, name: str, values: List[str]):
+        return self._conn.send_command(self._conn.page_name, self._session_id, Command(0, name, values, None, None, None))      
 
 # url
     @property
     def url(self):
-        return self.__url
+        return self._conn.page_url
+
+# name
+    @property
+    def name(self):
+        return self._conn.page_name
+
+# connection
+    @property
+    def connection(self):
+        return self._conn
+
+# index
+    @property
+    def index(self):
+        return self._index
+
+# session_id
+    @property
+    def session_id(self):
+        return self._session_id
 
 # controls
     @property
     def controls(self):
-        return self.__controls
+        return self._controls
 
     @controls.setter
     def controls(self, value):
-        self.__controls = value
+        self._controls = value
 
 # title
     @property
@@ -205,15 +239,6 @@ class Page(Control):
     @vertical_align.setter
     def vertical_align(self, value):
         self._set_attr("verticalAlign", value)
-
-# width
-    @property
-    def width(self):
-        return self._get_attr("width")
-
-    @width.setter
-    def width(self, value):
-        self._set_attr("width", value)
 
 # padding
     @property
@@ -268,6 +293,30 @@ class Page(Control):
     @hash.setter
     def hash(self, value):
         self._set_attr("hash", value)
+
+# width
+    @property
+    def width(self):
+        w = self._get_attr("width")
+        if w != None and w != "":
+            return int(w)
+        return w
+
+    @width.setter
+    def width(self, value):
+        self._set_attr("width", value)        
+
+# height
+    @property
+    def height(self):
+        h = self._get_attr("height")
+        if h != None and h != "":
+            return int(h)
+        return h
+
+    @height.setter
+    def height(self, value):
+        self._set_attr("height", value)   
 
 # signin
     @property
@@ -385,3 +434,12 @@ class Page(Control):
     @on_hash_change.setter
     def on_hash_change(self, handler):
         self._add_event_handler("hashChange", handler)
+
+# on_resize
+    @property
+    def on_resize(self):
+        return self._get_event_handler("resize")
+
+    @on_resize.setter
+    def on_resize(self, handler):
+        self._add_event_handler("resize", handler)

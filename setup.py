@@ -16,7 +16,7 @@ setuptools.setup(
     url="https://github.com/pglet/pglet-python",
     packages=setuptools.find_packages(exclude=("tests",)),
     python_requires='>=3.7',
-    install_requires=[],
+    install_requires=['websocket-client>=1.2.1'],
     include_package_data=True,
     classifiers=[
         'Programming Language :: Python :: 3',

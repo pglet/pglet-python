@@ -1,5 +1,4 @@
-from datetime import datetime
-from .utils import encode_attr
+from datetime import datetime, date
 from .control import Control
 
 class DatePicker(Control):
@@ -26,7 +25,7 @@ class DatePicker(Control):
         d = value
         if d == "":
             d = None
-        elif name == "value" and d != None and not isinstance(d, datetime):
+        elif name == "value" and d != None and not isinstance(d, date):
             d = datetime.fromisoformat(value.replace('Z', '+00:00'))
         self._set_attr_internal(name, d, dirty)
 

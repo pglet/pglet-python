@@ -1,12 +1,5 @@
 import platform
-import re
-
-def encode_attr(attr):
-    attr = str(attr)
-    return attr.replace("\\", "\\\\").replace("\n", "\\n").replace("\"", "\\\"")
-
-def is_windows():
-    return platform.system() == "Windows"
+import subprocess  
 
 # https://stackoverflow.com/questions/377017/test-if-executable-exists-in-python
 def which(program):
@@ -26,10 +19,5 @@ def which(program):
 
     return None
 
-def cmp(a, b):
-    return (a > b) - (a < b) 
-
-def ver_cmp(version1, version2):
-    def normalize(v):
-        return [int(x) for x in re.sub(r'(\.0+)*$','', v).split(".")]
-    return cmp(normalize(version1), normalize(version2))
+def is_localhost_url(url):
+    return "://localhost/" in url or "://localhost:" in url

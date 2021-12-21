@@ -104,4 +104,4 @@ def main(page):
     app = TodoApp()
     page.add(app.view)
 
-pglet.app("todo-app", target=main, permissions="*")
+pglet.app("todo-app", target=main)

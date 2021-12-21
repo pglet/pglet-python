@@ -1,4 +1,3 @@
-from .utils import encode_attr
 from .control import Control
 
 class Slider(Control):
