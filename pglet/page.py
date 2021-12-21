@@ -46,8 +46,10 @@ class Page(Control):
             Command(0, 'get', ['page', 'userclientip'], None, None, None)
         ]).results
         self._set_attr("hash", values[0], False)
-        self._set_attr("width", int(values[1]), False)
-        self._set_attr("height", int(values[2]), False)
+        if values[1] != "":
+            self._set_attr("width", int(values[1]), False)
+        if values[2] != "":
+            self._set_attr("height", int(values[2]), False)
         self._set_attr("user_id", values[3], False)
         self._set_attr("user_login", values[4], False)
         self._set_attr("user_name", values[5], False)
