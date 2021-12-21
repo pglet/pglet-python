@@ -1,11 +1,5 @@
 import platform
-import subprocess
-
-def is_windows():
-    return platform.system() == "Windows"
-
-def is_macos():
-    return platform.system() == "Darwin"    
+import subprocess  
 
 # https://stackoverflow.com/questions/377017/test-if-executable-exists-in-python
 def which(program):
@@ -24,12 +18,6 @@ def which(program):
                 return exe_file
 
     return None
-
-def open_browser(url):
-    if is_windows():
-        subprocess.run(["explorer.exe", url])
-    elif is_macos():
-        subprocess.run(["open", url])
 
 def is_localhost_url(url):
     return "://localhost/" in url or "://localhost:" in url

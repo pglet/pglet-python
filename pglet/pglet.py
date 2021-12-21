@@ -2,8 +2,6 @@ import logging
 import os
 import platform
 import subprocess
-import re
-import signal
 import traceback
 from threading import Thread
 import threading
@@ -12,7 +10,7 @@ from time import sleep
 from urllib.parse import urlparse, urlunparse
 
 from .reconnecting_websocket import ReconnectingWebSocket
-from .utils import is_localhost_url, is_windows, open_browser, which
+from .utils import is_localhost_url, which
 from .connection import Connection
 from .page import Page
 from .event import Event
@@ -83,7 +81,7 @@ def _connect_internal(name=None, is_app=False, web=False, server=None, token=Non
         conn.page_name = result.pageName
         conn.page_url = f"{server.rstrip('/')}/{result.pageName}"
         if not no_window and not conn.browser_opened:
-            open_browser(conn.page_url)
+            _open_browser(conn.page_url)
             conn.browser_opened = True
         connected.set()
 
@@ -106,7 +104,7 @@ def _connect_internal(name=None, is_app=False, web=False, server=None, token=Non
 def _start_pglet_server():
     print("Starting Pglet Server in local mode...")
 
-    if is_windows():
+    if _is_windows():
         pglet_exe = "pglet.exe"
     else:
         pglet_exe = "pglet"
@@ -119,7 +117,7 @@ def _start_pglet_server():
         bin_dir = os.path.join(os.path.dirname(__file__), "bin")
 
         p = platform.system()
-        if is_windows():
+        if _is_windows():
             plat = "windows"
         elif p == "Linux":
             plat = "linux"
@@ -142,6 +140,12 @@ def _start_pglet_server():
 
     subprocess.run([pglet_exe, "server", "--background"], check=True)
 
+def _open_browser(url):
+    if _is_windows():
+        subprocess.run(["explorer.exe", url])
+    elif _is_macos():
+        subprocess.run(["open", url])
+
 def _get_ws_url(server: str):
     url = server.rstrip('/')
     if server.startswith('https://'):
@@ -151,6 +155,12 @@ def _get_ws_url(server: str):
     else:
         url = 'ws://' + url
     return url + "/ws"
+
+def _is_windows():
+    return platform.system() == "Windows"
+
+def _is_macos():
+    return platform.system() == "Darwin"  
 
 # Fix: https://bugs.python.org/issue35935
 #if is_windows():
