@@ -1,4 +1,5 @@
 import json
+import logging
 import re
 import time
 import threading
@@ -39,7 +40,7 @@ class Connection:
         self._on_session_created = handler
 
     def _on_message(self, data):
-        #print(f"_on_message: {data}")
+        logging.debug(f"_on_message: {data}")
         msg_dict = json.loads(data)
         msg = Message(**msg_dict)
         if msg.id != "":
@@ -83,7 +84,7 @@ class Connection:
         msg_id = uuid.uuid4().hex
         msg = Message(msg_id, action_name, payload)
         j = json.dumps(msg, default=vars)
-        #print("send:", j)
+        logging.debug("_send_message_with_result:", j)
         evt = threading.Event()
         self._ws_callbacks[msg_id] = (evt, None)
         self._ws.send(j)
