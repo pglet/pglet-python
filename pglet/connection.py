@@ -6,7 +6,7 @@ import threading
 import uuid
 
 from pglet.reconnecting_websocket import ReconnectingWebSocket
-from .utils import is_windows, encode_attr
+from .utils import is_windows
 from .event import Event
 from .protocol import *
 

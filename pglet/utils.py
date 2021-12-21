@@ -2,10 +2,6 @@ import platform
 import re
 import subprocess
 
-def encode_attr(attr):
-    attr = str(attr)
-    return attr.replace("\\", "\\\\").replace("\n", "\\n").replace("\"", "\\\"")
-
 def is_windows():
     return platform.system() == "Windows"
 

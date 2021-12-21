@@ -42,4 +42,4 @@ def main(page):
   page.on_resize = page_resize
   page_resize(None)
 
-pglet.app("page-resize", target=main, web=True, no_window=False)
+pglet.app("page-resize", target=main, web=False, no_window=False)

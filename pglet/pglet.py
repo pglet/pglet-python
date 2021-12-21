@@ -12,7 +12,7 @@ from time import sleep
 from urllib.parse import urlparse, urlunparse
 
 from .reconnecting_websocket import ReconnectingWebSocket
-from .utils import is_localhost_url, is_windows, open_browser, which, encode_attr
+from .utils import is_localhost_url, is_windows, open_browser, which
 from .connection import Connection
 from .page import Page
 from .event import Event

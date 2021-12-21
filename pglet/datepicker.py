@@ -1,5 +1,4 @@
 from datetime import datetime, date
-from .utils import encode_attr
 from .control import Control
 
 class DatePicker(Control):

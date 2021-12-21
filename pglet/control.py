@@ -1,5 +1,4 @@
 from pglet.protocol import Command
-from .utils import encode_attr
 from difflib import SequenceMatcher
 import datetime as dt
 
@@ -299,12 +298,14 @@ class Control:
 
             val = self.__attrs[attrName][0]
             sval = ""
-            if isinstance(val, bool):
+            if val == None:
+                continue
+            elif isinstance(val, bool):
                 sval = str(val).lower()
             elif isinstance(val, dt.datetime) or isinstance(val, dt.date):
                 sval = val.isoformat()
             else:
-                sval = encode_attr(val)
+                sval = str(val)
             command.attrs[attrName] = sval
             self.__attrs[attrName] = (val, False)
 
