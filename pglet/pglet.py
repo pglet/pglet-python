@@ -4,6 +4,7 @@ import platform
 import subprocess
 import re
 import signal
+import traceback
 from threading import Thread
 import threading
 import traceback
