@@ -80,7 +80,7 @@ def _connect_internal(name=None, is_app=False, web=False, server=None, token=Non
         result = conn.register_host_client(conn.host_client_id, conn.page_name, is_app, token, permissions)
         conn.host_client_id = result.hostClientID
         conn.page_name = result.pageName
-        conn.page_url = f"{server}/{result.pageName}"
+        conn.page_url = f"{server.rstrip('/')}/{result.pageName}"
         if not no_window and not conn.browser_opened:
             open_browser(conn.page_url)
             conn.browser_opened = True
@@ -142,9 +142,7 @@ def _start_pglet_server():
     subprocess.run([pglet_exe, "server", "--background"], check=True)
 
 def _get_ws_url(server: str):
-    url = server
-    if url.endswith('/'):
-        url = url[:-1]
+    url = server.rstrip('/')
     if server.startswith('https://'):
         url = url.replace('https://', 'wss://')
     elif server.startswith('http://'):

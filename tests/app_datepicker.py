@@ -16,7 +16,7 @@ def main(page):
     picker = DatePicker(label="Allow text input", allow_text_input=True)
 
     page.add(
-        DatePicker("Start date", value=now, on_change=on_change),
+        DatePicker("Start date", width="300", value=now, on_change=on_change),
         DatePicker(label="End date"),
         picker,
         Button("Check value", on_click=lambda e: print("Selected date:", picker.value)),
@@ -25,4 +25,4 @@ def main(page):
         DatePicker(label='Wrong date should set to empty', value=now)
     )
 
-pglet.app("pglet-datepicker", target=main, local=True)
+pglet.app("pglet-datepicker", target=main, web=True)

@@ -84,7 +84,7 @@ class Connection:
         msg_id = uuid.uuid4().hex
         msg = Message(msg_id, action_name, payload)
         j = json.dumps(msg, default=vars)
-        logging.debug("_send_message_with_result:", j)
+        logging.debug(f"_send_message_with_result: {j}")
         evt = threading.Event()
         self._ws_callbacks[msg_id] = (evt, None)
         self._ws.send(j)
