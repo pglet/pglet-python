@@ -1,3 +1,4 @@
+import logging
 import websocket
 import threading, random, time
 from .utils import is_localhost_url
@@ -68,7 +69,7 @@ class ReconnectingWebSocket:
     # Change to Event: https://stackoverflow.com/questions/5114292/break-interrupt-a-time-sleep-in-python
     def _connect_loop(self):
         while not self.exit.is_set():
-            print(f"Connecting Pglet Server at {self._url}...")
+            logging.info(f"Connecting Pglet Server at {self._url}...")
             r = self.wsapp.run_forever()
             self.connected.clear()
             if r != True:
@@ -83,6 +84,6 @@ class ReconnectingWebSocket:
             if not is_localhost_url(self._url):
                 sleep = (backoff_in_seconds * 2 ** self.retry + 
                         random.uniform(0, 1))
-            print(f"Reconnecting Pglet Server in {sleep} seconds")
+            logging.info(f"Reconnecting Pglet Server in {sleep} seconds")
             self.exit.wait(sleep)
             self.retry += 1

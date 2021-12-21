@@ -1,4 +1,5 @@
 import json
+import logging
 import os,sys,inspect
 import time
 
@@ -9,10 +10,7 @@ sys.path.insert(0,parentdir)
 import pglet
 from pglet import Stack, Text
 
-currentdir = os.path.dirname(os.path.abspath(
-    inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0, parentdir)
+logging.basicConfig(level=logging.INFO)
 
 def main(page):
 
@@ -44,4 +42,4 @@ def main(page):
   page.on_resize = page_resize
   page_resize(None)
 
-pglet.app("page-resize", target=main, web=False, no_window=True)
+pglet.app("page-resize", target=main, web=False, no_window=False)

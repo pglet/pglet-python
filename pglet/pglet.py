@@ -30,17 +30,7 @@ def app(name=None, local=False, web=False, server=None, token=None, target=None,
     if target == None:
         raise Exception("target argument is not specified")
 
-    def on_session_created(conn, session_data):
-        page = Page(conn, session_data.sessionID)
-        conn.sessions[session_data.sessionID] = page
-        try:
-            target(page)
-        except Exception as e:
-            print(f"Unhandled error processing page session {page.session_id}:", traceback.format_exc())
-            page.error(f"There was an error while processing your request: {e}")
-
-    conn = _connect_internal(name, True, web, server, token, permissions, no_window)
-    conn.on_session_created = on_session_created
+    conn = _connect_internal(name, True, web, server, token, permissions, no_window, target)
 
     try:
         print("Waiting for new app sessions. Press Enter to exit...")
@@ -50,7 +40,7 @@ def app(name=None, local=False, web=False, server=None, token=None, target=None,
 
     conn.close()
 
-def _connect_internal(name=None, is_app=False, web=False, server=None, token=None, permissions=None, no_window=False):
+def _connect_internal(name=None, is_app=False, web=False, server=None, token=None, permissions=None, no_window=False, session_handler=None):
     if server == None and web:
         server = HOSTED_SERVICE_URL
     elif server == None:
@@ -66,10 +56,22 @@ def _connect_internal(name=None, is_app=False, web=False, server=None, token=Non
             if e.eventTarget == "page" and e.eventName == "close":
                 del conn.sessions[e.sessionID]
 
+    def on_session_created(conn, session_data):
+        page = Page(conn, session_data.sessionID)
+        conn.sessions[session_data.sessionID] = page
+        try:
+            session_handler(page)
+        except Exception as e:
+            print(f"Unhandled error processing page session {page.session_id}:", traceback.format_exc())
+            page.error(f"There was an error while processing your request: {e}")                
+
     ws_url = _get_ws_url(server)
     ws = ReconnectingWebSocket(ws_url)
     conn = Connection(ws)
     conn.on_event = on_event
+
+    if session_handler != None:
+        conn.on_session_created = on_session_created
 
     def _on_ws_connect():
         if conn.page_name == None:
