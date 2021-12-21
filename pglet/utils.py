@@ -1,5 +1,4 @@
 import platform
-import re
 import subprocess
 
 def is_windows():
@@ -25,14 +24,6 @@ def which(program):
                 return exe_file
 
     return None
-
-def cmp(a, b):
-    return (a > b) - (a < b) 
-
-def ver_cmp(version1, version2):
-    def normalize(v):
-        return [int(x) for x in re.sub(r'(\.0+)*$','', v).split(".")]
-    return cmp(normalize(version1), normalize(version2))
 
 def open_browser(url):
     if is_windows():
