@@ -27,10 +27,11 @@ def main(page):
   )
 
   def page_resize(e):
-      if page.width < 576:
+      print('page_resize:', page.win_width, page.win_height)
+      if page.win_width < 576:
           # small device
           left_column.width = center_column.width = right_column.width = '100%'
-      elif page.width > 576 and page.width < 768:
+      elif page.win_width > 576 and page.win_width < 768:
           # medium device
           left_column.width = center_column.width = right_column.width = '50%'
           right_column.width = '100%'

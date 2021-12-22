@@ -37,8 +37,8 @@ class Page(Control):
     def _fetch_page_details(self):
         values = self._conn.send_commands(self._conn.page_name, self._session_id, [
             Command(0, 'get', ['page', 'hash'], None, None, None),
-            Command(0, 'get', ['page', 'width'], None, None, None),
-            Command(0, 'get', ['page', 'height'], None, None, None),
+            Command(0, 'get', ['page', 'win_width'], None, None, None),
+            Command(0, 'get', ['page', 'win_height'], None, None, None),
             Command(0, 'get', ['page', 'userid'], None, None, None),
             Command(0, 'get', ['page', 'userlogin'], None, None, None),
             Command(0, 'get', ['page', 'username'], None, None, None),
@@ -46,10 +46,8 @@ class Page(Control):
             Command(0, 'get', ['page', 'userclientip'], None, None, None)
         ]).results
         self._set_attr("hash", values[0], False)
-        if values[1] != "":
-            self._set_attr("width", int(values[1]), False)
-        if values[2] != "":
-            self._set_attr("height", int(values[2]), False)
+        self._set_attr("win_width", values[1], False)
+        self._set_attr("win_height", values[2], False)
         self._set_attr("user_id", values[3], False)
         self._set_attr("user_login", values[4], False)
         self._set_attr("user_name", values[5], False)
@@ -296,29 +294,21 @@ class Page(Control):
     def hash(self, value):
         self._set_attr("hash", value)
 
-# width
+# win_width
     @property
-    def width(self):
-        w = self._get_attr("width")
+    def win_width(self):
+        w = self._get_attr("win_width")
         if w != None and w != "":
             return int(w)
-        return w
+        return 0
 
-    @width.setter
-    def width(self, value):
-        self._set_attr("width", value)        
-
-# height
+# win_height
     @property
-    def height(self):
-        h = self._get_attr("height")
+    def win_height(self):
+        h = self._get_attr("win_height")
         if h != None and h != "":
             return int(h)
-        return h
-
-    @height.setter
-    def height(self, value):
-        self._set_attr("height", value)   
+        return 0
 
 # signin
     @property
