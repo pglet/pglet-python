@@ -32,4 +32,4 @@ def main(page):
         Button('Signout', on_click=signout_clicked)
     )
 
-pglet.app("pglet-signin-test", target=main, local=False, permissions="*")
+pglet.app("pglet-signin-test", target=main, web=True, permissions="*")

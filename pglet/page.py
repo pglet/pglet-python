@@ -48,11 +48,11 @@ class Page(Control):
         self._set_attr("hash", values[0], False)
         self._set_attr("win_width", values[1], False)
         self._set_attr("win_height", values[2], False)
-        self._set_attr("user_id", values[3], False)
-        self._set_attr("user_login", values[4], False)
-        self._set_attr("user_name", values[5], False)
-        self._set_attr("user_email", values[6], False)
-        self._set_attr("user_client_ip", values[7], False)
+        self._set_attr("userid", values[3], False)
+        self._set_attr("userlogin", values[4], False)
+        self._set_attr("username", values[5], False)
+        self._set_attr("useremail", values[6], False)
+        self._set_attr("userclientip", values[7], False)
 
     def update(self, *controls):
         if len(controls) == 0:
