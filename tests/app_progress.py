@@ -13,7 +13,7 @@ def main(page):
         Progress("Operation progress", description="Doing something indefinite...", width='30%')
     )
 
-    prog1 = Progress("Copying file1.txt to file2.txt", value=0, width='30%')
+    prog1 = Progress("Copying file1.txt to file2.txt", value=0, width='30%', bar_height=5)
     page.add(
         Text("Default Progress", size='xLarge'),
         prog1
@@ -24,7 +24,7 @@ def main(page):
         prog1.update()
         time.sleep(0.005)
 
-    prog2 = Progress("Provisioning your account", value=0, width='30%')
+    prog2 = Progress("Provisioning your account", value=0, width='30%', bar_height=10)
     page.add(
         prog2
     )

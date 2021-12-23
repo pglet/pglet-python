@@ -1,7 +1,7 @@
 from .control import Control
 
 class Progress(Control):
-    def __init__(self, label=None, id=None, description=None, value=None,
+    def __init__(self, label=None, id=None, description=None, value=None, bar_height=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
         Control.__init__(self, id=id,
@@ -10,6 +10,7 @@ class Progress(Control):
         self.value = value
         self.description = description
         self.label = label
+        self.bar_height = bar_height
 
     def _get_control_name(self):
         return "progress"
@@ -32,6 +33,15 @@ class Progress(Control):
     @description.setter
     def description(self, value):
         self._set_attr("description", value)
+
+# bar_height
+    @property
+    def bar_height(self):
+        return self._get_attr("barheight")
+
+    @bar_height.setter
+    def bar_height(self, value):
+        self._set_attr("barheight", value)        
 
 # label
     @property

@@ -1,3 +1,4 @@
+import logging
 import os
 
 import sys,inspect
@@ -7,6 +8,8 @@ sys.path.insert(0,parentdir)
 
 import pglet
 from pglet import Text, Textbox, Button, Checkbox
+
+logging.basicConfig(level=logging.DEBUG)
 
 def main(page):
     
@@ -21,6 +24,7 @@ def main(page):
         page.update()
 
     def page_signout(e):
+        print("Sign out event")
         logged_user.value = "Not logged in"
         page.update()
 
@@ -32,4 +36,4 @@ def main(page):
         Button('Signout', on_click=signout_clicked)
     )
 
-pglet.app("pglet-signin-test", target=main, web=True, permissions="*")
+pglet.app("pglet-signin-test", target=main, web=False, permissions="*")
