@@ -9,6 +9,7 @@ from .button import Button
 from .dropdown import Dropdown
 from .html import Html
 from .icon import Icon
+from .iframe import IFrame
 from .link import Link
 from .toggle import Toggle
 from .message import Message, MessageButton
