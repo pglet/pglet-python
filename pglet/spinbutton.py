@@ -2,7 +2,7 @@ from .control import Control
 
 class SpinButton(Control):
     def __init__(self, label=None, id=None, value=None, min=None, max=None, step=None,
-            icon=None, data=None, on_change=None,
+            icon=None, label_position=None, data=None, on_change=None,
             width=None, height=None, padding=None, margin=None,
             visible=None, disabled=None):
         Control.__init__(self, id=id,
@@ -10,6 +10,7 @@ class SpinButton(Control):
             visible=visible, disabled=disabled, data=data)
         self.value = value
         self.label = label
+        self.label_position = label_position
         self.min = min
         self.max = max
         self.step = step
@@ -46,6 +47,15 @@ class SpinButton(Control):
     @label.setter
     def label(self, value):
         self._set_attr("label", value)
+
+# label_position
+    @property
+    def label_position(self):
+        return self._get_attr("labelposition")
+
+    @label_position.setter
+    def label_position(self, value):
+        self._set_attr("labelposition", value)        
 
 # min
     @property

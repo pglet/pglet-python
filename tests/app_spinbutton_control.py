@@ -11,6 +11,7 @@ def spinbuttons():
     Stack(controls=[
         Text("Spinbuttons", size="xLarge"),
         SpinButton(label='Basic SpinButton:', min=0, max=100, step=1, value=0),
+        SpinButton(label='SpinButton with label on top:', label_position="top", min=0, max=100, step=1, value=0),
         SpinButton(disabled=True, label='Disabled SpinButton:', min=0, max=100, step=1, value=0),
         SpinButton(icon='IncreaseIndentLegacy', label='SpinButton with icon:', min=0, max=100, step=1, value=0),
         spinbutton_with_on_change()
@@ -36,5 +37,3 @@ def main(page):
     page.add(spinbuttons())
 
 pglet.app("spinbutton-control-samples", target = main)
-
-input("Press Enter to exit...") 
