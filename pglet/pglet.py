@@ -138,7 +138,13 @@ def _start_pglet_server():
 
         pglet_exe = os.path.join(bin_dir, f"{plat}-{arch}", pglet_exe)
 
-    subprocess.run([pglet_exe, "server", "--background"], check=True)
+    args = [pglet_exe, "server", "--background"]
+
+    # auto-detect Replit environment
+    if os.getenv("REPL_ID") != None:
+        args.append("--attached")
+
+    subprocess.run(args, check=True)
 
 def _open_browser(url):
     if _is_windows():
