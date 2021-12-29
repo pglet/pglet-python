@@ -86,7 +86,7 @@ def _connect_internal(name=None, is_app=False, web=False, server=None, token=Non
         connected.set()
 
     def _on_ws_failed_connect():
-        logging.error(f"Failed to connect: {ws_url}")
+        logging.info(f"Failed to connect: {ws_url}")
         if is_localhost_url(ws_url):
             _start_pglet_server()
 

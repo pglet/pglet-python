@@ -55,10 +55,11 @@ class Page(Control):
         self._set_attr("userclientip", values[7], False)
 
     def update(self, *controls):
-        if len(controls) == 0:
-            return self.__update(self)
-        else:
-            return self.__update(*controls)
+        with self._lock:
+            if len(controls) == 0:
+                return self.__update(self)
+            else:
+                return self.__update(*controls)
 
     def __update(self, *controls):
         added_controls = []
@@ -86,49 +87,52 @@ class Page(Control):
                     n += 1
 
     def add(self, *controls):
-        self._controls.extend(controls)
-        return self.update()
+        with self._lock:
+            self._controls.extend(controls)
+            return self.__update(self)
 
     def insert(self, at, *controls):
-        n = at
-        for control in controls:
-            self._controls.insert(n, control)
-            n += 1
-        return self.update()
+        with self._lock:
+            n = at
+            for control in controls:
+                self._controls.insert(n, control)
+                n += 1
+            return self.__update(self)
 
     def remove(self, *controls):
-        for control in controls:
-            self._controls.remove(control)
-        return self.update()
+        with self._lock:
+            for control in controls:
+                self._controls.remove(control)
+            return self.__update(self)
 
     def remove_at(self, index):
-        self._controls.pop(index)
-        return self.update()
+        with self._lock:
+            self._controls.pop(index)
+            return self.__update(self)
 
     def clean(self):
-        self._previous_children.clear()
-        for child in self._get_children():
-            self._remove_control_recursively(self._index, child)
-
-        self._controls.clear()
-
-        return self._send_command("clean", [self.uid])
+        with self._lock:
+            self._previous_children.clear()
+            for child in self._get_children():
+                self._remove_control_recursively(self._index, child)
+            self._controls.clear()
+            return self._send_command("clean", [self.uid])
 
     def error(self, message=""):
-        self._send_command("error", [message])
+        with self._lock:
+            self._send_command("error", [message])
 
     def on_event(self, e):
         logging.info(f"page.on_event: {e.target} {e.name} {e.data}")
 
         if e.target == "page" and e.name == "change":
-            all_props = json.loads(e.data)
-
-            for props in all_props:
-                id = props["i"]
-                if id in self._index:
-                    for name in props:
-                        if name != "i":
-                            self._index[id]._set_attr(name, props[name], dirty=False)
+            with self._lock:
+                for props in json.loads(e.data):
+                    id = props["i"]
+                    if id in self._index:
+                        for name in props:
+                            if name != "i":
+                                self._index[id]._set_attr(name, props[name], dirty=False)
         
         elif e.target in self._index:
             self._last_event = ControlEvent(e.target, e.name, e.data, self._index[e.target], self)
@@ -144,10 +148,11 @@ class Page(Control):
         return self._last_event
 
     def show_signin(self, auth_providers="*", auth_groups=False, allow_dismiss=False):
-        self.signin = auth_providers
-        self.signin_groups = auth_groups
-        self.signin_allow_dismiss = allow_dismiss
-        self.update()
+        with self._lock:
+            self.signin = auth_providers
+            self.signin_groups = auth_groups
+            self.signin_allow_dismiss = allow_dismiss
+            self.__update(self)
 
         while True:
             e = self.wait_event()
