@@ -170,7 +170,7 @@ class Control:
         self._previous_children.clear()
         for child in self._get_children():
             self._remove_control_recursively(self.__page.index, child)
-        return self.__page.connection.send(f"clean {self.uid}")
+        return self.__page._send_command("clean", [self.uid])
 
     def build_update_commands(self, index, added_controls, commands):
         update_cmd = self._get_cmd_attrs(update=True)
