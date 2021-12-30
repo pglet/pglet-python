@@ -9,6 +9,8 @@ sys.path.insert(0,parentdir)
 import pglet
 from pglet import Page, Stack, Text, Toolbar, Message
 
+os.environ["PGLET_LOG_LEVEL"] = "debug"
+
 def main(page: Page):
     print('new session!')
     print("Hash:", page.hash)
