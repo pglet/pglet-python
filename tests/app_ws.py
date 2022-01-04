@@ -1,15 +1,19 @@
-import json
-import os,sys,inspect
+import os
+import sys
+import inspect
 import time
+import logging
 
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+currentdir = os.path.dirname(os.path.abspath(
+    inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
-sys.path.insert(0,parentdir)
+sys.path.insert(0, parentdir)
 
-import pglet
 from pglet import Page, Stack, Text, Toolbar, Message
+import pglet
 
 os.environ["PGLET_LOG_LEVEL"] = "debug"
+logging.basicConfig(level=logging.DEBUG)
 
 def main(page: Page):
     print('new session!')
@@ -29,5 +33,6 @@ def main(page: Page):
     page.controls.append(Text("Line 3"))
     page.controls.pop(1)
     page.update()
+
 
 pglet.app("page1", target=main, web=False)

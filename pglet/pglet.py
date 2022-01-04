@@ -38,7 +38,7 @@ def app(name=None, local=False, web=False, server=None, token=None, target=None,
     terminate = threading.Event()
 
     def exit_gracefully(signum, frame):
-        logging.debug("Gracefully terminating Pglet app")
+        logging.debug("Gracefully terminating Pglet app...")
         terminate.set()
 
     signal.signal(signal.SIGINT, exit_gracefully)
@@ -46,8 +46,12 @@ def app(name=None, local=False, web=False, server=None, token=None, target=None,
 
     try:
         print("Connected to Pglet app and handling user sessions...")
-        terminate.wait()
-    except (KeyboardInterrupt) as e:
+
+        if _is_windows():
+            input()
+        else:
+            terminate.wait()
+    except (Exception) as e:
         pass
 
     conn.close()
@@ -184,5 +188,5 @@ def _is_macos():
     return platform.system() == "Darwin"  
 
 # Fix: https://bugs.python.org/issue35935
-#if is_windows():
+# if _is_windows():
 #    signal.signal(signal.SIGINT, signal.SIG_DFL)
