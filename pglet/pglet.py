@@ -6,6 +6,7 @@ import traceback
 from threading import Thread
 import threading
 import traceback
+import signal
 from time import sleep
 from urllib.parse import urlparse, urlunparse
 
@@ -17,10 +18,11 @@ from .event import Event
 from .constants import *
 
 HOSTED_SERVICE_URL = "https://app.pglet.io"
-CONNECT_TIMEOUT_SECONDS = 10
+CONNECT_TIMEOUT_SECONDS = 30
 
 def page(name=None, local=False,  web=False, server=None, token=None, permissions=None, no_window=False):
     conn = _connect_internal(name, False, web, server, token, permissions, no_window)
+    print("Page URL:", conn.page_url)
     page = Page(conn, ZERO_SESSION)
     conn.sessions[ZERO_SESSION] = page
     return page
@@ -31,11 +33,25 @@ def app(name=None, local=False, web=False, server=None, token=None, target=None,
         raise Exception("target argument is not specified")
 
     conn = _connect_internal(name, True, web, server, token, permissions, no_window, target)
+    print("App URL:", conn.page_url)
+
+    terminate = threading.Event()
+
+    def exit_gracefully(signum, frame):
+        logging.debug("Gracefully terminating Pglet app...")
+        terminate.set()
+
+    signal.signal(signal.SIGINT, exit_gracefully)
+    signal.signal(signal.SIGTERM, exit_gracefully)
 
     try:
-        print("Waiting for new app sessions. Press Enter to exit...")
-        input()
-    except (KeyboardInterrupt) as e:
+        print("Connected to Pglet app and handling user sessions...")
+
+        if _is_windows():
+            input()
+        else:
+            terminate.wait()
+    except (Exception) as e:
         pass
 
     conn.close()
@@ -54,11 +70,13 @@ def _connect_internal(name=None, is_app=False, web=False, server=None, token=Non
         if e.sessionID in conn.sessions:
             conn.sessions[e.sessionID].on_event(Event(e.eventTarget, e.eventName, e.eventData))
             if e.eventTarget == "page" and e.eventName == "close":
+                print("Session closed:", e.sessionID)
                 del conn.sessions[e.sessionID]
 
     def on_session_created(conn, session_data):
         page = Page(conn, session_data.sessionID)
         conn.sessions[session_data.sessionID] = page
+        print("Session started:", session_data.sessionID)
         try:
             session_handler(page)
         except Exception as e:
@@ -99,6 +117,7 @@ def _connect_internal(name=None, is_app=False, web=False, server=None, token=Non
     if not connected.is_set():
         ws.close()
         raise Exception(f"Could not connected to Pglet server in {CONNECT_TIMEOUT_SECONDS} seconds.")
+
     return conn
 
 def _start_pglet_server():
@@ -169,5 +188,5 @@ def _is_macos():
     return platform.system() == "Darwin"  
 
 # Fix: https://bugs.python.org/issue35935
-#if is_windows():
+# if _is_windows():
 #    signal.signal(signal.SIGINT, signal.SIG_DFL)

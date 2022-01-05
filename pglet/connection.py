@@ -89,5 +89,6 @@ class Connection:
         return self._ws_callbacks.pop(msg_id)[1]
 
     def close(self):
+        logging.debug("Closing connection...")
         if self._ws != None:
             self._ws.close()
