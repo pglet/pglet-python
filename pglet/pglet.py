@@ -18,7 +18,7 @@ from .event import Event
 from .constants import *
 
 HOSTED_SERVICE_URL = "https://app.pglet.io"
-CONNECT_TIMEOUT_SECONDS = 10
+CONNECT_TIMEOUT_SECONDS = 30
 
 def page(name=None, local=False,  web=False, server=None, token=None, permissions=None, no_window=False):
     conn = _connect_internal(name, False, web, server, token, permissions, no_window)
