@@ -316,6 +316,18 @@ class Grid(Control):
     def selected_items(self):
         return self._selected_items
 
+    @selected_items.setter
+    def selected_items(self, value):
+        self._selected_items = value
+        indices = []
+        for selected_item in value:
+            idx = 0
+            for item in self._items.items:
+                if item == selected_item:
+                   indices.append(str(idx))
+                idx += 1
+        self._set_attr("selectedindices", ' '.join(indices))  
+
     # onitem_invoke
     @property
     def onitem_invoke(self):
