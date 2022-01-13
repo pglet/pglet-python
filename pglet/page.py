@@ -261,7 +261,16 @@ class Page(Control):
 
     @padding.setter
     def padding(self, value):
-        self._set_attr("padding", value)
+        self._set_attr("padding", value)       
+
+# bgcolor
+    @property
+    def bgcolor(self):
+        return self._get_attr("bgcolor")
+
+    @bgcolor.setter
+    def bgcolor(self, value):
+        self._set_attr("bgcolor", value)
 
 # theme
     @property
