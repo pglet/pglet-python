@@ -245,6 +245,15 @@ class Page(Control):
     def vertical_align(self, value):
         self._set_attr("verticalAlign", value)
 
+# gap
+    @property
+    def gap(self):
+        return self._get_attr("gap")
+
+    @gap.setter
+    def gap(self, value):
+        self._set_attr("gap", value)
+
 # padding
     @property
     def padding(self):
