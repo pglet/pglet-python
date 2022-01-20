@@ -1,8 +1,16 @@
-# Pglet client for Python
+# Pglet - easily build interactive web apps in Python
 
-[Pglet](https://pglet.io) (*"pagelet"*) is a rich user interface (UI) framework for programs written in Python or any other language. 
-Pglet renders web UI, so you can easily [build web apps](https://pglet.io/docs/quickstart) with Python.
-Knowledge of HTML/CSS/JavaScript is not required as you build UI with [controls](https://pglet.io/docs/reference/controls). Pglet controls are built with [Fluent UI React](https://developer.microsoft.com/en-us/fluentui#/controls/web) to ensure your programs look cool and professional.
+[Pglet](https://pglet.io) is a rich User Interface (UI) framework to quickly build interactive web apps in Python without prior knowledge of web technologies like HTTP, HTML, CSS or JavaSscript. You build UI with [controls](https://pglet.io/docs/reference/controls) which use [Fluent UI React](https://developer.microsoft.com/en-us/fluentui#/controls/web) to ensure your programs look cool and professional.
+
+## Requirements
+
+* Python 3.7 or above on Windows, Linux or macOS
+
+## Installation
+
+```
+pip install pglet
+```
 
 ## Hello, world!
 
@@ -11,11 +19,15 @@ import pglet
 from pglet import Text
 
 p = pglet.page()
-p.add(Text(value="Hello, world!"))
+p.add(Text("Hello, world!"))
 ```
 
-Run the sample above with Python 3 and in a new browser window you'll get:
+Run the sample above and a new browser window will pop up:
 
 ![Sample app in a browser](https://pglet.io/img/docs/quickstart-hello-world.png "Sample app in a browser")
 
-Read [Python tutorial](https://pglet.io/docs/tutorials/python) for further information and more examples.
+Continue with [Python tutorial](https://pglet.io/docs/tutorials/python) demonstrating how to build a simple To-Do web app and share it on the internet.
+
+Browse for more [Pglet examples](https://github.com/pglet/examples/tree/main/python).
+
+Join to a conversation on [Pglet Discord server](https://discord.gg/rWjf7xx).
