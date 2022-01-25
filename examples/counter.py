@@ -1,5 +1,8 @@
 import pglet
 from pglet import Button, Stack, Textbox
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 def main(page):
     page.title = "Counter"

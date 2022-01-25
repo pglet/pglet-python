@@ -1,5 +1,6 @@
 import logging
 import os
+from pathlib import Path
 import subprocess
 import traceback
 from threading import Thread
@@ -7,6 +8,10 @@ import threading
 import traceback
 import signal
 from time import sleep
+import urllib.request
+import tempfile
+import zipfile
+import tarfile
 
 from pglet.reconnecting_websocket import ReconnectingWebSocket
 from pglet.utils import *
@@ -118,20 +123,24 @@ def _connect_internal(name=None, is_app=False, web=False, server=None, token=Non
 def _start_pglet_server():
     print("Starting Pglet Server in local mode...")
 
-    if is_windows():
-        pglet_exe = "pglet.exe"
-    else:
-        pglet_exe = "pglet"
+    pglet_exe = "pglet.exe" if is_windows() else "pglet"
 
-    # check if pglet.exe is in PATH already (development mode)
-    pglet_in_path = which(pglet_exe)
-    if pglet_in_path:
-        pglet_exe = pglet_in_path
+    # check if pglet.exe exists in "bin" directory (user mode)
+    p = Path(__file__).parent.joinpath("bin", f"{get_platform()}-{get_arch()}", pglet_exe)
+    if p.exists():
+        pglet_path = str(p)
+        logging.info(f"Pglet Server found in: {pglet_path}")
     else:
-        bin_dir = os.path.join(os.path.dirname(__file__), "bin")
-        pglet_exe = os.path.join(bin_dir, f"{get_platform()}-{get_arch()}", pglet_exe)
+        # check if pglet.exe is in PATH (pglet developer mode)
+        pglet_path = which(pglet_exe)
+        if not pglet_path:
+            # download pglet from GitHub (python module developer mode)
+            pglet_path = _download_pglet()
+        else:
+            logging.info(f"Pglet Server found in PATH")
 
-    args = [pglet_exe, "server", "--background"]
+    # start Pglet server
+    args = [pglet_path, "server", "--background"]
 
     # auto-detect Replit environment
     if os.getenv("REPL_ID") != None:
@@ -148,6 +157,50 @@ def _get_ws_url(server: str):
     else:
         url = 'ws://' + url
     return url + "/ws"
+
+def _download_pglet():
+    pglet_exe = "pglet.exe" if is_windows() else "pglet"
+    pglet_bin = Path.home().joinpath(".pglet", "bin")
+    pglet_bin.mkdir(parents=True, exist_ok=True)
+
+    pglet_version = _get_pglet_version()
+    
+    installed_ver = None
+    pglet_path = pglet_bin.joinpath(pglet_exe)
+    if pglet_path.exists():
+        # check installed version
+        installed_ver = subprocess.check_output([pglet_path, "--version"]).decode("utf-8")
+        logging.info(f"Pglet v{pglet_version} is already installed in {pglet_path}")
+    
+    if not installed_ver or installed_ver != pglet_version:
+        print(f"Downloading Pglet v{pglet_version} to {pglet_path}")
+
+        ext = "zip" if is_windows() else "tar.gz"
+        file_name = F"pglet-{pglet_version}-{get_platform()}-{get_arch()}.{ext}"
+        pglet_url = f"https://github.com/pglet/pglet/releases/download/v{pglet_version}/{file_name}"
+
+        temp_arch = Path(tempfile.gettempdir()).joinpath(file_name)
+        try:
+            urllib.request.urlretrieve(pglet_url, temp_arch)
+            if is_windows():
+                with zipfile.ZipFile(temp_arch, 'r') as zip_arch:
+                    zip_arch.extractall(pglet_bin)
+            else:
+                with tarfile.open(temp_arch, 'r:gz') as tar_arch:
+                    tar_arch.extractall(pglet_bin)            
+        finally:
+            os.remove(temp_arch)
+    return pglet_path
+
+def _get_pglet_version():
+    appveyor_yml = Path(__file__).parent.parent.joinpath('appveyor.yml').absolute()
+
+    version_prefix = "PGLET_VERSION:"
+    with open(appveyor_yml) as yml:
+        for line in yml:
+            if version_prefix in line:
+                return line.split(':')[1].strip()
+    raise f"{version_prefix} not found in appveyor.yml"
 
 # Fix: https://bugs.python.org/issue35935
 # if _is_windows():
