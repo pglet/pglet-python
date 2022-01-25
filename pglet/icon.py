@@ -1,4 +1,4 @@
-from .control import Control
+from pglet.control import Control
 
 class Icon(Control):
     def __init__(self, name=None, id=None, color=None, size=None,

@@ -1,4 +1,4 @@
-from .control import Control
+from pglet.control import Control
 
 class Text(Control):
     def __init__(self, value=None, id=None, markdown=None, align=None, vertical_align=None,

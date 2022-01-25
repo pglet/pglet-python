@@ -1,4 +1,4 @@
-from .control import Control
+from pglet.control import Control
 
 class Toggle(Control):
     def __init__(self, label=None, id=None, value=None, value_field=None, inline=None,

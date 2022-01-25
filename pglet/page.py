@@ -2,9 +2,9 @@ import logging
 from typing import List
 from pglet.protocol import Command
 from pglet.connection import Connection
-from .control import Control
-from .control_event import ControlEvent
-from .constants import *
+from pglet.control import Control
+from pglet.control_event import ControlEvent
+from pglet import constants
 import json
 import threading
 
@@ -168,7 +168,7 @@ class Page(Control):
         return self._send_command("canAccess", [users_and_groups]).result.lower() == "true"
     
     def close(self):
-        if self._session_id == ZERO_SESSION:
+        if self._session_id == constants.ZERO_SESSION:
             self._conn.close()
         
     def _send_command(self, name: str, values: List[str]):

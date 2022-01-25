@@ -8,23 +8,19 @@ import threading
 import traceback
 import signal
 from time import sleep
-from urllib.parse import urlparse, urlunparse
 
-from .reconnecting_websocket import ReconnectingWebSocket
-from .utils import is_localhost_url, which
-from .connection import Connection
-from .page import Page
-from .event import Event
-from .constants import *
-
-HOSTED_SERVICE_URL = "https://app.pglet.io"
-CONNECT_TIMEOUT_SECONDS = 30
+from pglet.reconnecting_websocket import ReconnectingWebSocket
+from pglet.utils import is_localhost_url, which
+from pglet.connection import Connection
+from pglet.page import Page
+from pglet.event import Event
+from pglet import constants
 
 def page(name=None, local=False,  web=False, server=None, token=None, permissions=None, no_window=False):
     conn = _connect_internal(name, False, web, server, token, permissions, no_window)
     print("Page URL:", conn.page_url)
-    page = Page(conn, ZERO_SESSION)
-    conn.sessions[ZERO_SESSION] = page
+    page = Page(conn, constants.ZERO_SESSION)
+    conn.sessions[constants.ZERO_SESSION] = page
     return page
 
 def app(name=None, local=False, web=False, server=None, token=None, target=None, permissions=None, no_window=False):
@@ -58,7 +54,7 @@ def app(name=None, local=False, web=False, server=None, token=None, target=None,
 
 def _connect_internal(name=None, is_app=False, web=False, server=None, token=None, permissions=None, no_window=False, session_handler=None):
     if server == None and web:
-        server = HOSTED_SERVICE_URL
+        server = constants.HOSTED_SERVICE_URL
     elif server == None:
         env_port = os.getenv('PGLET_SERVER_PORT')
         port = env_port if env_port != None and env_port != "" else "5000"
@@ -111,12 +107,12 @@ def _connect_internal(name=None, is_app=False, web=False, server=None, token=Non
     ws.on_connect = _on_ws_connect
     ws.on_failed_connect = _on_ws_failed_connect
     ws.connect()
-    for n in range(0, CONNECT_TIMEOUT_SECONDS):
+    for n in range(0, constants.CONNECT_TIMEOUT_SECONDS):
         if not connected.is_set():
             sleep(1)
     if not connected.is_set():
         ws.close()
-        raise Exception(f"Could not connected to Pglet server in {CONNECT_TIMEOUT_SECONDS} seconds.")
+        raise Exception(f"Could not connected to Pglet server in {constants.CONNECT_TIMEOUT_SECONDS} seconds.")
 
     return conn
 
@@ -134,28 +130,7 @@ def _start_pglet_server():
         pglet_exe = pglet_in_path
     else:
         bin_dir = os.path.join(os.path.dirname(__file__), "bin")
-
-        p = platform.system()
-        if _is_windows():
-            plat = "windows"
-        elif p == "Linux":
-            plat = "linux"
-        elif p == "Darwin":
-            plat = "darwin"
-        else:
-            raise Exception(f"Unsupported platform: {p}")
-
-        a = platform.machine().lower()
-        if a == "x86_64" or a == "amd64":
-            arch = "amd64"
-        elif a == "arm64" or a == "aarch64":
-            arch = "arm64"
-        elif a.startswith("arm"):
-            arch = "arm"
-        else:
-            raise Exception(f"Unsupported architecture: {a}")
-
-        pglet_exe = os.path.join(bin_dir, f"{plat}-{arch}", pglet_exe)
+        pglet_exe = os.path.join(bin_dir, f"{_get_platform()}-{_get_arch()}", pglet_exe)
 
     args = [pglet_exe, "server", "--background"]
 
@@ -164,6 +139,28 @@ def _start_pglet_server():
         args.append("--attached")
 
     subprocess.run(args, check=True)
+
+def _get_platform():
+    p = platform.system()
+    if _is_windows():
+        return "windows"
+    elif p == "Linux":
+        return "linux"
+    elif p == "Darwin":
+        return "darwin"
+    else:
+        raise Exception(f"Unsupported platform: {p}")
+
+def _get_arch():
+    a = platform.machine().lower()
+    if a == "x86_64" or a == "amd64":
+        return "amd64"
+    elif a == "arm64" or a == "aarch64":
+        return "arm64"
+    elif a.startswith("arm"):
+        return "arm"
+    else:
+        raise Exception(f"Unsupported architecture: {a}")
 
 def _open_browser(url):
     if _is_windows():

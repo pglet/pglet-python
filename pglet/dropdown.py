@@ -1,4 +1,4 @@
-from .control import Control
+from pglet.control import Control
 
 # Option
 class Option(Control):

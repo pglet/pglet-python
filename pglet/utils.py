@@ -1,6 +1,3 @@
-import platform
-import subprocess  
-
 # https://stackoverflow.com/questions/377017/test-if-executable-exists-in-python
 def which(program):
     import os

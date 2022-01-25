@@ -1,7 +1,7 @@
 import logging
 import websocket
 import threading, random, time
-from .utils import is_localhost_url
+from pglet.utils import is_localhost_url
 
 _REMOTE_CONNECT_TIMEOUT_SEC = 5
 _LOCAL_CONNECT_TIMEOUT_SEC = 0.2

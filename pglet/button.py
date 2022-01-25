@@ -1,4 +1,4 @@
-from .control import Control
+from pglet.control import Control
 
 class MenuItem(Control):
     def __init__(self, text=None, id=None, secondary_text=None, url=None, new_window=None, 

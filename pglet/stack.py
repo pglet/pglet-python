@@ -1,5 +1,5 @@
-from .control import Control
-#from .alignment import Alignment
+from pglet.control import Control
+#from pglet.alignment import Alignment
 
 class Stack(Control):
 
