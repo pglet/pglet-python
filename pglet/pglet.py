@@ -169,7 +169,7 @@ def _download_pglet():
     pglet_path = pglet_bin.joinpath(pglet_exe)
     if pglet_path.exists():
         # check installed version
-        installed_ver = subprocess.check_output([pglet_path, "--version"]).decode("utf-8")
+        installed_ver = subprocess.check_output([str(pglet_path), "--version"]).decode("utf-8")
         logging.info(f"Pglet v{pglet_version} is already installed in {pglet_path}")
     
     if not installed_ver or installed_ver != pglet_version:
@@ -190,7 +190,7 @@ def _download_pglet():
                     tar_arch.extractall(pglet_bin)            
         finally:
             os.remove(temp_arch)
-    return pglet_path
+    return str(pglet_path)
 
 def _get_pglet_version():
     appveyor_yml = Path(__file__).parent.parent.joinpath('appveyor.yml').absolute()
