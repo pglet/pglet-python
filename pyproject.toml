@@ -20,7 +20,7 @@ classifiers = [
 ]
 
 includes = [
-    "bin/"
+    "pglet/bin/"
 ]
 
 [project.urls]
