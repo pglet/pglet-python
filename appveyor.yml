@@ -85,7 +85,7 @@ build_script:
         twine upload dist/*
     fi
 
-test:
+test_script:
 - mkdir test_wheel
 - tar -xf dist/*.whl -C test_wheel
 - ls -alR test_wheel/bin
