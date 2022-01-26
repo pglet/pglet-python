@@ -45,6 +45,7 @@ install:
 build_script:
 # run tests
 #- pytest
+- ls -alR pglet/bin
 
 # build and publish package
 - ps: |
