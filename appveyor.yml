@@ -20,6 +20,7 @@ install:
 - python --version
 - pip install --upgrade setuptools wheel twine pdm
 - pdm install
+- pdm info && pdm info --env
 - echo Using Pglet ${PGLET_VERSION}
 
 # downloading binaries
