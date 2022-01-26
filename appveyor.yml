@@ -85,5 +85,6 @@ build_script:
     fi
 
 test: off
+
 artifacts:
-- dist/*
+  path: dist/*
