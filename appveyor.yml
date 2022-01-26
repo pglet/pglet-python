@@ -87,7 +87,7 @@ build_script:
 
 test_script:
 - mkdir test_wheel
-- whls=(*.whl)
+- whls=(dist/*.whl)
 - echo "${whls[0]}"
 - mv "${whls[0]}" test-wheel.tar.gz
 #- tar -xf dist/*.whl -C test_wheel
