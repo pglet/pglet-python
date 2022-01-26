@@ -29,7 +29,7 @@ install:
       echo "Downloading $1"
       mkdir -p pglet/bin/$1
       curl -L https://github.com/pglet/pglet/releases/download/v${PGLET_VERSION}/pglet-${PGLET_VERSION}-$1 -o pglet/bin/$1/pglet
-      chmod a+x pglet/bin/$1/pglet
+      chmod 755 pglet/bin/$1/pglet
     }
 
     echo "Downloading windows-amd64"
