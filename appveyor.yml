@@ -87,8 +87,11 @@ build_script:
 
 test_script:
 - mkdir test_wheel
-- tar -xf dist/*.whl -C test_wheel
-- ls -alR test_wheel/bin
+- whls=(*.whl)
+- echo "${whls[0]}"
+- mv "${whls[0]}" test-wheel.tar.gz
+#- tar -xf dist/*.whl -C test_wheel
+#- ls -alR test_wheel/bin
 
 artifacts:
   path: dist/*
