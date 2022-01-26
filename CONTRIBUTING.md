@@ -4,7 +4,9 @@ Thank you for your interest in contributing to Pglet!
 
 ## Clone repo
 
-TBD
+```
+git clone https://github.com/pglet/pglet-python
+```
 
 ## Install PDM
 
@@ -20,7 +22,7 @@ Enable PEP 582:
 pdm --pep582
 ```
 
-> Run `refreshenv` after installing PDM on Windows or restart terminal.
+Run `refreshenv` after installing PDM on Windows or restart terminal.
 
 ## macOS
 
