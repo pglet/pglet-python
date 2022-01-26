@@ -4,8 +4,8 @@ import threading
 import uuid
 
 from pglet.reconnecting_websocket import ReconnectingWebSocket
-from .event import Event
-from .protocol import *
+from pglet.event import Event
+from pglet.protocol import *
 
 class Connection:
     def __init__(self, ws: ReconnectingWebSocket):

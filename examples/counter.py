@@ -1,10 +1,8 @@
-import os,sys,inspect
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0,parentdir)
-
 import pglet
-from pglet import Page, Text, Button, Stack, Textbox
+from pglet import Button, Stack, Textbox
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 def main(page):
     page.title = "Counter"

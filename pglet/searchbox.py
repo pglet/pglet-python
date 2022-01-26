@@ -1,4 +1,4 @@
-from .control import Control
+from pglet.control import Control
 
 class SearchBox(Control):
     def __init__(self, id=None, value=None, placeholder=None, underlined=None,

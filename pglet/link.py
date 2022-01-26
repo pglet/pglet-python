@@ -1,4 +1,4 @@
-from .control import Control
+from pglet.control import Control
 
 class Link(Control):
     def __init__(self, url=None, id=None, value=None, new_window=None, title=None,

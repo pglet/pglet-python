@@ -1,4 +1,4 @@
-from .control import Control
+from pglet.control import Control
 
 class Image(Control):
     def __init__(self, src=None, id=None, alt=None, title=None, maximize_frame=None,

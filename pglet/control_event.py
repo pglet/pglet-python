@@ -1,4 +1,4 @@
-from .event import Event
+from pglet.event import Event
 
 class ControlEvent(Event):
     def __init__(self, target, name, data, control, page):

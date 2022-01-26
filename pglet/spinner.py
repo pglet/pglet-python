@@ -1,4 +1,4 @@
-from .control import Control
+from pglet.control import Control
 
 class Spinner(Control):
     def __init__(self, label=None, id=None, label_position=None, size=None,

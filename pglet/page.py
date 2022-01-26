@@ -2,9 +2,9 @@ import logging
 from typing import List
 from pglet.protocol import Command
 from pglet.connection import Connection
-from .control import Control
-from .control_event import ControlEvent
-from .constants import *
+from pglet.control import Control
+from pglet.control_event import ControlEvent
+from pglet import constants
 import json
 import threading
 
@@ -168,7 +168,7 @@ class Page(Control):
         return self._send_command("canAccess", [users_and_groups]).result.lower() == "true"
     
     def close(self):
-        if self._session_id == ZERO_SESSION:
+        if self._session_id == constants.ZERO_SESSION:
             self._conn.close()
         
     def _send_command(self, name: str, values: List[str]):
@@ -245,6 +245,15 @@ class Page(Control):
     def vertical_align(self, value):
         self._set_attr("verticalAlign", value)
 
+# gap
+    @property
+    def gap(self):
+        return self._get_attr("gap")
+
+    @gap.setter
+    def gap(self, value):
+        self._set_attr("gap", value)
+
 # padding
     @property
     def padding(self):
@@ -252,7 +261,16 @@ class Page(Control):
 
     @padding.setter
     def padding(self, value):
-        self._set_attr("padding", value)
+        self._set_attr("padding", value)       
+
+# bgcolor
+    @property
+    def bgcolor(self):
+        return self._get_attr("bgcolor")
+
+    @bgcolor.setter
+    def bgcolor(self, value):
+        self._set_attr("bgcolor", value)
 
 # theme
     @property

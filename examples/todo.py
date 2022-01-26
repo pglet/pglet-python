@@ -1,11 +1,3 @@
-import os
-
-import sys,inspect
-from threading import local
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0,parentdir)
-
 import pglet
 from pglet import Text, Stack, Textbox, Button, Checkbox, Tabs, Tab
 
@@ -14,14 +6,12 @@ class Task():
         self.app = app
         self.display_task = Checkbox(value=False, label=name, on_change=self.status_changed)
         self.edit_name = Textbox(width='100%')
-
         self.display_view = Stack(horizontal=True, horizontal_align='space-between', vertical_align='center', controls=[
             self.display_task,
             Stack(horizontal=True, gap='0', controls=[
                 Button(icon='Edit', title='Edit todo', on_click=self.edit_clicked),
                 Button(icon='Delete', title='Delete todo', on_click=self.delete_clicked)]),
             ])
-        
         self.edit_view = Stack(visible=False, horizontal=True, horizontal_align='space-between',
                 vertical_align='center', controls=[
             self.edit_name, Button(text='Save', on_click=self.save_clicked)
@@ -51,12 +41,8 @@ class TodoApp():
         self.tasks = []
         self.new_task = Textbox(placeholder='Whats needs to be done?', width='100%')
         self.tasks_view = Stack()
-
-        self.filter = Tabs(value='all', on_change=self.tabs_changed, tabs=[
-                Tab(text='all'),
-                Tab(text='active'),
-                Tab(text='completed')])
-
+        self.filter = Tabs(value='all', on_change=self.tabs_changed, tabs=[Tab(text='all'), Tab(text='active'), Tab(text='completed')])
+        self.items_left = Text('0 items left')
         self.view = Stack(width='70%', controls=[
             Text(value='Todos', size='large', align='center'),
             Stack(horizontal=True, on_submit=self.add_clicked, controls=[
@@ -64,16 +50,24 @@ class TodoApp():
                 Button(primary=True, text='Add', on_click=self.add_clicked)]),
             Stack(gap=25, controls=[
                 self.filter,
-                self.tasks_view
+                self.tasks_view,
+                Stack(horizontal=True, horizontal_align='space-between', vertical_align='center', controls=[
+                    self.items_left,
+                    Button(text='Clear completed', on_click=self.clear_clicked)
+                ])                
             ])
         ])
 
     def update(self):
         status = self.filter.value
+        count = 0
         for task in self.tasks:
             task.view.visible = (status == 'all'
                 or (status == 'active' and task.display_task.value == False)
                 or (status == 'completed' and task.display_task.value))
+            if task.display_task.value == False:
+                count += 1
+        self.items_left.value = f"{count} active item(s) left"
         self.view.update()
 
     def add_clicked(self, e):
@@ -89,17 +83,18 @@ class TodoApp():
         self.update()
 
     def tabs_changed(self, e):
-        self.update()        
+        self.update()
+
+    def clear_clicked(self, e):
+        for task in self.tasks[:]:
+            if task.display_task.value == True:
+                self.delete_task(task)
 
 def main(page):
     page.title = "ToDo App"
     page.horizontal_align = 'center'
     page.update()
-
-    # create application instance
     app = TodoApp()
-
-    # add application's root control to the page
     page.add(app.view)
 
-pglet.app("todo-app", target=main, local=True)
+pglet.app("todo-app", target=main)

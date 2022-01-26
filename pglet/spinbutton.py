@@ -1,4 +1,4 @@
-from .control import Control
+from pglet.control import Control
 
 class SpinButton(Control):
     def __init__(self, label=None, id=None, value=None, min=None, max=None, step=None,

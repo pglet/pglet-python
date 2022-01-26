@@ -1,4 +1,4 @@
-from .control import Control
+from pglet.control import Control
 
 class Checkbox(Control):
     def __init__(self, label=None, id=None, value=None, value_field=None, box_side=None, data=None,

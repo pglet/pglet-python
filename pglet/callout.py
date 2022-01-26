@@ -1,4 +1,4 @@
-from .control import Control
+from pglet.control import Control
 
 class Callout(Control):
     def __init__(self, id=None, target=None, position=None, gap=None, beak=None, beak_width=None,

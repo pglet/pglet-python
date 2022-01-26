@@ -1,5 +1,5 @@
 from datetime import datetime, date
-from .control import Control
+from pglet.control import Control
 
 class DatePicker(Control):
     def __init__(self, label=None, id=None, value=None, placeholder=None,

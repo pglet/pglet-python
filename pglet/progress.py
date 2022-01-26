@@ -1,4 +1,4 @@
-from .control import Control
+from pglet.control import Control
 
 class Progress(Control):
     def __init__(self, label=None, id=None, description=None, value=None, bar_height=None,
