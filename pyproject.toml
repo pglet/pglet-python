@@ -19,10 +19,6 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 
-includes = [
-    "pglet/bin/"
-]
-
 [project.urls]
 repository = "https://github.com/pglet/pglet-python"
 documentation = "https://pglet.io/docs/"
