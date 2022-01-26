@@ -76,7 +76,7 @@ build_script:
     (Get-Content pyproject.toml).replace("version = `"0.1.0`"", "version = `"$ver`"") | Set-Content pyproject.toml
 
 # build package
-- pdm build
+- pdm build -v
 
 # publish package
 - sh: |
