@@ -18,7 +18,7 @@ environment:
 
 install:
 - python --version
-- pip install --upgrade setuptools wheel twine pdm build
+- pip install --upgrade setuptools wheel twine pdm poetry
 - pdm install
 - pdm info && pdm info --env
 - echo Using Pglet ${PGLET_VERSION}
@@ -78,7 +78,8 @@ build_script:
 
 # build package
 #- pdm build
-- python -m build --sdist --wheel --no-isolation .
+#- python -m build --sdist --wheel --no-isolation .
+- poetry build
 
 # publish package
 - sh: |
