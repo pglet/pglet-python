@@ -87,6 +87,7 @@ build_script:
 - python -m zipfile -e "$whl_name" wheel_temp/
 - ls -alR wheel_temp
 - cd wheel_temp/
+- chmod -R a+x pglet/bin
 - python -m zipfile -c "../$whl_name" *
 - cd ..
 
