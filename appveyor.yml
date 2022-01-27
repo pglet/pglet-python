@@ -84,9 +84,9 @@ build_script:
 - whl_name="${whls[0]}"
 - echo "$whl_name"
 - mkdir wheel_temp
-- python -m zipfile -e "$whl_name" wheel_temp/
+- unzip "$whl_name" -d ./wheel_temp
 - ls -alR wheel_temp
-- python -m zipfile -c "$whl_name" wheel_temp/
+- zip -r "$whl_name" ./wheel_temp/*
 
 # publish package
 - sh: |
