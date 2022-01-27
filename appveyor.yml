@@ -18,7 +18,7 @@ environment:
 
 install:
 - python --version
-- pip install --upgrade setuptools wheel twine pdm
+- pip install --upgrade setuptools wheel twine pdm build
 - pdm install
 - pdm info && pdm info --env
 - echo Using Pglet ${PGLET_VERSION}
@@ -77,7 +77,8 @@ build_script:
     (Get-Content pyproject.toml).replace("version = `"0.1.0`"", "version = `"$ver`"") | Set-Content pyproject.toml
 
 # build package
-- pdm build -v
+#- pdm build
+- python -m build --sdist --wheel .
 
 # publish package
 - sh: |
