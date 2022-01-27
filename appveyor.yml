@@ -78,18 +78,6 @@ build_script:
 # build package
 - pdm build
 
-# fix zip archive
-# - whls=(dist/*.whl)
-# - whl_name="${whls[0]}"
-# - echo "$whl_name"
-# - mkdir wheel_temp
-# - python -m zipfile -e "$whl_name" wheel_temp/
-# - ls -alR wheel_temp
-# - cd wheel_temp/
-# - chmod -R a+x pglet/bin
-# - python -m zipfile -c "../$whl_name" *
-# - cd ..
-
 # publish package
 - sh: |
     if [[ "$APPVEYOR_PULL_REQUEST_NUMBER" == "" ]]; then
