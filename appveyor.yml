@@ -78,7 +78,7 @@ build_script:
 
 # build package
 #- pdm build
-- python -m build --sdist --wheel .
+- python -m build --sdist --wheel --no-isolation .
 
 # publish package
 - sh: |
