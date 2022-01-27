@@ -32,5 +32,5 @@ tests = [
 dev = []
 
 [build-system]
-requires = ["pdm-pep517"]
+requires = ["git+https://github.com/pdm-project/pdm-pep517.git"]
 build-backend = "pdm.pep517.api"
