@@ -195,7 +195,7 @@ class Items(Control):
             return hash(tuple(self.__dict__.items()))
 
     def __init__(self, id=None, items=None):
-        Control.__init__(self, id=None)
+        Control.__init__(self, id=id)
     
         self.__map = {}
         self.__items = []
