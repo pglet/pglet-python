@@ -10,10 +10,22 @@ from pglet.control import Control
 
 # Column
 class Column(Control):
-    def __init__(self, id=None, name=None, icon=None, icon_only=None, 
-        field_name=None, sortable=None, sort_field=None, sorted=None, resizable=None,
-        min_width=None, max_width=None, on_click=None, template_controls=None,
-        new_window=None, expanded=None):
+    def __init__(
+        self,
+        id=None,
+        name=None,
+        icon=None,
+        icon_only=None,
+        field_name=None,
+        sortable=None,
+        sort_field=None,
+        sorted=None,
+        resizable=None,
+        min_width=None,
+        max_width=None,
+        on_click=None,
+        template_controls=None,
+    ):
         Control.__init__(self, id=id)
 
         self.name = name
@@ -230,15 +242,30 @@ class Items(Control):
         return items
 
 class Grid(Control):
-    def __init__(self, id=None, selection_mode=None, compact=None, header_visible=None, shimmer_lines=None,
-            preserve_selection=None,
-            columns=None, items=None, on_select=None, onitem_invoke=None,
-            width=None, height=None, padding=None, margin=None, visible=None, disabled=None):
-        
-        Control.__init__(self, id=id,
-            width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
-        
+    def __init__(
+        self,
+        id=None,
+        selection_mode=None,
+        compact=None,
+        header_visible=None,
+        shimmer_lines=None,
+        preserve_selection=None,
+        columns=None,
+        items=None,
+        on_select=None,
+        onitem_invoke=None,
+        width=None,
+        height=None,
+        padding=None,
+        margin=None,
+        visible=None,
+        disabled=None,
+    ):
+
+        Control.__init__(
+            self, id=id, width=width, height=height, padding=padding, margin=margin, visible=visible, disabled=disabled
+        )
+
         self.selection_mode = selection_mode
         self.compact = compact
         self.header_visible = header_visible
