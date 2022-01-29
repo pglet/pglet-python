@@ -28,22 +28,10 @@ class Column(Control):
         self.max_width = max_width
         self.on_click = on_click
 
-        self.__template_controls = []
-        if template_controls != None:
-            for control in template_controls:
-                self.__template_controls.append(control)
+        self.template_controls = template_controls or []
 
     def _get_control_name(self):
         return "column"
-    
-    # template_controls
-    @property
-    def template_controls(self):
-        return self.__template_controls
-
-    @template_controls.setter
-    def template_controls(self, value):
-        self.__template_controls = value
 
     # name
     @property
@@ -151,41 +139,34 @@ class Column(Control):
         self._set_attr("on_click", value)
 
     def _get_children(self):
-        return self.__template_controls
+        return self.template_controls
 
 # Item
 class Item(Control):
     def __init__(self, obj):
         Control.__init__(self)
-        assert obj != None, "Obj cannot be empty"
-        self.__obj = obj
-
-    @property
-    def obj(self):
-        return self.__obj
+        assert obj, "obj cannot be empty"
+        self.obj = obj
 
     def _set_attr(self, name, value, dirty=True):
 
-        if value == None:
+        if value is None:
             return
 
         orig_val = self._get_attr(name)
-        if orig_val != None and isinstance(orig_val, bool):
-            value = str(value).lower() == "true"
-        elif orig_val != None and isinstance(orig_val, float):
-            value = float(str(value))
+        if orig_val is not None:
+            if isinstance(orig_val, bool):
+                value = str(value).lower() == "true"
+            elif isinstance(orig_val, float):
+                value = float(str(value))
 
         self._set_attr_internal(name, value, dirty=False)
-        setattr(self.__obj, name, value)
+        setattr(self.obj, name, value)
 
     def _fetch_attrs(self):
         # reflection
-        for name, val in vars(self.__obj).items():
-            data_type = "string"
-            if isinstance(val, bool):
-                data_type = "bool"
-            elif isinstance(val, float):
-                data_type = "float"
+        for name, val in vars(self.obj).items():
+            data_type = type(val).__name__ if isinstance(val, (bool, float)) else "string"
             orig_val = self._get_attr(name, data_type=data_type)
 
             if val != orig_val:
@@ -199,25 +180,13 @@ class Columns(Control):
     def __init__(self, id=None, columns=None):
         Control.__init__(self, id=id)
     
-        self.__columns = []
-        if columns != None:
-            for column in columns:
-                self.__columns.append(column)
-
-    # columns
-    @property
-    def columns(self):
-        return self.__columns
-
-    @columns.setter
-    def columns(self, value):
-        self.__columns = value
+        self.columns = columns
 
     def _get_control_name(self):
         return "columns"
 
     def _get_children(self):
-        return self.__columns
+        return self.columns
 
 # Items
 class Items(Control):
@@ -230,9 +199,7 @@ class Items(Control):
     
         self.__map = {}
         self.__items = []
-        if items != None:
-            for item in items:
-                self.__items.append(item)
+        self.items = items
 
     # items
     @property
@@ -240,8 +207,9 @@ class Items(Control):
         return self.__items
 
     @items.setter
-    def items(self, value):
-        if isinstance(value, Sequence):
+    @beartype
+    def items(self, value: Optional[Sequence]):
+        if value:
             value = [Items.DictItem(**item) if isinstance(item, Mapping) else item for item in value]
         self.__items = value or []
 
@@ -250,20 +218,12 @@ class Items(Control):
 
     def _get_children(self):
         items = []
-        if self.__items and len(self.__items) > 0:
-            for obj in self.__items:
-                item = self.__map.get(obj)
-                if item == None:
-                    item = Item(obj)
-                    self.__map[obj] = item
-                item._fetch_attrs()
-                items.append(item)
-        
-        del_objs = []
-        for obj, item in self.__map.items():
-            if item not in items:
-                del_objs.append(obj)
+        for obj in self.__items:
+            item = self.__map.setdefault(obj, Item(obj))
+            item._fetch_attrs()
+            items.append(item)
 
+        del_objs = [obj for obj, item in self.__map.items() if item not in items]
         for obj in del_objs:
             del self.__map[obj]
                 
@@ -320,10 +280,7 @@ class Grid(Control):
     @on_select.setter
     def on_select(self, handler):
         self._on_select_handler = handler
-        if handler != None:
-            self._add_event_handler("select", self._on_select_internal)
-        else:
-            self._add_event_handler("select", None)
+        self._add_event_handler("select", self._on_select_internal)
 
     # selected_items
     @property
@@ -333,14 +290,10 @@ class Grid(Control):
     @selected_items.setter
     def selected_items(self, value):
         self._selected_items = value
-        indices = []
-        for selected_item in value:
-            idx = 0
-            for item in self._items.items:
-                if item == selected_item:
-                   indices.append(str(idx))
-                idx += 1
-        self._set_attr("selectedindices", ' '.join(indices))  
+        indices = [
+            str(idx) for selected_item in value for idx, item in enumerate(self._items.items) if item == selected_item
+        ]
+        self._set_attr("selectedindices", " ".join(indices))
 
     # onitem_invoke
     @property
@@ -402,16 +355,10 @@ class Grid(Control):
 
     def _on_select_internal(self, e):
 
-        self._selected_items = []
-        for id in e.data.split(' '):
-            if id != "":
-                self._selected_items.append(self.page.get_control(id).obj)
+        self._selected_items = [self.page.get_control(id).obj for id in e.data.split()]
 
         if self._on_select_handler != None:
             self._on_select_handler(e)
 
     def _get_children(self):
-        result=[]
-        result.append(self._columns)
-        result.append(self._items)
-        return result
+        return [self._columns, self._items]

@@ -1,4 +1,6 @@
 import pglet
+import pytest
+from beartype.roar import BeartypeCallHintPepParamException
 from pglet import Grid, Column
 from pglet.protocol import Command
 
@@ -66,17 +68,67 @@ expected_result = [
 ]
 
 
-def test_grid_add():
-    g = Grid(selection_mode='multiple', compact=True, header_visible=True, shimmer_lines=1, columns=[
-        Column(field_name="first_name", name='First name', icon='mail', icon_only=True,
-        sortable='True', sort_field='sort field name', sorted='false', resizable=False, min_width=100, max_width=200),
-        Column(field_name="last_name", name='Last name')
-    ], items=[
-        Contact(first_name='Inesa', last_name='Fitsner'),
-        Contact(first_name='Fiodar', last_name='Fitsner')
-    ])
-
+def test_grid_add__with_class():
+    g = Grid(
+        selection_mode="multiple",
+        compact=True,
+        header_visible=True,
+        shimmer_lines=1,
+        columns=[
+            Column(
+                field_name="first_name",
+                name="First name",
+                icon="mail",
+                icon_only=True,
+                sortable="True",
+                sort_field="sort field name",
+                sorted="false",
+                resizable=False,
+                min_width=100,
+                max_width=200,
+            ),
+            Column(field_name="last_name", name="Last name"),
+        ],
+        items=[Contact(first_name="Inesa", last_name="Fitsner"), Contact(first_name="Fiodar", last_name="Fitsner")],
+    )
 
     assert isinstance(g, pglet.Control)
     assert isinstance(g, pglet.Grid)
     assert g.get_cmd_str() == expected_result, "Test failed"
+
+
+def test_grid_add__with_dict():
+    g = Grid(
+        selection_mode="multiple",
+        compact=True,
+        header_visible=True,
+        shimmer_lines=1,
+        columns=[
+            Column(
+                field_name="first_name",
+                name="First name",
+                icon="mail",
+                icon_only=True,
+                sortable="True",
+                sort_field="sort field name",
+                sorted="false",
+                resizable=False,
+                min_width=100,
+                max_width=200,
+            ),
+            Column(field_name="last_name", name="Last name"),
+        ],
+        items=[
+            {"first_name": "Inesa", "last_name": "Fitsner"},
+            {"first_name": "Fiodar", "last_name": "Fitsner"},
+        ],
+    )
+
+    assert isinstance(g, pglet.Control)
+    assert isinstance(g, pglet.Grid)
+    assert g.get_cmd_str() == expected_result, "Test failed"
+
+
+def test_property_value_check():
+    with pytest.raises(BeartypeCallHintPepParamException):
+        Column(icon_only="foo")
