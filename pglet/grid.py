@@ -221,6 +221,10 @@ class Columns(Control):
 
 # Items
 class Items(Control):
+    class DictItem(SimpleNamespace):
+        def __hash__(self):
+            return hash(tuple(self.__dict__.items()))
+
     def __init__(self, id=None, items=None):
         Control.__init__(self, id=None)
     
@@ -237,7 +241,9 @@ class Items(Control):
 
     @items.setter
     def items(self, value):
-        self.__items = value
+        if isinstance(value, Sequence):
+            value = [Items.DictItem(**item) if isinstance(item, Mapping) else item for item in value]
+        self.__items = value or []
 
     def _get_control_name(self):
         return "items"
