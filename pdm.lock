@@ -11,6 +11,12 @@ requires_python = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 summary = "Classes Without Boilerplate"
 
 [[package]]
+name = "beartype"
+version = "0.9.1"
+requires_python = ">=3.6.0"
+summary = "Unbearably fast runtime type checking in pure Python."
+
+[[package]]
 name = "colorama"
 version = "0.4.4"
 requires_python = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
@@ -104,7 +110,7 @@ summary = "Backport of pathlib-compatible object wrapper for zip files"
 
 [metadata]
 lock_version = "3.1"
-content_hash = "sha256:db659cb66c51bc33388cfb9b2dc7a102173edf966cc91f9434cce3c83e8b0c3c"
+content_hash = "sha256:94218754ca77d26089db017ba8115b2eeac8a09dda9a14a6f4bfbceda92306b8"
 
 [metadata.files]
 "atomicwrites 1.4.0" = [
@@ -114,6 +120,10 @@ content_hash = "sha256:db659cb66c51bc33388cfb9b2dc7a102173edf966cc91f9434cce3c83
 "attrs 21.4.0" = [
     {file = "attrs-21.4.0-py2.py3-none-any.whl", hash = "sha256:2d27e3784d7a565d36ab851fe94887c5eccd6a463168875832a1be79c82828b4"},
     {file = "attrs-21.4.0.tar.gz", hash = "sha256:626ba8234211db98e869df76230a137c4c40a12d72445c45d5f5b716f076e2fd"},
+]
+"beartype 0.9.1" = [
+    {file = "beartype-0.9.1-py3-none-any.whl", hash = "sha256:fb23f59b709dd29c4bff25ede0969cdd76aa7e7812abef704d08007ea07372e0"},
+    {file = "beartype-0.9.1.tar.gz", hash = "sha256:623630dc243b0da5a84f0fa414e6aaaf2613e567ad19abfe6a81c17ea5ab62f1"},
 ]
 "colorama 0.4.4" = [
     {file = "colorama-0.4.4-py2.py3-none-any.whl", hash = "sha256:9f47eda37229f68eee03b24b9748937c7dc3868f906e8ba69fbcbdd3bc5dc3e2"},

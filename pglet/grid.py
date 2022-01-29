@@ -1,4 +1,12 @@
+from types import SimpleNamespace
+from typing import Callable
+from typing import Mapping
+from typing import Optional
+from typing import Sequence
+
+from beartype import beartype
 from pglet.control import Control
+
 
 # Column
 class Column(Control):
