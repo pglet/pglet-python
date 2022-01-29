@@ -1,10 +1,70 @@
 import pglet
 from pglet import Grid, Column
+from pglet.protocol import Command
+
 
 class Contact():
     def __init__(self, first_name, last_name):
         self.first_name = first_name
         self.last_name = last_name
+
+
+expected_result = [
+    Command(
+        indent=0,
+        name=None,
+        values=["grid"],
+        attrs={"compact": "true", "headervisible": "true", "selection": "multiple", "shimmerlines": "1"},
+        lines=[],
+        commands=[],
+    ),
+    Command(indent=2, name=None, values=["columns"], attrs={}, lines=[], commands=[]),
+    Command(
+        indent=4,
+        name=None,
+        values=["column"],
+        attrs={
+            "fieldname": "first_name",
+            "icon": "mail",
+            "icononly": "true",
+            "maxwidth": "200",
+            "minwidth": "100",
+            "name": "First name",
+            "resizable": "false",
+            "sortable": "True",
+            "sorted": "false",
+            "sortfield": "sort field name",
+        },
+        lines=[],
+        commands=[],
+    ),
+    Command(
+        indent=4,
+        name=None,
+        values=["column"],
+        attrs={"fieldname": "last_name", "name": "Last name"},
+        lines=[],
+        commands=[],
+    ),
+    Command(indent=2, name=None, values=["items"], attrs={}, lines=[], commands=[]),
+    Command(
+        indent=4,
+        name=None,
+        values=["item"],
+        attrs={"first_name": "Inesa", "last_name": "Fitsner"},
+        lines=[],
+        commands=[],
+    ),
+    Command(
+        indent=4,
+        name=None,
+        values=["item"],
+        attrs={"first_name": "Fiodar", "last_name": "Fitsner"},
+        lines=[],
+        commands=[],
+    ),
+]
+
 
 def test_grid_add():
     g = Grid(selection_mode='multiple', compact=True, header_visible=True, shimmer_lines=1, columns=[
@@ -19,12 +79,4 @@ def test_grid_add():
 
     assert isinstance(g, pglet.Control)
     assert isinstance(g, pglet.Grid)
-    assert g.get_cmd_str() == (
-        'grid compact="true" headervisible="true" selection="multiple" shimmerlines="1"\n'
-        '  columns\n'
-        '    column fieldname="first_name" icon="mail" icononly="true" maxwidth="200" minwidth="100" name="First name" resizable="false" sortable="True" sorted="false" sortfield="sort field name"\n'
-        '    column fieldname="last_name" name="Last name"\n'
-        '  items\n'
-        '    item first_name="Inesa" last_name="Fitsner"\n'
-        '    item first_name="Fiodar" last_name="Fitsner"'
-    ), "Test failed"
+    assert g.get_cmd_str() == expected_result, "Test failed"
