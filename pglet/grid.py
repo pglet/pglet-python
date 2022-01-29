@@ -69,8 +69,8 @@ class Column(Control):
         return self._get_attr("iconOnly")
 
     @icon_only.setter
-    def icon_only(self, value):
-        assert value == None or isinstance(value, bool), "iconOnly must be a boolean"
+    @beartype
+    def icon_only(self, value: Optional[bool]):
         self._set_attr("iconOnly", value)
 
     # field_name
@@ -115,8 +115,8 @@ class Column(Control):
         return self._get_attr("resizable")
 
     @resizable.setter
-    def resizable(self, value):
-        assert value == None or isinstance(value, bool), "resizable must be a boolean"
+    @beartype
+    def resizable(self, value: Optional[bool]):
         self._set_attr("resizable", value)
 
     # min_width
@@ -125,8 +125,8 @@ class Column(Control):
         return self._get_attr("minWidth")
 
     @min_width.setter
-    def min_width(self, value):
-        assert value == None or isinstance(value, int), "minWidth must be an int"
+    @beartype
+    def min_width(self, value: Optional[int]):
         self._set_attr("minWidth", value)
     
     
@@ -136,8 +136,8 @@ class Column(Control):
         return self._get_attr("maxWidth")
 
     @max_width.setter
-    def max_width(self, value):
-        assert value == None or isinstance(value, int), "maxWidth must be an int"
+    @beartype
+    def max_width(self, value: Optional[int]):  # could these not be floats? Union[None, int, float]
         self._set_attr("maxWidth", value)
 
     # on_click
@@ -146,8 +146,8 @@ class Column(Control):
         return self._get_attr("on_click")
 
     @on_click.setter
-    def on_click(self, value):
-        assert value == None or isinstance(value, bool), "resizable must be a boolean"
+    @beartype
+    def on_click(self, value: Optional[Callable]):
         self._set_attr("on_click", value)
 
     def _get_children(self):
@@ -360,8 +360,8 @@ class Grid(Control):
         return self._get_attr("compact")
 
     @compact.setter
-    def compact(self, value):
-        assert value == None or isinstance(value, bool), "compact must be a boolean"
+    @beartype
+    def compact(self, value: Optional[bool]):
         self._set_attr("compact", value)
 
     # header_visible
@@ -370,8 +370,8 @@ class Grid(Control):
         return self._get_attr("headerVisible")
 
     @header_visible.setter
-    def header_visible(self, value):
-        assert value == None or isinstance(value, bool), "header_visible must be a boolean"
+    @beartype
+    def header_visible(self, value: Optional[bool]):
         self._set_attr("headerVisible", value)
 
     # preserve_selection
@@ -380,8 +380,8 @@ class Grid(Control):
         return self._get_attr("preserveSelection")
 
     @preserve_selection.setter
-    def preserve_selection(self, value):
-        assert value == None or isinstance(value, bool), "preserve_selection must be a boolean"
+    @beartype
+    def preserve_selection(self, value: Optional[bool]):
         self._set_attr("preserveSelection", value)
 
     # shimmer_lines
@@ -390,8 +390,8 @@ class Grid(Control):
         return self._get_attr("shimmerLines")
 
     @shimmer_lines.setter
-    def shimmer_lines(self, value):
-        assert value == None or isinstance(value, int), "shimmerLines must be an int"
+    @beartype
+    def shimmer_lines(self, value: Optional[int]):
         self._set_attr("shimmerLines", value)
 
     def _on_select_internal(self, e):
