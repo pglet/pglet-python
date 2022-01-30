@@ -1,8 +1,6 @@
-from types import SimpleNamespace
-from typing import Callable
-from typing import Mapping
+from __future__ import annotations
+
 from typing import Optional
-from typing import Sequence
 
 from beartype import beartype
 from pglet.control import Control
@@ -146,8 +144,7 @@ class Column(Control):
         return self._get_attr("on_click")
 
     @on_click.setter
-    @beartype
-    def on_click(self, value: Optional[Callable]):
+    def on_click(self, value):  # beartype currently has an issue with typing.Callable
         self._set_attr("on_click", value)
 
     def _get_children(self):
@@ -173,11 +170,16 @@ class Item(Control):
                 value = float(str(value))
 
         self._set_attr_internal(name, value, dirty=False)
-        setattr(self.obj, name, value)
+        if isinstance(self.obj, dict):
+            self.obj[name] = value
+        else:
+            setattr(self.obj, name, value)
 
     def _fetch_attrs(self):
         # reflection
-        for name, val in vars(self.obj).items():
+        obj = self.obj if isinstance(self.obj, dict) else vars(self.obj)
+
+        for name, val in obj.items():
             data_type = type(val).__name__ if isinstance(val, (bool, float)) else "string"
             orig_val = self._get_attr(name, data_type=data_type)
 
@@ -191,7 +193,7 @@ class Item(Control):
 class Columns(Control):
     def __init__(self, id=None, columns=None):
         Control.__init__(self, id=id)
-    
+
         self.columns = columns
 
     def _get_control_name(self):
@@ -202,10 +204,6 @@ class Columns(Control):
 
 # Items
 class Items(Control):
-    class DictItem(SimpleNamespace):
-        def __hash__(self):
-            return hash(tuple(self.__dict__.items()))
-
     def __init__(self, id=None, items=None):
         Control.__init__(self, id=id)
     
@@ -220,9 +218,7 @@ class Items(Control):
 
     @items.setter
     @beartype
-    def items(self, value: Optional[Sequence]):
-        if value:
-            value = [Items.DictItem(**item) if isinstance(item, Mapping) else item for item in value]
+    def items(self, value: Optional[list]):
         self.__items = value or []
 
     def _get_control_name(self):
@@ -231,13 +227,16 @@ class Items(Control):
     def _get_children(self):
         items = []
         for obj in self.__items:
-            item = self.__map.setdefault(obj, Item(obj))
+            key = obj
+            if isinstance(obj, dict):
+                key = tuple(obj.items())
+            item = self.__map.setdefault(key, Item(obj))
             item._fetch_attrs()
             items.append(item)
 
-        del_objs = [obj for obj, item in self.__map.items() if item not in items]
-        for obj in del_objs:
-            del self.__map[obj]
+        del_objs = [key for key, item in self.__map.items() if item not in items]
+        for key in del_objs:
+            del self.__map[key]
                 
         return items
 
