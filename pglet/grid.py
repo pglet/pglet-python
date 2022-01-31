@@ -6,6 +6,207 @@ from beartype import beartype
 from pglet.control import Control
 
 
+class Grid(Control):
+    def __init__(
+        self,
+        id=None,
+        selection_mode=None,
+        compact=None,
+        header_visible=None,
+        shimmer_lines=None,
+        preserve_selection=None,
+        columns=None,
+        items=None,
+        on_select=None,
+        onitem_invoke=None,
+        width=None,
+        height=None,
+        padding=None,
+        margin=None,
+        visible=None,
+        disabled=None,
+    ):
+        Control.__init__(
+            self, id=id, width=width, height=height, padding=padding, margin=margin, visible=visible, disabled=disabled
+        )
+
+        self.selection_mode = selection_mode
+        self.compact = compact
+        self.header_visible = header_visible
+        self.shimmer_lines = shimmer_lines
+        self.preserve_selection = preserve_selection
+        self._on_select_handler = None
+        self.on_select = on_select
+        self.onitem_invoke = onitem_invoke
+        self._columns = Columns(columns=columns)
+        self._items = Items(items=items)
+        self._selected_items = []
+
+    def _get_control_name(self):
+        return "grid"
+
+    # columns
+    @property
+    def columns(self):
+        return self._columns.columns
+
+    @columns.setter
+    def columns(self, value):
+        self._columns.columns = value
+
+    # items
+    @property
+    def items(self):
+        return self._items.items
+
+    @items.setter
+    def items(self, value):
+        self._items.items = value
+
+    # on_select
+    @property
+    def on_select(self):
+        return self._on_select_handler
+
+    @on_select.setter
+    def on_select(self, handler):
+        self._on_select_handler = handler
+        self._add_event_handler("select", self._on_select_internal)
+
+    # selected_items
+    @property
+    def selected_items(self):
+        return self._selected_items
+
+    @selected_items.setter
+    def selected_items(self, value):
+        self._selected_items = value
+        indices = [
+            str(idx) for selected_item in value for idx, item in enumerate(self._items.items) if item == selected_item
+        ]
+        self._set_attr("selectedindices", " ".join(indices))
+
+    # onitem_invoke
+    @property
+    def onitem_invoke(self):
+        return self._get_event_handler("itemInvoke")
+
+    @onitem_invoke.setter
+    def onitem_invoke(self, handler):
+        self._add_event_handler("itemInvoke", handler)
+
+    # selection_mode
+    @property
+    def selection_mode(self):
+        return self._get_attr("selection")
+
+    @selection_mode.setter
+    def selection_mode(self, value):
+        self._set_attr("selection", value)
+
+    # compact
+    @property
+    def compact(self):
+        return self._get_attr("compact")
+
+    @compact.setter
+    @beartype
+    def compact(self, value: Optional[bool]):
+        self._set_attr("compact", value)
+
+    # header_visible
+    @property
+    def header_visible(self):
+        return self._get_attr("headerVisible")
+
+    @header_visible.setter
+    @beartype
+    def header_visible(self, value: Optional[bool]):
+        self._set_attr("headerVisible", value)
+
+    # preserve_selection
+    @property
+    def preserve_selection(self):
+        return self._get_attr("preserveSelection")
+
+    @preserve_selection.setter
+    @beartype
+    def preserve_selection(self, value: Optional[bool]):
+        self._set_attr("preserveSelection", value)
+
+    # shimmer_lines
+    @property
+    def shimmer_lines(self):
+        return self._get_attr("shimmerLines")
+
+    @shimmer_lines.setter
+    @beartype
+    def shimmer_lines(self, value: Optional[int]):
+        self._set_attr("shimmerLines", value)
+
+    def _on_select_internal(self, e):
+        self._selected_items = [self.page.get_control(id).obj for id in e.data.split()]
+
+        if self._on_select_handler != None:
+            self._on_select_handler(e)
+
+    def _get_children(self):
+        return [self._columns, self._items]
+
+
+# Columns
+class Columns(Control):
+    def __init__(self, id=None, columns=None):
+        Control.__init__(self, id=id)
+
+        self.columns = columns
+
+    def _get_control_name(self):
+        return "columns"
+
+    def _get_children(self):
+        return self.columns
+
+
+# Items
+class Items(Control):
+    def __init__(self, id=None, items=None):
+        Control.__init__(self, id=id)
+
+        self.__map = {}
+        self.__items = []
+        self.items = items
+
+    # items
+    @property
+    def items(self):
+        return self.__items
+
+    @items.setter
+    @beartype
+    def items(self, value: Optional[list]):
+        self.__items = value or []
+
+    def _get_control_name(self):
+        return "items"
+
+    def _get_children(self):
+        items = []
+        for obj in self.__items:
+            key = obj
+            if isinstance(obj, dict):
+                key = tuple(obj.items())
+            item = self.__map.setdefault(key, Item(obj))
+            item._fetch_attrs()
+            items.append(item)
+
+        del_objs = [key for key, item in self.__map.items() if item not in items]
+        for key in del_objs:
+            del self.__map[key]
+
+        return items
+
+
 # Column
 class Column(Control):
     def __init__(
@@ -126,8 +327,7 @@ class Column(Control):
     @beartype
     def min_width(self, value: Optional[int]):
         self._set_attr("minWidth", value)
-    
-    
+
     # max_width
     @property
     def max_width(self):
@@ -149,6 +349,7 @@ class Column(Control):
 
     def _get_children(self):
         return self.template_controls
+
 
 # Item
 class Item(Control):
@@ -188,203 +389,3 @@ class Item(Control):
 
     def _get_control_name(self):
         return "item"
-
-# Columns
-class Columns(Control):
-    def __init__(self, id=None, columns=None):
-        Control.__init__(self, id=id)
-
-        self.columns = columns
-
-    def _get_control_name(self):
-        return "columns"
-
-    def _get_children(self):
-        return self.columns
-
-# Items
-class Items(Control):
-    def __init__(self, id=None, items=None):
-        Control.__init__(self, id=id)
-    
-        self.__map = {}
-        self.__items = []
-        self.items = items
-
-    # items
-    @property
-    def items(self):
-        return self.__items
-
-    @items.setter
-    @beartype
-    def items(self, value: Optional[list]):
-        self.__items = value or []
-
-    def _get_control_name(self):
-        return "items"
-
-    def _get_children(self):
-        items = []
-        for obj in self.__items:
-            key = obj
-            if isinstance(obj, dict):
-                key = tuple(obj.items())
-            item = self.__map.setdefault(key, Item(obj))
-            item._fetch_attrs()
-            items.append(item)
-
-        del_objs = [key for key, item in self.__map.items() if item not in items]
-        for key in del_objs:
-            del self.__map[key]
-                
-        return items
-
-class Grid(Control):
-    def __init__(
-        self,
-        id=None,
-        selection_mode=None,
-        compact=None,
-        header_visible=None,
-        shimmer_lines=None,
-        preserve_selection=None,
-        columns=None,
-        items=None,
-        on_select=None,
-        onitem_invoke=None,
-        width=None,
-        height=None,
-        padding=None,
-        margin=None,
-        visible=None,
-        disabled=None,
-    ):
-
-        Control.__init__(
-            self, id=id, width=width, height=height, padding=padding, margin=margin, visible=visible, disabled=disabled
-        )
-
-        self.selection_mode = selection_mode
-        self.compact = compact
-        self.header_visible = header_visible
-        self.shimmer_lines = shimmer_lines
-        self.preserve_selection = preserve_selection
-        self._on_select_handler = None
-        self.on_select = on_select
-        self.onitem_invoke = onitem_invoke
-        self._columns = Columns(columns=columns)
-        self._items = Items(items=items)
-        self._selected_items = []
-        
-    def _get_control_name(self):
-        return "grid"
-
-    # columns
-    @property
-    def columns(self):
-        return self._columns.columns
-
-    @columns.setter
-    def columns(self, value):
-        self._columns.columns = value
-
-    # items
-    @property
-    def items(self):
-        return self._items.items
-
-    @items.setter
-    def items(self, value):
-        self._items.items = value
-    
-    # on_select
-    @property
-    def on_select(self):
-        return self._on_select_handler
-
-    @on_select.setter
-    def on_select(self, handler):
-        self._on_select_handler = handler
-        self._add_event_handler("select", self._on_select_internal)
-
-    # selected_items
-    @property
-    def selected_items(self):
-        return self._selected_items
-
-    @selected_items.setter
-    def selected_items(self, value):
-        self._selected_items = value
-        indices = [
-            str(idx) for selected_item in value for idx, item in enumerate(self._items.items) if item == selected_item
-        ]
-        self._set_attr("selectedindices", " ".join(indices))
-
-    # onitem_invoke
-    @property
-    def onitem_invoke(self):
-        return self._get_event_handler("itemInvoke")
-
-    @onitem_invoke.setter
-    def onitem_invoke(self, handler):
-        self._add_event_handler("itemInvoke", handler)
-
-    # selection_mode
-    @property
-    def selection_mode(self):
-        return self._get_attr("selection")
-
-    @selection_mode.setter
-    def selection_mode(self, value):
-        self._set_attr("selection", value)
-
-    # compact
-    @property
-    def compact(self):
-        return self._get_attr("compact")
-
-    @compact.setter
-    @beartype
-    def compact(self, value: Optional[bool]):
-        self._set_attr("compact", value)
-
-    # header_visible
-    @property
-    def header_visible(self):
-        return self._get_attr("headerVisible")
-
-    @header_visible.setter
-    @beartype
-    def header_visible(self, value: Optional[bool]):
-        self._set_attr("headerVisible", value)
-
-    # preserve_selection
-    @property
-    def preserve_selection(self):
-        return self._get_attr("preserveSelection")
-
-    @preserve_selection.setter
-    @beartype
-    def preserve_selection(self, value: Optional[bool]):
-        self._set_attr("preserveSelection", value)
-
-    # shimmer_lines
-    @property
-    def shimmer_lines(self):
-        return self._get_attr("shimmerLines")
-
-    @shimmer_lines.setter
-    @beartype
-    def shimmer_lines(self, value: Optional[int]):
-        self._set_attr("shimmerLines", value)
-
-    def _on_select_internal(self, e):
-
-        self._selected_items = [self.page.get_control(id).obj for id in e.data.split()]
-
-        if self._on_select_handler != None:
-            self._on_select_handler(e)
-
-    def _get_children(self):
-        return [self._columns, self._items]
