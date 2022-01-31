@@ -1,15 +1,20 @@
 import pglet
 from pglet import Panel, Text, Button
 
+
 def test_panel_add():
-    p = Panel(open=True, title='Hello', type='small',
-    auto_dismiss=True, light_dismiss=False, width=100,
-    blocking=False, data='data1', controls=[
-        Text(value='Are you sure?')
-        ], footer=[
-        Button(text='OK'),
-        Button(text="Cancel")
-    ])
+    p = Panel(
+        open=True,
+        title="Hello",
+        type="small",
+        auto_dismiss=True,
+        light_dismiss=False,
+        width=100,
+        blocking=False,
+        data="data1",
+        controls=[Text(value="Are you sure?")],
+        footer=[Button(text="OK"), Button(text="Cancel")],
+    )
 
     assert isinstance(p, pglet.Control)
     assert isinstance(p, pglet.Panel)
@@ -17,7 +22,7 @@ def test_panel_add():
         'panel autodismiss="true" blocking="false" data="data1" lightdismiss="false" '
         'open="true" title="Hello" type="small" width="100"\n'
         '  text value="Are you sure?"\n'
-        '  footer\n'
+        "  footer\n"
         '    button text="OK"\n'
         '    button text="Cancel"'
     ), "Test failed"

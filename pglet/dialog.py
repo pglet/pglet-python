@@ -4,7 +4,7 @@ from pglet.control import Control
 class Footer(Control):
     def __init__(self, id=None, controls=None):
         Control.__init__(self, id=id)
-    
+
         self.__controls = []
         if controls != None:
             for control in controls:
@@ -25,16 +25,43 @@ class Footer(Control):
     def _get_children(self):
         return self.__controls
 
+
 class Dialog(Control):
-    def __init__(self, id=None, open=None, title=None, sub_text=None, type=None,
-            auto_dismiss=None, width=None, max_width=None, height=None, fixed_top=None,
-            blocking=None, data=None, controls=None, footer=None, on_dismiss=None,
-            padding=None, margin=None, visible=None, disabled=None):
-        
-        Control.__init__(self, id=id,
-            width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled, data=data)
-        
+    def __init__(
+        self,
+        id=None,
+        open=None,
+        title=None,
+        sub_text=None,
+        type=None,
+        auto_dismiss=None,
+        width=None,
+        max_width=None,
+        height=None,
+        fixed_top=None,
+        blocking=None,
+        data=None,
+        controls=None,
+        footer=None,
+        on_dismiss=None,
+        padding=None,
+        margin=None,
+        visible=None,
+        disabled=None,
+    ):
+
+        Control.__init__(
+            self,
+            id=id,
+            width=width,
+            height=height,
+            padding=padding,
+            margin=margin,
+            visible=visible,
+            disabled=disabled,
+            data=data,
+        )
+
         self.open = open
         self.title = title
         self.sub_text = sub_text
@@ -65,8 +92,8 @@ class Dialog(Control):
     # footer
     @property
     def footer(self):
-        return self.__footer 
-    
+        return self.__footer
+
     # on_dismiss
     @property
     def on_dismiss(self):
@@ -153,7 +180,7 @@ class Dialog(Control):
         self._set_attr("blocking", value)
 
     def _get_children(self):
-        result=[]
+        result = []
         if self.__controls and len(self.__controls) > 0:
             for control in self.__controls:
                 result.append(control)

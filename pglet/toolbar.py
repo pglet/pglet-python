@@ -2,9 +2,24 @@ from pglet.control import Control
 
 # Item
 class Item(Control):
-    def __init__(self, id=None, text=None, secondary_text=None, url=None, new_window=None,
-    icon=None, icon_color=None, icon_only=None, split=None, divider=None,
-    on_click=None, items=None, visible=None, disabled=None, data=None):
+    def __init__(
+        self,
+        id=None,
+        text=None,
+        secondary_text=None,
+        url=None,
+        new_window=None,
+        icon=None,
+        icon_color=None,
+        icon_only=None,
+        split=None,
+        divider=None,
+        on_click=None,
+        items=None,
+        visible=None,
+        disabled=None,
+        data=None,
+    ):
         Control.__init__(self, id=id, visible=visible, disabled=disabled, data=data)
 
         self.text = text
@@ -131,11 +146,12 @@ class Item(Control):
     def _get_children(self):
         return self.__items
 
+
 # Overflow
 class Overflow(Control):
     def __init__(self, id=None, items=None):
         Control.__init__(self, id=id)
-    
+
         self.__items = []
         if items != None:
             for item in items:
@@ -156,11 +172,12 @@ class Overflow(Control):
     def _get_children(self):
         return self.__items
 
+
 # Far
 class Far(Control):
     def __init__(self, id=None, items=None):
         Control.__init__(self, id=id)
-    
+
         self.__items = []
         if items != None:
             for item in items:
@@ -183,12 +200,31 @@ class Far(Control):
 
 
 class Toolbar(Control):
-    def __init__(self, id=None, inverted=None, items=None, overflow=None, far=None,
-            width=None, height=None, padding=None, margin=None, visible=None, disabled=None):
-        
-        Control.__init__(self, id=id,
-            width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
+    def __init__(
+        self,
+        id=None,
+        inverted=None,
+        items=None,
+        overflow=None,
+        far=None,
+        width=None,
+        height=None,
+        padding=None,
+        margin=None,
+        visible=None,
+        disabled=None,
+    ):
+
+        Control.__init__(
+            self,
+            id=id,
+            width=width,
+            height=height,
+            padding=padding,
+            margin=margin,
+            visible=visible,
+            disabled=disabled,
+        )
 
         self.__items = []
         if items != None:
@@ -197,7 +233,7 @@ class Toolbar(Control):
         self.__overflow = Overflow(items=overflow)
         self.__far = Far(items=far)
         self.inverted = inverted
-        
+
     def _get_control_name(self):
         return "toolbar"
 
@@ -239,7 +275,7 @@ class Toolbar(Control):
         self.__overflow.items = value
 
     def _get_children(self):
-        result=[]
+        result = []
         if self.__items and len(self.__items) > 0:
             for item in self.__items:
                 result.append(item)

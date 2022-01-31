@@ -1,14 +1,24 @@
 from datetime import datetime, date
 from pglet.control import Control
 
+
 class DatePicker(Control):
-    def __init__(self, label=None, id=None, value=None, placeholder=None,
-            required=None, allow_text_input=None, underlined=None, borderless=None,
-            on_change=None,
-            width=None, visible=None, disabled=None):
-        Control.__init__(self, id=id,
-            width=width,
-            visible=visible, disabled=disabled)
+    def __init__(
+        self,
+        label=None,
+        id=None,
+        value=None,
+        placeholder=None,
+        required=None,
+        allow_text_input=None,
+        underlined=None,
+        borderless=None,
+        on_change=None,
+        width=None,
+        visible=None,
+        disabled=None,
+    ):
+        Control.__init__(self, id=id, width=width, visible=visible, disabled=disabled)
         self.label = label
         self.value = value
         self.placeholder = placeholder
@@ -26,10 +36,10 @@ class DatePicker(Control):
         if d == "":
             d = None
         elif name == "value" and d != None and not isinstance(d, date):
-            d = datetime.fromisoformat(value.replace('Z', '+00:00'))
+            d = datetime.fromisoformat(value.replace("Z", "+00:00"))
         self._set_attr_internal(name, d, dirty)
 
-# label
+    # label
     @property
     def label(self):
         return self._get_attr("label")
@@ -38,7 +48,7 @@ class DatePicker(Control):
     def label(self, value):
         self._set_attr("label", value)
 
-# value
+    # value
     @property
     def value(self):
         return self._get_attr("value")
@@ -47,7 +57,7 @@ class DatePicker(Control):
     def value(self, value):
         self._set_attr("value", value)
 
-# placeholder
+    # placeholder
     @property
     def placeholder(self):
         return self._get_attr("placeholder")
@@ -56,17 +66,19 @@ class DatePicker(Control):
     def placeholder(self, value):
         self._set_attr("placeholder", value)
 
-# allow_text_input
+    # allow_text_input
     @property
     def allow_text_input(self):
         return self._get_attr("allowTextInput")
 
     @allow_text_input.setter
     def allow_text_input(self, value):
-        assert value == None or isinstance(value, bool), "allow_text_input must be a boolean"
+        assert value == None or isinstance(
+            value, bool
+        ), "allow_text_input must be a boolean"
         self._set_attr("allowTextInput", value)
 
-# underlined
+    # underlined
     @property
     def underlined(self):
         return self._get_attr("underlined")
@@ -76,7 +88,7 @@ class DatePicker(Control):
         assert value == None or isinstance(value, bool), "underlined must be a boolean"
         self._set_attr("underlined", value)
 
-# borderless
+    # borderless
     @property
     def borderless(self):
         return self._get_attr("borderless")
@@ -84,9 +96,9 @@ class DatePicker(Control):
     @borderless.setter
     def borderless(self, value):
         assert value == None or isinstance(value, bool), "borderless must be a boolean"
-        self._set_attr("borderless", value)                                
+        self._set_attr("borderless", value)
 
-# required
+    # required
     @property
     def required(self):
         return self._get_attr("required")
@@ -96,7 +108,7 @@ class DatePicker(Control):
         assert value == None or isinstance(value, bool), "required must be a boolean"
         self._set_attr("required", value)
 
-# on_change
+    # on_change
     @property
     def on_change(self):
         return self._get_event_handler("change")

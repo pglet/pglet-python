@@ -1,13 +1,38 @@
 from pglet.control import Control
 
+
 class Slider(Control):
-    def __init__(self, label=None, id=None, value=None, min=None, max=None, step=None,
-            show_value=None, value_format=None, vertical=None, data=None, on_change=None,
-            width=None, height=None, padding=None, margin=None,
-            visible=None, disabled=None):
-        Control.__init__(self, id=id,
-            width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled, data=data)
+    def __init__(
+        self,
+        label=None,
+        id=None,
+        value=None,
+        min=None,
+        max=None,
+        step=None,
+        show_value=None,
+        value_format=None,
+        vertical=None,
+        data=None,
+        on_change=None,
+        width=None,
+        height=None,
+        padding=None,
+        margin=None,
+        visible=None,
+        disabled=None,
+    ):
+        Control.__init__(
+            self,
+            id=id,
+            width=width,
+            height=height,
+            padding=padding,
+            margin=margin,
+            visible=visible,
+            disabled=disabled,
+            data=data,
+        )
         self.value = value
         self.label = label
         self.min = min
@@ -21,7 +46,7 @@ class Slider(Control):
     def _get_control_name(self):
         return "slider"
 
-# on_change
+    # on_change
     @property
     def on_change(self):
         return self._get_event_handler("change")
@@ -30,17 +55,19 @@ class Slider(Control):
     def on_change(self, handler):
         self._add_event_handler("change", handler)
 
-# value
+    # value
     @property
     def value(self):
         return self._get_attr("value", data_type="float")
 
     @value.setter
     def value(self, value):
-        assert value == None or isinstance(value, float) or isinstance(value, int), "value must be a float"
+        assert (
+            value == None or isinstance(value, float) or isinstance(value, int)
+        ), "value must be a float"
         self._set_attr("value", value)
 
-# label
+    # label
     @property
     def label(self):
         return self._get_attr("label")
@@ -49,37 +76,43 @@ class Slider(Control):
     def label(self, value):
         self._set_attr("label", value)
 
-# min
+    # min
     @property
     def min(self):
         return self._get_attr("min")
 
     @min.setter
     def min(self, value):
-        assert value == None or isinstance(value, float) or isinstance(value, int), "min must be a float"
+        assert (
+            value == None or isinstance(value, float) or isinstance(value, int)
+        ), "min must be a float"
         self._set_attr("min", value)
 
-# max
+    # max
     @property
     def max(self):
         return self._get_attr("max")
 
     @max.setter
     def max(self, value):
-        assert value == None or isinstance(value, float) or isinstance(value, int), "max must be a float"
+        assert (
+            value == None or isinstance(value, float) or isinstance(value, int)
+        ), "max must be a float"
         self._set_attr("max", value)
 
-# step
+    # step
     @property
     def step(self):
         return self._get_attr("step")
 
     @step.setter
     def step(self, value):
-        assert value == None or isinstance(value, float) or isinstance(value, int), "step must be a float"
+        assert (
+            value == None or isinstance(value, float) or isinstance(value, int)
+        ), "step must be a float"
         self._set_attr("step", value)
 
-# show_value
+    # show_value
     @property
     def show_value(self):
         return self._get_attr("showValue")
@@ -89,7 +122,7 @@ class Slider(Control):
         assert value == None or isinstance(value, bool), "show_value must be a boolean"
         self._set_attr("showValue", value)
 
-# value_format
+    # value_format
     @property
     def value_format(self):
         return self._get_attr("valueFormat")
@@ -98,7 +131,7 @@ class Slider(Control):
     def value_format(self, value):
         self._set_attr("valueFormat", value)
 
-# vertical
+    # vertical
     @property
     def vertical(self):
         return self._get_attr("vertical")

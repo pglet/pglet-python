@@ -1,12 +1,14 @@
 from dataclasses import dataclass, field
 from typing import Dict, List
 
+
 class Actions:
     REGISTER_HOST_CLIENT = "registerHostClient"
     SESSION_CREATED = "sessionCreated"
     PAGE_COMMAND_FROM_HOST = "pageCommandFromHost"
     PAGE_COMMANDS_BATCH_FROM_HOST = "pageCommandsBatchFromHost"
     PAGE_EVENT_TO_HOST = "pageEventToHost"
+
 
 @dataclass
 class Command:
@@ -17,11 +19,13 @@ class Command:
     lines: List[str] = field(default_factory=list)
     commands: List[any] = field(default_factory=list)
 
+
 @dataclass
 class Message:
     id: str
     action: str
     payload: any
+
 
 @dataclass
 class PageCommandRequestPayload:
@@ -29,10 +33,12 @@ class PageCommandRequestPayload:
     sessionID: str
     command: Command
 
+
 @dataclass
 class PageCommandResponsePayload:
     result: str
     error: str
+
 
 @dataclass
 class PageCommandsBatchRequestPayload:
@@ -40,10 +46,12 @@ class PageCommandsBatchRequestPayload:
     sessionID: str
     commands: List[Command]
 
+
 @dataclass
 class PageCommandsBatchResponsePayload:
     results: List[str]
     error: str
+
 
 @dataclass
 class PageEventPayload:
@@ -53,6 +61,7 @@ class PageEventPayload:
     eventName: str
     eventData: str
 
+
 @dataclass
 class RegisterHostClientRequestPayload:
     hostClientID: str
@@ -61,6 +70,7 @@ class RegisterHostClientRequestPayload:
     authToken: str
     permissions: str
 
+
 @dataclass
 class RegisterHostClientResponsePayload:
     hostClientID: str
@@ -68,7 +78,8 @@ class RegisterHostClientResponsePayload:
     sessionID: str
     error: str
 
+
 @dataclass
 class PageSessionCreatedPayload:
-    pageName: str    
+    pageName: str
     sessionID: str

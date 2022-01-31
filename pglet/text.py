@@ -1,16 +1,49 @@
 from pglet.control import Control
 
-class Text(Control):
-    def __init__(self, value=None, id=None, markdown=None, align=None, vertical_align=None,
-            size=None, bold=None, italic=None, pre=None, nowrap=None,
-            block=None, color=None, bgcolor=None, border=None, border_style=None, border_width=None,
-            border_color=None, border_radius=None, border_left=None, border_right=None, border_top=None, 
-            border_bottom=None, width=None, height=None, padding=None, margin=None,
-            visible=None, disabled=None):
 
-        Control.__init__(self, id=id,
-            width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
+class Text(Control):
+    def __init__(
+        self,
+        value=None,
+        id=None,
+        markdown=None,
+        align=None,
+        vertical_align=None,
+        size=None,
+        bold=None,
+        italic=None,
+        pre=None,
+        nowrap=None,
+        block=None,
+        color=None,
+        bgcolor=None,
+        border=None,
+        border_style=None,
+        border_width=None,
+        border_color=None,
+        border_radius=None,
+        border_left=None,
+        border_right=None,
+        border_top=None,
+        border_bottom=None,
+        width=None,
+        height=None,
+        padding=None,
+        margin=None,
+        visible=None,
+        disabled=None,
+    ):
+
+        Control.__init__(
+            self,
+            id=id,
+            width=width,
+            height=height,
+            padding=padding,
+            margin=margin,
+            visible=visible,
+            disabled=disabled,
+        )
 
         self.value = value
         self.markdown = markdown
@@ -37,7 +70,7 @@ class Text(Control):
     def _get_control_name(self):
         return "text"
 
-# value
+    # value
     @property
     def value(self):
         return self._get_attr("value")
@@ -46,7 +79,7 @@ class Text(Control):
     def value(self, value):
         self._set_attr("value", value)
 
-# markdown
+    # markdown
     @property
     def markdown(self):
         return self._get_attr("markdown")
@@ -56,7 +89,7 @@ class Text(Control):
         assert value == None or isinstance(value, bool), "markdown must be a boolean"
         self._set_attr("markdown", value)
 
-# align
+    # align
     @property
     def align(self):
         return self._get_attr("align")
@@ -65,7 +98,7 @@ class Text(Control):
     def align(self, value):
         self._set_attr("align", value)
 
-# vertical_align
+    # vertical_align
     @property
     def vertical_align(self):
         return self._get_attr("verticalAlign")
@@ -74,7 +107,7 @@ class Text(Control):
     def vertical_align(self, value):
         self._set_attr("verticalAlign", value)
 
-# size
+    # size
     @property
     def size(self):
         return self._get_attr("size")
@@ -83,7 +116,7 @@ class Text(Control):
     def size(self, value):
         self._set_attr("size", value)
 
-# bold
+    # bold
     @property
     def bold(self):
         return self._get_attr("bold")
@@ -93,7 +126,7 @@ class Text(Control):
         assert value == None or isinstance(value, bool), "value must be a boolean"
         self._set_attr("bold", value)
 
-# italic
+    # italic
     @property
     def italic(self):
         return self._get_attr("italic")
@@ -103,7 +136,7 @@ class Text(Control):
         assert value == None or isinstance(value, bool), "value must be a boolean"
         self._set_attr("italic", value)
 
-# pre
+    # pre
     @property
     def pre(self):
         return self._get_attr("pre")
@@ -113,7 +146,7 @@ class Text(Control):
         assert value == None or isinstance(value, bool), "value must be a boolean"
         self._set_attr("pre", value)
 
-# nowrap
+    # nowrap
     @property
     def nowrap(self):
         return self._get_attr("nowrap")
@@ -123,7 +156,7 @@ class Text(Control):
         assert value == None or isinstance(value, bool), "value must be a boolean"
         self._set_attr("nowrap", value)
 
-# block
+    # block
     @property
     def block(self):
         return self._get_attr("block")
@@ -133,7 +166,7 @@ class Text(Control):
         assert value == None or isinstance(value, bool), "value must be a boolean"
         self._set_attr("block", value)
 
-# color
+    # color
     @property
     def color(self):
         return self._get_attr("color")
@@ -142,7 +175,7 @@ class Text(Control):
     def color(self, value):
         self._set_attr("color", value)
 
-# bgcolor
+    # bgcolor
     @property
     def bgcolor(self):
         return self._get_attr("bgcolor")
@@ -151,7 +184,7 @@ class Text(Control):
     def bgcolor(self, value):
         self._set_attr("bgcolor", value)
 
-# border
+    # border
     @property
     def border(self):
         return self._get_attr("border")
@@ -160,7 +193,7 @@ class Text(Control):
     def border(self, value):
         self._set_attr("border", value)
 
-# border_style
+    # border_style
     @property
     def border_style(self):
         return self._get_attr("borderStyle")
@@ -169,7 +202,7 @@ class Text(Control):
     def border_style(self, value):
         self._set_attr("borderStyle", value)
 
-# border_width
+    # border_width
     @property
     def border_width(self):
         return self._get_attr("borderWidth")
@@ -178,7 +211,7 @@ class Text(Control):
     def border_width(self, value):
         self._set_attr("borderWidth", value)
 
-# border_color
+    # border_color
     @property
     def border_color(self):
         return self._get_attr("borderColor")
@@ -187,7 +220,7 @@ class Text(Control):
     def border_color(self, value):
         self._set_attr("borderColor", value)
 
-# border_radius
+    # border_radius
     @property
     def border_radius(self):
         return self._get_attr("borderRadius")
@@ -196,7 +229,7 @@ class Text(Control):
     def border_radius(self, value):
         self._set_attr("borderRadius", value)
 
-# border_left
+    # border_left
     @property
     def border_left(self):
         return self._get_attr("borderLeft")
@@ -205,7 +238,7 @@ class Text(Control):
     def border_left(self, value):
         self._set_attr("borderLeft", value)
 
-# border_right
+    # border_right
     @property
     def border_right(self):
         return self._get_attr("borderRight")
@@ -214,7 +247,7 @@ class Text(Control):
     def border_right(self, value):
         self._set_attr("borderRight", value)
 
-# border_top
+    # border_top
     @property
     def border_top(self):
         return self._get_attr("borderTop")
@@ -223,7 +256,7 @@ class Text(Control):
     def border_top(self, value):
         self._set_attr("borderTop", value)
 
-# border_bottom
+    # border_bottom
     @property
     def border_bottom(self):
         return self._get_attr("borderBottom")

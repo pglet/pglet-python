@@ -1,16 +1,17 @@
 from pglet.control import Control
 
+
 class Html(Control):
     def __init__(self, value=None, id=None, visible=None):
-        
+
         Control.__init__(self, id=id, visible=visible)
-        
+
         self.value = value
 
     def _get_control_name(self):
         return "html"
 
-# value
+    # value
     @property
     def value(self):
         return self._get_attr("value")

@@ -4,7 +4,7 @@ from pglet.control import Control
 class Tab(Control):
     def __init__(self, text, controls=None, id=None, key=None, icon=None, count=None):
         Control.__init__(self, id=id)
-        #key or text are required 
+        # key or text are required
         assert key != None or text != None, "key or text must be specified"
         self.key = key
         self.text = text
@@ -13,7 +13,7 @@ class Tab(Control):
         self.__controls = []
         if controls != None:
             for control in controls:
-                self.__controls.append(control)        
+                self.__controls.append(control)
 
     def _get_control_name(self):
         return "tab"
@@ -25,7 +25,7 @@ class Tab(Control):
 
     @controls.setter
     def controls(self, value):
-        self.__controls = value        
+        self.__controls = value
 
     # key
     @property
@@ -66,23 +66,41 @@ class Tab(Control):
     def _get_children(self):
         return self.__controls
 
+
 class Tabs(Control):
-    def __init__(self, tabs=None, id=None, value=None, solid=None,
-            on_change=None,
-            width=None, height=None, padding=None, margin=None,
-            visible=None, disabled=None):
-        
-        Control.__init__(self, id=id,
-            width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
-        
+    def __init__(
+        self,
+        tabs=None,
+        id=None,
+        value=None,
+        solid=None,
+        on_change=None,
+        width=None,
+        height=None,
+        padding=None,
+        margin=None,
+        visible=None,
+        disabled=None,
+    ):
+
+        Control.__init__(
+            self,
+            id=id,
+            width=width,
+            height=height,
+            padding=padding,
+            margin=margin,
+            visible=visible,
+            disabled=disabled,
+        )
+
         self.value = value
         self.solid = solid
         self.on_change = on_change
         self.__tabs = []
         if tabs != None:
             for tab in tabs:
-                self.__tabs.append(tab)                
+                self.__tabs.append(tab)
 
     def _get_control_name(self):
         return "tabs"
@@ -99,7 +117,7 @@ class Tabs(Control):
     @tabs.setter
     def tabs(self, value):
         self.__tabs = value
-        
+
     # on_change
     @property
     def on_change(self):

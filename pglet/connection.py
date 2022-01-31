@@ -7,6 +7,7 @@ from pglet.reconnecting_websocket import ReconnectingWebSocket
 from pglet.event import Event
 from pglet.protocol import *
 
+
 class Connection:
     def __init__(self, ws: ReconnectingWebSocket):
         self._ws = ws
@@ -30,7 +31,7 @@ class Connection:
 
     @property
     def on_session_created(self):
-        return self._on_session_created              
+        return self._on_session_created
 
     @on_session_created.setter
     def on_session_created(self, handler):
@@ -47,23 +48,41 @@ class Connection:
             evt.set()
         elif msg.action == Actions.PAGE_EVENT_TO_HOST:
             if self._on_event != None:
-                self._on_event(self, PageEventPayload(**msg.payload))         
+                self._on_event(self, PageEventPayload(**msg.payload))
         elif msg.action == Actions.SESSION_CREATED:
             if self._on_session_created != None:
-                th = threading.Thread(target=self._on_session_created, args=(self, PageSessionCreatedPayload(**msg.payload),), daemon=True)
+                th = threading.Thread(
+                    target=self._on_session_created,
+                    args=(
+                        self,
+                        PageSessionCreatedPayload(**msg.payload),
+                    ),
+                    daemon=True,
+                )
                 th.start()
         else:
             # it's something else
             print(msg.payload)
 
-    def register_host_client(self, host_client_id: str, page_name: str, is_app: bool, auth_token: str, permissions: str):
-        payload = RegisterHostClientRequestPayload(host_client_id, page_name, is_app, auth_token, permissions)
+    def register_host_client(
+        self,
+        host_client_id: str,
+        page_name: str,
+        is_app: bool,
+        auth_token: str,
+        permissions: str,
+    ):
+        payload = RegisterHostClientRequestPayload(
+            host_client_id, page_name, is_app, auth_token, permissions
+        )
         response = self._send_message_with_result(Actions.REGISTER_HOST_CLIENT, payload)
         return RegisterHostClientResponsePayload(**response)
 
     def send_command(self, page_name: str, session_id: str, command: Command):
         payload = PageCommandRequestPayload(page_name, session_id, command)
-        response = self._send_message_with_result(Actions.PAGE_COMMAND_FROM_HOST, payload)
+        response = self._send_message_with_result(
+            Actions.PAGE_COMMAND_FROM_HOST, payload
+        )
         result = PageCommandResponsePayload(**response)
         if result.error != "":
             raise Exception(result.error)
@@ -71,7 +90,9 @@ class Connection:
 
     def send_commands(self, page_name: str, session_id: str, commands: List[Command]):
         payload = PageCommandsBatchRequestPayload(page_name, session_id, commands)
-        response = self._send_message_with_result(Actions.PAGE_COMMANDS_BATCH_FROM_HOST, payload)
+        response = self._send_message_with_result(
+            Actions.PAGE_COMMANDS_BATCH_FROM_HOST, payload
+        )
         result = PageCommandsBatchResponsePayload(**response)
         if result.error != "":
             raise Exception(result.error)

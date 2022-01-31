@@ -1,14 +1,33 @@
 from pglet.control import Control
 
+
 class IFrame(Control):
-    def __init__(self, name=None, id=None, src=None, border=None, title=None,
-            width=None, height=None, padding=None, margin=None,
-            visible=None, disabled=None):
-        
-        Control.__init__(self, id=id,
-            width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
-        
+    def __init__(
+        self,
+        name=None,
+        id=None,
+        src=None,
+        border=None,
+        title=None,
+        width=None,
+        height=None,
+        padding=None,
+        margin=None,
+        visible=None,
+        disabled=None,
+    ):
+
+        Control.__init__(
+            self,
+            id=id,
+            width=width,
+            height=height,
+            padding=padding,
+            margin=margin,
+            visible=visible,
+            disabled=disabled,
+        )
+
         self.src = src
         self.border = border
         self.title = title
@@ -16,7 +35,7 @@ class IFrame(Control):
     def _get_control_name(self):
         return "iframe"
 
-# src
+    # src
     @property
     def src(self):
         return self._get_attr("src")
@@ -25,7 +44,7 @@ class IFrame(Control):
     def src(self, value):
         self._set_attr("src", value)
 
-# border
+    # border
     @property
     def border(self):
         return self._get_attr("border")
@@ -34,7 +53,7 @@ class IFrame(Control):
     def border(self, value):
         self._set_attr("border", value)
 
-# title
+    # title
     @property
     def title(self):
         return self._get_attr("title")

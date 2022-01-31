@@ -4,7 +4,7 @@ from pglet.control import Control
 class Footer(Control):
     def __init__(self, id=None, controls=None):
         Control.__init__(self, id=id)
-    
+
         self.__controls = []
         if controls != None:
             for control in controls:
@@ -25,16 +25,41 @@ class Footer(Control):
     def _get_children(self):
         return self.__controls
 
+
 class Panel(Control):
-    def __init__(self, id=None, open=None, title=None, type=None,
-            auto_dismiss=None, light_dismiss=None, width=None, blocking=None, data=None, 
-            controls=None, footer=None, on_dismiss=None, height=None,
-            padding=None, margin=None, visible=None, disabled=None):
-        
-        Control.__init__(self, id=id,
-            width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled, data=data)
-        
+    def __init__(
+        self,
+        id=None,
+        open=None,
+        title=None,
+        type=None,
+        auto_dismiss=None,
+        light_dismiss=None,
+        width=None,
+        blocking=None,
+        data=None,
+        controls=None,
+        footer=None,
+        on_dismiss=None,
+        height=None,
+        padding=None,
+        margin=None,
+        visible=None,
+        disabled=None,
+    ):
+
+        Control.__init__(
+            self,
+            id=id,
+            width=width,
+            height=height,
+            padding=padding,
+            margin=margin,
+            visible=visible,
+            disabled=disabled,
+            data=data,
+        )
+
         self.open = open
         self.title = title
         self.type = type
@@ -64,8 +89,8 @@ class Panel(Control):
     # footer
     @property
     def footer(self):
-        return self.__footer 
-    
+        return self.__footer
+
     # on_dismiss
     @property
     def on_dismiss(self):
@@ -120,7 +145,9 @@ class Panel(Control):
 
     @light_dismiss.setter
     def light_dismiss(self, value):
-        assert value == None or isinstance(value, bool), "lightDismiss must be a boolean"
+        assert value == None or isinstance(
+            value, bool
+        ), "lightDismiss must be a boolean"
         self._set_attr("lightDismiss", value)
 
     # width
@@ -143,7 +170,7 @@ class Panel(Control):
         self._set_attr("blocking", value)
 
     def _get_children(self):
-        result=[]
+        result = []
         if self.__controls and len(self.__controls) > 0:
             for control in self.__controls:
                 result.append(control)

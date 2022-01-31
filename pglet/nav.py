@@ -2,11 +2,24 @@ from pglet.control import Control
 
 # Item
 class Item(Control):
-    def __init__(self, id=None, key=None, text=None, icon=None, icon_color=None, url=None, items=None,
-        new_window=None, expanded=None, visible=None, disabled=None, data=None):
+    def __init__(
+        self,
+        id=None,
+        key=None,
+        text=None,
+        icon=None,
+        icon_color=None,
+        url=None,
+        items=None,
+        new_window=None,
+        expanded=None,
+        visible=None,
+        disabled=None,
+        data=None,
+    ):
         Control.__init__(self, id=id, visible=visible, disabled=disabled, data=data)
-        #key and text are optional for group item but key or text are required for level 2 and deeper items 
-        #assert key != None or text != None, "key or text must be specified"
+        # key and text are optional for group item but key or text are required for level 2 and deeper items
+        # assert key != None or text != None, "key or text must be specified"
         self.key = key
         self.text = text
         self.icon = icon
@@ -99,16 +112,35 @@ class Item(Control):
     def _get_children(self):
         return self.__items
 
+
 class Nav(Control):
-    def __init__(self, id=None, value=None, items=None,
-            on_change=None, on_expand=None, on_collapse=None,
-            width=None, height=None, padding=None, margin=None,
-            visible=None, disabled=None):
-        
-        Control.__init__(self, id=id,
-            width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
-        
+    def __init__(
+        self,
+        id=None,
+        value=None,
+        items=None,
+        on_change=None,
+        on_expand=None,
+        on_collapse=None,
+        width=None,
+        height=None,
+        padding=None,
+        margin=None,
+        visible=None,
+        disabled=None,
+    ):
+
+        Control.__init__(
+            self,
+            id=id,
+            width=width,
+            height=height,
+            padding=padding,
+            margin=margin,
+            visible=visible,
+            disabled=disabled,
+        )
+
         self.value = value
         self.on_change = on_change
         self.on_expand = on_expand
@@ -129,7 +161,7 @@ class Nav(Control):
     @items.setter
     def items(self, value):
         self.__items = value
-        
+
     # on_change
     @property
     def on_change(self):

@@ -20,7 +20,9 @@ class Point(Control):
 
     @value.setter
     def value(self, value):
-        assert value == None or isinstance(value, float) or isinstance(value, int), "value must be a float"  
+        assert (
+            value == None or isinstance(value, float) or isinstance(value, int)
+        ), "value must be a float"
         self._set_attr("value", value)
 
     # legend
@@ -50,11 +52,12 @@ class Point(Control):
     def tooltip(self, value):
         self._set_attr("tooltip", value)
 
+
 # Data
 class Data(Control):
     def __init__(self, id=None, points=None):
         Control.__init__(self, id=id)
-    
+
         self.__points = []
         if points != None:
             for point in points:
@@ -77,19 +80,39 @@ class Data(Control):
 
 
 class PieChart(Control):
-    def __init__(self, id=None, legend=None, tooltips=None, inner_value=None, inner_radius=None, points=None,
-            width=None, height=None, padding=None, margin=None, visible=None, disabled=None):
-        
-        Control.__init__(self, id=id,
-            width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
+    def __init__(
+        self,
+        id=None,
+        legend=None,
+        tooltips=None,
+        inner_value=None,
+        inner_radius=None,
+        points=None,
+        width=None,
+        height=None,
+        padding=None,
+        margin=None,
+        visible=None,
+        disabled=None,
+    ):
+
+        Control.__init__(
+            self,
+            id=id,
+            width=width,
+            height=height,
+            padding=padding,
+            margin=margin,
+            visible=visible,
+            disabled=disabled,
+        )
 
         self.__data = Data(points=points)
         self.legend = legend
         self.tooltips = tooltips
         self.inner_value = inner_value
         self.inner_radius = inner_radius
-        
+
     def _get_control_name(self):
         return "piechart"
 
@@ -138,7 +161,9 @@ class PieChart(Control):
 
     @inner_radius.setter
     def inner_radius(self, value):
-        assert value == None or isinstance(value, float) or isinstance(value, int), "inner_radius must be a float"  
+        assert (
+            value == None or isinstance(value, float) or isinstance(value, int)
+        ), "inner_radius must be a float"
         self._set_attr("innerRadius", value)
 
     def _get_children(self):

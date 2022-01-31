@@ -1,17 +1,52 @@
 from pglet.control import Control
-#from pglet.alignment import Alignment
+
+# from pglet.alignment import Alignment
+
 
 class Stack(Control):
-
-    def __init__(self, controls=None, id=None, horizontal=None, vertical_fill=None, horizontal_align=None,
-            vertical_align=None, min_width=None, max_width=None, min_height=None, max_height=None, 
-            gap=None, wrap=None, bgcolor=None, border=None, border_radius=None, border_left=None, 
-            border_right=None, border_top=None, border_bottom=None, scrollx=None, scrolly=None, on_submit=None,
-            width=None, height=None, padding=None, margin=None,
-            visible=None, disabled=None, data=None):
-        Control.__init__(self, id=id,
-            width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled, data=data)
+    def __init__(
+        self,
+        controls=None,
+        id=None,
+        horizontal=None,
+        vertical_fill=None,
+        horizontal_align=None,
+        vertical_align=None,
+        min_width=None,
+        max_width=None,
+        min_height=None,
+        max_height=None,
+        gap=None,
+        wrap=None,
+        bgcolor=None,
+        border=None,
+        border_radius=None,
+        border_left=None,
+        border_right=None,
+        border_top=None,
+        border_bottom=None,
+        scrollx=None,
+        scrolly=None,
+        on_submit=None,
+        width=None,
+        height=None,
+        padding=None,
+        margin=None,
+        visible=None,
+        disabled=None,
+        data=None,
+    ):
+        Control.__init__(
+            self,
+            id=id,
+            width=width,
+            height=height,
+            padding=padding,
+            margin=margin,
+            visible=visible,
+            disabled=disabled,
+            data=data,
+        )
 
         self.horizontal = horizontal
         self.vertical_fill = vertical_fill
@@ -46,7 +81,7 @@ class Stack(Control):
         Control.clean(self)
         self.__controls.clear()
 
-# controls
+    # controls
     @property
     def controls(self):
         return self.__controls
@@ -55,7 +90,7 @@ class Stack(Control):
     def controls(self, value):
         self.__controls = value
 
-# horizontal
+    # horizontal
     @property
     def horizontal(self):
         return self._get_attr("horizontal")
@@ -65,7 +100,7 @@ class Stack(Control):
         assert value == None or isinstance(value, bool), "horizontal must be a bool"
         self._set_attr("horizontal", value)
 
-# vertical_fill
+    # vertical_fill
     @property
     def vertical_fill(self):
         return self._get_attr("verticalFill")
@@ -75,7 +110,7 @@ class Stack(Control):
         assert value == None or isinstance(value, bool), "verticalFill must be a bool"
         self._set_attr("verticalFill", value)
 
-# horizontal_align
+    # horizontal_align
     @property
     def horizontal_align(self):
         return self._get_attr("horizontalAlign")
@@ -84,7 +119,7 @@ class Stack(Control):
     def horizontal_align(self, value):
         self._set_attr("horizontalAlign", value)
 
-# vertical_align
+    # vertical_align
     @property
     def vertical_align(self):
         return self._get_attr("verticalAlign")
@@ -93,7 +128,7 @@ class Stack(Control):
     def vertical_align(self, value):
         self._set_attr("verticalAlign", value)
 
-# min_width
+    # min_width
     @property
     def min_width(self):
         return self._get_attr("minWidth")
@@ -102,7 +137,7 @@ class Stack(Control):
     def min_width(self, value):
         self._set_attr("minWidth", value)
 
-# max_width
+    # max_width
     @property
     def max_width(self):
         return self._get_attr("maxWidth")
@@ -111,7 +146,7 @@ class Stack(Control):
     def max_width(self, value):
         self._set_attr("maxWidth", value)
 
-# min_height
+    # min_height
     @property
     def min_height(self):
         return self._get_attr("minHeight")
@@ -120,7 +155,7 @@ class Stack(Control):
     def min_height(self, value):
         self._set_attr("minHeight", value)
 
-# max_height
+    # max_height
     @property
     def max_height(self):
         return self._get_attr("maxHeight")
@@ -128,8 +163,8 @@ class Stack(Control):
     @max_height.setter
     def max_height(self, value):
         self._set_attr("maxHeight", value)
-    
-# gap
+
+    # gap
     @property
     def gap(self):
         return self._get_attr("gap")
@@ -138,7 +173,7 @@ class Stack(Control):
     def gap(self, value):
         self._set_attr("gap", value)
 
-# wrap
+    # wrap
     @property
     def wrap(self):
         return self._get_attr("wrap")
@@ -148,7 +183,7 @@ class Stack(Control):
         assert value == None or isinstance(value, bool), "wrap must be a bool"
         self._set_attr("wrap", value)
 
-# bgcolor
+    # bgcolor
     @property
     def bgcolor(self):
         return self._get_attr("bgcolor")
@@ -157,7 +192,7 @@ class Stack(Control):
     def bgcolor(self, value):
         self._set_attr("bgcolor", value)
 
-# border
+    # border
     @property
     def border(self):
         return self._get_attr("border")
@@ -166,7 +201,7 @@ class Stack(Control):
     def border(self, value):
         self._set_attr("border", value)
 
-# border_radius
+    # border_radius
     @property
     def border_radius(self):
         return self._get_attr("borderRadius")
@@ -175,7 +210,7 @@ class Stack(Control):
     def border_radius(self, value):
         self._set_attr("borderRadius", value)
 
-# border_left
+    # border_left
     @property
     def border_left(self):
         return self._get_attr("borderLeft")
@@ -184,7 +219,7 @@ class Stack(Control):
     def border_left(self, value):
         self._set_attr("borderLeft", value)
 
-# border_right
+    # border_right
     @property
     def border_right(self):
         return self._get_attr("borderRight")
@@ -193,7 +228,7 @@ class Stack(Control):
     def border_right(self, value):
         self._set_attr("borderRight", value)
 
-# border_top
+    # border_top
     @property
     def border_top(self):
         return self._get_attr("borderTop")
@@ -202,7 +237,7 @@ class Stack(Control):
     def border_top(self, value):
         self._set_attr("borderTop", value)
 
-# border_bottom
+    # border_bottom
     @property
     def border_bottom(self):
         return self._get_attr("borderBottom")
@@ -211,7 +246,7 @@ class Stack(Control):
     def border_bottom(self, value):
         self._set_attr("borderBottom", value)
 
-# scrollx
+    # scrollx
     @property
     def scrollx(self):
         return self._get_attr("scrollx")
@@ -221,7 +256,7 @@ class Stack(Control):
         assert value == None or isinstance(value, bool), "scrollx must be a bool"
         self._set_attr("scrollx", value)
 
-# scrolly
+    # scrolly
     @property
     def scrolly(self):
         return self._get_attr("scrolly")
@@ -231,7 +266,7 @@ class Stack(Control):
         assert value == None or isinstance(value, bool), "scrolly must be a bool"
         self._set_attr("scrolly", value)
 
-# on_submit
+    # on_submit
     @property
     def on_submit(self):
         return self._get_event_handler("submit")

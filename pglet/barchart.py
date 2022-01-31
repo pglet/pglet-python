@@ -2,8 +2,16 @@ from pglet.control import Control
 
 # Point
 class Point(Control):
-    def __init__(self, id=None, x=None, y=None, legend=None, color=None,
-        x_tooltip=None, y_tooltip=None):
+    def __init__(
+        self,
+        id=None,
+        x=None,
+        y=None,
+        legend=None,
+        color=None,
+        x_tooltip=None,
+        y_tooltip=None,
+    ):
         Control.__init__(self, id=id)
 
         self.x = x
@@ -23,7 +31,9 @@ class Point(Control):
 
     @x.setter
     def x(self, value):
-        assert value == None or isinstance(value, float) or isinstance(value, int), "x must be a float"  
+        assert (
+            value == None or isinstance(value, float) or isinstance(value, int)
+        ), "x must be a float"
         self._set_attr("x", value)
 
     # y
@@ -33,7 +43,9 @@ class Point(Control):
 
     @y.setter
     def y(self, value):
-        assert value == None or isinstance(value, float) or isinstance(value, int), "y must be a float"    
+        assert (
+            value == None or isinstance(value, float) or isinstance(value, int)
+        ), "y must be a float"
         self._set_attr("y", value)
 
     # legend
@@ -72,11 +84,12 @@ class Point(Control):
     def y_tooltip(self, value):
         self._set_attr("yTooltip", value)
 
+
 # Data
 class Data(Control):
     def __init__(self, id=None, points=None):
         Control.__init__(self, id=id)
-    
+
         self.__points = []
         if points != None:
             for point in points:
@@ -99,17 +112,35 @@ class Data(Control):
 
 
 class BarChart(Control):
-    def __init__(self, id=None, tooltips=None, data_mode=None, points=None,
-            width=None, height=None, padding=None, margin=None, visible=None, disabled=None):
-        
-        Control.__init__(self, id=id,
-            width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
+    def __init__(
+        self,
+        id=None,
+        tooltips=None,
+        data_mode=None,
+        points=None,
+        width=None,
+        height=None,
+        padding=None,
+        margin=None,
+        visible=None,
+        disabled=None,
+    ):
+
+        Control.__init__(
+            self,
+            id=id,
+            width=width,
+            height=height,
+            padding=padding,
+            margin=margin,
+            visible=visible,
+            disabled=disabled,
+        )
 
         self.__data = Data(points=points)
         self.tooltips = tooltips
         self.data_mode = data_mode
-        
+
     def _get_control_name(self):
         return "barchart"
 

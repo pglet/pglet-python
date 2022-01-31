@@ -29,14 +29,36 @@ class Option(Control):
     def text(self, value):
         self._set_attr("text", value)
 
+
 class Dropdown(Control):
-    def __init__(self, label=None, id=None, value=None, placeholder=None,
-            error_message=None, on_change=None, options=None,
-            width=None, height=None, padding=None, margin=None,
-            visible=None, disabled=None, data=None):
-        Control.__init__(self, id=id,
-            width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled, data=data)
+    def __init__(
+        self,
+        label=None,
+        id=None,
+        value=None,
+        placeholder=None,
+        error_message=None,
+        on_change=None,
+        options=None,
+        width=None,
+        height=None,
+        padding=None,
+        margin=None,
+        visible=None,
+        disabled=None,
+        data=None,
+    ):
+        Control.__init__(
+            self,
+            id=id,
+            width=width,
+            height=height,
+            padding=padding,
+            margin=margin,
+            visible=visible,
+            disabled=disabled,
+            data=data,
+        )
         self.label = label
         self.value = value
         self.placeholder = placeholder
@@ -58,7 +80,7 @@ class Dropdown(Control):
     @options.setter
     def options(self, value):
         self.__options = value
-        
+
     # on_change
     @property
     def on_change(self):
