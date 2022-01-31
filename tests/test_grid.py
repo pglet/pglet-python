@@ -1,5 +1,5 @@
 import pglet
-from pglet import Grid, Column
+from pglet import Column, Grid
 
 
 class Contact:

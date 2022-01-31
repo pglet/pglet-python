@@ -1,5 +1,5 @@
 import pglet
-from pglet import Tabs, Tab, Textbox, Button
+from pglet import Button, Tab, Tabs, Textbox
 
 
 def test_tabs_add():

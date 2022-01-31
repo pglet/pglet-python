@@ -1,4 +1,3 @@
-import pytest
 import pglet
 from pglet import SpinButton
 

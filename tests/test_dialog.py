@@ -1,5 +1,5 @@
 import pglet
-from pglet import Dialog, Text, Button
+from pglet import Button, Dialog, Text
 
 
 def test_dialog_add():

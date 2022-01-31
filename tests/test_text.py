@@ -1,5 +1,5 @@
 import pglet
-from pglet import Text, Stack, Button
+from pglet import Button, Stack, Text
 
 
 def test_text_add():

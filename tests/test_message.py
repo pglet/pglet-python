@@ -1,5 +1,4 @@
 import pglet
-from pglet import Message
 from pglet.message import MessageButton
 
 

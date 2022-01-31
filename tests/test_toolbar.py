@@ -1,6 +1,5 @@
 import pglet
-from pglet import Toolbar
-from pglet import toolbar
+from pglet import Toolbar, toolbar
 
 
 def test_toolbar_add():

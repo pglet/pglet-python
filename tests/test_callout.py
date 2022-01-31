@@ -1,5 +1,5 @@
 import pglet
-from pglet import Callout, Text, Button
+from pglet import Callout, Text
 
 
 def test_callout_add():

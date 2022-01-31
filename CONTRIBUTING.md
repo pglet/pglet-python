@@ -70,6 +70,8 @@ pdm run pytest
 
 The project uses [Black](https://github.com/psf/black) formatting style. All `.py` files in a PR must be black-formatted.
 
-IDE-specific guides:
+IDE-specific Black integration guides:
 
 * [VSCode: Using Black to automatically format Python](https://dev.to/adamlombard/how-to-use-the-black-python-code-formatter-in-vscode-3lo0)
+
+Imports should be sorted with [usort](https://usort.readthedocs.io/en/stable/).

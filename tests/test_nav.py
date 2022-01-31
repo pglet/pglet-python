@@ -1,5 +1,4 @@
 import pglet
-from pglet import Nav
 from pglet.nav import Item
 
 

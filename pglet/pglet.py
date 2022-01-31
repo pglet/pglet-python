@@ -1,24 +1,23 @@
 import logging
 import os
-from pathlib import Path
+import signal
 import subprocess
-import traceback
-from threading import Thread
+import tarfile
+import tempfile
 import threading
 import traceback
-import signal
-from time import sleep
 import urllib.request
-import tempfile
 import zipfile
-import tarfile
+from pathlib import Path
+from threading import Thread
+from time import sleep
 
 from pglet.reconnecting_websocket import ReconnectingWebSocket
 from pglet.utils import *
-from pglet.connection import Connection
-from pglet.page import Page
-from pglet.event import Event
 from pglet import constants
+from pglet.connection import Connection
+from pglet.event import Event
+from pglet.page import Page
 
 
 def page(

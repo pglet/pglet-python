@@ -1,5 +1,4 @@
 import pglet
-from pglet import Page
 
 
 def test_page():

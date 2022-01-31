@@ -1,5 +1,4 @@
 import pglet
-from pglet import ChoiceGroup
 from pglet.choicegroup import Option
 
 

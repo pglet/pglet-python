@@ -3,8 +3,9 @@ import logging
 import threading
 import uuid
 
-from pglet.reconnecting_websocket import ReconnectingWebSocket
 from pglet.event import Event
+
+from pglet.reconnecting_websocket import ReconnectingWebSocket
 from pglet.protocol import *
 
 

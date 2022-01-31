@@ -1,5 +1,4 @@
 import pglet
-from pglet import Dropdown
 from pglet.dropdown import Option
 
 

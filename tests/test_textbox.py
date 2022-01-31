@@ -1,5 +1,4 @@
 import pglet
-from pglet import Textbox
 
 
 def test_textbox_add():

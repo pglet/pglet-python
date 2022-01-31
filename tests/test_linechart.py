@@ -1,6 +1,6 @@
 import pglet
 from pglet import LineChart
-from pglet.linechart import Point, Data
+from pglet.linechart import Data, Point
 
 
 def test_verticalbarchart_add():

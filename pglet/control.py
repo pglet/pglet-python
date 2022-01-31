@@ -1,7 +1,8 @@
-import threading
-from pglet.protocol import Command
-from difflib import SequenceMatcher
 import datetime as dt
+import threading
+from difflib import SequenceMatcher
+
+from pglet.protocol import Command
 
 
 class Control:

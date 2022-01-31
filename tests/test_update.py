@@ -1,5 +1,5 @@
-import pytest
 import pglet
+import pytest
 from pglet import Textbox
 
 

@@ -1,5 +1,5 @@
 import pglet
-from pglet import Panel, Text, Button
+from pglet import Button, Panel, Text
 
 
 def test_panel_add():

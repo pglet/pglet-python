@@ -1,7 +1,6 @@
-import pytest
 import pglet
-from pglet import Button
-from pglet import button
+import pytest
+from pglet import Button, button
 
 
 def test_button_primary_must_be_bool():
