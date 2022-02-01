@@ -1,3 +1,5 @@
+from typing import Optional
+from beartype import beartype
 from pglet.control import Control
 
 
@@ -105,8 +107,8 @@ class MenuItem(Control):
         return self._get_attr("newWindow")
 
     @new_window.setter
-    def new_window(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
+    @beartype
+    def new_window(self, value: Optional[bool]):
         self._set_attr("newWindow", value)
 
     # icon
@@ -133,8 +135,8 @@ class MenuItem(Control):
         return self._get_attr("iconOnly")
 
     @icon_only.setter
-    def icon_only(self, value):
-        assert value == None or isinstance(value, bool), "icon_only must be a boolean"
+    @beartype
+    def icon_only(self, value: Optional[bool]):
         self._set_attr("iconOnly", value)
 
     # split
@@ -143,8 +145,8 @@ class MenuItem(Control):
         return self._get_attr("split")
 
     @split.setter
-    def split(self, value):
-        assert value == None or isinstance(value, bool), "split must be a boolean"
+    @beartype
+    def split(self, value: Optional[bool]):
         self._set_attr("split", value)
 
     # divider
@@ -153,8 +155,8 @@ class MenuItem(Control):
         return self._get_attr("divider")
 
     @divider.setter
-    def divider(self, value):
-        assert value == None or isinstance(value, bool), "divider must be a boolean"
+    @beartype
+    def divider(self, value: Optional[bool]):
         self._set_attr("divider", value)
 
     def _get_children(self):
@@ -244,8 +246,8 @@ class Button(Control):
         return self._get_attr("primary")
 
     @primary.setter
-    def primary(self, value):
-        assert value == None or isinstance(value, bool), "primary must be a boolean"
+    @beartype
+    def primary(self, value: Optional[bool]):
         self._set_attr("primary", value)
 
     # compound
@@ -254,8 +256,8 @@ class Button(Control):
         return self._get_attr("compound")
 
     @compound.setter
-    def compound(self, value):
-        assert value == None or isinstance(value, bool), "compound must be a boolean"
+    @beartype
+    def compound(self, value: Optional[bool]):
         self._set_attr("compound", value)
 
     # action
@@ -264,8 +266,8 @@ class Button(Control):
         return self._get_attr("action")
 
     @action.setter
-    def action(self, value):
-        assert value == None or isinstance(value, bool), "action must be a boolean"
+    @beartype
+    def action(self, value: Optional[bool]):
         self._set_attr("action", value)
 
     # toolbar
@@ -274,8 +276,8 @@ class Button(Control):
         return self._get_attr("toolbar")
 
     @toolbar.setter
-    def toolbar(self, value):
-        assert value == None or isinstance(value, bool), "toolbar must be a boolean"
+    @beartype
+    def toolbar(self, value: Optional[bool]):
         self._set_attr("toolbar", value)
 
     # split
@@ -284,8 +286,8 @@ class Button(Control):
         return self._get_attr("split")
 
     @split.setter
-    def split(self, value):
-        assert value == None or isinstance(value, bool), "split must be a boolean"
+    @beartype
+    def split(self, value: Optional[bool]):
         self._set_attr("split", value)
 
     # text
@@ -321,8 +323,8 @@ class Button(Control):
         return self._get_attr("newWindow")
 
     @new_window.setter
-    def new_window(self, value):
-        assert value == None or isinstance(value, bool), "new_window must be a boolean"
+    @beartype
+    def new_window(self, value: Optional[bool]):
         self._set_attr("newWindow", value)
 
     # title

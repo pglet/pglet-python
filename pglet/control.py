@@ -1,5 +1,7 @@
 import datetime as dt
 import threading
+from typing import Optional
+from beartype import beartype
 from difflib import SequenceMatcher
 
 from pglet.protocol import Command
@@ -150,8 +152,8 @@ class Control:
         return self._get_attr("visible")
 
     @visible.setter
-    def visible(self, value):
-        assert value == None or isinstance(value, bool), "visible must be a boolean"
+    @beartype
+    def visible(self, value: Optional[bool]):
         self._set_attr("visible", value)
 
     # disabled
@@ -160,8 +162,8 @@ class Control:
         return self._get_attr("disabled")
 
     @disabled.setter
-    def disabled(self, value):
-        assert value == None or isinstance(value, bool), "disabled must be a boolean"
+    @beartype
+    def disabled(self, value: Optional[bool]):
         self._set_attr("disabled", value)
 
     # data

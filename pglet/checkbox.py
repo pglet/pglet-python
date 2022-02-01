@@ -1,3 +1,5 @@
+from typing import Optional
+from beartype import beartype
 from pglet.control import Control
 
 
@@ -53,8 +55,8 @@ class Checkbox(Control):
         return self._get_attr("value", data_type="bool")
 
     @value.setter
-    def value(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
+    @beartype
+    def value(self, value: Optional[bool]):
         self._set_attr("value", value)
 
     # value_field

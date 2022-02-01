@@ -1,4 +1,6 @@
 from datetime import date, datetime
+from typing import Optional
+from beartype import beartype
 
 from pglet.control import Control
 
@@ -73,10 +75,8 @@ class DatePicker(Control):
         return self._get_attr("allowTextInput")
 
     @allow_text_input.setter
-    def allow_text_input(self, value):
-        assert value == None or isinstance(
-            value, bool
-        ), "allow_text_input must be a boolean"
+    @beartype
+    def allow_text_input(self, value: Optional[bool]):
         self._set_attr("allowTextInput", value)
 
     # underlined
@@ -85,8 +85,8 @@ class DatePicker(Control):
         return self._get_attr("underlined")
 
     @underlined.setter
-    def underlined(self, value):
-        assert value == None or isinstance(value, bool), "underlined must be a boolean"
+    @beartype
+    def underlined(self, value: Optional[bool]):
         self._set_attr("underlined", value)
 
     # borderless
@@ -95,8 +95,8 @@ class DatePicker(Control):
         return self._get_attr("borderless")
 
     @borderless.setter
-    def borderless(self, value):
-        assert value == None or isinstance(value, bool), "borderless must be a boolean"
+    @beartype
+    def borderless(self, value: Optional[bool]):
         self._set_attr("borderless", value)
 
     # required
@@ -105,8 +105,8 @@ class DatePicker(Control):
         return self._get_attr("required")
 
     @required.setter
-    def required(self, value):
-        assert value == None or isinstance(value, bool), "required must be a boolean"
+    @beartype
+    def required(self, value: Optional[bool]):
         self._set_attr("required", value)
 
     # on_change

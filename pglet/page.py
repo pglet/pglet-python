@@ -1,7 +1,8 @@
 import json
 import logging
 import threading
-from typing import List
+from typing import List, Optional
+from beartype import beartype
 
 from pglet import constants
 from pglet.connection import Connection
@@ -242,8 +243,8 @@ class Page(Control):
         return self._get_attr("verticalFill")
 
     @vertical_fill.setter
-    def vertical_fill(self, value):
-        assert value == None or isinstance(value, bool), "verticalFill must be a bool"
+    @beartype
+    def vertical_fill(self, value: Optional[bool]):
         self._set_attr("verticalFill", value)
 
     # horizontal_align

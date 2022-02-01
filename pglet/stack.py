@@ -1,6 +1,6 @@
+from typing import Optional
+from beartype import beartype
 from pglet.control import Control
-
-# from pglet.alignment import Alignment
 
 
 class Stack(Control):
@@ -96,8 +96,8 @@ class Stack(Control):
         return self._get_attr("horizontal")
 
     @horizontal.setter
-    def horizontal(self, value):
-        assert value == None or isinstance(value, bool), "horizontal must be a bool"
+    @beartype
+    def horizontal(self, value: Optional[bool]):
         self._set_attr("horizontal", value)
 
     # vertical_fill
@@ -106,8 +106,8 @@ class Stack(Control):
         return self._get_attr("verticalFill")
 
     @vertical_fill.setter
-    def vertical_fill(self, value):
-        assert value == None or isinstance(value, bool), "verticalFill must be a bool"
+    @beartype
+    def vertical_fill(self, value: Optional[bool]):
         self._set_attr("verticalFill", value)
 
     # horizontal_align
@@ -179,8 +179,8 @@ class Stack(Control):
         return self._get_attr("wrap")
 
     @wrap.setter
-    def wrap(self, value):
-        assert value == None or isinstance(value, bool), "wrap must be a bool"
+    @beartype
+    def wrap(self, value: Optional[bool]):
         self._set_attr("wrap", value)
 
     # bgcolor
@@ -252,8 +252,8 @@ class Stack(Control):
         return self._get_attr("scrollx")
 
     @scrollx.setter
-    def scrollx(self, value):
-        assert value == None or isinstance(value, bool), "scrollx must be a bool"
+    @beartype
+    def scrollx(self, value: Optional[bool]):
         self._set_attr("scrollx", value)
 
     # scrolly
@@ -262,8 +262,8 @@ class Stack(Control):
         return self._get_attr("scrolly")
 
     @scrolly.setter
-    def scrolly(self, value):
-        assert value == None or isinstance(value, bool), "scrolly must be a bool"
+    @beartype
+    def scrolly(self, value: Optional[bool]):
         self._set_attr("scrolly", value)
 
     # on_submit

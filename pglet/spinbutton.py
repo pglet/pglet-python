@@ -1,3 +1,5 @@
+from typing import Union
+from beartype import beartype
 from pglet.control import Control
 
 
@@ -59,10 +61,8 @@ class SpinButton(Control):
         return self._get_attr("value", data_type="float")
 
     @value.setter
-    def value(self, value):
-        assert (
-            value == None or isinstance(value, float) or isinstance(value, int)
-        ), "value must be a float"
+    @beartype
+    def value(self, value: Union[None, int, float]):
         self._set_attr("value", value)
 
     # label
@@ -89,10 +89,8 @@ class SpinButton(Control):
         return self._get_attr("min")
 
     @min.setter
-    def min(self, value):
-        assert (
-            value == None or isinstance(value, float) or isinstance(value, int)
-        ), "min must be a float"
+    @beartype
+    def min(self, value: Union[None, int, float]):
         self._set_attr("min", value)
 
     # max
@@ -101,10 +99,8 @@ class SpinButton(Control):
         return self._get_attr("max")
 
     @max.setter
-    def max(self, value):
-        assert (
-            value == None or isinstance(value, float) or isinstance(value, int)
-        ), "max must be a float"
+    @beartype
+    def max(self, value: Union[None, int, float]):
         self._set_attr("max", value)
 
     # step
@@ -113,10 +109,8 @@ class SpinButton(Control):
         return self._get_attr("step")
 
     @step.setter
-    def step(self, value):
-        assert (
-            value == None or isinstance(value, float) or isinstance(value, int)
-        ), "step must be a float"
+    @beartype
+    def step(self, value: Union[None, int, float]):
         self._set_attr("step", value)
 
     # icon

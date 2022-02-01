@@ -1,3 +1,5 @@
+from typing import Optional
+from beartype import beartype
 from pglet.control import Control
 
 
@@ -40,8 +42,8 @@ class Progress(Control):
         return self._get_attr("value")
 
     @value.setter
-    def value(self, value):
-        assert value == None or isinstance(value, int), "value must be an int"
+    @beartype
+    def value(self, value: Optional[int]):
         self._set_attr("value", value)
 
     # description

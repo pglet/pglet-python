@@ -1,3 +1,5 @@
+from typing import Optional
+from beartype import beartype
 from pglet.control import Control
 
 # Footer
@@ -109,8 +111,8 @@ class Dialog(Control):
         return self._get_attr("open")
 
     @open.setter
-    def open(self, value):
-        assert value == None or isinstance(value, bool), "open must be a boolean"
+    @beartype
+    def open(self, value: Optional[bool]):
         self._set_attr("open", value)
 
     # title
@@ -146,8 +148,8 @@ class Dialog(Control):
         return self._get_attr("autoDismiss")
 
     @auto_dismiss.setter
-    def auto_dismiss(self, value):
-        assert value == None or isinstance(value, bool), "autoDismiss must be a boolean"
+    @beartype
+    def auto_dismiss(self, value: Optional[bool]):
         self._set_attr("autoDismiss", value)
 
     # max_width
@@ -165,8 +167,8 @@ class Dialog(Control):
         return self._get_attr("fixedTop")
 
     @fixed_top.setter
-    def fixed_top(self, value):
-        assert value == None or isinstance(value, bool), "fixed_top must be a boolean"
+    @beartype
+    def fixed_top(self, value: Optional[bool]):
         self._set_attr("fixedTop", value)
 
     # blocking
@@ -175,8 +177,8 @@ class Dialog(Control):
         return self._get_attr("blocking")
 
     @blocking.setter
-    def blocking(self, value):
-        assert value == None or isinstance(value, bool), "blocking must be a boolean"
+    @beartype
+    def blocking(self, value: Optional[bool]):
         self._set_attr("blocking", value)
 
     def _get_children(self):

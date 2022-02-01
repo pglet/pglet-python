@@ -1,3 +1,5 @@
+from typing import Optional
+from beartype import beartype
 from pglet.control import Control
 
 # Item
@@ -91,8 +93,8 @@ class Item(Control):
         return self._get_attr("newWindow")
 
     @new_window.setter
-    def new_window(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
+    @beartype
+    def new_window(self, value: Optional[bool]):
         self._set_attr("newWindow", value)
 
     # icon
@@ -119,8 +121,8 @@ class Item(Control):
         return self._get_attr("iconOnly")
 
     @icon_only.setter
-    def icon_only(self, value):
-        assert value == None or isinstance(value, bool), "icon_only must be a boolean"
+    @beartype
+    def icon_only(self, value: Optional[bool]):
         self._set_attr("iconOnly", value)
 
     # split
@@ -129,8 +131,8 @@ class Item(Control):
         return self._get_attr("split")
 
     @split.setter
-    def split(self, value):
-        assert value == None or isinstance(value, bool), "split must be a boolean"
+    @beartype
+    def split(self, value: Optional[bool]):
         self._set_attr("split", value)
 
     # divider
@@ -139,8 +141,8 @@ class Item(Control):
         return self._get_attr("divider")
 
     @divider.setter
-    def divider(self, value):
-        assert value == None or isinstance(value, bool), "divider must be a boolean"
+    @beartype
+    def divider(self, value: Optional[bool]):
         self._set_attr("divider", value)
 
     def _get_children(self):
@@ -243,8 +245,8 @@ class Toolbar(Control):
         return self._get_attr("inverted")
 
     @inverted.setter
-    def inverted(self, value):
-        assert value == None or isinstance(value, bool), "inverted must be a boolean"
+    @beartype
+    def inverted(self, value: Optional[bool]):
         self._set_attr("inverted", value)
 
     # items

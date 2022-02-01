@@ -1,3 +1,5 @@
+from typing import Optional, Union
+from beartype import beartype
 from pglet.control import Control
 
 # Point
@@ -19,10 +21,8 @@ class Point(Control):
         return self._get_attr("value")
 
     @value.setter
-    def value(self, value):
-        assert (
-            value == None or isinstance(value, float) or isinstance(value, int)
-        ), "value must be a float"
+    @beartype
+    def value(self, value: Union[None, int, float]):
         self._set_attr("value", value)
 
     # legend
@@ -131,8 +131,8 @@ class PieChart(Control):
         return self._get_attr("legend")
 
     @legend.setter
-    def legend(self, value):
-        assert value == None or isinstance(value, bool), "legend must be a boolean"
+    @beartype
+    def legend(self, value: Optional[bool]):
         self._set_attr("legend", value)
 
     # tooltips
@@ -141,8 +141,8 @@ class PieChart(Control):
         return self._get_attr("tooltips")
 
     @tooltips.setter
-    def tooltips(self, value):
-        assert value == None or isinstance(value, bool), "tooltips must be a boolean"
+    @beartype
+    def tooltips(self, value: Optional[bool]):
         self._set_attr("tooltips", value)
 
     # inner_value
@@ -160,10 +160,8 @@ class PieChart(Control):
         return self._get_attr("innerRadius")
 
     @inner_radius.setter
-    def inner_radius(self, value):
-        assert (
-            value == None or isinstance(value, float) or isinstance(value, int)
-        ), "inner_radius must be a float"
+    @beartype
+    def inner_radius(self, value: Union[None, int, float]):
         self._set_attr("innerRadius", value)
 
     def _get_children(self):

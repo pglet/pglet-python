@@ -1,3 +1,5 @@
+from typing import Optional
+from beartype import beartype
 from pglet.control import Control
 
 
@@ -85,8 +87,8 @@ class Text(Control):
         return self._get_attr("markdown")
 
     @markdown.setter
-    def markdown(self, value):
-        assert value == None or isinstance(value, bool), "markdown must be a boolean"
+    @beartype
+    def markdown(self, value: Optional[bool]):
         self._set_attr("markdown", value)
 
     # align
@@ -122,8 +124,8 @@ class Text(Control):
         return self._get_attr("bold")
 
     @bold.setter
-    def bold(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
+    @beartype
+    def bold(self, value: Optional[bool]):
         self._set_attr("bold", value)
 
     # italic
@@ -132,8 +134,8 @@ class Text(Control):
         return self._get_attr("italic")
 
     @italic.setter
-    def italic(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
+    @beartype
+    def italic(self, value: Optional[bool]):
         self._set_attr("italic", value)
 
     # pre
@@ -142,8 +144,8 @@ class Text(Control):
         return self._get_attr("pre")
 
     @pre.setter
-    def pre(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
+    @beartype
+    def pre(self, value: Optional[bool]):
         self._set_attr("pre", value)
 
     # nowrap
@@ -152,8 +154,8 @@ class Text(Control):
         return self._get_attr("nowrap")
 
     @nowrap.setter
-    def nowrap(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
+    @beartype
+    def nowrap(self, value: Optional[bool]):
         self._set_attr("nowrap", value)
 
     # block
@@ -162,8 +164,8 @@ class Text(Control):
         return self._get_attr("block")
 
     @block.setter
-    def block(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
+    @beartype
+    def block(self, value: Optional[bool]):
         self._set_attr("block", value)
 
     # color

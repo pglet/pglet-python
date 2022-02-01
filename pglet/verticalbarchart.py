@@ -1,3 +1,5 @@
+from typing import Optional, Union
+from beartype import beartype
 from pglet.control import Control
 
 # Point
@@ -39,10 +41,8 @@ class Point(Control):
         return self._get_attr("y")
 
     @y.setter
-    def y(self, value):
-        assert (
-            value == None or isinstance(value, float) or isinstance(value, int)
-        ), "y must be a float"
+    @beartype
+    def y(self, value: Union[None, int, float]):
         self._set_attr("y", value)
 
     # legend
@@ -170,8 +170,8 @@ class VerticalBarChart(Control):
         return self._get_attr("legend")
 
     @legend.setter
-    def legend(self, value):
-        assert value == None or isinstance(value, bool), "legend must be a boolean"
+    @beartype
+    def legend(self, value: Optional[bool]):
         self._set_attr("legend", value)
 
     # tooltips
@@ -180,8 +180,8 @@ class VerticalBarChart(Control):
         return self._get_attr("tooltips")
 
     @tooltips.setter
-    def tooltips(self, value):
-        assert value == None or isinstance(value, bool), "tooltips must be a boolean"
+    @beartype
+    def tooltips(self, value: Optional[bool]):
         self._set_attr("tooltips", value)
 
     # colors
@@ -199,10 +199,8 @@ class VerticalBarChart(Control):
         return self._get_attr("yMin")
 
     @y_min.setter
-    def y_min(self, value):
-        assert (
-            value == None or isinstance(value, float) or isinstance(value, int)
-        ), "yMin must be a float"
+    @beartype
+    def y_min(self, value: Union[None, int, float]):
         self._set_attr("yMin", value)
 
     # yMax
@@ -211,10 +209,8 @@ class VerticalBarChart(Control):
         return self._get_attr("yMax")
 
     @y_max.setter
-    def y_max(self, value):
-        assert (
-            value == None or isinstance(value, float) or isinstance(value, int)
-        ), "yMax must be a float"
+    @beartype
+    def y_max(self, value: Union[None, int, float]):
         self._set_attr("yMax", value)
 
     # yTicks
@@ -223,8 +219,8 @@ class VerticalBarChart(Control):
         return self._get_attr("yTicks")
 
     @y_ticks.setter
-    def y_ticks(self, value):
-        assert value == None or isinstance(value, int), "yTicks must be an int"
+    @beartype
+    def y_ticks(self, value: Optional[int]):
         self._set_attr("yTicks", value)
 
     # yFormat
@@ -251,8 +247,8 @@ class VerticalBarChart(Control):
         return self._get_attr("barWidth")
 
     @bar_width.setter
-    def bar_width(self, value):
-        assert value == None or isinstance(value, int), "bar_width must be an int"
+    @beartype
+    def bar_width(self, value: Optional[int]):
         self._set_attr("barWidth", value)
 
     def _get_children(self):

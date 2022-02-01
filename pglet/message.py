@@ -1,3 +1,5 @@
+from typing import Optional
+from beartype import beartype
 from pglet.control import Control
 
 # MessageButton
@@ -118,8 +120,8 @@ class Message(Control):
         return self._get_attr("multiline")
 
     @multiline.setter
-    def multiline(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
+    @beartype
+    def multiline(self, value: Optional[bool]):
         self._set_attr("multiline", value)
 
     # truncated
@@ -128,8 +130,8 @@ class Message(Control):
         return self._get_attr("truncated")
 
     @truncated.setter
-    def truncated(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
+    @beartype
+    def truncated(self, value: Optional[bool]):
         self._set_attr("truncated", value)
 
     # dismiss
@@ -138,8 +140,8 @@ class Message(Control):
         return self._get_attr("dismiss")
 
     @dismiss.setter
-    def dismiss(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
+    @beartype
+    def dismiss(self, value: Optional[bool]):
         self._set_attr("dismiss", value)
 
     def _get_children(self):

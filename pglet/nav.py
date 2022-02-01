@@ -1,3 +1,5 @@
+from typing import Optional
+from beartype import beartype
 from pglet.control import Control
 
 # Item
@@ -95,8 +97,8 @@ class Item(Control):
         return self._get_attr("newWindow")
 
     @new_window.setter
-    def new_window(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
+    @beartype
+    def new_window(self, value: Optional[bool]):
         self._set_attr("newWindow", value)
 
     # expanded
@@ -105,8 +107,8 @@ class Item(Control):
         return self._get_attr("expanded", data_type="bool")
 
     @expanded.setter
-    def expanded(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
+    @beartype
+    def expanded(self, value: Optional[bool]):
         self._set_attr("expanded", value)
 
     def _get_children(self):

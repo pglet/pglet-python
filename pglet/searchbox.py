@@ -1,3 +1,5 @@
+from typing import Optional
+from beartype import beartype
 from pglet.control import Control
 
 
@@ -101,8 +103,8 @@ class SearchBox(Control):
         return self._get_attr("underlined")
 
     @underlined.setter
-    def underlined(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
+    @beartype
+    def underlined(self, value: Optional[bool]):
         self._set_attr("underlined", value)
 
     # icon

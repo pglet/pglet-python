@@ -1,3 +1,5 @@
+from typing import Optional
+from beartype import beartype
 from pglet.control import Control
 
 
@@ -93,10 +95,8 @@ class Callout(Control):
         return self._get_attr("gap")
 
     @gap.setter
-    def gap(self, value):
-        assert (
-            value == None or isinstance(value, float) or isinstance(value, int)
-        ), "gap must be a float"
+    @beartype
+    def gap(self, value: Optional[int]):
         self._set_attr("gap", value)
 
     # beak
@@ -105,8 +105,8 @@ class Callout(Control):
         return self._get_attr("beak")
 
     @beak.setter
-    def beak(self, value):
-        assert value == None or isinstance(value, bool), "beak must be a boolean"
+    @beartype
+    def beak(self, value: Optional[bool]):
         self._set_attr("beak", value)
 
     # beak_width
@@ -115,10 +115,8 @@ class Callout(Control):
         return self._get_attr("beakWidth")
 
     @beak_width.setter
-    def beak_width(self, value):
-        assert (
-            value == None or isinstance(value, float) or isinstance(value, int)
-        ), "beak_width must be a float"
+    @beartype
+    def beak_width(self, value: Optional[int]):
         self._set_attr("beakWidth", value)
 
     # page_padding
@@ -127,10 +125,8 @@ class Callout(Control):
         return self._get_attr("pagePadding")
 
     @page_padding.setter
-    def page_padding(self, value):
-        assert (
-            value == None or isinstance(value, float) or isinstance(value, int)
-        ), "page_padding must be a float"
+    @beartype
+    def page_padding(self, value: Optional[int]):
         self._set_attr("pagePadding", value)
 
     # focus
@@ -139,8 +135,8 @@ class Callout(Control):
         return self._get_attr("focus")
 
     @focus.setter
-    def focus(self, value):
-        assert value == None or isinstance(value, bool), "focus must be a boolean"
+    @beartype
+    def focus(self, value: Optional[bool]):
         self._set_attr("focus", value)
 
     # cover
@@ -149,8 +145,8 @@ class Callout(Control):
         return self._get_attr("cover")
 
     @cover.setter
-    def cover(self, value):
-        assert value == None or isinstance(value, bool), "cover must be a boolean"
+    @beartype
+    def cover(self, value: Optional[bool]):
         self._set_attr("cover", value)
 
     def _get_children(self):

@@ -1,3 +1,5 @@
+from typing import Optional
+from beartype import beartype
 from pglet.control import Control
 
 
@@ -97,8 +99,8 @@ class Link(Control):
         return self._get_attr("newWindow")
 
     @new_window.setter
-    def new_window(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
+    @beartype
+    def new_window(self, value: Optional[bool]):
         self._set_attr("newWindow", value)
 
     # title
@@ -125,8 +127,8 @@ class Link(Control):
         return self._get_attr("bold")
 
     @bold.setter
-    def bold(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
+    @beartype
+    def bold(self, value: Optional[bool]):
         self._set_attr("bold", value)
 
     # italic
@@ -135,8 +137,8 @@ class Link(Control):
         return self._get_attr("italic")
 
     @italic.setter
-    def italic(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
+    @beartype
+    def italic(self, value: Optional[bool]):
         self._set_attr("italic", value)
 
     # pre
@@ -145,8 +147,8 @@ class Link(Control):
         return self._get_attr("pre")
 
     @pre.setter
-    def pre(self, value):
-        assert value == None or isinstance(value, bool), "pre must be a boolean"
+    @beartype
+    def pre(self, value: Optional[bool]):
         self._set_attr("pre", value)
 
     # align

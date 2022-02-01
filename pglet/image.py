@@ -1,3 +1,5 @@
+from typing import Optional
+from beartype import beartype
 from pglet.control import Control
 
 
@@ -69,8 +71,6 @@ class Image(Control):
         return self._get_attr("maximizeFrame")
 
     @maximize_frame.setter
-    def maximize_frame(self, value):
-        assert value == None or isinstance(
-            value, bool
-        ), "maximize_frame must be a boolean"
+    @beartype
+    def maximize_frame(self, value: Optional[bool]):
         self._set_attr("maximizeFrame", value)

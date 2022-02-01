@@ -1,3 +1,5 @@
+from typing import Optional, Union
+from beartype import beartype
 from pglet.control import Control
 
 
@@ -61,10 +63,8 @@ class Slider(Control):
         return self._get_attr("value", data_type="float")
 
     @value.setter
-    def value(self, value):
-        assert (
-            value == None or isinstance(value, float) or isinstance(value, int)
-        ), "value must be a float"
+    @beartype
+    def value(self, value: Union[None, int, float]):
         self._set_attr("value", value)
 
     # label
@@ -82,10 +82,8 @@ class Slider(Control):
         return self._get_attr("min")
 
     @min.setter
-    def min(self, value):
-        assert (
-            value == None or isinstance(value, float) or isinstance(value, int)
-        ), "min must be a float"
+    @beartype
+    def min(self, value: Union[None, int, float]):
         self._set_attr("min", value)
 
     # max
@@ -94,10 +92,8 @@ class Slider(Control):
         return self._get_attr("max")
 
     @max.setter
-    def max(self, value):
-        assert (
-            value == None or isinstance(value, float) or isinstance(value, int)
-        ), "max must be a float"
+    @beartype
+    def max(self, value: Union[None, int, float]):
         self._set_attr("max", value)
 
     # step
@@ -106,10 +102,8 @@ class Slider(Control):
         return self._get_attr("step")
 
     @step.setter
-    def step(self, value):
-        assert (
-            value == None or isinstance(value, float) or isinstance(value, int)
-        ), "step must be a float"
+    @beartype
+    def step(self, value: Union[None, int, float]):
         self._set_attr("step", value)
 
     # show_value
@@ -118,8 +112,8 @@ class Slider(Control):
         return self._get_attr("showValue")
 
     @show_value.setter
-    def show_value(self, value):
-        assert value == None or isinstance(value, bool), "show_value must be a boolean"
+    @beartype
+    def show_value(self, value: Optional[bool]):
         self._set_attr("showValue", value)
 
     # value_format
@@ -137,6 +131,6 @@ class Slider(Control):
         return self._get_attr("vertical")
 
     @vertical.setter
-    def vertical(self, value):
-        assert value == None or isinstance(value, bool), "vertical must be a boolean"
+    @beartype
+    def vertical(self, value: Optional[bool]):
         self._set_attr("vertical", value)

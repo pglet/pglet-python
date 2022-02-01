@@ -1,3 +1,5 @@
+from typing import Optional
+from beartype import beartype
 from pglet.control import Control
 
 
@@ -158,8 +160,8 @@ class Textbox(Control):
         return self._get_attr("multiline")
 
     @multiline.setter
-    def multiline(self, value):
-        assert value == None or isinstance(value, bool), "multiline must be a boolean"
+    @beartype
+    def multiline(self, value: Optional[bool]):
         self._set_attr("multiline", value)
 
     # read_only
@@ -168,8 +170,8 @@ class Textbox(Control):
         return self._get_attr("readOnly")
 
     @read_only.setter
-    def read_only(self, value):
-        assert value == None or isinstance(value, bool), "read_only must be a boolean"
+    @beartype
+    def read_only(self, value: Optional[bool]):
         self._set_attr("readOnly", value)
 
     # auto_adjust_height
@@ -178,10 +180,8 @@ class Textbox(Control):
         return self._get_attr("autoadjustheight")
 
     @auto_adjust_height.setter
-    def auto_adjust_height(self, value):
-        assert value == None or isinstance(
-            value, bool
-        ), "auto_adjust_height must be a boolean"
+    @beartype
+    def auto_adjust_height(self, value: Optional[bool]):
         self._set_attr("autoadjustheight", value)
 
     # underlined
@@ -190,8 +190,8 @@ class Textbox(Control):
         return self._get_attr("underlined")
 
     @underlined.setter
-    def underlined(self, value):
-        assert value == None or isinstance(value, bool), "underlined must be a boolean"
+    @beartype
+    def underlined(self, value: Optional[bool]):
         self._set_attr("underlined", value)
 
     # borderless
@@ -200,8 +200,8 @@ class Textbox(Control):
         return self._get_attr("borderless")
 
     @borderless.setter
-    def borderless(self, value):
-        assert value == None or isinstance(value, bool), "borderless must be a boolean"
+    @beartype
+    def borderless(self, value: Optional[bool]):
         self._set_attr("borderless", value)
 
     # password
@@ -210,8 +210,8 @@ class Textbox(Control):
         return self._get_attr("password")
 
     @password.setter
-    def password(self, value):
-        assert value == None or isinstance(value, bool), "password must be a boolean"
+    @beartype
+    def password(self, value: Optional[bool]):
         self._set_attr("password", value)
 
     # required
@@ -220,8 +220,8 @@ class Textbox(Control):
         return self._get_attr("required")
 
     @required.setter
-    def required(self, value):
-        assert value == None or isinstance(value, bool), "required must be a boolean"
+    @beartype
+    def required(self, value: Optional[bool]):
         self._set_attr("required", value)
 
     # on_change

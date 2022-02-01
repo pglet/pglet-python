@@ -1,3 +1,5 @@
+from typing import Optional
+from beartype import beartype
 from pglet.control import Control
 
 # Tab
@@ -142,8 +144,8 @@ class Tabs(Control):
         return self._get_attr("solid")
 
     @solid.setter
-    def solid(self, value):
-        assert value == None or isinstance(value, bool), "show_value must be a boolean"
+    @beartype
+    def solid(self, value: Optional[bool]):
         self._set_attr("solid", value)
 
     def _get_children(self):
