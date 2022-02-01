@@ -1,6 +1,9 @@
-from typing import Optional, Union
+from typing import Optional, Union, Literal
 from beartype import beartype
 from pglet.control import Control
+
+
+DATA_MODE = Literal["default", "fraction", "percentage", None]
 
 
 class BarChart(Control):
@@ -8,7 +11,7 @@ class BarChart(Control):
         self,
         id=None,
         tooltips=None,
-        data_mode=None,
+        data_mode: DATA_MODE = None,
         points=None,
         width=None,
         height=None,
@@ -61,7 +64,8 @@ class BarChart(Control):
         return self._get_attr("dataMode")
 
     @data_mode.setter
-    def data_mode(self, value):
+    @beartype
+    def data_mode(self, value: DATA_MODE):
         self._set_attr("dataMode", value)
 
     def _get_children(self):

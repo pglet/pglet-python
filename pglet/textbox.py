@@ -2,7 +2,7 @@ from typing import Optional, Literal
 from beartype import beartype
 from pglet.control import Control
 
-TEXTBOX_ALIGN = Literal["left", "right", "center", "justify"]
+TEXTBOX_ALIGN = Literal[None, "left", "right", "center", "justify"]
 
 
 class Textbox(Control):
