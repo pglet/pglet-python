@@ -8,6 +8,7 @@ authors = [
 ]
 dependencies = [
     "websocket-client>=1.2.1",
+    "beartype>=0.9.1",
 ]
 requires-python = ">=3.7"
 license = { text = "MIT" }

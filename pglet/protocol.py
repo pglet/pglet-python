@@ -1,5 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Dict, List
+from typing import Optional
+
 
 
 class Actions:
@@ -13,7 +15,7 @@ class Actions:
 @dataclass
 class Command:
     indent: int
-    name: str
+    name: Optional[str]
     values: List[str] = field(default_factory=list)
     attrs: Dict[str, str] = field(default_factory=dict)
     lines: List[str] = field(default_factory=list)
