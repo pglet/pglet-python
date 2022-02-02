@@ -6,7 +6,7 @@ from beartype import beartype
 from pglet.control import Control
 
 SELECTION_MODE = Literal[None, "single", "multiple"]
-SORTABLE = Literal[None, True, "number", False]
+SORTABLE = Literal[None, "string", "number", False]
 SORTED = Literal[None, False, "asc", "desc"]
 
 

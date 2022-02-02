@@ -220,8 +220,7 @@ class Point(Control):
         return self._get_attr("x")
 
     @x.setter
-    @beartype
-    def x(self, value: Union[None, str, int, float]):
+    def x(self, value):
         self._set_attr("x", value)
 
     # y
