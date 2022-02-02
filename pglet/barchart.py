@@ -72,7 +72,6 @@ class BarChart(Control):
         return [self.__data]
 
 
-# Data
 class Data(Control):
     def __init__(self, id=None, points=None):
         Control.__init__(self, id=id)
@@ -98,7 +97,6 @@ class Data(Control):
         return self.__points
 
 
-# Point
 class Point(Control):
     def __init__(
         self,

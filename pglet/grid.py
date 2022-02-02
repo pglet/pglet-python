@@ -1,16 +1,20 @@
 from __future__ import annotations
 
-from typing import Optional
+from typing import Literal, Optional
 
 from beartype import beartype
 from pglet.control import Control
+
+SELECTION_MODE = Literal[None, "single", "multiple"]
+SORTABLE = Literal[None, True, "number", False]
+SORTED = Literal[None, False, "asc", "desc"]
 
 
 class Grid(Control):
     def __init__(
         self,
         id=None,
-        selection_mode=None,
+        selection_mode: SELECTION_MODE = None,
         compact=None,
         header_visible=None,
         shimmer_lines=None,
@@ -111,7 +115,8 @@ class Grid(Control):
         return self._get_attr("selection")
 
     @selection_mode.setter
-    def selection_mode(self, value):
+    @beartype
+    def selection_mode(self, value: SELECTION_MODE):
         self._set_attr("selection", value)
 
     # compact
@@ -164,7 +169,6 @@ class Grid(Control):
         return [self._columns, self._items]
 
 
-# Columns
 class Columns(Control):
     def __init__(self, id=None, columns=None):
         Control.__init__(self, id=id)
@@ -178,7 +182,6 @@ class Columns(Control):
         return self.columns
 
 
-# Items
 class Items(Control):
     def __init__(self, id=None, items=None):
         Control.__init__(self, id=id)
@@ -217,7 +220,6 @@ class Items(Control):
         return items
 
 
-# Column
 class Column(Control):
     def __init__(
         self,
@@ -226,9 +228,9 @@ class Column(Control):
         icon=None,
         icon_only=None,
         field_name=None,
-        sortable=None,
+        sortable: SORTABLE = None,
         sort_field=None,
-        sorted=None,
+        sorted: SORTED = None,
         resizable=None,
         min_width=None,
         max_width=None,
@@ -297,7 +299,8 @@ class Column(Control):
         return self._get_attr("sortable")
 
     @sortable.setter
-    def sortable(self, value):
+    @beartype
+    def sortable(self, value: SORTABLE):
         self._set_attr("sortable", value)
 
     # sort_field
@@ -315,7 +318,8 @@ class Column(Control):
         return self._get_attr("sorted")
 
     @sorted.setter
-    def sorted(self, value):
+    @beartype
+    def sorted(self, value: SORTED):
         self._set_attr("sorted", value)
 
     # resizable
@@ -363,7 +367,6 @@ class Column(Control):
         return self.template_controls
 
 
-# Item
 class Item(Control):
     def __init__(self, obj):
         Control.__init__(self)

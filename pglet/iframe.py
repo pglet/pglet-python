@@ -4,7 +4,6 @@ from pglet.control import Control
 class IFrame(Control):
     def __init__(
         self,
-        name=None,
         id=None,
         src=None,
         border=None,

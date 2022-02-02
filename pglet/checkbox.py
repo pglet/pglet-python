@@ -1,6 +1,8 @@
-from typing import Optional
+from typing import Literal, Optional
 from beartype import beartype
 from pglet.control import Control
+
+BOX_SIDE = Literal[None, "start", "end"]
 
 
 class Checkbox(Control):
@@ -10,7 +12,7 @@ class Checkbox(Control):
         id=None,
         value=None,
         value_field=None,
-        box_side=None,
+        box_side: BOX_SIDE = None,
         data=None,
         width=None,
         height=None,
@@ -84,5 +86,6 @@ class Checkbox(Control):
         return self._get_attr("boxSide")
 
     @box_side.setter
-    def box_side(self, value):
+    @beartype
+    def box_side(self, value: BOX_SIDE):
         self._set_attr("boxSide", value)

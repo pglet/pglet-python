@@ -1,6 +1,24 @@
-from typing import Optional
+from typing import Literal, Optional
 from beartype import beartype
 from pglet.control import Control
+
+POSITION = Literal[
+    None,
+    "topLeft",
+    "topCenter",
+    "topRight",
+    "topAuto",
+    "bottomLeft",
+    "bottomCenter",
+    "bottomRight",
+    "bottomAuto",
+    "leftTop",
+    "leftCenter",
+    "leftBottom",
+    "rightTop",
+    "rightCenter",
+    "rightBottom",
+]
 
 
 class Callout(Control):
@@ -8,7 +26,7 @@ class Callout(Control):
         self,
         id=None,
         target=None,
-        position=None,
+        position: POSITION = None,
         gap=None,
         beak=None,
         beak_width=None,
@@ -86,7 +104,8 @@ class Callout(Control):
         return self._get_attr("position")
 
     @position.setter
-    def position(self, value):
+    @beartype
+    def position(self, value: POSITION):
         self._set_attr("position", value)
 
     # gap

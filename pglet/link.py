@@ -1,6 +1,8 @@
-from typing import Optional
+from typing import Literal, Optional
 from beartype import beartype
 from pglet.control import Control
+
+ALIGN = Literal[None, "left", "right", "center", "justify"]
 
 
 class Link(Control):
@@ -15,7 +17,7 @@ class Link(Control):
         bold=None,
         italic=None,
         pre=None,
-        align=None,
+        align: ALIGN = None,
         on_click=None,
         controls=None,
         width=None,
@@ -157,7 +159,8 @@ class Link(Control):
         return self._get_attr("align")
 
     @align.setter
-    def align(self, value):
+    @beartype
+    def align(self, value: ALIGN):
         self._set_attr("align", value)
 
     def _get_children(self):
