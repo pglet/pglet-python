@@ -1,42 +1,35 @@
 from pglet.control import Control
 
-# Option
-class Option(Control):
-    def __init__(self, key=None, text=None):
-        Control.__init__(self)
-        assert key != None or text != None, "key or text must be specified"
-        self.key = key
-        self.text = text
-
-    def _get_control_name(self):
-        return "option"
-
-    # key
-    @property
-    def key(self):
-        return self._get_attr("key")
-
-    @key.setter
-    def key(self, value):
-        self._set_attr("key", value)
-
-    # text
-    @property
-    def text(self):
-        return self._get_attr("text")
-
-    @text.setter
-    def text(self, value):
-        self._set_attr("text", value)
 
 class Dropdown(Control):
-    def __init__(self, label=None, id=None, value=None, placeholder=None,
-            error_message=None, on_change=None, options=None,
-            width=None, height=None, padding=None, margin=None,
-            visible=None, disabled=None, data=None):
-        Control.__init__(self, id=id,
-            width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled, data=data)
+    def __init__(
+        self,
+        label=None,
+        id=None,
+        value=None,
+        placeholder=None,
+        error_message=None,
+        on_change=None,
+        options=None,
+        width=None,
+        height=None,
+        padding=None,
+        margin=None,
+        visible=None,
+        disabled=None,
+        data=None,
+    ):
+        Control.__init__(
+            self,
+            id=id,
+            width=width,
+            height=height,
+            padding=padding,
+            margin=margin,
+            visible=visible,
+            disabled=disabled,
+            data=data,
+        )
         self.label = label
         self.value = value
         self.placeholder = placeholder
@@ -58,7 +51,7 @@ class Dropdown(Control):
     @options.setter
     def options(self, value):
         self.__options = value
-        
+
     # on_change
     @property
     def on_change(self):
@@ -106,3 +99,32 @@ class Dropdown(Control):
 
     def _get_children(self):
         return self.__options
+
+
+class Option(Control):
+    def __init__(self, key=None, text=None):
+        Control.__init__(self)
+        assert key != None or text != None, "key or text must be specified"
+        self.key = key
+        self.text = text
+
+    def _get_control_name(self):
+        return "option"
+
+    # key
+    @property
+    def key(self):
+        return self._get_attr("key")
+
+    @key.setter
+    def key(self, value):
+        self._set_attr("key", value)
+
+    # text
+    @property
+    def text(self):
+        return self._get_attr("text")
+
+    @text.setter
+    def text(self, value):
+        self._set_attr("text", value)

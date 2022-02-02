@@ -1,14 +1,35 @@
+from typing import Optional
+from beartype import beartype
 from pglet.control import Control
 
+
 class Image(Control):
-    def __init__(self, src=None, id=None, alt=None, title=None, maximize_frame=None,
-            width=None, height=None, padding=None, margin=None,
-            visible=None, disabled=None):
-        
-        Control.__init__(self, id=id,
-            width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
-        
+    def __init__(
+        self,
+        src=None,
+        id=None,
+        alt=None,
+        title=None,
+        maximize_frame=None,
+        width=None,
+        height=None,
+        padding=None,
+        margin=None,
+        visible=None,
+        disabled=None,
+    ):
+
+        Control.__init__(
+            self,
+            id=id,
+            width=width,
+            height=height,
+            padding=padding,
+            margin=margin,
+            visible=visible,
+            disabled=disabled,
+        )
+
         self.src = src
         self.alt = alt
         self.title = title
@@ -17,7 +38,7 @@ class Image(Control):
     def _get_control_name(self):
         return "image"
 
-# src
+    # src
     @property
     def src(self):
         return self._get_attr("src")
@@ -26,7 +47,7 @@ class Image(Control):
     def src(self, value):
         self._set_attr("src", value)
 
-# alt
+    # alt
     @property
     def alt(self):
         return self._get_attr("alt")
@@ -35,7 +56,7 @@ class Image(Control):
     def alt(self, value):
         self._set_attr("alt", value)
 
-# title
+    # title
     @property
     def title(self):
         return self._get_attr("title")
@@ -44,12 +65,12 @@ class Image(Control):
     def title(self, value):
         self._set_attr("title", value)
 
-# maximize_frame
+    # maximize_frame
     @property
     def maximize_frame(self):
         return self._get_attr("maximizeFrame")
 
     @maximize_frame.setter
-    def maximize_frame(self, value):
-        assert value == None or isinstance(value, bool), "maximize_frame must be a boolean"
+    @beartype
+    def maximize_frame(self, value: Optional[bool]):
         self._set_attr("maximizeFrame", value)

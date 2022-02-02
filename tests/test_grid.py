@@ -5,7 +5,7 @@ from pglet import Grid, Column
 from pglet.protocol import Command
 
 
-class Contact():
+class Contact:
     def __init__(self, first_name, last_name):
         self.first_name = first_name
         self.last_name = last_name
@@ -16,7 +16,12 @@ expected_result = [
         indent=0,
         name=None,
         values=["grid"],
-        attrs={"compact": "true", "headervisible": "true", "selection": "multiple", "shimmerlines": "1"},
+        attrs={
+            "compact": "true",
+            "headervisible": "true",
+            "selection": "multiple",
+            "shimmerlines": "1",
+        },
         lines=[],
         commands=[],
     ),
@@ -89,7 +94,10 @@ def test_grid_add__with_class():
             ),
             Column(field_name="last_name", name="Last name"),
         ],
-        items=[Contact(first_name="Inesa", last_name="Fitsner"), Contact(first_name="Fiodar", last_name="Fitsner")],
+        items=[
+            Contact(first_name="Inesa", last_name="Fitsner"),
+            Contact(first_name="Fiodar", last_name="Fitsner"),
+        ],
     )
 
     assert isinstance(g, pglet.Control)

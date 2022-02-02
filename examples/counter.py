@@ -4,6 +4,7 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
+
 def main(page):
     page.title = "Counter"
     page.update()
@@ -14,10 +15,10 @@ def main(page):
 
             txt_number.error_message = ""
 
-            if e.data == '+':
+            if e.data == "+":
                 txt_number.value = count + 1
 
-            elif e.data =='-':
+            elif e.data == "-":
                 txt_number.value = count - 1
 
         except ValueError:
@@ -25,14 +26,18 @@ def main(page):
 
         page.update()
 
-    txt_number = Textbox(value='0', align='right')
+    txt_number = Textbox(value="0", align="right")
 
     page.add(
-        Stack(horizontal = True, controls=[
-            Button('-', on_click=on_click, data='-'),
-            txt_number,
-            Button('+', on_click=on_click, data='+'),
-        ])
+        Stack(
+            horizontal=True,
+            controls=[
+                Button("-", on_click=on_click, data="-"),
+                txt_number,
+                Button("+", on_click=on_click, data="+"),
+            ],
+        )
     )
+
 
 pglet.app("counter", target=main)

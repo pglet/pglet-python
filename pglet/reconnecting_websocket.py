@@ -1,10 +1,13 @@
 import logging
+import random, threading
+
 import websocket
-import threading, random, time
+
 from pglet.utils import is_localhost_url
 
 _REMOTE_CONNECT_TIMEOUT_SEC = 5
 _LOCAL_CONNECT_TIMEOUT_SEC = 0.2
+
 
 class ReconnectingWebSocket:
     def __init__(self, url) -> None:
@@ -15,7 +18,11 @@ class ReconnectingWebSocket:
         self.connected = threading.Event()
         self.exit = threading.Event()
         self.retry = 0
-        websocket.setdefaulttimeout(_LOCAL_CONNECT_TIMEOUT_SEC if is_localhost_url(url) else _REMOTE_CONNECT_TIMEOUT_SEC)
+        websocket.setdefaulttimeout(
+            _LOCAL_CONNECT_TIMEOUT_SEC
+            if is_localhost_url(url)
+            else _REMOTE_CONNECT_TIMEOUT_SEC
+        )
 
     @property
     def on_connect(self, handler):
@@ -39,8 +46,8 @@ class ReconnectingWebSocket:
 
     @on_message.setter
     def on_message(self, handler):
-        self._on_message_handler = handler        
-    
+        self._on_message_handler = handler
+
     def _on_open(self, wsapp) -> None:
         self.connected.set()
         self.retry = 0
@@ -53,10 +60,12 @@ class ReconnectingWebSocket:
             self._on_message_handler(data)
 
     def connect(self) -> None:
-        self.wsapp = websocket.WebSocketApp(self._url, on_message=self._on_message, on_open=self._on_open)
+        self.wsapp = websocket.WebSocketApp(
+            self._url, on_message=self._on_message, on_open=self._on_open
+        )
         th = threading.Thread(target=self._connect_loop, args=(), daemon=True)
         th.start()
-    
+
     def send(self, message) -> None:
         self.connected.wait()
         self.wsapp.send(message)
@@ -76,14 +85,15 @@ class ReconnectingWebSocket:
                 return
 
             if self.retry == 0 and self._on_failed_connect_handler != None:
-                th = threading.Thread(target=self._on_failed_connect_handler, args=(), daemon=True)
+                th = threading.Thread(
+                    target=self._on_failed_connect_handler, args=(), daemon=True
+                )
                 th.start()
 
             backoff_in_seconds = 1
             sleep = 0.1
             if not is_localhost_url(self._url):
-                sleep = (backoff_in_seconds * 2 ** self.retry + 
-                        random.uniform(0, 1))
+                sleep = backoff_in_seconds * 2**self.retry + random.uniform(0, 1)
             logging.info(f"Reconnecting Pglet Server in {sleep} seconds")
             self.exit.wait(sleep)
             self.retry += 1

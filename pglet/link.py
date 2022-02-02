@@ -1,15 +1,46 @@
+from typing import Literal, Optional
+from beartype import beartype
 from pglet.control import Control
 
+ALIGN = Literal[None, "left", "right", "center", "justify"]
+
+
 class Link(Control):
-    def __init__(self, url=None, id=None, value=None, new_window=None, title=None,
-            size=None, bold=None, italic=None, pre=None, align=None, on_click=None, controls=None,
-            width=None, height=None, padding=None, margin=None,
-            visible=None, disabled=None, data=None):
-        
-        Control.__init__(self, id=id,
-            width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled, data=data)
-        
+    def __init__(
+        self,
+        url=None,
+        id=None,
+        value=None,
+        new_window=None,
+        title=None,
+        size=None,
+        bold=None,
+        italic=None,
+        pre=None,
+        align: ALIGN = None,
+        on_click=None,
+        controls=None,
+        width=None,
+        height=None,
+        padding=None,
+        margin=None,
+        visible=None,
+        disabled=None,
+        data=None,
+    ):
+
+        Control.__init__(
+            self,
+            id=id,
+            width=width,
+            height=height,
+            padding=padding,
+            margin=margin,
+            visible=visible,
+            disabled=disabled,
+            data=data,
+        )
+
         self.value = value
         self.url = url
         self.new_window = new_window
@@ -28,7 +59,7 @@ class Link(Control):
     def _get_control_name(self):
         return "link"
 
-# controls
+    # controls
     @property
     def controls(self):
         return self.__controls
@@ -37,7 +68,7 @@ class Link(Control):
     def controls(self, value):
         self.__controls = value
 
-# on_click
+    # on_click
     @property
     def on_click(self):
         return self._get_event_handler("click")
@@ -46,7 +77,7 @@ class Link(Control):
     def on_click(self, handler):
         self._add_event_handler("click", handler)
 
-# value
+    # value
     @property
     def value(self):
         return self._get_attr("value")
@@ -55,7 +86,7 @@ class Link(Control):
     def value(self, value):
         self._set_attr("value", value)
 
-# url
+    # url
     @property
     def url(self):
         return self._get_attr("url")
@@ -64,17 +95,17 @@ class Link(Control):
     def url(self, value):
         self._set_attr("url", value)
 
-# new_window
+    # new_window
     @property
     def new_window(self):
         return self._get_attr("newWindow")
 
     @new_window.setter
-    def new_window(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
+    @beartype
+    def new_window(self, value: Optional[bool]):
         self._set_attr("newWindow", value)
 
-# title
+    # title
     @property
     def title(self):
         return self._get_attr("title")
@@ -83,7 +114,7 @@ class Link(Control):
     def title(self, value):
         self._set_attr("title", value)
 
-# size
+    # size
     @property
     def size(self):
         return self._get_attr("size")
@@ -92,45 +123,45 @@ class Link(Control):
     def size(self, value):
         self._set_attr("size", value)
 
-# bold
+    # bold
     @property
     def bold(self):
         return self._get_attr("bold")
 
     @bold.setter
-    def bold(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
+    @beartype
+    def bold(self, value: Optional[bool]):
         self._set_attr("bold", value)
 
-# italic
+    # italic
     @property
     def italic(self):
         return self._get_attr("italic")
 
     @italic.setter
-    def italic(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
+    @beartype
+    def italic(self, value: Optional[bool]):
         self._set_attr("italic", value)
 
-# pre
+    # pre
     @property
     def pre(self):
         return self._get_attr("pre")
 
     @pre.setter
-    def pre(self, value):
-        assert value == None or isinstance(value, bool), "pre must be a boolean"
+    @beartype
+    def pre(self, value: Optional[bool]):
         self._set_attr("pre", value)
 
-# align
+    # align
     @property
     def align(self):
         return self._get_attr("align")
 
     @align.setter
-    def align(self, value):
+    @beartype
+    def align(self, value: ALIGN):
         self._set_attr("align", value)
-        
 
     def _get_children(self):
         return self.__controls

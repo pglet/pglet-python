@@ -1,14 +1,32 @@
 from pglet.control import Control
 
+
 class Icon(Control):
-    def __init__(self, name=None, id=None, color=None, size=None,
-            width=None, height=None, padding=None, margin=None,
-            visible=None, disabled=None):
-        
-        Control.__init__(self, id=id,
-            width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
-        
+    def __init__(
+        self,
+        name=None,
+        id=None,
+        color=None,
+        size=None,
+        width=None,
+        height=None,
+        padding=None,
+        margin=None,
+        visible=None,
+        disabled=None,
+    ):
+
+        Control.__init__(
+            self,
+            id=id,
+            width=width,
+            height=height,
+            padding=padding,
+            margin=margin,
+            visible=visible,
+            disabled=disabled,
+        )
+
         self.name = name
         self.color = color
         self.size = size
@@ -16,7 +34,7 @@ class Icon(Control):
     def _get_control_name(self):
         return "icon"
 
-# name
+    # name
     @property
     def name(self):
         return self._get_attr("name")
@@ -25,7 +43,7 @@ class Icon(Control):
     def name(self, value):
         self._set_attr("name", value)
 
-# color
+    # color
     @property
     def color(self):
         return self._get_attr("color")
@@ -34,7 +52,7 @@ class Icon(Control):
     def color(self, value):
         self._set_attr("color", value)
 
-# size
+    # size
     @property
     def size(self):
         return self._get_attr("size")

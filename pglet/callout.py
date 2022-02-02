@@ -1,14 +1,59 @@
+from typing import Literal, Optional
+from beartype import beartype
 from pglet.control import Control
 
+POSITION = Literal[
+    None,
+    "topLeft",
+    "topCenter",
+    "topRight",
+    "topAuto",
+    "bottomLeft",
+    "bottomCenter",
+    "bottomRight",
+    "bottomAuto",
+    "leftTop",
+    "leftCenter",
+    "leftBottom",
+    "rightTop",
+    "rightCenter",
+    "rightBottom",
+]
+
+
 class Callout(Control):
-    def __init__(self, id=None, target=None, position=None, gap=None, beak=None, beak_width=None,
-            page_padding=None, focus=None, cover=None, visible=None, controls=None, on_dismiss=None,
-            width=None, height=None, padding=None, margin=None, disabled=None):
-        
-        Control.__init__(self, id=id,
-            width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled)
-        
+    def __init__(
+        self,
+        id=None,
+        target=None,
+        position: POSITION = None,
+        gap=None,
+        beak=None,
+        beak_width=None,
+        page_padding=None,
+        focus=None,
+        cover=None,
+        visible=None,
+        controls=None,
+        on_dismiss=None,
+        width=None,
+        height=None,
+        padding=None,
+        margin=None,
+        disabled=None,
+    ):
+
+        Control.__init__(
+            self,
+            id=id,
+            width=width,
+            height=height,
+            padding=padding,
+            margin=margin,
+            visible=visible,
+            disabled=disabled,
+        )
+
         self.target = target
         self.position = position
         self.gap = gap
@@ -34,7 +79,7 @@ class Callout(Control):
     @controls.setter
     def controls(self, value):
         self.__controls = value
-    
+
     # on_dismiss
     @property
     def on_dismiss(self):
@@ -59,7 +104,8 @@ class Callout(Control):
         return self._get_attr("position")
 
     @position.setter
-    def position(self, value):
+    @beartype
+    def position(self, value: POSITION):
         self._set_attr("position", value)
 
     # gap
@@ -68,8 +114,8 @@ class Callout(Control):
         return self._get_attr("gap")
 
     @gap.setter
-    def gap(self, value):
-        assert value == None or isinstance(value, float) or isinstance(value, int), "gap must be a float"
+    @beartype
+    def gap(self, value: Optional[int]):
         self._set_attr("gap", value)
 
     # beak
@@ -78,8 +124,8 @@ class Callout(Control):
         return self._get_attr("beak")
 
     @beak.setter
-    def beak(self, value):
-        assert value == None or isinstance(value, bool), "beak must be a boolean"
+    @beartype
+    def beak(self, value: Optional[bool]):
         self._set_attr("beak", value)
 
     # beak_width
@@ -88,8 +134,8 @@ class Callout(Control):
         return self._get_attr("beakWidth")
 
     @beak_width.setter
-    def beak_width(self, value):
-        assert value == None or isinstance(value, float) or isinstance(value, int), "beak_width must be a float"
+    @beartype
+    def beak_width(self, value: Optional[int]):
         self._set_attr("beakWidth", value)
 
     # page_padding
@@ -98,8 +144,8 @@ class Callout(Control):
         return self._get_attr("pagePadding")
 
     @page_padding.setter
-    def page_padding(self, value):
-        assert value == None or isinstance(value, float) or isinstance(value, int), "page_padding must be a float"
+    @beartype
+    def page_padding(self, value: Optional[int]):
         self._set_attr("pagePadding", value)
 
     # focus
@@ -108,8 +154,8 @@ class Callout(Control):
         return self._get_attr("focus")
 
     @focus.setter
-    def focus(self, value):
-        assert value == None or isinstance(value, bool), "focus must be a boolean"
+    @beartype
+    def focus(self, value: Optional[bool]):
         self._set_attr("focus", value)
 
     # cover
@@ -118,8 +164,8 @@ class Callout(Control):
         return self._get_attr("cover")
 
     @cover.setter
-    def cover(self, value):
-        assert value == None or isinstance(value, bool), "cover must be a boolean"
+    @beartype
+    def cover(self, value: Optional[bool]):
         self._set_attr("cover", value)
 
     def _get_children(self):

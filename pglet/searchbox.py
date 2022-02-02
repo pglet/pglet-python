@@ -1,15 +1,40 @@
+from typing import Optional
+from beartype import beartype
 from pglet.control import Control
 
-class SearchBox(Control):
-    def __init__(self, id=None, value=None, placeholder=None, underlined=None,
-            icon=None, icon_color=None, data=None, on_search=None,
-            on_clear=None, on_change=None,
-            width=None, height=None, padding=None, margin=None,
-            visible=None, disabled=None):
 
-        Control.__init__(self, id=id,
-            width=width, height=height, padding=padding, margin=margin,
-            visible=visible, disabled=disabled, data=data)
+class SearchBox(Control):
+    def __init__(
+        self,
+        id=None,
+        value=None,
+        placeholder=None,
+        underlined=None,
+        icon=None,
+        icon_color=None,
+        data=None,
+        on_search=None,
+        on_clear=None,
+        on_change=None,
+        width=None,
+        height=None,
+        padding=None,
+        margin=None,
+        visible=None,
+        disabled=None,
+    ):
+
+        Control.__init__(
+            self,
+            id=id,
+            width=width,
+            height=height,
+            padding=padding,
+            margin=margin,
+            visible=visible,
+            disabled=disabled,
+            data=data,
+        )
 
         self.value = value
         self.placeholder = placeholder
@@ -23,7 +48,7 @@ class SearchBox(Control):
     def _get_control_name(self):
         return "searchbox"
 
-# on_search
+    # on_search
     @property
     def on_search(self):
         return self._get_event_handler("search")
@@ -32,7 +57,7 @@ class SearchBox(Control):
     def on_search(self, handler):
         self._add_event_handler("search", handler)
 
-# on_clear
+    # on_clear
     @property
     def on_clear(self):
         return self._get_event_handler("clear")
@@ -41,7 +66,7 @@ class SearchBox(Control):
     def on_clear(self, handler):
         self._add_event_handler("clear", handler)
 
-# on_change
+    # on_change
     @property
     def on_change(self):
         return self._get_event_handler("change")
@@ -54,7 +79,7 @@ class SearchBox(Control):
         else:
             self._set_attr("onchange", False)
 
-# value
+    # value
     @property
     def value(self):
         return self._get_attr("value")
@@ -63,7 +88,7 @@ class SearchBox(Control):
     def value(self, value):
         self._set_attr("value", value)
 
-# placeholder
+    # placeholder
     @property
     def placeholder(self):
         return self._get_attr("placeholder")
@@ -72,17 +97,17 @@ class SearchBox(Control):
     def placeholder(self, value):
         self._set_attr("placeholder", value)
 
-# underlined
+    # underlined
     @property
     def underlined(self):
         return self._get_attr("underlined")
 
     @underlined.setter
-    def underlined(self, value):
-        assert value == None or isinstance(value, bool), "value must be a boolean"
+    @beartype
+    def underlined(self, value: Optional[bool]):
         self._set_attr("underlined", value)
 
-# icon
+    # icon
     @property
     def icon(self):
         return self._get_attr("icon")
@@ -91,7 +116,7 @@ class SearchBox(Control):
     def icon(self, value):
         self._set_attr("icon", value)
 
-# icon_color
+    # icon_color
     @property
     def icon_color(self):
         return self._get_attr("iconColor")

@@ -1,11 +1,24 @@
-import threading
-from pglet.protocol import Command
-from difflib import SequenceMatcher
 import datetime as dt
+import threading
+from typing import Optional
+from beartype import beartype
+from difflib import SequenceMatcher
+
+from pglet.protocol import Command
+
 
 class Control:
-    def __init__(self, id=None, width=None, height=None,
-            padding=None, margin=None, visible=None, disabled=None, data=None):
+    def __init__(
+        self,
+        id=None,
+        width=None,
+        height=None,
+        padding=None,
+        margin=None,
+        visible=None,
+        disabled=None,
+        data=None,
+    ):
         self.__page = None
         self.__attrs = {}
         self.__previous_children = []
@@ -35,15 +48,18 @@ class Control:
     def _get_event_handler(self, event_name):
         return self.__event_handlers.get(event_name)
 
-    def _get_attr(self, name, defValue=None, data_type='string'):
+    def _get_attr(self, name, defValue=None, data_type="string"):
         name = name.lower()
         if not name in self.__attrs:
             return defValue
-        
+
         s_val = self.__attrs[name][0]
-        if data_type == 'bool' and s_val != None and isinstance(s_val, str):
-            return s_val.lower() == "true"
-        elif data_type == 'float' and s_val != None and isinstance(s_val, str):
+        if data_type == "bool":
+            if s_val != None and isinstance(s_val, str):
+                return s_val.lower() == "true"
+            else:
+                return False
+        elif data_type == "float" and s_val != None and isinstance(s_val, str):
             return float(s_val)
         else:
             return s_val
@@ -52,29 +68,29 @@ class Control:
         self._set_attr_internal(name, value, dirty)
 
     def _set_attr_internal(self, name, value, dirty=True):
-        name =  name.lower()
+        name = name.lower()
         orig_val = self.__attrs.get(name)
 
         if orig_val == None and value == None:
             return
 
         if value == None:
-            value = ''
-        
+            value = ""
+
         if orig_val == None or orig_val[0] != value:
             self.__attrs[name] = (value, dirty)
 
-# event_handlers
+    # event_handlers
     @property
     def event_handlers(self):
         return self.__event_handlers
 
-# _previous_children
+    # _previous_children
     @property
     def _previous_children(self):
         return self.__previous_children
 
-# page
+    # page
     @property
     def page(self):
         return self.__page
@@ -83,12 +99,12 @@ class Control:
     def page(self, page):
         self.__page = page
 
-# id
+    # id
     @property
     def id(self):
         return self._get_attr("id")
 
-# uid
+    # uid
     @property
     def uid(self):
         return self.__uid
@@ -97,7 +113,7 @@ class Control:
     def id(self, value):
         self._set_attr("id", value)
 
-# width
+    # width
     @property
     def width(self):
         return self._get_attr("width")
@@ -106,7 +122,7 @@ class Control:
     def width(self, value):
         self._set_attr("width", value)
 
-# height
+    # height
     @property
     def height(self):
         return self._get_attr("height")
@@ -115,7 +131,7 @@ class Control:
     def height(self, value):
         self._set_attr("height", value)
 
-# padding
+    # padding
     @property
     def padding(self):
         return self._get_attr("padding")
@@ -124,7 +140,7 @@ class Control:
     def padding(self, value):
         self._set_attr("padding", value)
 
-# margin
+    # margin
     @property
     def margin(self):
         return self._get_attr("margin")
@@ -133,27 +149,27 @@ class Control:
     def margin(self, value):
         self._set_attr("margin", value)
 
-# visible
+    # visible
     @property
     def visible(self):
         return self._get_attr("visible")
 
     @visible.setter
-    def visible(self, value):
-        assert value == None or isinstance(value, bool), "visible must be a boolean"
+    @beartype
+    def visible(self, value: Optional[bool]):
         self._set_attr("visible", value)
 
-# disabled
+    # disabled
     @property
     def disabled(self):
         return self._get_attr("disabled")
 
     @disabled.setter
-    def disabled(self, value):
-        assert value == None or isinstance(value, bool), "disabled must be a boolean"
+    @beartype
+    def disabled(self, value: Optional[bool]):
         self._set_attr("disabled", value)
 
-# data
+    # data
     @property
     def data(self):
         return self._get_attr("data")
@@ -162,7 +178,7 @@ class Control:
     def data(self, value):
         self._set_attr("data", value)
 
-# public methods
+    # public methods
     def update(self):
         if not self.__page:
             raise Exception("Control must be added to the page first.")
@@ -230,34 +246,50 @@ class Control:
                 for h in current_ints[b1:b2]:
                     # add
                     ctrl = hashes[h]
-                    innerCmds = ctrl.get_cmd_str(index=index,added_controls=added_controls)
-                    commands.append(Command(0, "add", None, {
-                        "to": self.__uid,
-                        "at": str(n)
-                    }, None, innerCmds))  
+                    innerCmds = ctrl.get_cmd_str(
+                        index=index, added_controls=added_controls
+                    )
+                    commands.append(
+                        Command(
+                            0,
+                            "add",
+                            None,
+                            {"to": self.__uid, "at": str(n)},
+                            None,
+                            innerCmds,
+                        )
+                    )
                     n += 1
             elif tag == "insert":
                 # add
                 for h in current_ints[b1:b2]:
                     ctrl = hashes[h]
-                    innerCmds = ctrl.get_cmd_str(index=index,added_controls=added_controls)
-                    commands.append(Command(0, "add", None, {
-                        "to": self.__uid,
-                        "at": str(n)
-                    }, None, innerCmds))           
+                    innerCmds = ctrl.get_cmd_str(
+                        index=index, added_controls=added_controls
+                    )
+                    commands.append(
+                        Command(
+                            0,
+                            "add",
+                            None,
+                            {"to": self.__uid, "at": str(n)},
+                            None,
+                            innerCmds,
+                        )
+                    )
                     n += 1
-        
+
         self.__previous_children.clear()
         self.__previous_children.extend(current_children)
 
     def _remove_control_recursively(self, index, control):
         for child in control._get_children():
             self._remove_control_recursively(index, child)
-        
+
         if control.__uid in index:
             del index[control.__uid]
 
-# private methods
+    # private methods
     def get_cmd_str(self, indent=0, index=None, added_controls=None):
 
         # remove control from index
@@ -278,7 +310,9 @@ class Control:
         # controls
         children = self._get_children()
         for control in children:
-            childCmd = control.get_cmd_str(indent=indent + 2, index=index, added_controls=added_controls)
+            childCmd = control.get_cmd_str(
+                indent=indent + 2, index=index, added_controls=added_controls
+            )
             commands.extend(childCmd)
 
         self.__previous_children.clear()
@@ -317,5 +351,5 @@ class Control:
             command.attrs["id"] = id
         elif update and len(command.attrs) > 0:
             command.values.append(self.__uid)
-        
+
         return command

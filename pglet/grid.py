@@ -1,16 +1,20 @@
 from __future__ import annotations
 
-from typing import Optional
+from typing import Literal, Optional
 
 from beartype import beartype
 from pglet.control import Control
+
+SELECTION_MODE = Literal[None, "single", "multiple"]
+SORTABLE = Literal[None, "string", "number", False]
+SORTED = Literal[None, False, "asc", "desc"]
 
 
 class Grid(Control):
     def __init__(
         self,
         id=None,
-        selection_mode=None,
+        selection_mode: SELECTION_MODE = None,
         compact=None,
         header_visible=None,
         shimmer_lines=None,
@@ -27,7 +31,14 @@ class Grid(Control):
         disabled=None,
     ):
         Control.__init__(
-            self, id=id, width=width, height=height, padding=padding, margin=margin, visible=visible, disabled=disabled
+            self,
+            id=id,
+            width=width,
+            height=height,
+            padding=padding,
+            margin=margin,
+            visible=visible,
+            disabled=disabled,
         )
 
         self.selection_mode = selection_mode
@@ -82,7 +93,10 @@ class Grid(Control):
     def selected_items(self, value):
         self._selected_items = value
         indices = [
-            str(idx) for selected_item in value for idx, item in enumerate(self._items.items) if item == selected_item
+            str(idx)
+            for selected_item in value
+            for idx, item in enumerate(self._items.items)
+            if item == selected_item
         ]
         self._set_attr("selectedindices", " ".join(indices))
 
@@ -101,7 +115,8 @@ class Grid(Control):
         return self._get_attr("selection")
 
     @selection_mode.setter
-    def selection_mode(self, value):
+    @beartype
+    def selection_mode(self, value: SELECTION_MODE):
         self._set_attr("selection", value)
 
     # compact
@@ -154,7 +169,6 @@ class Grid(Control):
         return [self._columns, self._items]
 
 
-# Columns
 class Columns(Control):
     def __init__(self, id=None, columns=None):
         Control.__init__(self, id=id)
@@ -168,7 +182,6 @@ class Columns(Control):
         return self.columns
 
 
-# Items
 class Items(Control):
     def __init__(self, id=None, items=None):
         Control.__init__(self, id=id)
@@ -207,7 +220,6 @@ class Items(Control):
         return items
 
 
-# Column
 class Column(Control):
     def __init__(
         self,
@@ -216,9 +228,9 @@ class Column(Control):
         icon=None,
         icon_only=None,
         field_name=None,
-        sortable=None,
+        sortable: SORTABLE = None,
         sort_field=None,
-        sorted=None,
+        sorted: SORTED = None,
         resizable=None,
         min_width=None,
         max_width=None,
@@ -287,7 +299,8 @@ class Column(Control):
         return self._get_attr("sortable")
 
     @sortable.setter
-    def sortable(self, value):
+    @beartype
+    def sortable(self, value: SORTABLE):
         self._set_attr("sortable", value)
 
     # sort_field
@@ -305,7 +318,8 @@ class Column(Control):
         return self._get_attr("sorted")
 
     @sorted.setter
-    def sorted(self, value):
+    @beartype
+    def sorted(self, value: SORTED):
         self._set_attr("sorted", value)
 
     # resizable
@@ -335,7 +349,9 @@ class Column(Control):
 
     @max_width.setter
     @beartype
-    def max_width(self, value: Optional[int]):  # could these not be floats? Union[None, int, float]
+    def max_width(
+        self, value: Optional[int]
+    ):  # could these not be floats? Union[None, int, float]
         self._set_attr("maxWidth", value)
 
     # on_click
@@ -351,7 +367,6 @@ class Column(Control):
         return self.template_controls
 
 
-# Item
 class Item(Control):
     def __init__(self, obj):
         Control.__init__(self)
@@ -381,7 +396,9 @@ class Item(Control):
         obj = self.obj if isinstance(self.obj, dict) else vars(self.obj)
 
         for name, val in obj.items():
-            data_type = type(val).__name__ if isinstance(val, (bool, float)) else "string"
+            data_type = (
+                type(val).__name__ if isinstance(val, (bool, float)) else "string"
+            )
             orig_val = self._get_attr(name, data_type=data_type)
 
             if val != orig_val:

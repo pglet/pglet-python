@@ -1,10 +1,12 @@
-import pytest
 import pglet
+import pytest
 from pglet import Textbox
+
 
 @pytest.fixture
 def page():
-    return pglet.page('test_update', local=True, no_window=True)
+    return pglet.page("test_update", local=True, no_window=True)
+
 
 def test_update_single_control(page):
     txt = Textbox(id="txt1", label="First name:")

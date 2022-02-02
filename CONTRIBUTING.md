@@ -10,7 +10,7 @@ git clone https://github.com/pglet/pglet-python
 
 ## Install PDM
 
-## Windows
+### Windows
 
 ```powershell
 (Invoke-WebRequest -Uri https://raw.githubusercontent.com/pdm-project/pdm/main/install-pdm.py -UseBasicParsing).Content | python -
@@ -24,7 +24,7 @@ pdm --pep582
 
 Run `refreshenv` after installing PDM on Windows or restart terminal.
 
-## macOS
+### macOS
 
 ```
 brew install pdm
@@ -57,3 +57,21 @@ python3 examples/counter.py
 During the first run Pglet Server will be downloaded from GitHub releases to `$HOME/.pglet/bin` directory and started from there. The version of Pglet Server to download is taken from `PGLET_VERSION` variable in `appveyor.yml` in the root of repository.
 
 You should get a new browser window opened with "counter" web app running.
+
+## Running tests
+
+Pytest should be run with `pdm run`:
+
+```
+pdm run pytest
+```
+
+## Code formatting
+
+The project uses [Black](https://github.com/psf/black) formatting style. All `.py` files in a PR must be black-formatted.
+
+IDE-specific Black integration guides:
+
+* [VSCode: Using Black to automatically format Python](https://dev.to/adamlombard/how-to-use-the-black-python-code-formatter-in-vscode-3lo0)
+
+Imports should be sorted with [usort](https://usort.readthedocs.io/en/stable/).
