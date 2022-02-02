@@ -2,82 +2,6 @@ from typing import Optional, Union
 from beartype import beartype
 from pglet.control import Control
 
-# Point
-class Point(Control):
-    def __init__(self, id=None, value=None, legend=None, color=None, tooltip=None):
-        Control.__init__(self, id=id)
-
-        self.value = value
-        self.legend = legend
-        self.color = color
-        self.tooltip = tooltip
-
-    def _get_control_name(self):
-        return "p"
-
-    # value
-    @property
-    def value(self):
-        return self._get_attr("value")
-
-    @value.setter
-    @beartype
-    def value(self, value: Union[None, int, float]):
-        self._set_attr("value", value)
-
-    # legend
-    @property
-    def legend(self):
-        return self._get_attr("legend")
-
-    @legend.setter
-    def legend(self, value):
-        self._set_attr("legend", value)
-
-    # color
-    @property
-    def color(self):
-        return self._get_attr("color")
-
-    @color.setter
-    def color(self, value):
-        self._set_attr("color", value)
-
-    # tooltip
-    @property
-    def tooltip(self):
-        return self._get_attr("tooltip")
-
-    @tooltip.setter
-    def tooltip(self, value):
-        self._set_attr("tooltip", value)
-
-
-# Data
-class Data(Control):
-    def __init__(self, id=None, points=None):
-        Control.__init__(self, id=id)
-
-        self.__points = []
-        if points != None:
-            for point in points:
-                self.__points.append(point)
-
-    # points
-    @property
-    def points(self):
-        return self.__points
-
-    @points.setter
-    def points(self, value):
-        self.__points = value
-
-    def _get_control_name(self):
-        return "data"
-
-    def _get_children(self):
-        return self.__points
-
 
 class PieChart(Control):
     def __init__(
@@ -166,3 +90,78 @@ class PieChart(Control):
 
     def _get_children(self):
         return [self.__data]
+
+
+class Data(Control):
+    def __init__(self, id=None, points=None):
+        Control.__init__(self, id=id)
+
+        self.__points = []
+        if points != None:
+            for point in points:
+                self.__points.append(point)
+
+    # points
+    @property
+    def points(self):
+        return self.__points
+
+    @points.setter
+    def points(self, value):
+        self.__points = value
+
+    def _get_control_name(self):
+        return "data"
+
+    def _get_children(self):
+        return self.__points
+
+
+class Point(Control):
+    def __init__(self, id=None, value=None, legend=None, color=None, tooltip=None):
+        Control.__init__(self, id=id)
+
+        self.value = value
+        self.legend = legend
+        self.color = color
+        self.tooltip = tooltip
+
+    def _get_control_name(self):
+        return "p"
+
+    # value
+    @property
+    def value(self):
+        return self._get_attr("value")
+
+    @value.setter
+    @beartype
+    def value(self, value: Union[None, int, float]):
+        self._set_attr("value", value)
+
+    # legend
+    @property
+    def legend(self):
+        return self._get_attr("legend")
+
+    @legend.setter
+    def legend(self, value):
+        self._set_attr("legend", value)
+
+    # color
+    @property
+    def color(self):
+        return self._get_attr("color")
+
+    @color.setter
+    def color(self, value):
+        self._set_attr("color", value)
+
+    # tooltip
+    @property
+    def tooltip(self):
+        return self._get_attr("tooltip")
+
+    @tooltip.setter
+    def tooltip(self, value):
+        self._set_attr("tooltip", value)

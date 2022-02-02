@@ -1,6 +1,27 @@
-from typing import Optional
+from curses.ascii import SI
+from typing import Literal, Optional
 from beartype import beartype
 from pglet.control import Control
+
+HORIZONTAL_ALIGN = Literal[None, "left", "center", "right", "justify"]
+VERTICAL_ALIGN = Literal[None, "top", "center", "bottom"]
+SIZE = Literal[
+    None,
+    "tiny",
+    "xSmall",
+    "small",
+    "smallPlus",
+    "medium",
+    "mediumPlus",
+    "large",
+    "xLarge",
+    "xxLarge",
+    "superLarge",
+    "mega",
+]
+BORDER_STYLE = Literal[
+    None, "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset"
+]
 
 
 class Text(Control):
@@ -9,9 +30,9 @@ class Text(Control):
         value=None,
         id=None,
         markdown=None,
-        align=None,
-        vertical_align=None,
-        size=None,
+        align: HORIZONTAL_ALIGN = None,
+        vertical_align: VERTICAL_ALIGN = None,
+        size: SIZE = None,
         bold=None,
         italic=None,
         pre=None,
@@ -20,7 +41,7 @@ class Text(Control):
         color=None,
         bgcolor=None,
         border=None,
-        border_style=None,
+        border_style: BORDER_STYLE = None,
         border_width=None,
         border_color=None,
         border_radius=None,
@@ -97,7 +118,8 @@ class Text(Control):
         return self._get_attr("align")
 
     @align.setter
-    def align(self, value):
+    @beartype
+    def align(self, value: HORIZONTAL_ALIGN):
         self._set_attr("align", value)
 
     # vertical_align
@@ -106,7 +128,8 @@ class Text(Control):
         return self._get_attr("verticalAlign")
 
     @vertical_align.setter
-    def vertical_align(self, value):
+    @beartype
+    def vertical_align(self, value: VERTICAL_ALIGN):
         self._set_attr("verticalAlign", value)
 
     # size
@@ -115,7 +138,8 @@ class Text(Control):
         return self._get_attr("size")
 
     @size.setter
-    def size(self, value):
+    @beartype
+    def size(self, value: SIZE):
         self._set_attr("size", value)
 
     # bold
@@ -201,7 +225,8 @@ class Text(Control):
         return self._get_attr("borderStyle")
 
     @border_style.setter
-    def border_style(self, value):
+    @beartype
+    def border_style(self, value: BORDER_STYLE):
         self._set_attr("borderStyle", value)
 
     # border_width

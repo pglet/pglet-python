@@ -1,32 +1,20 @@
-from typing import Optional
+from typing import Literal, Optional
 from beartype import beartype
 
 from pglet.control import Control
 
-# Footer
-class Footer(Control):
-    def __init__(self, id=None, controls=None):
-        Control.__init__(self, id=id)
-
-        self.__controls = []
-        if controls != None:
-            for control in controls:
-                self.__controls.append(control)
-
-    # controls
-    @property
-    def controls(self):
-        return self.__controls
-
-    @controls.setter
-    def controls(self, value):
-        self.__controls = value
-
-    def _get_control_name(self):
-        return "footer"
-
-    def _get_children(self):
-        return self.__controls
+TYPE = Literal[
+    None,
+    "small",
+    "smallLeft",
+    "medium",
+    "large",
+    "largeFixed",
+    "extraLarge",
+    "fluid",
+    "custom",
+    "customLeft",
+]
 
 
 class Panel(Control):
@@ -35,7 +23,7 @@ class Panel(Control):
         id=None,
         open=None,
         title=None,
-        type=None,
+        type: TYPE = None,
         auto_dismiss=None,
         light_dismiss=None,
         width=None,
@@ -128,7 +116,8 @@ class Panel(Control):
         return self._get_attr("type")
 
     @type.setter
-    def type(self, value):
+    @beartype
+    def type(self, value: TYPE):
         self._set_attr("type", value)
 
     # auto_dismiss
@@ -177,3 +166,28 @@ class Panel(Control):
                 result.append(control)
         result.append(self.__footer)
         return result
+
+
+class Footer(Control):
+    def __init__(self, id=None, controls=None):
+        Control.__init__(self, id=id)
+
+        self.__controls = []
+        if controls != None:
+            for control in controls:
+                self.__controls.append(control)
+
+    # controls
+    @property
+    def controls(self):
+        return self.__controls
+
+    @controls.setter
+    def controls(self, value):
+        self.__controls = value
+
+    def _get_control_name(self):
+        return "footer"
+
+    def _get_children(self):
+        return self.__controls

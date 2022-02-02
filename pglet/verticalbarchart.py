@@ -1,111 +1,8 @@
-from typing import Optional, Union
+from typing import Optional, Union, Literal
 from beartype import beartype
 from pglet.control import Control
 
-# Point
-class Point(Control):
-    def __init__(
-        self,
-        id=None,
-        x=None,
-        y=None,
-        legend=None,
-        color=None,
-        x_tooltip=None,
-        y_tooltip=None,
-    ):
-        Control.__init__(self, id=id)
-
-        self.x = x
-        self.y = y
-        self.legend = legend
-        self.color = color
-        self.x_tooltip = x_tooltip
-        self.y_tooltip = y_tooltip
-
-    def _get_control_name(self):
-        return "p"
-
-    # x
-    @property
-    def x(self):
-        return self._get_attr("x")
-
-    @x.setter
-    def x(self, value):
-        self._set_attr("x", value)
-
-    # y
-    @property
-    def y(self):
-        return self._get_attr("y")
-
-    @y.setter
-    @beartype
-    def y(self, value: Union[None, int, float]):
-        self._set_attr("y", value)
-
-    # legend
-    @property
-    def legend(self):
-        return self._get_attr("legend")
-
-    @legend.setter
-    def legend(self, value):
-        self._set_attr("legend", value)
-
-    # color
-    @property
-    def color(self):
-        return self._get_attr("color")
-
-    @color.setter
-    def color(self, value):
-        self._set_attr("color", value)
-
-    # x_tooltip
-    @property
-    def x_tooltip(self):
-        return self._get_attr("xTooltip")
-
-    @x_tooltip.setter
-    def x_tooltip(self, value):
-        self._set_attr("xTooltip", value)
-
-    # y_tooltip
-    @property
-    def y_tooltip(self):
-        return self._get_attr("yTooltip")
-
-    @y_tooltip.setter
-    def y_tooltip(self, value):
-        self._set_attr("yTooltip", value)
-
-
-# Data
-class Data(Control):
-    def __init__(self, id=None, points=None):
-        Control.__init__(self, id=id)
-
-        self.__points = []
-        if points != None:
-            for point in points:
-                self.__points.append(point)
-
-    # points
-    @property
-    def points(self):
-        return self.__points
-
-    @points.setter
-    def points(self, value):
-        self.__points = value
-
-    def _get_control_name(self):
-        return "data"
-
-    def _get_children(self):
-        return self.__points
+X_TYPE = Literal[None, "string", "number"]
 
 
 class VerticalBarChart(Control):
@@ -120,7 +17,7 @@ class VerticalBarChart(Control):
         y_max=None,
         y_ticks=None,
         y_format=None,
-        x_type=None,
+        x_type: X_TYPE = None,
         points=None,
         width=None,
         height=None,
@@ -238,7 +135,8 @@ class VerticalBarChart(Control):
         return self._get_attr("xType")
 
     @x_type.setter
-    def x_type(self, value):
+    @beartype
+    def x_type(self, value: X_TYPE):
         self._set_attr("xType", value)
 
     # bar_width
@@ -253,3 +151,108 @@ class VerticalBarChart(Control):
 
     def _get_children(self):
         return [self.__data]
+
+
+class Data(Control):
+    def __init__(self, id=None, points=None):
+        Control.__init__(self, id=id)
+
+        self.__points = []
+        if points != None:
+            for point in points:
+                self.__points.append(point)
+
+    # points
+    @property
+    def points(self):
+        return self.__points
+
+    @points.setter
+    def points(self, value):
+        self.__points = value
+
+    def _get_control_name(self):
+        return "data"
+
+    def _get_children(self):
+        return self.__points
+
+
+class Point(Control):
+    def __init__(
+        self,
+        id=None,
+        x=None,
+        y=None,
+        legend=None,
+        color=None,
+        x_tooltip=None,
+        y_tooltip=None,
+    ):
+        Control.__init__(self, id=id)
+
+        self.x = x
+        self.y = y
+        self.legend = legend
+        self.color = color
+        self.x_tooltip = x_tooltip
+        self.y_tooltip = y_tooltip
+
+    def _get_control_name(self):
+        return "p"
+
+    # x
+    @property
+    def x(self):
+        return self._get_attr("x")
+
+    @x.setter
+    @beartype
+    def x(self, value: Union[None, int, float, str]):
+        self._set_attr("x", value)
+
+    # y
+    @property
+    def y(self):
+        return self._get_attr("y")
+
+    @y.setter
+    @beartype
+    def y(self, value: Union[None, int, float]):
+        self._set_attr("y", value)
+
+    # legend
+    @property
+    def legend(self):
+        return self._get_attr("legend")
+
+    @legend.setter
+    def legend(self, value):
+        self._set_attr("legend", value)
+
+    # color
+    @property
+    def color(self):
+        return self._get_attr("color")
+
+    @color.setter
+    def color(self, value):
+        self._set_attr("color", value)
+
+    # x_tooltip
+    @property
+    def x_tooltip(self):
+        return self._get_attr("xTooltip")
+
+    @x_tooltip.setter
+    def x_tooltip(self, value):
+        self._set_attr("xTooltip", value)
+
+    # y_tooltip
+    @property
+    def y_tooltip(self):
+        return self._get_attr("yTooltip")
+
+    @y_tooltip.setter
+    def y_tooltip(self, value):
+        self._set_attr("yTooltip", value)

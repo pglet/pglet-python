@@ -1,42 +1,15 @@
-from typing import Optional
+from typing import Literal, Optional
 from beartype import beartype
 from pglet.control import Control
 
-# MessageButton
-class MessageButton(Control):
-    def __init__(self, text, action=None):
-        Control.__init__(self)
-        self.text = text
-        self.action = action
-
-    def _get_control_name(self):
-        return "button"
-
-    # text
-    @property
-    def text(self):
-        return self._get_attr("text")
-
-    @text.setter
-    def text(self, value):
-        self._set_attr("text", value)
-
-    # action
-    @property
-    def action(self):
-        return self._get_attr("action")
-
-    @action.setter
-    def action(self, value):
-        self._set_attr("action", value)
+TYPE = Literal[None, "info", "error", "blocked", "severeWarning", "success", "warning"]
 
 
-# Message
 class Message(Control):
     def __init__(
         self,
         value=None,
-        type=None,
+        type: TYPE = None,
         id=None,
         multiline=None,
         truncated=None,
@@ -111,7 +84,8 @@ class Message(Control):
         return self._get_attr("type")
 
     @type.setter
-    def type(self, value):
+    @beartype
+    def type(self, value: TYPE):
         self._set_attr("type", value)
 
     # multiline
@@ -146,3 +120,31 @@ class Message(Control):
 
     def _get_children(self):
         return self.__buttons
+
+
+class MessageButton(Control):
+    def __init__(self, text, action=None):
+        Control.__init__(self)
+        self.text = text
+        self.action = action
+
+    def _get_control_name(self):
+        return "button"
+
+    # text
+    @property
+    def text(self):
+        return self._get_attr("text")
+
+    @text.setter
+    def text(self, value):
+        self._set_attr("text", value)
+
+    # action
+    @property
+    def action(self):
+        return self._get_attr("action")
+
+    @action.setter
+    def action(self, value):
+        self._set_attr("action", value)

@@ -1,6 +1,18 @@
-from typing import Optional
+from typing import Literal, Optional
 from beartype import beartype
 from pglet.control import Control
+
+ALIGN = Literal[
+    None,
+    "start",
+    "end",
+    "center",
+    "space-between",
+    "space-around",
+    "space-evenly",
+    "baseline",
+    "stretch",
+]
 
 
 class Stack(Control):
@@ -10,8 +22,8 @@ class Stack(Control):
         id=None,
         horizontal=None,
         vertical_fill=None,
-        horizontal_align=None,
-        vertical_align=None,
+        horizontal_align: ALIGN = None,
+        vertical_align: ALIGN = None,
         min_width=None,
         max_width=None,
         min_height=None,
@@ -116,7 +128,8 @@ class Stack(Control):
         return self._get_attr("horizontalAlign")
 
     @horizontal_align.setter
-    def horizontal_align(self, value):
+    @beartype
+    def horizontal_align(self, value: ALIGN):
         self._set_attr("horizontalAlign", value)
 
     # vertical_align
@@ -125,7 +138,8 @@ class Stack(Control):
         return self._get_attr("verticalAlign")
 
     @vertical_align.setter
-    def vertical_align(self, value):
+    @beartype
+    def vertical_align(self, value: ALIGN):
         self._set_attr("verticalAlign", value)
 
     # min_width

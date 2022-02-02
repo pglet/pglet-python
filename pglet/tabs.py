@@ -2,72 +2,6 @@ from typing import Optional
 from beartype import beartype
 from pglet.control import Control
 
-# Tab
-class Tab(Control):
-    def __init__(self, text, controls=None, id=None, key=None, icon=None, count=None):
-        Control.__init__(self, id=id)
-        # key or text are required
-        assert key != None or text != None, "key or text must be specified"
-        self.key = key
-        self.text = text
-        self.icon = icon
-        self.count = count
-        self.__controls = []
-        if controls != None:
-            for control in controls:
-                self.__controls.append(control)
-
-    def _get_control_name(self):
-        return "tab"
-
-    # controls
-    @property
-    def controls(self):
-        return self.__controls
-
-    @controls.setter
-    def controls(self, value):
-        self.__controls = value
-
-    # key
-    @property
-    def key(self):
-        return self._get_attr("key")
-
-    @key.setter
-    def key(self, value):
-        self._set_attr("key", value)
-
-    # text
-    @property
-    def text(self):
-        return self._get_attr("text")
-
-    @text.setter
-    def text(self, value):
-        self._set_attr("text", value)
-
-    # icon
-    @property
-    def icon(self):
-        return self._get_attr("icon")
-
-    @icon.setter
-    def icon(self, value):
-        self._set_attr("icon", value)
-
-    # count
-    @property
-    def count(self):
-        return self._get_attr("count")
-
-    @count.setter
-    def count(self, value):
-        self._set_attr("count", value)
-
-    def _get_children(self):
-        return self.__controls
-
 
 class Tabs(Control):
     def __init__(
@@ -150,3 +84,69 @@ class Tabs(Control):
 
     def _get_children(self):
         return self.__tabs
+
+
+class Tab(Control):
+    def __init__(self, text, controls=None, id=None, key=None, icon=None, count=None):
+        Control.__init__(self, id=id)
+        # key or text are required
+        assert key != None or text != None, "key or text must be specified"
+        self.key = key
+        self.text = text
+        self.icon = icon
+        self.count = count
+        self.__controls = []
+        if controls != None:
+            for control in controls:
+                self.__controls.append(control)
+
+    def _get_control_name(self):
+        return "tab"
+
+    # controls
+    @property
+    def controls(self):
+        return self.__controls
+
+    @controls.setter
+    def controls(self, value):
+        self.__controls = value
+
+    # key
+    @property
+    def key(self):
+        return self._get_attr("key")
+
+    @key.setter
+    def key(self, value):
+        self._set_attr("key", value)
+
+    # text
+    @property
+    def text(self):
+        return self._get_attr("text")
+
+    @text.setter
+    def text(self, value):
+        self._set_attr("text", value)
+
+    # icon
+    @property
+    def icon(self):
+        return self._get_attr("icon")
+
+    @icon.setter
+    def icon(self, value):
+        self._set_attr("icon", value)
+
+    # count
+    @property
+    def count(self):
+        return self._get_attr("count")
+
+    @count.setter
+    def count(self, value):
+        self._set_attr("count", value)
+
+    def _get_children(self):
+        return self.__controls

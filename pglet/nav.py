@@ -2,7 +2,96 @@ from typing import Optional
 from beartype import beartype
 from pglet.control import Control
 
-# Item
+
+class Nav(Control):
+    def __init__(
+        self,
+        id=None,
+        value=None,
+        items=None,
+        on_change=None,
+        on_expand=None,
+        on_collapse=None,
+        width=None,
+        height=None,
+        padding=None,
+        margin=None,
+        visible=None,
+        disabled=None,
+    ):
+
+        Control.__init__(
+            self,
+            id=id,
+            width=width,
+            height=height,
+            padding=padding,
+            margin=margin,
+            visible=visible,
+            disabled=disabled,
+        )
+
+        self.value = value
+        self.on_change = on_change
+        self.on_expand = on_expand
+        self.on_collapse = on_collapse
+        self.__items = []
+        if items != None:
+            for item in items:
+                self.__items.append(item)
+
+    def _get_control_name(self):
+        return "nav"
+
+    # items
+    @property
+    def items(self):
+        return self.__items
+
+    @items.setter
+    def items(self, value):
+        self.__items = value
+
+    # on_change
+    @property
+    def on_change(self):
+        return self._get_event_handler("change")
+
+    @on_change.setter
+    def on_change(self, handler):
+        self._add_event_handler("change", handler)
+
+    # on_expand
+    @property
+    def on_expand(self):
+        return self._get_event_handler("expand")
+
+    @on_expand.setter
+    def on_expand(self, handler):
+        self._add_event_handler("expand", handler)
+
+    # on_collapse
+    @property
+    def on_collapse(self):
+        return self._get_event_handler("collapse")
+
+    @on_collapse.setter
+    def on_collapse(self, handler):
+        self._add_event_handler("collapse", handler)
+
+    # value
+    @property
+    def value(self):
+        return self._get_attr("value")
+
+    @value.setter
+    def value(self, value):
+        self._set_attr("value", value)
+
+    def _get_children(self):
+        return self.__items
+
+
 class Item(Control):
     def __init__(
         self,
@@ -110,95 +199,6 @@ class Item(Control):
     @beartype
     def expanded(self, value: Optional[bool]):
         self._set_attr("expanded", value)
-
-    def _get_children(self):
-        return self.__items
-
-
-class Nav(Control):
-    def __init__(
-        self,
-        id=None,
-        value=None,
-        items=None,
-        on_change=None,
-        on_expand=None,
-        on_collapse=None,
-        width=None,
-        height=None,
-        padding=None,
-        margin=None,
-        visible=None,
-        disabled=None,
-    ):
-
-        Control.__init__(
-            self,
-            id=id,
-            width=width,
-            height=height,
-            padding=padding,
-            margin=margin,
-            visible=visible,
-            disabled=disabled,
-        )
-
-        self.value = value
-        self.on_change = on_change
-        self.on_expand = on_expand
-        self.on_collapse = on_collapse
-        self.__items = []
-        if items != None:
-            for item in items:
-                self.__items.append(item)
-
-    def _get_control_name(self):
-        return "nav"
-
-    # items
-    @property
-    def items(self):
-        return self.__items
-
-    @items.setter
-    def items(self, value):
-        self.__items = value
-
-    # on_change
-    @property
-    def on_change(self):
-        return self._get_event_handler("change")
-
-    @on_change.setter
-    def on_change(self, handler):
-        self._add_event_handler("change", handler)
-
-    # on_expand
-    @property
-    def on_expand(self):
-        return self._get_event_handler("expand")
-
-    @on_expand.setter
-    def on_expand(self, handler):
-        self._add_event_handler("expand", handler)
-
-    # on_collapse
-    @property
-    def on_collapse(self):
-        return self._get_event_handler("collapse")
-
-    @on_collapse.setter
-    def on_collapse(self, handler):
-        self._add_event_handler("collapse", handler)
-
-    # value
-    @property
-    def value(self):
-        return self._get_attr("value")
-
-    @value.setter
-    def value(self, value):
-        self._set_attr("value", value)
 
     def _get_children(self):
         return self.__items

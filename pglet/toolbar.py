@@ -2,7 +2,142 @@ from typing import Optional
 from beartype import beartype
 from pglet.control import Control
 
-# Item
+
+class Toolbar(Control):
+    def __init__(
+        self,
+        id=None,
+        inverted=None,
+        items=None,
+        overflow=None,
+        far=None,
+        width=None,
+        height=None,
+        padding=None,
+        margin=None,
+        visible=None,
+        disabled=None,
+    ):
+
+        Control.__init__(
+            self,
+            id=id,
+            width=width,
+            height=height,
+            padding=padding,
+            margin=margin,
+            visible=visible,
+            disabled=disabled,
+        )
+
+        self.__items = []
+        if items != None:
+            for item in items:
+                self.__items.append(item)
+        self.__overflow = Overflow(items=overflow)
+        self.__far = Far(items=far)
+        self.inverted = inverted
+
+    def _get_control_name(self):
+        return "toolbar"
+
+    # inverted
+    @property
+    def inverted(self):
+        return self._get_attr("inverted")
+
+    @inverted.setter
+    @beartype
+    def inverted(self, value: Optional[bool]):
+        self._set_attr("inverted", value)
+
+    # items
+    @property
+    def items(self):
+        return self.__items
+
+    @items.setter
+    def items(self, value):
+        self.__items = value
+
+    # far
+    @property
+    def far_items(self):
+        return self.__far.items
+
+    @far_items.setter
+    def far_items(self, value):
+        self.__far.items = value
+
+    # overflow
+    @property
+    def overflow_items(self):
+        return self.__overflow.items
+
+    @overflow_items.setter
+    def overflow_items(self, value):
+        self.__overflow.items = value
+
+    def _get_children(self):
+        result = []
+        if self.__items and len(self.__items) > 0:
+            for item in self.__items:
+                result.append(item)
+        result.append(self.__overflow)
+        result.append(self.__far)
+        return result
+
+
+class Overflow(Control):
+    def __init__(self, id=None, items=None):
+        Control.__init__(self, id=id)
+
+        self.__items = []
+        if items != None:
+            for item in items:
+                self.__items.append(item)
+
+    # items
+    @property
+    def items(self):
+        return self.__items
+
+    @items.setter
+    def items(self, value):
+        self.__items = value
+
+    def _get_control_name(self):
+        return "overflow"
+
+    def _get_children(self):
+        return self.__items
+
+
+class Far(Control):
+    def __init__(self, id=None, items=None):
+        Control.__init__(self, id=id)
+
+        self.__items = []
+        if items != None:
+            for item in items:
+                self.__items.append(item)
+
+    # items
+    @property
+    def items(self):
+        return self.__items
+
+    @items.setter
+    def items(self, value):
+        self.__items = value
+
+    def _get_control_name(self):
+        return "far"
+
+    def _get_children(self):
+        return self.__items
+
+
 class Item(Control):
     def __init__(
         self,
@@ -147,140 +282,3 @@ class Item(Control):
 
     def _get_children(self):
         return self.__items
-
-
-# Overflow
-class Overflow(Control):
-    def __init__(self, id=None, items=None):
-        Control.__init__(self, id=id)
-
-        self.__items = []
-        if items != None:
-            for item in items:
-                self.__items.append(item)
-
-    # items
-    @property
-    def items(self):
-        return self.__items
-
-    @items.setter
-    def items(self, value):
-        self.__items = value
-
-    def _get_control_name(self):
-        return "overflow"
-
-    def _get_children(self):
-        return self.__items
-
-
-# Far
-class Far(Control):
-    def __init__(self, id=None, items=None):
-        Control.__init__(self, id=id)
-
-        self.__items = []
-        if items != None:
-            for item in items:
-                self.__items.append(item)
-
-    # items
-    @property
-    def items(self):
-        return self.__items
-
-    @items.setter
-    def items(self, value):
-        self.__items = value
-
-    def _get_control_name(self):
-        return "far"
-
-    def _get_children(self):
-        return self.__items
-
-
-class Toolbar(Control):
-    def __init__(
-        self,
-        id=None,
-        inverted=None,
-        items=None,
-        overflow=None,
-        far=None,
-        width=None,
-        height=None,
-        padding=None,
-        margin=None,
-        visible=None,
-        disabled=None,
-    ):
-
-        Control.__init__(
-            self,
-            id=id,
-            width=width,
-            height=height,
-            padding=padding,
-            margin=margin,
-            visible=visible,
-            disabled=disabled,
-        )
-
-        self.__items = []
-        if items != None:
-            for item in items:
-                self.__items.append(item)
-        self.__overflow = Overflow(items=overflow)
-        self.__far = Far(items=far)
-        self.inverted = inverted
-
-    def _get_control_name(self):
-        return "toolbar"
-
-    # inverted
-    @property
-    def inverted(self):
-        return self._get_attr("inverted")
-
-    @inverted.setter
-    @beartype
-    def inverted(self, value: Optional[bool]):
-        self._set_attr("inverted", value)
-
-    # items
-    @property
-    def items(self):
-        return self.__items
-
-    @items.setter
-    def items(self, value):
-        self.__items = value
-
-    # far
-    @property
-    def far_items(self):
-        return self.__far.items
-
-    @far_items.setter
-    def far_items(self, value):
-        self.__far.items = value
-
-    # overflow
-    @property
-    def overflow_items(self):
-        return self.__overflow.items
-
-    @overflow_items.setter
-    def overflow_items(self, value):
-        self.__overflow.items = value
-
-    def _get_children(self):
-        result = []
-        if self.__items and len(self.__items) > 0:
-            for item in self.__items:
-                result.append(item)
-        result.append(self.__overflow)
-        result.append(self.__far)
-        return result

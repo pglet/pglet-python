@@ -1,4 +1,8 @@
+from typing import Literal
+from beartype._decor.main import beartype
 from pglet.control import Control
+
+POSITION = Literal[None, "left", "top", "right", "bottom"]
 
 
 class Spinner(Control):
@@ -6,7 +10,7 @@ class Spinner(Control):
         self,
         label=None,
         id=None,
-        label_position=None,
+        label_position: POSITION = None,
         size=None,
         width=None,
         height=None,
@@ -56,5 +60,6 @@ class Spinner(Control):
         return self._get_attr("labelPosition")
 
     @label_position.setter
-    def label_position(self, value):
+    @beartype
+    def label_position(self, value: POSITION):
         self._set_attr("labelPosition", value)

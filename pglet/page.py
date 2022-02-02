@@ -1,7 +1,7 @@
 import json
 import logging
 import threading
-from typing import List, Optional
+from typing import List, Literal, Optional
 from beartype import beartype
 
 from pglet import constants
@@ -9,6 +9,20 @@ from pglet.connection import Connection
 from pglet.control import Control
 from pglet.control_event import ControlEvent
 from pglet.protocol import Command
+
+ALIGN = Literal[
+    None,
+    "start",
+    "end",
+    "center",
+    "space-between",
+    "space-around",
+    "space-evenly",
+    "baseline",
+    "stretch",
+]
+
+THEME = Literal[None, "light", "dark"]
 
 
 class Page(Control):
@@ -253,7 +267,8 @@ class Page(Control):
         return self._get_attr("horizontalAlign")
 
     @horizontal_align.setter
-    def horizontal_align(self, value):
+    @beartype
+    def horizontal_align(self, value: ALIGN):
         self._set_attr("horizontalAlign", value)
 
     # vertical_align
@@ -262,7 +277,8 @@ class Page(Control):
         return self._get_attr("verticalAlign")
 
     @vertical_align.setter
-    def vertical_align(self, value):
+    @beartype
+    def vertical_align(self, value: ALIGN):
         self._set_attr("verticalAlign", value)
 
     # gap
@@ -271,7 +287,8 @@ class Page(Control):
         return self._get_attr("gap")
 
     @gap.setter
-    def gap(self, value):
+    @beartype
+    def gap(self, value: Optional[int]):
         self._set_attr("gap", value)
 
     # padding
@@ -298,7 +315,8 @@ class Page(Control):
         return self._get_attr("theme")
 
     @theme.setter
-    def theme(self, value):
+    @beartype
+    def theme(self, value: THEME):
         self._set_attr("theme", value)
 
     # theme_primary_color
@@ -359,7 +377,8 @@ class Page(Control):
         return self._get_attr("signin")
 
     @signin.setter
-    def signin(self, value):
+    @beartype
+    def signin(self, value: Optional[bool]):
         self._set_attr("signin", value)
 
     # signin_allow_dismiss
@@ -368,7 +387,8 @@ class Page(Control):
         return self._get_attr("signinAllowDismiss")
 
     @signin_allow_dismiss.setter
-    def signin_allow_dismiss(self, value):
+    @beartype
+    def signin_allow_dismiss(self, value: Optional[bool]):
         self._set_attr("signinAllowDismiss", value)
 
     # signin_groups
@@ -385,45 +405,25 @@ class Page(Control):
     def user_id(self):
         return self._get_attr("userId")
 
-    @user_id.setter
-    def user_id(self, value):
-        self._set_attr("userId", value)
-
     # user_login
     @property
     def user_login(self):
         return self._get_attr("userLogin")
-
-    @user_login.setter
-    def user_login(self, value):
-        self._set_attr("userLogin", value)
 
     # user_name
     @property
     def user_name(self):
         return self._get_attr("userName")
 
-    @user_name.setter
-    def user_name(self, value):
-        self._set_attr("userName", value)
-
     # user_email
     @property
     def user_email(self):
         return self._get_attr("userEmail")
 
-    @user_email.setter
-    def user_email(self, value):
-        self._set_attr("userEmail", value)
-
     # user_client_ip
     @property
     def user_client_ip(self):
         return self._get_attr("userClientIP")
-
-    @user_client_ip.setter
-    def user_client_ip(self, value):
-        self._set_attr("userClientIP", value)
 
     # on_signin
     @property
