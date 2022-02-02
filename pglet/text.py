@@ -1,4 +1,3 @@
-from curses.ascii import SI
 from typing import Literal, Optional
 from beartype import beartype
 from pglet.control import Control
