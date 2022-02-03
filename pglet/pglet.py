@@ -22,23 +22,24 @@ from pglet.page import Page
 
 def page(
     name=None,
-    local=False,
     web=False,
     server=None,
     token=None,
     permissions=None,
     no_window=False,
+    clean=True,
 ):
     conn = _connect_internal(name, False, web, server, token, permissions, no_window)
     print("Page URL:", conn.page_url)
     page = Page(conn, constants.ZERO_SESSION)
     conn.sessions[constants.ZERO_SESSION] = page
+    if clean:
+        page.clean()
     return page
 
 
 def app(
     name=None,
-    local=False,
     web=False,
     server=None,
     token=None,
