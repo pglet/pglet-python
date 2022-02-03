@@ -54,7 +54,7 @@ class Checkbox(Control):
     # value
     @property
     def value(self):
-        return self._get_attr("value", data_type="bool")
+        return self._get_attr("value", data_type="bool", def_value=False)
 
     @value.setter
     @beartype
