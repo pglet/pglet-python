@@ -37,8 +37,9 @@ class Stack(Control):
         border_right=None,
         border_top=None,
         border_bottom=None,
-        scrollx=None,
-        scrolly=None,
+        scroll_x=None,
+        scroll_y=None,
+        auto_scroll=None,
         on_submit=None,
         width=None,
         height=None,
@@ -77,8 +78,9 @@ class Stack(Control):
         self.border_right = border_right
         self.border_top = border_top
         self.border_bottom = border_bottom
-        self.scrollx = scrollx
-        self.scrolly = scrolly
+        self.scroll_x = scroll_x
+        self.scroll_y = scroll_y
+        self.auto_scroll = auto_scroll
         self.on_submit = on_submit
 
         self.__controls = []
@@ -260,25 +262,35 @@ class Stack(Control):
     def border_bottom(self, value):
         self._set_attr("borderBottom", value)
 
-    # scrollx
+    # scroll_x
     @property
-    def scrollx(self):
+    def scroll_x(self):
         return self._get_attr("scrollx")
 
-    @scrollx.setter
+    @scroll_x.setter
     @beartype
-    def scrollx(self, value: Optional[bool]):
+    def scroll_x(self, value: Optional[bool]):
         self._set_attr("scrollx", value)
 
-    # scrolly
+    # scroll_y
     @property
-    def scrolly(self):
+    def scroll_y(self):
         return self._get_attr("scrolly")
 
-    @scrolly.setter
+    @scroll_y.setter
     @beartype
-    def scrolly(self, value: Optional[bool]):
+    def scroll_y(self, value: Optional[bool]):
         self._set_attr("scrolly", value)
+
+    # auto_scroll
+    @property
+    def auto_scroll(self):
+        return self._get_attr("autoscroll")
+
+    @auto_scroll.setter
+    @beartype
+    def auto_scroll(self, value: Optional[bool]):
+        self._set_attr("autoscroll", value)
 
     # on_submit
     @property
