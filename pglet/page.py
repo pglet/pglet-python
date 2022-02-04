@@ -56,8 +56,9 @@ class Page(Control):
             self._session_id,
             [
                 Command(0, "get", ["page", "hash"], None, None, None),
-                Command(0, "get", ["page", "win_width"], None, None, None),
-                Command(0, "get", ["page", "win_height"], None, None, None),
+                Command(0, "get", ["page", "winwidth"], None, None, None),
+                Command(0, "get", ["page", "winheight"], None, None, None),
+                Command(0, "get", ["page", "userauthprovider"], None, None, None),
                 Command(0, "get", ["page", "userid"], None, None, None),
                 Command(0, "get", ["page", "userlogin"], None, None, None),
                 Command(0, "get", ["page", "username"], None, None, None),
@@ -66,13 +67,14 @@ class Page(Control):
             ],
         ).results
         self._set_attr("hash", values[0], False)
-        self._set_attr("win_width", values[1], False)
-        self._set_attr("win_height", values[2], False)
-        self._set_attr("userid", values[3], False)
-        self._set_attr("userlogin", values[4], False)
-        self._set_attr("username", values[5], False)
-        self._set_attr("useremail", values[6], False)
-        self._set_attr("userclientip", values[7], False)
+        self._set_attr("winwidth", values[1], False)
+        self._set_attr("winheight", values[2], False)
+        self._set_attr("userauthprovider", values[3], False)
+        self._set_attr("userid", values[4], False)
+        self._set_attr("userlogin", values[5], False)
+        self._set_attr("username", values[6], False)
+        self._set_attr("useremail", values[7], False)
+        self._set_attr("userclientip", values[8], False)
 
     def update(self, *controls):
         with self._lock:
@@ -358,7 +360,7 @@ class Page(Control):
     # win_width
     @property
     def win_width(self):
-        w = self._get_attr("win_width")
+        w = self._get_attr("winwidth")
         if w != None and w != "":
             return int(w)
         return 0
@@ -366,7 +368,7 @@ class Page(Control):
     # win_height
     @property
     def win_height(self):
-        h = self._get_attr("win_height")
+        h = self._get_attr("winheight")
         if h != None and h != "":
             return int(h)
         return 0
@@ -399,6 +401,11 @@ class Page(Control):
     @signin_groups.setter
     def signin_groups(self, value):
         self._set_attr("signinGroups", value)
+
+    # user_auth_provider
+    @property
+    def user_auth_provider(self):
+        return self._get_attr("userauthprovider")
 
     # user_id
     @property
