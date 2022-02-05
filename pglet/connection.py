@@ -70,11 +70,12 @@ class Connection:
         host_client_id: str,
         page_name: str,
         is_app: bool,
+        update: bool,
         auth_token: str,
         permissions: str,
     ):
         payload = RegisterHostClientRequestPayload(
-            host_client_id, page_name, is_app, auth_token, permissions
+            host_client_id, page_name, is_app, update, auth_token, permissions
         )
         response = self._send_message_with_result(Actions.REGISTER_HOST_CLIENT, payload)
         return RegisterHostClientResponsePayload(**response)

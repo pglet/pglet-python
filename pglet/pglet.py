@@ -6,6 +6,7 @@ import tarfile
 import tempfile
 import threading
 import traceback
+from turtle import up
 import urllib.request
 import zipfile
 from pathlib import Path
@@ -23,18 +24,18 @@ from pglet.page import Page
 def page(
     name=None,
     web=False,
+    update=False,
     server=None,
     token=None,
     permissions=None,
     no_window=False,
-    clean=True,
 ):
-    conn = _connect_internal(name, False, web, server, token, permissions, no_window)
+    conn = _connect_internal(
+        name, False, update, web, server, token, permissions, no_window
+    )
     print("Page URL:", conn.page_url)
     page = Page(conn, constants.ZERO_SESSION)
     conn.sessions[constants.ZERO_SESSION] = page
-    if clean:
-        page.clean()
     return page
 
 
@@ -52,7 +53,7 @@ def app(
         raise Exception("target argument is not specified")
 
     conn = _connect_internal(
-        name, True, web, server, token, permissions, no_window, target
+        name, True, False, web, server, token, permissions, no_window, target
     )
     print("App URL:", conn.page_url)
 
@@ -81,6 +82,7 @@ def app(
 def _connect_internal(
     name=None,
     is_app=False,
+    update=False,
     web=False,
     server=None,
     token=None,
@@ -135,7 +137,7 @@ def _connect_internal(
         if conn.page_name == None:
             conn.page_name = "*" if name == "" or name == None else name
         result = conn.register_host_client(
-            conn.host_client_id, conn.page_name, is_app, token, permissions
+            conn.host_client_id, conn.page_name, is_app, update, token, permissions
         )
         conn.host_client_id = result.hostClientID
         conn.page_name = result.pageName

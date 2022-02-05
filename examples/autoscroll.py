@@ -1,8 +1,11 @@
 import pglet
 from pglet import Text, Stack, Button
 
-page = pglet.page("autoscroll", permissions="")
-page.theme = "light"
+page = pglet.page("autoscroll", update=False, permissions="")
+# page.theme = "dark"
+# page.gap = 100
+# page.padding = 100
+# page.update()
 
 st = Stack(
     height="400", width="100%", bgcolor="#f0f0f0", scroll_y=True, auto_scroll=True

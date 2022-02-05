@@ -3,7 +3,6 @@ from typing import Dict, List
 from typing import Optional
 
 
-
 class Actions:
     REGISTER_HOST_CLIENT = "registerHostClient"
     SESSION_CREATED = "sessionCreated"
@@ -69,6 +68,7 @@ class RegisterHostClientRequestPayload:
     hostClientID: str
     pageName: str
     isApp: bool
+    update: bool
     authToken: str
     permissions: str
 
