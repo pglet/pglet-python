@@ -25,6 +25,7 @@ class Textbox(Control):
         auto_adjust_height=None,
         underlined=None,
         borderless=None,
+        focused=None,
         on_change=None,
         width=None,
         height=None,
@@ -61,6 +62,7 @@ class Textbox(Control):
         self.borderless = borderless
         self.password = password
         self.required = required
+        self.focused = focused
         self.on_change = on_change
 
     def _get_control_name(self):
@@ -226,6 +228,16 @@ class Textbox(Control):
     @beartype
     def required(self, value: Optional[bool]):
         self._set_attr("required", value)
+
+    # focused
+    @property
+    def focused(self):
+        return self._get_attr("focused")
+
+    @focused.setter
+    @beartype
+    def focused(self, value: Optional[bool]):
+        self._set_attr("focused", value)
 
     # on_change
     @property

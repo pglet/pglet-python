@@ -14,6 +14,10 @@ ALIGN = Literal[
     "stretch",
 ]
 
+BORDER_STYLE = Literal[
+    None, "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset"
+]
+
 
 class Stack(Control):
     def __init__(
@@ -32,6 +36,9 @@ class Stack(Control):
         wrap=None,
         bgcolor=None,
         border=None,
+        border_style: BORDER_STYLE = None,
+        border_width=None,
+        border_color=None,
         border_radius=None,
         border_left=None,
         border_right=None,
@@ -73,6 +80,9 @@ class Stack(Control):
         self.wrap = wrap
         self.bgcolor = bgcolor
         self.border = border
+        self.border_style = border_style
+        self.border_width = border_width
+        self.border_color = border_color
         self.border_radius = border_radius
         self.border_left = border_left
         self.border_right = border_right
@@ -216,6 +226,34 @@ class Stack(Control):
     @border.setter
     def border(self, value):
         self._set_attr("border", value)
+
+    # border_style
+    @property
+    def border_style(self):
+        return self._get_attr("borderStyle")
+
+    @border_style.setter
+    @beartype
+    def border_style(self, value: BORDER_STYLE):
+        self._set_attr("borderStyle", value)
+
+    # border_width
+    @property
+    def border_width(self):
+        return self._get_attr("borderWidth")
+
+    @border_width.setter
+    def border_width(self, value):
+        self._set_attr("borderWidth", value)
+
+    # border_color
+    @property
+    def border_color(self):
+        return self._get_attr("borderColor")
+
+    @border_color.setter
+    def border_color(self, value):
+        self._set_attr("borderColor", value)
 
     # border_radius
     @property
