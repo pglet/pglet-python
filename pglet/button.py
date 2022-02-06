@@ -19,6 +19,7 @@ class Button(Control):
         title=None,
         icon=None,
         icon_color=None,
+        focused=None,
         data=None,
         on_click=None,
         menu_items=None,
@@ -53,6 +54,7 @@ class Button(Control):
         self.title = title
         self.icon = icon
         self.icon_color = icon_color
+        self.focused = focused
         self.on_click = on_click
         self.__menu_items = []
         if menu_items != None:
@@ -196,6 +198,16 @@ class Button(Control):
 
     def _get_children(self):
         return self.__menu_items
+
+    # focused
+    @property
+    def focused(self):
+        return self._get_attr("focused")
+
+    @focused.setter
+    @beartype
+    def focused(self, value: Optional[bool]):
+        self._set_attr("focused", value)
 
 
 class MenuItem(Control):
