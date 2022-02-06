@@ -1,6 +1,10 @@
-from typing import Optional
+from typing import Literal, Optional
 from beartype import beartype
 from pglet.control import Control, BORDER_STYLE
+
+FIT = Literal[
+    None, "none", "contain", "cover", "center", "centerContain", "centerCover"
+]
 
 
 class Image(Control):
@@ -11,6 +15,7 @@ class Image(Control):
         alt=None,
         title=None,
         maximize_frame=None,
+        fit: FIT = None,
         border_style: BORDER_STYLE = None,
         border_width=None,
         border_color=None,
@@ -41,6 +46,7 @@ class Image(Control):
         self.border_width = border_width
         self.border_color = border_color
         self.border_radius = border_radius
+        self.fit = fit
         self.maximize_frame = maximize_frame
 
     def _get_control_name(self):
@@ -82,6 +88,16 @@ class Image(Control):
     @beartype
     def maximize_frame(self, value: Optional[bool]):
         self._set_attr("maximizeFrame", value)
+
+    # fit
+    @property
+    def fit(self):
+        return self._get_attr("fit")
+
+    @fit.setter
+    @beartype
+    def fit(self, value: FIT):
+        self._set_attr("fit", value)
 
     # border_style
     @property
