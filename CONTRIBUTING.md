@@ -74,4 +74,28 @@ IDE-specific Black integration guides:
 
 * [VSCode: Using Black to automatically format Python](https://dev.to/adamlombard/how-to-use-the-black-python-code-formatter-in-vscode-3lo0)
 
-Imports should be sorted with [usort](https://usort.readthedocs.io/en/stable/).
+### Sort imports on Save
+
+VS Code includes "isort" by default.
+
+Add the following to user's `settings.json` :
+
+```json
+"[python]": {
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": true
+    }
+},
+"python.sortImports.args": [
+    "--trailing-comma",
+    "--use-parentheses",
+    "--line-width",
+    "88",
+    "--multi-line",
+    "3",
+    "--float-to-top"
+],
+```
+
+All isort command line options can be found [here](https://pycqa.github.io/isort/docs/configuration/options.html).
+
