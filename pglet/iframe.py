@@ -1,10 +1,5 @@
-from typing import Literal
 from beartype import beartype
-from pglet.control import Control
-
-BORDER_STYLE = Literal[
-    None, "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset"
-]
+from pglet.control import Control, BORDER_STYLE
 
 
 class IFrame(Control):

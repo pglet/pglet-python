@@ -1,26 +1,8 @@
 from typing import Literal, Optional
 from beartype import beartype
-from pglet.control import Control
+from pglet.control import Control, BORDER_STYLE, TEXT_SIZE, TEXT_ALIGN
 
-HORIZONTAL_ALIGN = Literal[None, "left", "center", "right", "justify"]
 VERTICAL_ALIGN = Literal[None, "top", "center", "bottom"]
-SIZE = Literal[
-    None,
-    "tiny",
-    "xSmall",
-    "small",
-    "smallPlus",
-    "medium",
-    "mediumPlus",
-    "large",
-    "xLarge",
-    "xxLarge",
-    "superLarge",
-    "mega",
-]
-BORDER_STYLE = Literal[
-    None, "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset"
-]
 
 
 class Text(Control):
@@ -29,9 +11,9 @@ class Text(Control):
         value=None,
         id=None,
         markdown=None,
-        align: HORIZONTAL_ALIGN = None,
+        align: TEXT_ALIGN = None,
         vertical_align: VERTICAL_ALIGN = None,
-        size: SIZE = None,
+        size: TEXT_SIZE = None,
         bold=None,
         italic=None,
         pre=None,
@@ -39,15 +21,10 @@ class Text(Control):
         block=None,
         color=None,
         bgcolor=None,
-        border=None,
         border_style: BORDER_STYLE = None,
         border_width=None,
         border_color=None,
         border_radius=None,
-        border_left=None,
-        border_right=None,
-        border_top=None,
-        border_bottom=None,
         width=None,
         height=None,
         padding=None,
@@ -79,15 +56,10 @@ class Text(Control):
         self.block = block
         self.color = color
         self.bgcolor = bgcolor
-        self.border = border
         self.border_style = border_style
         self.border_width = border_width
         self.border_color = border_color
         self.border_radius = border_radius
-        self.border_left = border_left
-        self.border_right = border_right
-        self.border_top = border_top
-        self.border_bottom = border_bottom
 
     def _get_control_name(self):
         return "text"
@@ -118,7 +90,7 @@ class Text(Control):
 
     @align.setter
     @beartype
-    def align(self, value: HORIZONTAL_ALIGN):
+    def align(self, value: TEXT_ALIGN):
         self._set_attr("align", value)
 
     # vertical_align
@@ -138,7 +110,7 @@ class Text(Control):
 
     @size.setter
     @beartype
-    def size(self, value: SIZE):
+    def size(self, value: TEXT_SIZE):
         self._set_attr("size", value)
 
     # bold
@@ -209,15 +181,6 @@ class Text(Control):
     def bgcolor(self, value):
         self._set_attr("bgcolor", value)
 
-    # border
-    @property
-    def border(self):
-        return self._get_attr("border")
-
-    @border.setter
-    def border(self, value):
-        self._set_attr("border", value)
-
     # border_style
     @property
     def border_style(self):
@@ -254,39 +217,3 @@ class Text(Control):
     @border_radius.setter
     def border_radius(self, value):
         self._set_attr("borderRadius", value)
-
-    # border_left
-    @property
-    def border_left(self):
-        return self._get_attr("borderLeft")
-
-    @border_left.setter
-    def border_left(self, value):
-        self._set_attr("borderLeft", value)
-
-    # border_right
-    @property
-    def border_right(self):
-        return self._get_attr("borderRight")
-
-    @border_right.setter
-    def border_right(self, value):
-        self._set_attr("borderRight", value)
-
-    # border_top
-    @property
-    def border_top(self):
-        return self._get_attr("borderTop")
-
-    @border_top.setter
-    def border_top(self, value):
-        self._set_attr("borderTop", value)
-
-    # border_bottom
-    @property
-    def border_bottom(self):
-        return self._get_attr("borderBottom")
-
-    @border_bottom.setter
-    def border_bottom(self, value):
-        self._set_attr("borderBottom", value)

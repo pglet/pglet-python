@@ -1,6 +1,6 @@
 from typing import Literal, Optional
 from beartype import beartype
-from pglet.control import Control
+from pglet.control import Control, BORDER_STYLE
 
 ALIGN = Literal[
     None,
@@ -12,10 +12,6 @@ ALIGN = Literal[
     "space-evenly",
     "baseline",
     "stretch",
-]
-
-BORDER_STYLE = Literal[
-    None, "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset"
 ]
 
 
@@ -35,15 +31,10 @@ class Stack(Control):
         gap=None,
         wrap=None,
         bgcolor=None,
-        border=None,
         border_style: BORDER_STYLE = None,
         border_width=None,
         border_color=None,
         border_radius=None,
-        border_left=None,
-        border_right=None,
-        border_top=None,
-        border_bottom=None,
         scroll_x=None,
         scroll_y=None,
         auto_scroll=None,
@@ -79,15 +70,10 @@ class Stack(Control):
         self.gap = gap
         self.wrap = wrap
         self.bgcolor = bgcolor
-        self.border = border
         self.border_style = border_style
         self.border_width = border_width
         self.border_color = border_color
         self.border_radius = border_radius
-        self.border_left = border_left
-        self.border_right = border_right
-        self.border_top = border_top
-        self.border_bottom = border_bottom
         self.scroll_x = scroll_x
         self.scroll_y = scroll_y
         self.auto_scroll = auto_scroll
@@ -218,15 +204,6 @@ class Stack(Control):
     def bgcolor(self, value):
         self._set_attr("bgcolor", value)
 
-    # border
-    @property
-    def border(self):
-        return self._get_attr("border")
-
-    @border.setter
-    def border(self, value):
-        self._set_attr("border", value)
-
     # border_style
     @property
     def border_style(self):
@@ -263,42 +240,6 @@ class Stack(Control):
     @border_radius.setter
     def border_radius(self, value):
         self._set_attr("borderRadius", value)
-
-    # border_left
-    @property
-    def border_left(self):
-        return self._get_attr("borderLeft")
-
-    @border_left.setter
-    def border_left(self, value):
-        self._set_attr("borderLeft", value)
-
-    # border_right
-    @property
-    def border_right(self):
-        return self._get_attr("borderRight")
-
-    @border_right.setter
-    def border_right(self, value):
-        self._set_attr("borderRight", value)
-
-    # border_top
-    @property
-    def border_top(self):
-        return self._get_attr("borderTop")
-
-    @border_top.setter
-    def border_top(self, value):
-        self._set_attr("borderTop", value)
-
-    # border_bottom
-    @property
-    def border_bottom(self):
-        return self._get_attr("borderBottom")
-
-    @border_bottom.setter
-    def border_bottom(self, value):
-        self._set_attr("borderBottom", value)
 
     # scroll_x
     @property
