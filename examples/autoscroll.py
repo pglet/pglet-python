@@ -1,5 +1,5 @@
 import pglet
-from pglet import Text, Stack, Button
+from pglet import Text, Stack, Button, Image
 
 page = pglet.page("autoscroll", update=False, no_window=True, permissions="")
 # page.theme_primary_color = "green"
@@ -16,11 +16,26 @@ scroll_box = Stack(
 
 def add_click(e):
     page.i += 1
-    st.controls.append(Text(f"Line {page.i}"))
+    st.controls.append(
+        Stack(
+            horizontal=True,
+            vertical_align="center",
+            controls=[
+                Image(
+                    src="https://avatars.githubusercontent.com/u/5041459?s=88&v=4",
+                    width=30,
+                    height=30,
+                    border_radius=15,
+                    fit="contain",
+                ),
+                Text(f"Line {page.i}"),
+            ],
+        )
+    )
     st.update()
 
 
-page.add(scroll_box, Button("Add line", primary=True, on_click=add_click))
+page.add(scroll_box, Button("Add line", primary=True, focused=True, on_click=add_click))
 
 for i in range(0, 10):
     st.controls.append(Text(f"Line {i}"))

@@ -1,5 +1,8 @@
+import logging
 import pglet
 from pglet import Stack, Button, Textbox, Text, Dialog
+
+logging.basicConfig(level=logging.DEBUG)
 
 pub_sub = {}
 
@@ -59,6 +62,7 @@ def main(page):
             page.user = user_name.value
             dlg.open = False
             # user_name.focused = False
+            message.prefix = f"{page.user}:"
             message.focused = True
             page.update()
             broadcast(None, f"{page.user} entered the chat!")
