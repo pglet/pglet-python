@@ -13,6 +13,7 @@ class Toggle(Control):
         inline=None,
         on_text=None,
         off_text=None,
+        focused=None,
         data=None,
         on_change=None,
         width=None,
@@ -41,6 +42,7 @@ class Toggle(Control):
         self.inline = inline
         self.on_text = on_text
         self.off_text = off_text
+        self.focused = focused
         self.on_change = on_change
 
     def _get_control_name(self):
@@ -111,3 +113,13 @@ class Toggle(Control):
     @off_text.setter
     def off_text(self, value):
         self._set_attr("offText", value)
+
+    # focused
+    @property
+    def focused(self):
+        return self._get_attr("focused")
+
+    @focused.setter
+    @beartype
+    def focused(self, value: Optional[bool]):
+        self._set_attr("focused", value)

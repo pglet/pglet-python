@@ -13,6 +13,7 @@ class Checkbox(Control):
         value=None,
         value_field=None,
         box_side: BOX_SIDE = None,
+        focused=None,
         data=None,
         width=None,
         height=None,
@@ -37,6 +38,7 @@ class Checkbox(Control):
         self.value_field = value_field
         self.label = label
         self.box_side = box_side
+        self.focused = focused
         self.on_change = on_change
 
     def _get_control_name(self):
@@ -89,3 +91,13 @@ class Checkbox(Control):
     @beartype
     def box_side(self, value: BOX_SIDE):
         self._set_attr("boxSide", value)
+
+    # focused
+    @property
+    def focused(self):
+        return self._get_attr("focused")
+
+    @focused.setter
+    @beartype
+    def focused(self, value: Optional[bool]):
+        self._set_attr("focused", value)

@@ -1,3 +1,5 @@
+from typing import Optional
+from beartype import beartype
 from pglet.control import Control
 
 
@@ -17,6 +19,7 @@ class Dropdown(Control):
         margin=None,
         visible=None,
         disabled=None,
+        focused=None,
         data=None,
     ):
         Control.__init__(
@@ -34,6 +37,7 @@ class Dropdown(Control):
         self.value = value
         self.placeholder = placeholder
         self.error_message = error_message
+        self.focused = focused
         self.on_change = on_change
         self.__options = []
         if options != None:
@@ -99,6 +103,16 @@ class Dropdown(Control):
 
     def _get_children(self):
         return self.__options
+
+    # focused
+    @property
+    def focused(self):
+        return self._get_attr("focused")
+
+    @focused.setter
+    @beartype
+    def focused(self, value: Optional[bool]):
+        self._set_attr("focused", value)
 
 
 class Option(Control):

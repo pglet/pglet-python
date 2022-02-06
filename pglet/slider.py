@@ -15,6 +15,7 @@ class Slider(Control):
         show_value=None,
         value_format=None,
         vertical=None,
+        focused=None,
         data=None,
         on_change=None,
         width=None,
@@ -43,6 +44,7 @@ class Slider(Control):
         self.show_value = show_value
         self.value_format = value_format
         self.vertical = vertical
+        self.focused = focused
         self.on_change = on_change
 
     def _get_control_name(self):
@@ -134,3 +136,13 @@ class Slider(Control):
     @beartype
     def vertical(self, value: Optional[bool]):
         self._set_attr("vertical", value)
+
+    # focused
+    @property
+    def focused(self):
+        return self._get_attr("focused")
+
+    @focused.setter
+    @beartype
+    def focused(self, value: Optional[bool]):
+        self._set_attr("focused", value)

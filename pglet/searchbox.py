@@ -22,6 +22,7 @@ class SearchBox(Control):
         margin=None,
         visible=None,
         disabled=None,
+        focused=None,
     ):
 
         Control.__init__(
@@ -41,6 +42,7 @@ class SearchBox(Control):
         self.underlined = underlined
         self.icon = icon
         self.icon_color = icon_color
+        self.focused = focused
         self.on_search = on_search
         self.on_clear = on_clear
         self.on_change = on_change
@@ -124,3 +126,13 @@ class SearchBox(Control):
     @icon_color.setter
     def icon_color(self, value):
         self._set_attr("iconColor", value)
+
+    # focused
+    @property
+    def focused(self):
+        return self._get_attr("focused")
+
+    @focused.setter
+    @beartype
+    def focused(self, value: Optional[bool]):
+        self._set_attr("focused", value)

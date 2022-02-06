@@ -1,4 +1,4 @@
-from typing import Literal, Union
+from typing import Literal, Optional, Union
 from beartype import beartype
 from pglet.control import Control
 
@@ -16,6 +16,7 @@ class SpinButton(Control):
         step=None,
         icon=None,
         label_position: POSITION = None,
+        focused=None,
         data=None,
         on_change=None,
         width=None,
@@ -43,6 +44,7 @@ class SpinButton(Control):
         self.max = max
         self.step = step
         self.icon = icon
+        self.focused = focused
         self.on_change = on_change
 
     def _get_control_name(self):
@@ -124,3 +126,13 @@ class SpinButton(Control):
     @icon.setter
     def icon(self, value):
         self._set_attr("icon", value)
+
+    # focused
+    @property
+    def focused(self):
+        return self._get_attr("focused")
+
+    @focused.setter
+    @beartype
+    def focused(self, value: Optional[bool]):
+        self._set_attr("focused", value)

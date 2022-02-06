@@ -1,3 +1,5 @@
+from typing import Optional
+from beartype import beartype
 from pglet.control import Control
 
 
@@ -13,6 +15,7 @@ class ChoiceGroup(Control):
         height=None,
         padding=None,
         margin=None,
+        focused=None,
         on_change=None,
         visible=None,
         disabled=None,
@@ -30,6 +33,7 @@ class ChoiceGroup(Control):
         )
         self.value = value
         self.label = label
+        self.focused = focused
         self.on_change = on_change
         self.__options = []
         if options != None:
@@ -77,6 +81,16 @@ class ChoiceGroup(Control):
 
     def _get_children(self):
         return self.__options
+
+    # focused
+    @property
+    def focused(self):
+        return self._get_attr("focused")
+
+    @focused.setter
+    @beartype
+    def focused(self, value: Optional[bool]):
+        self._set_attr("focused", value)
 
 
 class Option(Control):
