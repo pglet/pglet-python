@@ -1,5 +1,9 @@
+import logging
+
 import pglet
-from pglet import Text, Stack, Button, Image
+from pglet import Button, Image, Stack, Text
+
+logging.basicConfig(level=logging.DEBUG)
 
 page = pglet.page("autoscroll", update=False, no_window=True, permissions="")
 # page.theme_primary_color = "green"

@@ -2,6 +2,7 @@ import json
 import logging
 import threading
 from typing import List, Literal, Optional
+
 from beartype import beartype
 
 from pglet import constants
@@ -149,8 +150,8 @@ class Page(Control):
     def on_event(self, e):
         logging.info(f"page.on_event: {e.target} {e.name} {e.data}")
 
-        if e.target == "page" and e.name == "change":
-            with self._lock:
+        with self._lock:
+            if e.target == "page" and e.name == "change":
                 for props in json.loads(e.data):
                     id = props["i"]
                     if id in self._index:
@@ -160,17 +161,17 @@ class Page(Control):
                                     name, props[name], dirty=False
                                 )
 
-        elif e.target in self._index:
-            self._last_event = ControlEvent(
-                e.target, e.name, e.data, self._index[e.target], self
-            )
-            handler = self._index[e.target].event_handlers.get(e.name)
-            if handler:
-                t = threading.Thread(
-                    target=handler, args=(self._last_event,), daemon=True
+            elif e.target in self._index:
+                self._last_event = ControlEvent(
+                    e.target, e.name, e.data, self._index[e.target], self
                 )
-                t.start()
-            self._event_available.set()
+                handler = self._index[e.target].event_handlers.get(e.name)
+                if handler:
+                    t = threading.Thread(
+                        target=handler, args=(self._last_event,), daemon=True
+                    )
+                    t.start()
+                self._event_available.set()
 
     def wait_event(self):
         self._event_available.clear()

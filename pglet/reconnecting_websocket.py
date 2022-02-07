@@ -1,5 +1,6 @@
 import logging
-import random, threading
+import random
+import threading
 
 import websocket
 
@@ -80,6 +81,7 @@ class ReconnectingWebSocket:
         while not self.exit.is_set():
             logging.info(f"Connecting Pglet Server at {self._url}...")
             r = self.wsapp.run_forever()
+            logging.debug(f"Exited run_forever()")
             self.connected.clear()
             if r != True:
                 return

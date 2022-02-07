@@ -4,9 +4,8 @@ import threading
 import uuid
 
 from pglet.event import Event
-
-from pglet.reconnecting_websocket import ReconnectingWebSocket
 from pglet.protocol import *
+from pglet.reconnecting_websocket import ReconnectingWebSocket
 
 
 class Connection:
@@ -49,7 +48,16 @@ class Connection:
             evt.set()
         elif msg.action == Actions.PAGE_EVENT_TO_HOST:
             if self._on_event != None:
-                self._on_event(self, PageEventPayload(**msg.payload))
+                th = threading.Thread(
+                    target=self._on_event,
+                    args=(
+                        self,
+                        PageEventPayload(**msg.payload),
+                    ),
+                    daemon=True,
+                )
+                th.start()
+                # self._on_event(self, PageEventPayload(**msg.payload))
         elif msg.action == Actions.SESSION_CREATED:
             if self._on_session_created != None:
                 th = threading.Thread(

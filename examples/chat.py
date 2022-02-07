@@ -1,6 +1,7 @@
 import logging
+
 import pglet
-from pglet import Stack, Button, Textbox, Text, Dialog
+from pglet import Button, Dialog, Stack, Text, Textbox
 
 logging.basicConfig(level=logging.DEBUG)
 
