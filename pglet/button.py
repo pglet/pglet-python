@@ -1,5 +1,7 @@
 from typing import Optional
+
 from beartype import beartype
+
 from pglet.control import Control
 
 
@@ -22,6 +24,8 @@ class Button(Control):
         focused=None,
         data=None,
         on_click=None,
+        on_focus=None,
+        on_blur=None,
         menu_items=None,
         width=None,
         height=None,
@@ -56,6 +60,8 @@ class Button(Control):
         self.icon_color = icon_color
         self.focused = focused
         self.on_click = on_click
+        self.on_focus = on_focus
+        self.on_blur = on_blur
         self.__menu_items = []
         if menu_items != None:
             for item in menu_items:
@@ -208,6 +214,24 @@ class Button(Control):
     @beartype
     def focused(self, value: Optional[bool]):
         self._set_attr("focused", value)
+
+    # on_focus
+    @property
+    def on_focus(self):
+        return self._get_event_handler("focus")
+
+    @on_focus.setter
+    def on_focus(self, handler):
+        self._add_event_handler("focus", handler)
+
+    # on_blur
+    @property
+    def on_blur(self):
+        return self._get_event_handler("blur")
+
+    @on_blur.setter
+    def on_blur(self, handler):
+        self._add_event_handler("blur", handler)
 
 
 class MenuItem(Control):

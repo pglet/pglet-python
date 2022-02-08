@@ -1,3 +1,5 @@
+from cProfile import label
+
 import pglet
 from pglet import ComboBox, combobox
 
@@ -7,6 +9,9 @@ page.add(
     ComboBox(
         label="Your favorite color",
         value="c",
+        on_focus=lambda e: print("on_focus!"),
+        on_blur=lambda e: print("on_blur!"),
+        on_change=lambda e: print("on_change!"),
         options=[
             combobox.Option("RGB", item_type="header"),
             combobox.Option("red"),
@@ -40,6 +45,8 @@ page.add(
         multi_select=False,
         width="50%",
         allow_free_form=True,
+        on_focus=lambda e: print("on_focus!"),
+        on_blur=lambda e: print("on_blur!"),
         options=[
             combobox.Option("One"),
             combobox.Option("Two"),
@@ -47,10 +54,11 @@ page.add(
         ],
     ),
     ComboBox(
-        label="Allows free form with multi-select",
+        label="Allows free form with multi-select and error message",
         multi_select=True,
         width="50%",
         allow_free_form=True,
+        error_message="This field cannot be left blank!",
         options=[
             combobox.Option("Red"),
             combobox.Option("Green"),

@@ -16,6 +16,8 @@ class ComboBox(Control):
         placeholder=None,
         error_message=None,
         on_change=None,
+        on_focus=None,
+        on_blur=None,
         options=None,
         width=None,
         height=None,
@@ -49,6 +51,8 @@ class ComboBox(Control):
         self.allow_free_form = allow_free_form
         self.auto_complete = auto_complete
         self.on_change = on_change
+        self.on_focus = on_focus
+        self.on_blur = on_blur
         self.__options = []
         if options != None:
             for option in options:
@@ -158,6 +162,24 @@ class ComboBox(Control):
     @beartype
     def auto_complete(self, value: Optional[bool]):
         self._set_attr("autocomplete", value)
+
+    # on_focus
+    @property
+    def on_focus(self):
+        return self._get_event_handler("focus")
+
+    @on_focus.setter
+    def on_focus(self, handler):
+        self._add_event_handler("focus", handler)
+
+    # on_blur
+    @property
+    def on_blur(self):
+        return self._get_event_handler("blur")
+
+    @on_blur.setter
+    def on_blur(self, handler):
+        self._add_event_handler("blur", handler)
 
 
 class Option(Control):

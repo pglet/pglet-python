@@ -1,5 +1,6 @@
 from datetime import date, datetime
 from typing import Optional
+
 from beartype import beartype
 
 from pglet.control import Control
@@ -18,6 +19,8 @@ class DatePicker(Control):
         borderless=None,
         focused=None,
         on_change=None,
+        on_focus=None,
+        on_blur=None,
         width=None,
         visible=None,
         disabled=None,
@@ -32,6 +35,8 @@ class DatePicker(Control):
         self.required = required
         self.focused = focused
         self.on_change = on_change
+        self.on_focus = on_focus
+        self.on_blur = on_blur
 
     def _get_control_name(self):
         return "datepicker"
@@ -129,3 +134,21 @@ class DatePicker(Control):
     @on_change.setter
     def on_change(self, handler):
         self._add_event_handler("change", handler)
+
+    # on_focus
+    @property
+    def on_focus(self):
+        return self._get_event_handler("focus")
+
+    @on_focus.setter
+    def on_focus(self, handler):
+        self._add_event_handler("focus", handler)
+
+    # on_blur
+    @property
+    def on_blur(self):
+        return self._get_event_handler("blur")
+
+    @on_blur.setter
+    def on_blur(self, handler):
+        self._add_event_handler("blur", handler)

@@ -1,5 +1,7 @@
 from typing import Optional
+
 from beartype import beartype
+
 from pglet.control import Control
 
 
@@ -16,6 +18,8 @@ class SearchBox(Control):
         on_search=None,
         on_clear=None,
         on_change=None,
+        on_focus=None,
+        on_blur=None,
         width=None,
         height=None,
         padding=None,
@@ -46,6 +50,8 @@ class SearchBox(Control):
         self.on_search = on_search
         self.on_clear = on_clear
         self.on_change = on_change
+        self.on_focus = on_focus
+        self.on_blur = on_blur
 
     def _get_control_name(self):
         return "searchbox"
@@ -136,3 +142,21 @@ class SearchBox(Control):
     @beartype
     def focused(self, value: Optional[bool]):
         self._set_attr("focused", value)
+
+    # on_focus
+    @property
+    def on_focus(self):
+        return self._get_event_handler("focus")
+
+    @on_focus.setter
+    def on_focus(self, handler):
+        self._add_event_handler("focus", handler)
+
+    # on_blur
+    @property
+    def on_blur(self):
+        return self._get_event_handler("blur")
+
+    @on_blur.setter
+    def on_blur(self, handler):
+        self._add_event_handler("blur", handler)
