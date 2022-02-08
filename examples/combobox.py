@@ -23,8 +23,9 @@ page.add(
     ComboBox(
         label="Your favorite car makers",
         multi_select=True,
-        value="BMW, Volkswagen",
+        value=["BMW, Volkswagen"],
         width="50%",
+        on_change=lambda e: print("selected cars:", e.control.value),
         options=[
             combobox.Option("Select all", item_type="select_all"),
             combobox.Option("div1", item_type="divider"),
@@ -34,4 +35,28 @@ page.add(
             combobox.Option("Mercedes-Benz"),
         ],
     ),
+    ComboBox(
+        label="Allows free form",
+        multi_select=False,
+        width="50%",
+        allow_free_form=True,
+        options=[
+            combobox.Option("One"),
+            combobox.Option("Two"),
+            combobox.Option("Five"),
+        ],
+    ),
+    ComboBox(
+        label="Allows free form with multi-select",
+        multi_select=True,
+        width="50%",
+        allow_free_form=True,
+        options=[
+            combobox.Option("Red"),
+            combobox.Option("Green"),
+            combobox.Option("Blue"),
+        ],
+    ),
 )
+
+input()

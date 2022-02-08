@@ -1,4 +1,4 @@
-from typing import Literal, Optional
+from typing import List, Literal, Optional
 
 from beartype import beartype
 
@@ -87,10 +87,15 @@ class ComboBox(Control):
     # value
     @property
     def value(self):
-        return self._get_attr("value")
+        v = self._get_attr("value")
+        if v and self.multi_select:
+            return [x.strip() for x in v.split(",")]
+        return v
 
     @value.setter
     def value(self, value):
+        if isinstance(value, List):
+            value = ",".join(value)
         self._set_attr("value", value)
 
     # placeholder
