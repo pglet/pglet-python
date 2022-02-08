@@ -3,6 +3,7 @@ from pglet.button import Button
 from pglet.callout import Callout
 from pglet.checkbox import Checkbox
 from pglet.choicegroup import ChoiceGroup
+from pglet.combobox import ComboBox
 from pglet.control import Control
 from pglet.datepicker import DatePicker
 from pglet.dialog import Dialog
@@ -18,8 +19,11 @@ from pglet.message import Message, MessageButton
 from pglet.nav import Nav
 from pglet.page import Page
 from pglet.panel import Panel
+from pglet.persona import Persona
+from pglet.pglet import *
 from pglet.piechart import PieChart
 from pglet.progress import Progress
+from pglet.reconnecting_websocket import *
 from pglet.searchbox import SearchBox
 from pglet.slider import Slider
 from pglet.spinbutton import SpinButton
@@ -31,5 +35,3 @@ from pglet.textbox import Textbox
 from pglet.toggle import Toggle
 from pglet.toolbar import Toolbar
 from pglet.verticalbarchart import VerticalBarChart
-from pglet.pglet import *
-from pglet.reconnecting_websocket import *

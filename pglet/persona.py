@@ -1,0 +1,172 @@
+from typing import Literal, Optional
+
+from beartype import beartype
+
+from pglet.control import Control
+
+SIZE = Literal[None, 8, 24, 32, 40, 48, 56, 72, 100, 120]
+PRESENCE = Literal[None, "none", "offline", "online", "away", "blocked", "busy", "dnd"]
+INITIALS_COLOR = Literal[
+    None,
+    "blue",
+    "burgundy",
+    "coolGray",
+    "cyan",
+    "darkBlue",
+    "darkGreen",
+    "darkRed",
+    "gold",
+    "green",
+    "lightBlue",
+    "lightGreen",
+    "lightPink",
+    "lightRed",
+    "magenta",
+    "orange",
+    "pink",
+    "purple",
+    "rust",
+    "teal",
+    "transparent",
+    "violet",
+    "warmGray",
+]
+
+
+class Persona(Control):
+    def __init__(
+        self,
+        text=None,
+        id=None,
+        image_url=None,
+        image_alt=None,
+        initials_color: INITIALS_COLOR = None,
+        initials_text_color=None,
+        secondary_text=None,
+        tertiary_text=None,
+        optional_text=None,
+        size: SIZE = None,
+        presence: PRESENCE = None,
+        hide_details=None,
+        visible=None,
+    ):
+
+        Control.__init__(self, id=id, visible=visible)
+
+        self.text = text
+        self.image_url = image_url
+        self.image_alt = image_alt
+        self.initials_color = initials_color
+        self.initials_text_color = initials_text_color
+        self.secondary_text = secondary_text
+        self.tertiary_text = tertiary_text
+        self.optional_text = optional_text
+        self.size = size
+        self.presence = presence
+        self.hide_details = hide_details
+
+    def _get_control_name(self):
+        return "persona"
+
+    # text
+    @property
+    def text(self):
+        return self._get_attr("text")
+
+    @text.setter
+    def text(self, value):
+        self._set_attr("text", value)
+
+    # image_url
+    @property
+    def image_url(self):
+        return self._get_attr("imageurl")
+
+    @image_url.setter
+    def image_url(self, value):
+        self._set_attr("imageurl", value)
+
+    # image_alt
+    @property
+    def image_alt(self):
+        return self._get_attr("imagealt")
+
+    @image_alt.setter
+    def image_alt(self, value):
+        self._set_attr("imagealt", value)
+
+    # initials_color
+    @property
+    def initials_color(self):
+        return self._get_attr("initialscolor")
+
+    @initials_color.setter
+    @beartype
+    def initials_color(self, value: INITIALS_COLOR):
+        self._set_attr("initialscolor", value)
+
+    # initials_text_color
+    @property
+    def initials_text_color(self):
+        return self._get_attr("initialstextcolor")
+
+    @initials_text_color.setter
+    def initials_text_color(self, value):
+        self._set_attr("initialstextcolor", value)
+
+    # secondary_text
+    @property
+    def secondary_text(self):
+        return self._get_attr("secondarytext")
+
+    @secondary_text.setter
+    def secondary_text(self, value):
+        self._set_attr("secondarytext", value)
+
+    # tertiary_text
+    @property
+    def tertiary_text(self):
+        return self._get_attr("tertiarytext")
+
+    @tertiary_text.setter
+    def tertiary_text(self, value):
+        self._set_attr("tertiarytext", value)
+
+    # optional_text
+    @property
+    def optional_text(self):
+        return self._get_attr("optionaltext")
+
+    @optional_text.setter
+    def optional_text(self, value):
+        self._set_attr("optionaltext", value)
+
+    # size
+    @property
+    def size(self):
+        return self._get_attr("size")
+
+    @size.setter
+    @beartype
+    def size(self, value: SIZE):
+        self._set_attr("size", value)
+
+    # presence
+    @property
+    def presence(self):
+        return self._get_attr("presence")
+
+    @presence.setter
+    @beartype
+    def presence(self, value: PRESENCE):
+        self._set_attr("presence", value)
+
+    # hide_details
+    @property
+    def hide_details(self):
+        return self._get_attr("hidedetails")
+
+    @hide_details.setter
+    @beartype
+    def hide_details(self, value: Optional[bool]):
+        self._set_attr("hidedetails", value)

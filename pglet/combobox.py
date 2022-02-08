@@ -4,10 +4,10 @@ from beartype import beartype
 
 from pglet.control import Control
 
-ITEM_TYPE = Literal[None, "normal", "divider", "header"]
+ITEM_TYPE = Literal[None, "normal", "divider", "header", "selectAll", "select_all"]
 
 
-class Dropdown(Control):
+class ComboBox(Control):
     def __init__(
         self,
         label=None,
@@ -24,6 +24,9 @@ class Dropdown(Control):
         visible=None,
         disabled=None,
         focused=None,
+        multi_select=None,
+        allow_free_form=None,
+        auto_complete=None,
         data=None,
     ):
         Control.__init__(
@@ -42,6 +45,9 @@ class Dropdown(Control):
         self.placeholder = placeholder
         self.error_message = error_message
         self.focused = focused
+        self.multi_select = multi_select
+        self.allow_free_form = allow_free_form
+        self.auto_complete = auto_complete
         self.on_change = on_change
         self.__options = []
         if options != None:
@@ -49,7 +55,7 @@ class Dropdown(Control):
                 self.__options.append(option)
 
     def _get_control_name(self):
-        return "dropdown"
+        return "combobox"
 
     # options
     @property
@@ -117,6 +123,36 @@ class Dropdown(Control):
     @beartype
     def focused(self, value: Optional[bool]):
         self._set_attr("focused", value)
+
+    # multi_select
+    @property
+    def multi_select(self):
+        return self._get_attr("multiselect")
+
+    @multi_select.setter
+    @beartype
+    def multi_select(self, value: Optional[bool]):
+        self._set_attr("multiselect", value)
+
+    # allow_free_form
+    @property
+    def allow_free_form(self):
+        return self._get_attr("allowfreeform")
+
+    @allow_free_form.setter
+    @beartype
+    def allow_free_form(self, value: Optional[bool]):
+        self._set_attr("allowfreeform", value)
+
+    # auto_complete
+    @property
+    def auto_complete(self):
+        return self._get_attr("autocomplete")
+
+    @auto_complete.setter
+    @beartype
+    def auto_complete(self, value: Optional[bool]):
+        self._set_attr("autocomplete", value)
 
 
 class Option(Control):
