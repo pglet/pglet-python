@@ -486,3 +486,21 @@ class Page(Control):
     @on_resize.setter
     def on_resize(self, handler):
         self._add_event_handler("resize", handler)
+
+    # on_connect
+    @property
+    def on_connect(self):
+        return self._get_event_handler("connect")
+
+    @on_connect.setter
+    def on_connect(self, handler):
+        self._add_event_handler("connect", handler)
+
+    # on_disconnect
+    @property
+    def on_disconnect(self):
+        return self._get_event_handler("disconnect")
+
+    @on_disconnect.setter
+    def on_disconnect(self, handler):
+        self._add_event_handler("disconnect", handler)
