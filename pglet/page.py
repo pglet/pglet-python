@@ -380,8 +380,7 @@ class Page(Control):
         return self._get_attr("signin")
 
     @signin.setter
-    @beartype
-    def signin(self, value: Optional[bool]):
+    def signin(self, value):
         self._set_attr("signin", value)
 
     # signin_allow_dismiss
@@ -400,7 +399,8 @@ class Page(Control):
         return self._get_attr("signinGroups")
 
     @signin_groups.setter
-    def signin_groups(self, value):
+    @beartype
+    def signin_groups(self, value: Optional[bool]):
         self._set_attr("signinGroups", value)
 
     # user_auth_provider
