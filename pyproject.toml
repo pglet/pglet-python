@@ -30,7 +30,9 @@ documentation = "https://pglet.io/docs/"
 tests = [
     "pytest>=6.1.2",
 ]
-dev = []
+dev = [
+    "pre-commit>=2.17.0",
+]
 
 [build-system]
 requires = ["git+https://github.com/pdm-project/pdm-pep517.git"]
