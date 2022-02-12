@@ -18,33 +18,33 @@ environment:
 
 install:
 - python --version
-- pip install --upgrade setuptools wheel twine pdm
+- pip install --upgrade setuptools wheel twine pdm cibuildwheel
 - pdm install
 - echo Using Pglet ${PGLET_VERSION}
 
 # downloading binaries
-- sh: |
-    function download_binary() {
-      echo "Downloading $1"
-      mkdir -p pglet/bin/$1
-      curl -L https://github.com/pglet/pglet/releases/download/v${PGLET_VERSION}/pglet-${PGLET_VERSION}-$1 -o pglet/bin/$1/pglet
-      chmod a+x pglet/bin/$1/pglet
-    }
+# - sh: |
+#     function download_binary() {
+#       echo "Downloading $1"
+#       mkdir -p pglet/bin/$1
+#       curl -L https://github.com/pglet/pglet/releases/download/v${PGLET_VERSION}/pglet-${PGLET_VERSION}-$1 -o pglet/bin/$1/pglet
+#       chmod a+x pglet/bin/$1/pglet
+#     }
 
-    echo "Downloading windows-amd64"
-    mkdir -p pglet/bin/windows-amd64
-    curl -L https://github.com/pglet/pglet/releases/download/v${PGLET_VERSION}/pglet-${PGLET_VERSION}-windows-amd64.exe -o pglet/bin/windows-amd64/pglet.exe
+#     echo "Downloading windows-amd64"
+#     mkdir -p pglet/bin/windows-amd64
+#     curl -L https://github.com/pglet/pglet/releases/download/v${PGLET_VERSION}/pglet-${PGLET_VERSION}-windows-amd64.exe -o pglet/bin/windows-amd64/pglet.exe
 
-    download_binary "linux-amd64"
-    download_binary "linux-arm64"
-    download_binary "linux-arm"
-    download_binary "darwin-amd64"
-    download_binary "darwin-arm64"
+#     download_binary "linux-amd64"
+#     download_binary "linux-arm64"
+#     download_binary "linux-arm"
+#     download_binary "darwin-amd64"
+#     download_binary "darwin-arm64"
 
 build_script:
 # run tests
 #- pytest
-- ls -alR pglet/bin
+#- ls -alR pglet/bin
 
 # build and publish package
 - ps: |
@@ -76,7 +76,9 @@ build_script:
     (Get-Content pyproject.toml).replace("version = `"0.1.0`"", "version = `"$ver`"") | Set-Content pyproject.toml
 
 # build package
-- pdm build
+#- pdm build
+- python -m cibuildwheel --output-dir wheelhouse
+- ls -al wheelhouse
 
 # publish package
 - sh: |

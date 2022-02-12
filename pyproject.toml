@@ -38,6 +38,9 @@ dev = [
 requires = ["git+https://github.com/pdm-project/pdm-pep517.git"]
 build-backend = "pdm.pep517.api"
 
+[tool.pdm]
+is-purelib = false
+
 [tool.isort]
 profile = "black"
 float_to_top = true
