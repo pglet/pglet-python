@@ -99,3 +99,8 @@ Add the following to user's `settings.json` :
 
 All isort command line options can be found [here](https://pycqa.github.io/isort/docs/configuration/options.html).
 
+## pre-commit
+
+[pre-commit](https://pre-commit.com) is a dev dependency of Pglet and is automatically installed by `pdm install`.
+To install the pre-commit hooks run: `pre-commit install`.
+Once installed, everytime you commit, pre-commit will run the configured hooks against changed files.
