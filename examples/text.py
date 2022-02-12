@@ -1,5 +1,5 @@
 import pglet
-from pglet import Text, Stack
+from pglet import Stack, Text
 
 page = pglet.page("text")
 page.add(

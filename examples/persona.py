@@ -13,4 +13,4 @@ page.add(
         presence="online",
     )
 )
-page.add(Persona("Alice", size=72, secondary_text="Wonderer"))
+page.add(Persona("Alice Brown", size=72, secondary_text="Wonderer"))
