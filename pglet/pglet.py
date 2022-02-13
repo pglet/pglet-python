@@ -170,9 +170,7 @@ def _start_pglet_server():
     pglet_exe = "pglet.exe" if is_windows() else "pglet"
 
     # check if pglet.exe exists in "bin" directory (user mode)
-    p = Path(__file__).parent.joinpath(
-        "bin", f"{get_platform()}-{get_arch()}", pglet_exe
-    )
+    p = Path(__file__).parent.joinpath("bin", pglet_exe)
     if p.exists():
         pglet_path = str(p)
         logging.info(f"Pglet Server found in: {pglet_path}")
@@ -211,7 +209,7 @@ def _download_pglet():
     pglet_bin = Path.home().joinpath(".pglet", "bin")
     pglet_bin.mkdir(parents=True, exist_ok=True)
 
-    pglet_version = _get_pglet_version()
+    pglet_version = constants.PGLET_SERVER_VERSION
 
     installed_ver = None
     pglet_path = pglet_bin.joinpath(pglet_exe)
@@ -241,17 +239,6 @@ def _download_pglet():
         finally:
             os.remove(temp_arch)
     return str(pglet_path)
-
-
-def _get_pglet_version():
-    appveyor_yml = Path(__file__).parent.parent.joinpath("appveyor.yml").absolute()
-
-    version_prefix = "PGLET_VERSION:"
-    with open(appveyor_yml) as yml:
-        for line in yml:
-            if version_prefix in line:
-                return line.split(":")[1].strip()
-    raise f"{version_prefix} not found in appveyor.yml"
 
 
 # Fix: https://bugs.python.org/issue35935
