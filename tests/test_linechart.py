@@ -1,6 +1,7 @@
 import pglet
 from pglet import LineChart
 from pglet.linechart import Data, Point
+from pglet.protocol import Command
 
 
 def test_verticalbarchart_add():
@@ -28,13 +29,42 @@ def test_verticalbarchart_add():
     )
     assert isinstance(lc, pglet.Control)
     assert isinstance(lc, pglet.LineChart)
-    assert lc.get_cmd_str() == (
-        'linechart legend="true" strokewidth="4" tooltips="true" xtype="number" '
-        'yformat="{y}%" ymax="100" ymin="0" yticks="2"\n'
-        '  data color="yellow" legend="yellow color"\n'
-        '    p x="1" y="100"\n'
-        '    p x="5" y="50"\n'
-        '  data color="green" legend="green color"\n'
-        '    p x="10" y="20"\n'
-        '    p x="20" y="10"'
-    ), "Test failed"
+    assert lc.get_cmd_str() == [
+        Command(
+            indent=0,
+            name=None,
+            values=["linechart"],
+            attrs={
+                "legend": "true",
+                "strokewidth": "4",
+                "tooltips": "true",
+                "xtype": "number",
+                "yformat": "{y}%",
+                "ymax": "100",
+                "ymin": "0",
+                "yticks": "2",
+            },
+            lines=[],
+            commands=[],
+        ),
+        Command(
+            indent=2,
+            name=None,
+            values=["data"],
+            attrs={"color": "yellow", "legend": "yellow color"},
+            lines=[],
+            commands=[],
+        ),
+        Command(indent=4, name=None, values=["p"], attrs={"x": "1", "y": "100"}, lines=[], commands=[]),
+        Command(indent=4, name=None, values=["p"], attrs={"x": "5", "y": "50"}, lines=[], commands=[]),
+        Command(
+            indent=2,
+            name=None,
+            values=["data"],
+            attrs={"color": "green", "legend": "green color"},
+            lines=[],
+            commands=[],
+        ),
+        Command(indent=4, name=None, values=["p"], attrs={"x": "10", "y": "20"}, lines=[], commands=[]),
+        Command(indent=4, name=None, values=["p"], attrs={"x": "20", "y": "10"}, lines=[], commands=[]),
+    ], "Test failed"

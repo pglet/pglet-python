@@ -1,5 +1,6 @@
 import pglet
 from pglet import Button, Panel, Text
+from pglet.protocol import Command
 
 
 def test_panel_add():
@@ -18,11 +19,26 @@ def test_panel_add():
 
     assert isinstance(p, pglet.Control)
     assert isinstance(p, pglet.Panel)
-    assert p.get_cmd_str() == (
-        'panel autodismiss="true" blocking="false" data="data1" lightdismiss="false" '
-        'open="true" title="Hello" type="small" width="100"\n'
-        '  text value="Are you sure?"\n'
-        "  footer\n"
-        '    button text="OK"\n'
-        '    button text="Cancel"'
-    ), "Test failed"
+    assert p.get_cmd_str() == [
+        Command(
+            indent=0,
+            name=None,
+            values=["panel"],
+            attrs={
+                "autodismiss": "true",
+                "blocking": "false",
+                "data": "data1",
+                "lightdismiss": "false",
+                "open": "true",
+                "title": "Hello",
+                "type": "small",
+                "width": "100",
+            },
+            lines=[],
+            commands=[],
+        ),
+        Command(indent=2, name=None, values=["text"], attrs={"value": "Are you sure?"}, lines=[], commands=[]),
+        Command(indent=2, name=None, values=["footer"], attrs={}, lines=[], commands=[]),
+        Command(indent=4, name=None, values=["button"], attrs={"text": "OK"}, lines=[], commands=[]),
+        Command(indent=4, name=None, values=["button"], attrs={"text": "Cancel"}, lines=[], commands=[]),
+    ], "Test failed"

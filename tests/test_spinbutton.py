@@ -1,8 +1,9 @@
 import pglet
 from pglet import SpinButton
+from pglet.protocol import Command
 
 
-def test_searchbox_add():
+def test_spinbutton_add():
     s = SpinButton(
         value=1,
         label="To what extent you agree",
@@ -15,7 +16,22 @@ def test_searchbox_add():
     )
     assert isinstance(s, pglet.Control)
     assert isinstance(s, pglet.SpinButton)
-    assert s.get_cmd_str() == (
-        'spinbutton data="data1" icon="icon_name" '
-        'label="To what extent you agree" max="10" min="0" step="1" value="1" width="200"'
-    ), "Test failed"
+    assert s.get_cmd_str() == [
+        Command(
+            indent=0,
+            name=None,
+            values=["spinbutton"],
+            attrs={
+                "data": "data1",
+                "icon": "icon_name",
+                "label": "To what extent you agree",
+                "max": "10",
+                "min": "0",
+                "step": "1",
+                "value": "1",
+                "width": "200",
+            },
+            lines=[],
+            commands=[],
+        )
+    ], "Test failed"

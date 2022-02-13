@@ -1,5 +1,6 @@
 import pglet
 from pglet import Button, Stack, Text
+from pglet.protocol import Command
 
 
 def test_text_add():
@@ -43,7 +44,9 @@ def test_text_add():
 def test_text_double_quotes():
     c = Text(value='Hello, "world!"')
     # raise Exception(c.get_cmd_str())
-    assert c.get_cmd_str() == ('text value="Hello, \\"world!\\""'), "Test failed"
+    assert c.get_cmd_str() == [
+        Command(indent=0, name=None, values=["text"], attrs={"value": 'Hello, "world!"'}, lines=[], commands=[])
+    ], "Test failed"
 
 
 def test_add_text_inside_stack():

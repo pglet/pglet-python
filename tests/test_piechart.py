@@ -1,6 +1,7 @@
 import pglet
 from pglet import PieChart
 from pglet.piechart import Point
+from pglet.protocol import Command
 
 
 def test_piechart_add():
@@ -18,9 +19,30 @@ def test_piechart_add():
 
     assert isinstance(pc, pglet.Control)
     assert isinstance(pc, pglet.PieChart)
-    assert pc.get_cmd_str() == (
-        'piechart innerradius="42" innervalue="40" legend="true" tooltips="true" width="100%"\n'
-        "  data\n"
-        '    p color="yellow" legend="Yellow color" tooltip="20%" value="20"\n'
-        '    p color="green" legend="Green color" tooltip="30%" value="30"'
-    ), "Test failed"
+    assert pc.get_cmd_str() == [
+        Command(
+            indent=0,
+            name=None,
+            values=["piechart"],
+            attrs={"innerradius": "42", "innervalue": "40", "legend": "true", "tooltips": "true", "width": "100%"},
+            lines=[],
+            commands=[],
+        ),
+        Command(indent=2, name=None, values=["data"], attrs={}, lines=[], commands=[]),
+        Command(
+            indent=4,
+            name=None,
+            values=["p"],
+            attrs={"color": "yellow", "legend": "Yellow color", "tooltip": "20%", "value": "20"},
+            lines=[],
+            commands=[],
+        ),
+        Command(
+            indent=4,
+            name=None,
+            values=["p"],
+            attrs={"color": "green", "legend": "Green color", "tooltip": "30%", "value": "30"},
+            lines=[],
+            commands=[],
+        ),
+    ], "Test failed"

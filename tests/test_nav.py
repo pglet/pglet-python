@@ -1,5 +1,6 @@
 import pglet
 from pglet.nav import Item
+from pglet.protocol import Command
 
 
 def test_item():
@@ -28,11 +29,28 @@ def test_nav():
 
     assert isinstance(n, pglet.Control)
     assert isinstance(n, pglet.Nav)
-    assert n.get_cmd_str() == (
-        'nav id="list1" value="list1"\n'
-        '  item expanded="true" icon="mail" iconcolor="green" key="key1" newwindow="true" text="item1" url="https://google.com"\n'
-        '  item key="key2" text="item2"'
-    ), "Test failed"
+    assert n.get_cmd_str() == [
+        Command(
+            indent=0, name=None, values=["nav"], attrs={"value": "list1", "id": ("list1", True)}, lines=[], commands=[]
+        ),
+        Command(
+            indent=2,
+            name=None,
+            values=["item"],
+            attrs={
+                "expanded": "true",
+                "icon": "mail",
+                "iconcolor": "green",
+                "key": "key1",
+                "newwindow": "true",
+                "text": "item1",
+                "url": "https://google.com",
+            },
+            lines=[],
+            commands=[],
+        ),
+        Command(indent=2, name=None, values=["item"], attrs={"key": "key2", "text": "item2"}, lines=[], commands=[]),
+    ], "Test failed"
 
     ni = Item("key1")
     assert isinstance(ni, Item)
