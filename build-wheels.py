@@ -1,3 +1,4 @@
+import glob
 import hashlib
 import io
 import os
@@ -133,11 +134,12 @@ print("package_version", package_version)
 print("pglet_version", pglet_version)
 print("current_dir", current_dir)
 
+orig_whl = glob.glob(str(current_dir.joinpath("dist", "*.whl")))[0]
+
 for name, package in packages.items():
     print(f"Building {name}...")
 
     print("Unpacking original wheel file...")
-    orig_whl = current_dir.joinpath("dist", f"pglet-{package_version}-py3-none-any.whl")
     unpacked_whl = current_dir.joinpath("dist", "wheel")
     unpacked_whl.mkdir(exist_ok=True)
     unpack_zip(orig_whl, unpacked_whl)
@@ -215,4 +217,5 @@ for name, package in packages.items():
     shutil.rmtree(str(unpacked_whl))
 
 # delete original .whl
-os.remove(str(orig_whl))
+print(orig_whl)
+os.remove(orig_whl)
