@@ -11,19 +11,34 @@ def test_stack_add():
         vertical_align="baseline",
         gap="large",
         wrap=True,
-        scrollx=True,
-        scrolly=True,
+        scroll_x=True,
+        scroll_y=True,
         controls=[Textbox(id="firstName"), Textbox(id="lastName")],
     )
     assert isinstance(s, pglet.Control)
     assert isinstance(s, pglet.Stack)
     # raise Exception(s.get_cmd_str())
-    assert s.get_cmd_str() == (
-        'stack gap="large" horizontal="true" horizontalalign="center" '
-        'scrollx="true" scrolly="true" verticalalign="baseline" verticalfill="true" wrap="true"\n'
-        '  textbox id="firstName"\n'
-        '  textbox id="lastName"'
-    ), "Test failed"
+    assert s.get_cmd_str() == [
+        Command(
+            indent=0,
+            name=None,
+            values=["stack"],
+            attrs={
+                "gap": "large",
+                "horizontal": "true",
+                "horizontalalign": "center",
+                "scrollx": "true",
+                "scrolly": "true",
+                "verticalalign": "baseline",
+                "verticalfill": "true",
+                "wrap": "true",
+            },
+            lines=[],
+            commands=[],
+        ),
+        Command(indent=2, name=None, values=["textbox"], attrs={"id": ("firstName", True)}, lines=[], commands=[]),
+        Command(indent=2, name=None, values=["textbox"], attrs={"id": ("lastName", True)}, lines=[], commands=[]),
+    ], "Test failed"
 
 
 def test_nested_stacks_add():
