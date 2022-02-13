@@ -79,8 +79,8 @@ packages = {
     "macOS arm64": {
         "asset": "darwin-arm64",
         "exec": "pglet",
-        "wheel_tags": ["cp38-cp38-macosx_10_14_arm64"],
-        "file_suffix": "cp38-cp38-macosx_10_14_arm64",
+        "wheel_tags": ["py3-none-macosx_12_0_arm64"],
+        "file_suffix": "py3-none-macosx_12_0_arm64",
     },
 }
 
