@@ -3,7 +3,7 @@ version: 0.1.{build}
 
 skip_branch_with_pr: true
 
-image: ubuntu
+image: ubuntu1604
 
 stack: python 3.9
 
