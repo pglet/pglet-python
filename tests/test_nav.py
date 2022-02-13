@@ -58,9 +58,13 @@ def test_nav():
 
 def test_nav_with_just_keys():
     n = pglet.Nav(id="list1", value="list1", items=[Item(key="key1"), Item(key="key2")])
-    assert n.get_cmd_str(indent="  ") == (
-        '  nav id="list1" value="list1"\n' '    item key="key1"\n' '    item key="key2"'
-    ), "Test failed"
+    assert n.get_cmd_str() == [
+        Command(
+            indent=0, name=None, values=["nav"], attrs={"value": "list1", "id": ("list1", True)}, lines=[], commands=[]
+        ),
+        Command(indent=2, name=None, values=["item"], attrs={"key": "key1"}, lines=[], commands=[]),
+        Command(indent=2, name=None, values=["item"], attrs={"key": "key2"}, lines=[], commands=[]),
+    ], "Test failed"
 
     ni = Item("key1")
     assert isinstance(ni, Item)

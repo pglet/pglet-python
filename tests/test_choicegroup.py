@@ -52,11 +52,18 @@ def test_choicegroup_with_just_keys():
         label="Your favorite color:",
         options=[Option(key="key1"), Option(key="key2")],
     )
-    assert cg.get_cmd_str(indent="  ") == (
-        '  choicegroup id="list1" label="Your favorite color:"\n'
-        '    option key="key1"\n'
-        '    option key="key2"'
-    ), "Test failed"
+    assert cg.get_cmd_str() == [
+        Command(
+            indent=0,
+            name=None,
+            values=["choicegroup"],
+            attrs={"label": "Your favorite color:", "id": ("list1", True)},
+            lines=[],
+            commands=[],
+        ),
+        Command(indent=2, name=None, values=["option"], attrs={"key": "key1"}, lines=[], commands=[]),
+        Command(indent=2, name=None, values=["option"], attrs={"key": "key2"}, lines=[], commands=[]),
+    ], "Test failed"
 
     cgo = Option("key1")
     assert isinstance(cgo, Option)
