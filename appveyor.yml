@@ -18,7 +18,6 @@ environment:
 
 install:
 - python --version
-- pip3 debug -v
 - pip install --upgrade setuptools wheel twine pdm
 - pdm install
 - echo Using Pglet ${PGLET_VERSION}
