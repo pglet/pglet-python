@@ -1,5 +1,5 @@
 from beartype import beartype
-from pglet.control import Control, BORDER_STYLE
+from pglet.control import Control, BorderStyle
 
 
 class IFrame(Control):
@@ -8,7 +8,7 @@ class IFrame(Control):
         id=None,
         src=None,
         border=None,
-        border_style: BORDER_STYLE = None,
+        border_style: BorderStyle = None,
         border_width=None,
         border_color=None,
         border_radius=None,
@@ -68,7 +68,7 @@ class IFrame(Control):
 
     @border_style.setter
     @beartype
-    def border_style(self, value: BORDER_STYLE):
+    def border_style(self, value: BorderStyle):
         self._set_attr("borderStyle", value)
 
     # border_width

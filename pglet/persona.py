@@ -1,12 +1,18 @@
-from typing import Literal, Optional
+from typing import Optional
+try:
+    from typing import Literal
+except:
+    from typing_extensions import Literal
 
 from beartype import beartype
 
 from pglet.control import Control
 
-SIZE = Literal[None, 8, 24, 32, 40, 48, 56, 72, 100, 120]
-PRESENCE = Literal[None, "none", "offline", "online", "away", "blocked", "busy", "dnd"]
-INITIALS_COLOR = Literal[
+Size = Literal[None, 8, 24, 32, 40, 48, 56, 72, 100, 120]
+
+Presence = Literal[None, "none", "offline", "online", "away", "blocked", "busy", "dnd"]
+
+InitialsColor = Literal[
     None,
     "blue",
     "burgundy",
@@ -40,13 +46,13 @@ class Persona(Control):
         id=None,
         image_url=None,
         image_alt=None,
-        initials_color: INITIALS_COLOR = None,
+        initials_color: InitialsColor = None,
         initials_text_color=None,
         secondary_text=None,
         tertiary_text=None,
         optional_text=None,
-        size: SIZE = None,
-        presence: PRESENCE = None,
+        size: Size = None,
+        presence: Presence = None,
         hide_details=None,
         visible=None,
     ):
@@ -102,7 +108,7 @@ class Persona(Control):
 
     @initials_color.setter
     @beartype
-    def initials_color(self, value: INITIALS_COLOR):
+    def initials_color(self, value: InitialsColor):
         self._set_attr("initialscolor", value)
 
     # initials_text_color
@@ -148,7 +154,7 @@ class Persona(Control):
 
     @size.setter
     @beartype
-    def size(self, value: SIZE):
+    def size(self, value: Size):
         self._set_attr("size", value)
 
     # presence
@@ -158,7 +164,7 @@ class Persona(Control):
 
     @presence.setter
     @beartype
-    def presence(self, value: PRESENCE):
+    def presence(self, value: Presence):
         self._set_attr("presence", value)
 
     # hide_details

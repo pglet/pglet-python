@@ -1,5 +1,6 @@
 import pglet
 from pglet import Toggle
+from pglet.protocol import Command
 
 """
 def test_button_primary_must_be_bool():
@@ -19,6 +20,19 @@ def test_toggle_add():
     )
     assert isinstance(t, pglet.Control)
     assert isinstance(t, pglet.Toggle)
-    assert t.get_cmd_str() == (
-        'toggle inline="true" label="This is toggle" offtext="off text" ontext="on text" value="true"'
-    ), "Test failed"
+    assert t.get_cmd_str() == [
+        Command(
+            indent=0,
+            name=None,
+            values=["toggle"],
+            attrs={
+                "inline": "true",
+                "label": "This is toggle",
+                "offtext": "off text",
+                "ontext": "on text",
+                "value": "true",
+            },
+            lines=[],
+            commands=[],
+        )
+    ], "Test failed"

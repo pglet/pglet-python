@@ -1,6 +1,7 @@
 import pglet
 from pglet import BarChart
 from pglet.barchart import Point
+from pglet.protocol import Command
 
 
 def test_barchart_add():
@@ -22,10 +23,31 @@ def test_barchart_add():
     )
     assert isinstance(bc, pglet.Control)
     assert isinstance(bc, pglet.BarChart)
-    assert bc.get_cmd_str() == (
-        'barchart datamode="default" tooltips="false"\n'
-        "  data\n"
-        '    p color="green" legend="legend" x="1" xtooltip="x tooltip" y="100" ytooltip="y tooltip"\n'
-        '    p x="80" y="200"\n'
-        '    p x="100" y="300"'
-    ), "Test failed"
+    assert bc.get_cmd_str() == [
+        Command(
+            indent=0,
+            name=None,
+            values=["barchart"],
+            attrs={"datamode": "default", "tooltips": "false"},
+            lines=[],
+            commands=[],
+        ),
+        Command(indent=2, name=None, values=["data"], attrs={}, lines=[], commands=[]),
+        Command(
+            indent=4,
+            name=None,
+            values=["p"],
+            attrs={
+                "color": "green",
+                "legend": "legend",
+                "x": "1",
+                "xtooltip": "x tooltip",
+                "y": "100",
+                "ytooltip": "y tooltip",
+            },
+            lines=[],
+            commands=[],
+        ),
+        Command(indent=4, name=None, values=["p"], attrs={"x": "80", "y": "200"}, lines=[], commands=[]),
+        Command(indent=4, name=None, values=["p"], attrs={"x": "100", "y": "300"}, lines=[], commands=[]),
+    ], "Test failed"

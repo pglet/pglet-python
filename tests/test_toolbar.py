@@ -1,5 +1,6 @@
 import pglet
 from pglet import Toolbar, toolbar
+from pglet.protocol import Command
 
 
 def test_toolbar_add():
@@ -37,14 +38,46 @@ def test_toolbar_add():
 
     assert isinstance(t, pglet.Control)
     assert isinstance(t, pglet.Toolbar)
-    assert t.get_cmd_str() == (
-        'toolbar inverted="true"\n'
-        '  item divider="true" icon="icon" iconcolor="green" icononly="false" newwindow="true" '
-        'secondarytext="text2" split="true" text="text1" url="url"\n'
-        "  overflow\n"
-        '    item divider="true" icon="icon" iconcolor="green" icononly="false" newwindow="true" '
-        'secondarytext="text22" split="true" text="text12" url="url2"\n'
-        '    item text="overflow"\n'
-        "  far\n"
-        '    item text="far"'
-    ), "Test failed"
+    assert t.get_cmd_str() == [
+        Command(indent=0, name=None, values=["toolbar"], attrs={"inverted": "true"}, lines=[], commands=[]),
+        Command(
+            indent=2,
+            name=None,
+            values=["item"],
+            attrs={
+                "divider": "true",
+                "icon": "icon",
+                "iconcolor": "green",
+                "icononly": "false",
+                "newwindow": "true",
+                "secondarytext": "text2",
+                "split": "true",
+                "text": "text1",
+                "url": "url",
+            },
+            lines=[],
+            commands=[],
+        ),
+        Command(indent=2, name=None, values=["overflow"], attrs={}, lines=[], commands=[]),
+        Command(
+            indent=4,
+            name=None,
+            values=["item"],
+            attrs={
+                "divider": "true",
+                "icon": "icon",
+                "iconcolor": "green",
+                "icononly": "false",
+                "newwindow": "true",
+                "secondarytext": "text22",
+                "split": "true",
+                "text": "text12",
+                "url": "url2",
+            },
+            lines=[],
+            commands=[],
+        ),
+        Command(indent=4, name=None, values=["item"], attrs={"text": "overflow"}, lines=[], commands=[]),
+        Command(indent=2, name=None, values=["far"], attrs={}, lines=[], commands=[]),
+        Command(indent=4, name=None, values=["item"], attrs={"text": "far"}, lines=[], commands=[]),
+    ], "Test failed"

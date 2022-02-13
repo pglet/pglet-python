@@ -1,20 +1,25 @@
 from __future__ import annotations
 
-from typing import Literal, Optional
+from typing import Optional
+try:
+    from typing import Literal
+except:
+    from typing_extensions import Literal
 
 from beartype import beartype
+
 from pglet.control import Control
 
-SELECTION_MODE = Literal[None, "single", "multiple"]
-SORTABLE = Literal[None, "string", "number", False]
-SORTED = Literal[None, False, "asc", "desc"]
+SelectionMode = Literal[None, "single", "multiple"]
+Sortable = Literal[None, "string", "number", False]
+Sorted = Literal[None, False, "asc", "desc"]
 
 
 class Grid(Control):
     def __init__(
         self,
         id=None,
-        selection_mode: SELECTION_MODE = None,
+        selection_mode: SelectionMode = None,
         compact=None,
         header_visible=None,
         shimmer_lines=None,
@@ -116,7 +121,7 @@ class Grid(Control):
 
     @selection_mode.setter
     @beartype
-    def selection_mode(self, value: SELECTION_MODE):
+    def selection_mode(self, value: SelectionMode):
         self._set_attr("selection", value)
 
     # compact
@@ -228,9 +233,9 @@ class Column(Control):
         icon=None,
         icon_only=None,
         field_name=None,
-        sortable: SORTABLE = None,
+        sortable: Sortable = None,
         sort_field=None,
-        sorted: SORTED = None,
+        sorted: Sorted = None,
         resizable=None,
         min_width=None,
         max_width=None,
@@ -300,7 +305,7 @@ class Column(Control):
 
     @sortable.setter
     @beartype
-    def sortable(self, value: SORTABLE):
+    def sortable(self, value: Sortable):
         self._set_attr("sortable", value)
 
     # sort_field
@@ -319,7 +324,7 @@ class Column(Control):
 
     @sorted.setter
     @beartype
-    def sorted(self, value: SORTED):
+    def sorted(self, value: Sorted):
         self._set_attr("sorted", value)
 
     # resizable

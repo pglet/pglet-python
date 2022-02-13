@@ -1,8 +1,9 @@
 import pglet
 from pglet import Slider
+from pglet.protocol import Command
 
 
-def test_searchbox_add():
+def test_slider_add():
     s = Slider(
         value=1,
         label="To what extend you agree",
@@ -16,7 +17,23 @@ def test_searchbox_add():
     )
     assert isinstance(s, pglet.Control)
     assert isinstance(s, pglet.Slider)
-    assert s.get_cmd_str() == (
-        'slider height="200" label="To what extend you agree" max="10" min="0" showvalue="true" '
-        'step="1" value="1" valueformat="current_value is {value}" vertical="true"'
-    ), "Test failed"
+    assert s.get_cmd_str() == [
+        Command(
+            indent=0,
+            name=None,
+            values=["slider"],
+            attrs={
+                "height": "200",
+                "label": "To what extend you agree",
+                "max": "10",
+                "min": "0",
+                "showvalue": "true",
+                "step": "1",
+                "value": "1",
+                "valueformat": "current_value is {value}",
+                "vertical": "true",
+            },
+            lines=[],
+            commands=[],
+        )
+    ], "Test failed"

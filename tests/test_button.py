@@ -1,6 +1,7 @@
 import pglet
 import pytest
 from pglet import Button, button
+from pglet.protocol import Command
 
 
 def test_button_primary_must_be_bool():
@@ -12,9 +13,16 @@ def test_button_add():
     b = Button(id="button1", text="My button", primary=True, data="this is data")
     assert isinstance(b, pglet.Control)
     assert isinstance(b, pglet.Button)
-    assert b.get_cmd_str() == (
-        'button id="button1" data="this is data" primary="true" text="My button"'
-    ), "Test failed"
+    assert b.get_cmd_str() == [
+        Command(
+            indent=0,
+            name=None,
+            values=["button"],
+            attrs={"data": "this is data", "primary": "true", "text": "My button", "id": ("button1", True)},
+            lines=[],
+            commands=[],
+        )
+    ], "Test failed"
 
 
 def test_button_with_all_properties():
@@ -54,13 +62,48 @@ def test_button_with_all_properties():
 
     assert isinstance(b, pglet.Control)
     assert isinstance(b, pglet.Button)
-    assert b.get_cmd_str() == (
-        'button action="false" compound="false" data="data" icon="Mail" '
-        'iconcolor="red" newwindow="true" primary="false" secondarytext="This is secondary text" '
-        'split="false" text="This is text" title="This is title" toolbar="true" url="https://google.com"\n'
-        '  item divider="false" icon="Mail" iconcolor="blue" icononly="true" newwindow="false" '
-        'secondarytext="Item1 secondary text" split="false" text="Item1 text" url="https://google.com"\n'
-        '    item text="Item1Item1"\n'
-        '    item text="Item1Item2"\n'
-        '  item text="Item2 text"'
-    ), "Test failed"
+    assert b.get_cmd_str() == [
+        Command(
+            indent=0,
+            name=None,
+            values=["button"],
+            attrs={
+                "action": "false",
+                "compound": "false",
+                "data": "data",
+                "icon": "Mail",
+                "iconcolor": "red",
+                "newwindow": "true",
+                "primary": "false",
+                "secondarytext": "This is secondary text",
+                "split": "false",
+                "text": "This is text",
+                "title": "This is title",
+                "toolbar": "true",
+                "url": "https://google.com",
+            },
+            lines=[],
+            commands=[],
+        ),
+        Command(
+            indent=2,
+            name=None,
+            values=["item"],
+            attrs={
+                "divider": "false",
+                "icon": "Mail",
+                "iconcolor": "blue",
+                "icononly": "true",
+                "newwindow": "false",
+                "secondarytext": "Item1 secondary text",
+                "split": "false",
+                "text": "Item1 text",
+                "url": "https://google.com",
+            },
+            lines=[],
+            commands=[],
+        ),
+        Command(indent=4, name=None, values=["item"], attrs={"text": "Item1Item1"}, lines=[], commands=[]),
+        Command(indent=4, name=None, values=["item"], attrs={"text": "Item1Item2"}, lines=[], commands=[]),
+        Command(indent=2, name=None, values=["item"], attrs={"text": "Item2 text"}, lines=[], commands=[]),
+    ], "Test failed"

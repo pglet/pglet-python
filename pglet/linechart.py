@@ -1,8 +1,14 @@
-from typing import Literal, Optional, Union
+from typing import Optional, Union
+try:
+    from typing import Literal
+except:
+    from typing_extensions import Literal
+
 from beartype import beartype
+
 from pglet.control import Control
 
-X_TYPE = Literal[None, "number", "date"]
+XType = Literal[None, "number", "date"]
 
 
 class LineChart(Control):
@@ -16,7 +22,7 @@ class LineChart(Control):
         y_max=None,
         y_ticks=None,
         y_format=None,
-        x_type: X_TYPE = None,
+        x_type: XType = None,
         lines=None,
         width=None,
         height=None,
@@ -139,7 +145,7 @@ class LineChart(Control):
 
     @x_type.setter
     @beartype
-    def x_type(self, value: X_TYPE):
+    def x_type(self, value: XType):
         self._set_attr("xType", value)
 
     def _get_children(self):

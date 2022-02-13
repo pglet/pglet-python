@@ -1,8 +1,14 @@
-from typing import Literal, Optional
-from beartype import beartype
-from pglet.control import Control, BORDER_STYLE
+from typing import Optional
+try:
+    from typing import Literal
+except:
+    from typing_extensions import Literal
 
-FIT = Literal[
+from beartype import beartype
+
+from pglet.control import Control, BorderStyle
+
+Fit = Literal[
     None, "none", "contain", "cover", "center", "centerContain", "centerCover"
 ]
 
@@ -15,8 +21,8 @@ class Image(Control):
         alt=None,
         title=None,
         maximize_frame=None,
-        fit: FIT = None,
-        border_style: BORDER_STYLE = None,
+        fit: Fit = None,
+        border_style: BorderStyle = None,
         border_width=None,
         border_color=None,
         border_radius=None,
@@ -96,7 +102,7 @@ class Image(Control):
 
     @fit.setter
     @beartype
-    def fit(self, value: FIT):
+    def fit(self, value: Fit):
         self._set_attr("fit", value)
 
     # border_style
@@ -106,7 +112,7 @@ class Image(Control):
 
     @border_style.setter
     @beartype
-    def border_style(self, value: BORDER_STYLE):
+    def border_style(self, value: BorderStyle):
         self._set_attr("borderStyle", value)
 
     # border_width
