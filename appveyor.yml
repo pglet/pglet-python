@@ -3,9 +3,9 @@ version: 0.1.{build}
 
 skip_branch_with_pr: true
 
-image: ubuntu1604
+image: ubuntu
 
-stack: python 3.9
+stack: python 3.7
 
 environment:
   TWINE_USERNAME: __token__
@@ -23,7 +23,7 @@ install:
 build_script:
 # run tests
 #- pytest
-#- ls -alR pglet/bin
+
 # build and publish package
 - ps: |
     $ErrorActionPreference = "Stop"
