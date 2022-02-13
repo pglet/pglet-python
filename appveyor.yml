@@ -22,7 +22,7 @@ install:
 
 build_script:
 # run tests
-#- pytest
+- pdm run pytest tests
 
 # build and publish package
 - ps: |
