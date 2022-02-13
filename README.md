@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/863hk2g0yng7wvt6/branch/main?svg=true)](https://ci.appveyor.com/project/pglet/pglet-python/branch/main)
+
 # Pglet - quickly build interactive web apps in Python
 
 [Pglet](https://pglet.io) is a rich User Interface (UI) framework to quickly build interactive web apps in Python without prior knowledge of web technologies like HTTP, HTML, CSS or JavaSscript. You build UI with [controls](https://pglet.io/docs/reference/controls) which use [Fluent UI React](https://developer.microsoft.com/en-us/fluentui#/controls/web) to ensure your programs look cool and professional.
