@@ -8,7 +8,7 @@ image: ubuntu
 stack: python 3.9
 
 environment:
-  PGLET_VERSION: 0.5.6
+  PGLET_VERSION: 0.6.0
   TWINE_USERNAME: __token__
   TWINE_NON_INTERACTIVE: true
   pypi_key: 
@@ -18,28 +18,9 @@ environment:
 
 install:
 - python --version
-- pip install --upgrade setuptools wheel twine pdm cibuildwheel
+- pip install --upgrade setuptools wheel twine pdm
 - pdm install
 - echo Using Pglet ${PGLET_VERSION}
-
-# downloading binaries
-# - sh: |
-#     function download_binary() {
-#       echo "Downloading $1"
-#       mkdir -p pglet/bin/$1
-#       curl -L https://github.com/pglet/pglet/releases/download/v${PGLET_VERSION}/pglet-${PGLET_VERSION}-$1 -o pglet/bin/$1/pglet
-#       chmod a+x pglet/bin/$1/pglet
-#     }
-
-#     echo "Downloading windows-amd64"
-#     mkdir -p pglet/bin/windows-amd64
-#     curl -L https://github.com/pglet/pglet/releases/download/v${PGLET_VERSION}/pglet-${PGLET_VERSION}-windows-amd64.exe -o pglet/bin/windows-amd64/pglet.exe
-
-#     download_binary "linux-amd64"
-#     download_binary "linux-arm64"
-#     download_binary "linux-arm"
-#     download_binary "darwin-amd64"
-#     download_binary "darwin-arm64"
 
 build_script:
 # run tests
@@ -73,12 +54,12 @@ build_script:
     }
 
     # patch version
+    $env:PACKAGE_VERSION = $ver
     (Get-Content pyproject.toml).replace("version = `"0.1.0`"", "version = `"$ver`"") | Set-Content pyproject.toml
 
 # build package
-#- pdm build
-- python -m cibuildwheel --output-dir wheelhouse
-- ls -al wheelhouse
+- pdm build
+- python3 build-wheels.py ${PACKAGE_VERSION} ${PGLET_VERSION}
 
 # publish package
 - sh: |
