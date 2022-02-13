@@ -10,32 +10,6 @@ import urllib.request
 import zipfile
 from base64 import urlsafe_b64encode
 
-import tomli
-
-# https://www.python.org/dev/peps/pep-0425/
-# https://www.python.org/dev/peps/pep-0600/
-
-# pglet-0.1.0-py3-none-win_amd64.whl
-# pglet-0.1.0-py3-none-manylinux_2_12_x86_64.manylinux2010_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
-# pglet-0.1.0-py3-none-manylinux_2_12_aarch64.manylinux2010_aarch64.manylinux_2_17_aarch64.manylinux2014_aarch64.whl
-# pglet-0.1.0-py3-none-manylinux_2_12_armv7l.manylinux2010_armv7l.manylinux_2_17_armv7l.manylinux2014_armv7l.whl
-# pglet-0.1.0-py3-none-macosx_11_0_arm64.whl
-# pglet-0.1.0-py3-none-macosx_10_9_x86_64.whl
-
-# Tag: cp37-cp37m-manylinux_2_12_x86_64
-# Tag: cp37-cp37m-manylinux2010_x86_64
-# Tag: cp37-cp37m-manylinux_2_17_x86_64
-# Tag: cp37-cp37m-manylinux2014_x86_64
-# Tag: cp39-cp39-macosx_10_9_x86_64
-# Tag: cp38-cp38-win_amd64
-
-# Download pglet executable to `pglet/bin/pglet`
-# pglet-{version}.dist-info/WHEEL
-#   Tag: py3-none-any -> with actual tags
-# pglet-{version}.dist-info/RECORD
-#   Add record for `pglet/bin/pglet`
-#   Add record for `pglet-{version}.dist-info/WHEEL`
-
 packages = {
     "Windows amd64": {
         "asset": "windows-amd64.exe",
@@ -101,6 +75,17 @@ def download_pglet(version, suffix, dest_file):
     os.chmod(dest_file, st.st_mode | stat.S_IEXEC | stat.S_IXGRP | stat.S_IXOTH)
 
 
+def get_pglet_version(current_dir):
+    constants_py = current_dir.joinpath("pglet", "constants.py")
+
+    version_prefix = "PGLET_SERVER_VERSION"
+    with open(constants_py) as yml:
+        for line in yml:
+            if version_prefix in line:
+                return line.split("=")[1].strip().strip('"')
+    raise f"{version_prefix} not found in constants.py"
+
+
 def read_chunks(file, size=io.DEFAULT_BUFFER_SIZE):
     """Yield pieces of data from a file-like object until EOF."""
     while True:
@@ -123,18 +108,21 @@ def rehash(path, blocksize=1 << 20):
     return (digest, str(length))  # type: ignore
 
 
-if len(sys.argv) < 3:
-    print("usage build-wheels.py <package-version> <pglet-version>")
-    sys.exit(1)
-
-package_version = sys.argv[1]
-pglet_version = sys.argv[2]
 current_dir = pathlib.Path(os.getcwd())
-print("package_version", package_version)
-print("pglet_version", pglet_version)
 print("current_dir", current_dir)
 
-orig_whl = glob.glob(str(current_dir.joinpath("dist", "*.whl")))[0]
+whl_files = glob.glob(str(current_dir.joinpath("dist", "*.whl")))
+if len(whl_files) == 0:
+    print("No .whl files found. Run 'pdm build' first.")
+    sys.exit(1)
+
+orig_whl = whl_files[0]
+
+package_version = os.path.basename(orig_whl).split("-")[1]
+pglet_version = get_pglet_version(current_dir)
+
+print("package_version", package_version)
+print("pglet_version", pglet_version)
 
 for name, package in packages.items():
     print(f"Building {name}...")
@@ -215,7 +203,3 @@ for name, package in packages.items():
 
     # cleanup
     shutil.rmtree(str(unpacked_whl))
-
-# delete original .whl
-print(orig_whl)
-os.remove(orig_whl)

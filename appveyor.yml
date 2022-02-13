@@ -8,7 +8,6 @@ image: ubuntu1604
 stack: python 3.9
 
 environment:
-  PGLET_VERSION: 0.6.0
   TWINE_USERNAME: __token__
   TWINE_NON_INTERACTIVE: true
   pypi_key: 
@@ -20,7 +19,6 @@ install:
 - python --version
 - pip install --upgrade setuptools wheel twine pdm
 - pdm install
-- echo Using Pglet ${PGLET_VERSION}
 
 build_script:
 # run tests
@@ -58,7 +56,7 @@ build_script:
 
 # build package
 - pdm build
-- python3 build-wheels.py ${PACKAGE_VERSION} ${PGLET_VERSION}
+- python3 build-wheels.py
 
 # publish package
 - sh: |
