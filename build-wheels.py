@@ -46,34 +46,28 @@ packages = {
         "asset": "linux-amd64",
         "exec": "pglet",
         "wheel_tags": [
-            "py3-none-manylinux_2_12_x86_64",
-            "py3-none-manylinux2010_x86_64",
             "py3-none-manylinux_2_17_x86_64",
             "py3-none-manylinux2014_x86_64",
         ],
-        "file_suffix": "py3-none-manylinux_2_12_x86_64.manylinux2010_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64",
+        "file_suffix": "py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64",
     },
     "Linux arm64": {
         "asset": "linux-arm64",
         "exec": "pglet",
         "wheel_tags": [
-            "py3-none-manylinux_2_12_aarch64",
-            "py3-none-manylinux2010_aarch64",
             "py3-none-manylinux_2_17_aarch64",
             "py3-none-manylinux2014_aarch64",
         ],
-        "file_suffix": "py3-none-manylinux_2_12_aarch64.manylinux2010_aarch64.manylinux_2_17_aarch64.manylinux2014_aarch64",
+        "file_suffix": "py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64",
     },
     "Linux arm": {
         "asset": "linux-arm",
         "exec": "pglet",
         "wheel_tags": [
-            "py3-none-manylinux_2_12_armv7l",
-            "py3-none-manylinux2010_armv7l",
             "py3-none-manylinux_2_17_armv7l",
             "py3-none-manylinux2014_armv7l",
         ],
-        "file_suffix": "py3-none-manylinux_2_12_armv7l.manylinux2010_armv7l.manylinux_2_17_armv7l.manylinux2014_armv7l",
+        "file_suffix": "py3-none-manylinux_2_17_armv7l.manylinux2014_armv7l",
     },
     "macOS amd64": {
         "asset": "darwin-amd64",
