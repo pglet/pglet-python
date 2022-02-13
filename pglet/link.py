@@ -1,6 +1,8 @@
-from typing import Literal, Optional
+from typing import Optional
+
 from beartype import beartype
-from pglet.control import Control, TEXT_ALIGN
+
+from pglet.control import Control, TextAlign
 
 
 class Link(Control):
@@ -15,7 +17,7 @@ class Link(Control):
         bold=None,
         italic=None,
         pre=None,
-        align: TEXT_ALIGN = None,
+        align: TextAlign = None,
         on_click=None,
         controls=None,
         width=None,
@@ -158,7 +160,7 @@ class Link(Control):
 
     @align.setter
     @beartype
-    def align(self, value: TEXT_ALIGN):
+    def align(self, value: TextAlign):
         self._set_attr("align", value)
 
     def _get_children(self):

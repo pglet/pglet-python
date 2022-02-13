@@ -1,8 +1,14 @@
-from typing import Literal, Optional
-from beartype import beartype
-from pglet.control import Control, BORDER_STYLE, TEXT_SIZE, TEXT_ALIGN
+from typing import Optional
+try:
+    from typing import Literal
+except:
+    from typing_extensions import Literal
 
-VERTICAL_ALIGN = Literal[None, "top", "center", "bottom"]
+from beartype import beartype
+
+from pglet.control import Control, BorderStyle, TextSize, TextAlign
+
+VerticalAlign = Literal[None, "top", "center", "bottom"]
 
 
 class Text(Control):
@@ -11,9 +17,9 @@ class Text(Control):
         value=None,
         id=None,
         markdown=None,
-        align: TEXT_ALIGN = None,
-        vertical_align: VERTICAL_ALIGN = None,
-        size: TEXT_SIZE = None,
+        align: TextAlign = None,
+        vertical_align: VerticalAlign = None,
+        size: TextSize = None,
         bold=None,
         italic=None,
         pre=None,
@@ -21,7 +27,7 @@ class Text(Control):
         block=None,
         color=None,
         bgcolor=None,
-        border_style: BORDER_STYLE = None,
+        border_style: BorderStyle = None,
         border_width=None,
         border_color=None,
         border_radius=None,
@@ -90,7 +96,7 @@ class Text(Control):
 
     @align.setter
     @beartype
-    def align(self, value: TEXT_ALIGN):
+    def align(self, value: TextAlign):
         self._set_attr("align", value)
 
     # vertical_align
@@ -100,7 +106,7 @@ class Text(Control):
 
     @vertical_align.setter
     @beartype
-    def vertical_align(self, value: VERTICAL_ALIGN):
+    def vertical_align(self, value: VerticalAlign):
         self._set_attr("verticalAlign", value)
 
     # size
@@ -110,7 +116,7 @@ class Text(Control):
 
     @size.setter
     @beartype
-    def size(self, value: TEXT_SIZE):
+    def size(self, value: TextSize):
         self._set_attr("size", value)
 
     # bold
@@ -188,7 +194,7 @@ class Text(Control):
 
     @border_style.setter
     @beartype
-    def border_style(self, value: BORDER_STYLE):
+    def border_style(self, value: BorderStyle):
         self._set_attr("borderStyle", value)
 
     # border_width

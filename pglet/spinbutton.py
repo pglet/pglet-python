@@ -1,10 +1,14 @@
-from typing import Literal, Optional, Union
+from typing import Optional, Union
+try:
+    from typing import Literal
+except:
+    from typing_extensions import Literal
 
 from beartype import beartype
 
 from pglet.control import Control
 
-POSITION = Literal[None, "left", "top", "right", "bottom"]
+Position = Literal[None, "left", "top", "right", "bottom"]
 
 
 class SpinButton(Control):
@@ -17,7 +21,7 @@ class SpinButton(Control):
         max=None,
         step=None,
         icon=None,
-        label_position: POSITION = None,
+        label_position: Position = None,
         focused=None,
         data=None,
         on_change=None,
@@ -91,7 +95,7 @@ class SpinButton(Control):
 
     @label_position.setter
     @beartype
-    def label_position(self, value: POSITION):
+    def label_position(self, value: Position):
         self._set_attr("labelposition", value)
 
     # min

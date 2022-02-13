@@ -1,5 +1,6 @@
 import pglet
 from pglet.message import MessageButton
+from pglet.protocol import Command
 
 
 def test_button():
@@ -20,11 +21,32 @@ def test_message():
 
     assert isinstance(m, pglet.Control)
     assert isinstance(m, pglet.Message)
-    assert m.get_cmd_str() == (
-        'message dismiss="true" value="This is message"\n'
-        '  button action="Yes" text="Yes, I agree"\n'
-        '  button action="No" text="No, I disagree"'
-    ), "Test failed"
+    assert m.get_cmd_str() == [
+        Command(
+            indent=0,
+            name=None,
+            values=["message"],
+            attrs={"dismiss": "true", "value": "This is message"},
+            lines=[],
+            commands=[],
+        ),
+        Command(
+            indent=2,
+            name=None,
+            values=["button"],
+            attrs={"action": "Yes", "text": "Yes, I agree"},
+            lines=[],
+            commands=[],
+        ),
+        Command(
+            indent=2,
+            name=None,
+            values=["button"],
+            attrs={"action": "No", "text": "No, I disagree"},
+            lines=[],
+            commands=[],
+        ),
+    ], "Test failed"
 
 
 def test_message_button_with_just_text():
@@ -39,8 +61,15 @@ def test_message_button_with_just_text():
 
     assert isinstance(m, pglet.Control)
     assert isinstance(m, pglet.Message)
-    assert m.get_cmd_str() == (
-        'message dismiss="true" value="This is message"\n'
-        '  button text="Yes, I agree"\n'
-        '  button text="No, I disagree"'
-    ), "Test failed"
+    assert m.get_cmd_str() == [
+        Command(
+            indent=0,
+            name=None,
+            values=["message"],
+            attrs={"dismiss": "true", "value": "This is message"},
+            lines=[],
+            commands=[],
+        ),
+        Command(indent=2, name=None, values=["button"], attrs={"text": "Yes, I agree"}, lines=[], commands=[]),
+        Command(indent=2, name=None, values=["button"], attrs={"text": "No, I disagree"}, lines=[], commands=[]),
+    ], "Test failed"

@@ -1,7 +1,11 @@
 import json
 import logging
 import threading
-from typing import List, Literal, Optional
+from typing import List, Optional
+try:
+    from typing import Literal
+except:
+    from typing_extensions import Literal
 
 from beartype import beartype
 
@@ -11,7 +15,7 @@ from pglet.control import Control
 from pglet.control_event import ControlEvent
 from pglet.protocol import Command
 
-ALIGN = Literal[
+Align = Literal[
     None,
     "start",
     "end",
@@ -271,7 +275,7 @@ class Page(Control):
 
     @horizontal_align.setter
     @beartype
-    def horizontal_align(self, value: ALIGN):
+    def horizontal_align(self, value: Align):
         self._set_attr("horizontalAlign", value)
 
     # vertical_align
@@ -281,7 +285,7 @@ class Page(Control):
 
     @vertical_align.setter
     @beartype
-    def vertical_align(self, value: ALIGN):
+    def vertical_align(self, value: Align):
         self._set_attr("verticalAlign", value)
 
     # gap

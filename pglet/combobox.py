@@ -1,10 +1,14 @@
-from typing import List, Literal, Optional
+from typing import List, Optional
+try:
+    from typing import Literal
+except:
+    from typing_extensions import Literal
 
 from beartype import beartype
 
 from pglet.control import Control
 
-ITEM_TYPE = Literal[None, "normal", "divider", "header", "selectAll", "select_all"]
+ItemType = Literal[None, "normal", "divider", "header", "selectAll", "select_all"]
 
 
 class ComboBox(Control):
@@ -183,7 +187,7 @@ class ComboBox(Control):
 
 
 class Option(Control):
-    def __init__(self, key=None, text=None, item_type: ITEM_TYPE = None, disabled=None):
+    def __init__(self, key=None, text=None, item_type: ItemType = None, disabled=None):
         Control.__init__(self)
         assert key != None or text != None, "key or text must be specified"
         self.key = key
@@ -219,7 +223,7 @@ class Option(Control):
 
     @item_type.setter
     @beartype
-    def item_type(self, value: ITEM_TYPE):
+    def item_type(self, value: ItemType):
         self._set_attr("itemtype", value)
 
     # disabled

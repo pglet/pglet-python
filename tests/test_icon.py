@@ -1,5 +1,6 @@
 import pglet
 from pglet import Icon
+from pglet.protocol import Command
 
 
 def test_icon_add():
@@ -7,6 +8,13 @@ def test_icon_add():
     assert isinstance(c, pglet.Control)
     assert isinstance(c, pglet.Icon)
     # raise Exception(s.get_cmd_str())
-    assert c.get_cmd_str() == (
-        'icon color="#FF7F50" name="Mail" size="tiny"'
-    ), "Test failed"
+    assert c.get_cmd_str() == [
+        Command(
+            indent=0,
+            name=None,
+            values=["icon"],
+            attrs={"color": "#FF7F50", "name": "Mail", "size": "tiny"},
+            lines=[],
+            commands=[],
+        )
+    ], "Test failed"
