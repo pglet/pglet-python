@@ -2,7 +2,7 @@ from typing import Optional
 
 from beartype import beartype
 
-from pglet.control import TEXT_ALIGN, Control
+from pglet.control import TextAlign, Control
 
 
 class Textbox(Control):
@@ -33,7 +33,7 @@ class Textbox(Control):
         height=None,
         padding=None,
         margin=None,
-        align: TEXT_ALIGN = None,
+        align: TextAlign = None,
         visible=None,
         disabled=None,
     ):
@@ -160,7 +160,7 @@ class Textbox(Control):
 
     @align.setter
     @beartype
-    def align(self, value: TEXT_ALIGN):
+    def align(self, value: TextAlign):
         self._set_attr("align", value)
 
     # multiline

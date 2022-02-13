@@ -1,9 +1,14 @@
-from typing import Literal, Optional
+from typing import Optional
+try:
+    from typing import Literal
+except:
+    from typing_extensions import Literal
+
 from beartype import beartype
 
 from pglet.control import Control
 
-TYPE = Literal[
+PanelType = Literal[
     None,
     "small",
     "smallLeft",
@@ -23,7 +28,7 @@ class Panel(Control):
         id=None,
         open=None,
         title=None,
-        type: TYPE = None,
+        type: PanelType = None,
         auto_dismiss=None,
         light_dismiss=None,
         width=None,
@@ -117,7 +122,7 @@ class Panel(Control):
 
     @type.setter
     @beartype
-    def type(self, value: TYPE):
+    def type(self, value: PanelType):
         self._set_attr("type", value)
 
     # auto_dismiss

@@ -1,8 +1,14 @@
-from typing import Optional, Union, Literal
+from typing import Optional, Union
+try:
+    from typing import Literal
+except:
+    from typing_extensions import Literal
+
 from beartype import beartype
+
 from pglet.control import Control
 
-X_TYPE = Literal[None, "string", "number"]
+XType = Literal[None, "string", "number"]
 
 
 class VerticalBarChart(Control):
@@ -17,7 +23,7 @@ class VerticalBarChart(Control):
         y_max=None,
         y_ticks=None,
         y_format=None,
-        x_type: X_TYPE = None,
+        x_type: XType = None,
         points=None,
         width=None,
         height=None,
@@ -136,7 +142,7 @@ class VerticalBarChart(Control):
 
     @x_type.setter
     @beartype
-    def x_type(self, value: X_TYPE):
+    def x_type(self, value: XType):
         self._set_attr("xType", value)
 
     # bar_width

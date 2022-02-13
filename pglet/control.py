@@ -1,16 +1,22 @@
 import datetime as dt
 import threading
-from typing import Literal, Optional
-from beartype import beartype
+from typing import Optional
 from difflib import SequenceMatcher
+
+try:
+    from typing import Literal
+except:
+    from typing_extensions import Literal
+
+from beartype import beartype
 
 from pglet.protocol import Command
 
-BORDER_STYLE = Literal[
+BorderStyle = Literal[
     None, "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset"
 ]
 
-TEXT_SIZE = Literal[
+TextSize = Literal[
     None,
     "tiny",
     "xSmall",
@@ -25,7 +31,7 @@ TEXT_SIZE = Literal[
     "mega",
 ]
 
-TEXT_ALIGN = Literal[None, "left", "right", "center", "justify"]
+TextAlign = Literal[None, "left", "right", "center", "justify"]
 
 
 class Control:

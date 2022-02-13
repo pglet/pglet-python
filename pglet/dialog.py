@@ -1,8 +1,14 @@
-from typing import Literal, Optional
+from typing import Optional
+try:
+    from typing import Literal
+except:
+    from typing_extensions import Literal
+
 from beartype import beartype
+
 from pglet.control import Control
 
-TYPE = Literal[None, "normal", "largeHeader", "close"]
+DialogType = Literal[None, "normal", "largeHeader", "close"]
 
 
 class Dialog(Control):
@@ -12,7 +18,7 @@ class Dialog(Control):
         open=None,
         title=None,
         sub_text=None,
-        type: TYPE = None,
+        type: DialogType = None,
         auto_dismiss=None,
         width=None,
         max_width=None,
@@ -117,7 +123,7 @@ class Dialog(Control):
 
     @type.setter
     @beartype
-    def type(self, value: TYPE):
+    def type(self, value: DialogType):
         self._set_attr("type", value)
 
     # auto_dismiss

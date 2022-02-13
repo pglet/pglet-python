@@ -3,7 +3,6 @@ import logging
 import threading
 import uuid
 
-from pglet.event import Event
 from pglet.protocol import *
 from pglet.reconnecting_websocket import ReconnectingWebSocket
 

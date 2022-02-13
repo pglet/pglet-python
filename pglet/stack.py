@@ -1,8 +1,14 @@
-from typing import Literal, Optional
-from beartype import beartype
-from pglet.control import Control, BORDER_STYLE
+from typing import Optional
+try:
+    from typing import Literal
+except:
+    from typing_extensions import Literal
 
-ALIGN = Literal[
+from beartype import beartype
+
+from pglet.control import Control, BorderStyle
+
+Align = Literal[
     None,
     "start",
     "end",
@@ -22,8 +28,8 @@ class Stack(Control):
         id=None,
         horizontal=None,
         vertical_fill=None,
-        horizontal_align: ALIGN = None,
-        vertical_align: ALIGN = None,
+        horizontal_align: Align = None,
+        vertical_align: Align = None,
         min_width=None,
         max_width=None,
         min_height=None,
@@ -31,7 +37,7 @@ class Stack(Control):
         gap=None,
         wrap=None,
         bgcolor=None,
-        border_style: BORDER_STYLE = None,
+        border_style: BorderStyle = None,
         border_width=None,
         border_color=None,
         border_radius=None,
@@ -127,7 +133,7 @@ class Stack(Control):
 
     @horizontal_align.setter
     @beartype
-    def horizontal_align(self, value: ALIGN):
+    def horizontal_align(self, value: Align):
         self._set_attr("horizontalAlign", value)
 
     # vertical_align
@@ -137,7 +143,7 @@ class Stack(Control):
 
     @vertical_align.setter
     @beartype
-    def vertical_align(self, value: ALIGN):
+    def vertical_align(self, value: Align):
         self._set_attr("verticalAlign", value)
 
     # min_width
@@ -211,7 +217,7 @@ class Stack(Control):
 
     @border_style.setter
     @beartype
-    def border_style(self, value: BORDER_STYLE):
+    def border_style(self, value: BorderStyle):
         self._set_attr("borderStyle", value)
 
     # border_width

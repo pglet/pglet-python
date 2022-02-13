@@ -1,5 +1,7 @@
 from typing import Optional
+
 from beartype import beartype
+
 from pglet.control import Control
 
 
