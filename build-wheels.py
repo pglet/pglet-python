@@ -73,14 +73,14 @@ packages = {
     "macOS amd64": {
         "asset": "darwin-amd64",
         "exec": "pglet",
-        "wheel_tags": ["py3-none-macosx_10_9_x86_64"],
-        "file_suffix": "py3-none-macosx_10_9_x86_64",
+        "wheel_tags": ["py3-none-macosx_10_14_x86_64"],
+        "file_suffix": "py3-none-macosx_10_14_x86_64",
     },
     "macOS arm64": {
         "asset": "darwin-arm64",
         "exec": "pglet",
-        "wheel_tags": ["py3-none-macosx_11_0_arm64"],
-        "file_suffix": "py3-none-macosx_11_0_arm64",
+        "wheel_tags": ["py3-none-macosx_10_14_arm64"],
+        "file_suffix": "py3-none-macosx_10_14_arm64",
     },
 }
 
