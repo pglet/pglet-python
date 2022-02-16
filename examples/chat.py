@@ -31,7 +31,9 @@ def main(page):
         vertical_align="end",
         controls=[messages],
     )
-    message = Textbox(width="100%")
+    message = Textbox(
+        width="100%", multiline=True, rows=1, auto_adjust_height=True, shift_enter=True
+    )
 
     def on_message(user, message):
         if user:

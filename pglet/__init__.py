@@ -28,6 +28,7 @@ from pglet.searchbox import SearchBox
 from pglet.slider import Slider
 from pglet.spinbutton import SpinButton
 from pglet.spinner import Spinner
+from pglet.splitstack import SplitStack
 from pglet.stack import Stack
 from pglet.tabs import Tab, Tabs
 from pglet.text import Text
