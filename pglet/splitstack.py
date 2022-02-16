@@ -20,6 +20,7 @@ class SplitStack(Control):
         gutter_color=None,
         gutter_hover_color=None,
         gutter_drag_color=None,
+        on_resize=None,
         width=None,
         height=None,
         visible=None,
@@ -41,6 +42,7 @@ class SplitStack(Control):
         self.gutter_color = gutter_color
         self.gutter_hover_color = gutter_hover_color
         self.gutter_drag_color = gutter_drag_color
+        self.on_resize = on_resize
 
         self.__controls = []
         if controls != None:
@@ -112,3 +114,12 @@ class SplitStack(Control):
 
     def _get_children(self):
         return self.__controls
+
+    # on_resize
+    @property
+    def on_resize(self):
+        return self._get_event_handler("resize")
+
+    @on_resize.setter
+    def on_resize(self, handler):
+        self._add_event_handler("resize", handler)
