@@ -32,7 +32,12 @@ def main(page):
         controls=[messages],
     )
     message = Textbox(
-        width="100%", multiline=True, rows=1, auto_adjust_height=True, shift_enter=True
+        width="100%",
+        multiline=True,
+        rows=1,
+        auto_adjust_height=True,
+        shift_enter=True,
+        resizable=True,
     )
 
     def on_message(user, message):

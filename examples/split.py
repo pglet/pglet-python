@@ -6,6 +6,12 @@ from pglet.button import Button
 
 logging.basicConfig(level=logging.DEBUG)
 
+
+def split_resize(e):
+    for c in e.control.controls:
+        print("size", c.width if e.control.horizontal else c.height)
+
+
 page = pglet.page("split1")
 page.title = "Split test"
 page.horizontal_align = "stretch"
@@ -15,6 +21,7 @@ st = SplitStack(
     horizontal=True,
     # gutter_color="#eee",
     gutter_size=10,
+    on_resize=split_resize,
     controls=[
         Stack(width="200", min_width="200", height="100%", controls=[Text("Column A")]),
         Stack(height="100%", controls=[Text("Column B")]),
@@ -27,6 +34,7 @@ st = SplitStack(
                     gutter_color="yellow",
                     gutter_hover_color="orange",
                     gutter_drag_color="blue",
+                    on_resize=split_resize,
                     controls=[
                         Stack(
                             width="100%",
