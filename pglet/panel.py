@@ -1,12 +1,14 @@
 from typing import Optional
+
+from beartype import beartype
+
+from pglet.control import Control
+
 try:
     from typing import Literal
 except:
     from typing_extensions import Literal
 
-from beartype import beartype
-
-from pglet.control import Control
 
 PanelType = Literal[
     None,
@@ -128,7 +130,7 @@ class Panel(Control):
     # auto_dismiss
     @property
     def auto_dismiss(self):
-        return self._get_attr("autoDismiss")
+        return self._get_attr("autoDismiss", data_type="bool", def_value=True)
 
     @auto_dismiss.setter
     @beartype
@@ -138,7 +140,7 @@ class Panel(Control):
     # light_dismiss
     @property
     def light_dismiss(self):
-        return self._get_attr("lightDismiss")
+        return self._get_attr("lightDismiss", data_type="bool", def_value=False)
 
     @light_dismiss.setter
     @beartype
@@ -157,7 +159,7 @@ class Panel(Control):
     # blocking
     @property
     def blocking(self):
-        return self._get_attr("blocking")
+        return self._get_attr("blocking", data_type="bool", def_value=False)
 
     @blocking.setter
     @beartype

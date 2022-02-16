@@ -1,12 +1,14 @@
 from typing import Optional
+
+from beartype import beartype
+
+from pglet.control import Control
+
 try:
     from typing import Literal
 except:
     from typing_extensions import Literal
 
-from beartype import beartype
-
-from pglet.control import Control
 
 DialogType = Literal[None, "normal", "largeHeader", "close"]
 
@@ -129,7 +131,7 @@ class Dialog(Control):
     # auto_dismiss
     @property
     def auto_dismiss(self):
-        return self._get_attr("autoDismiss")
+        return self._get_attr("autoDismiss", data_type="bool", def_value=True)
 
     @auto_dismiss.setter
     @beartype
