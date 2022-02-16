@@ -2,7 +2,7 @@ from typing import Optional
 
 from beartype import beartype
 
-from pglet.control import TextAlign, Control
+from pglet.control import Control, TextAlign
 
 
 class Textbox(Control):
@@ -19,10 +19,13 @@ class Textbox(Control):
         prefix=None,
         suffix=None,
         multiline=None,
+        rows=None,
+        shift_enter=None,
         password=None,
         required=None,
         read_only=None,
         auto_adjust_height=None,
+        resizable=None,
         underlined=None,
         borderless=None,
         focused=None,
@@ -58,8 +61,11 @@ class Textbox(Control):
         self.prefix = prefix
         self.align = align
         self.multiline = multiline
+        self.rows = rows
+        self.shift_enter = shift_enter
         self.read_only = read_only
         self.auto_adjust_height = auto_adjust_height
+        self.resizable = resizable
         self.underlined = underlined
         self.borderless = borderless
         self.password = password
@@ -173,6 +179,26 @@ class Textbox(Control):
     def multiline(self, value: Optional[bool]):
         self._set_attr("multiline", value)
 
+    # rows
+    @property
+    def rows(self):
+        return self._get_attr("rows")
+
+    @rows.setter
+    @beartype
+    def rows(self, value: Optional[int]):
+        self._set_attr("rows", value)
+
+    # shift_enter
+    @property
+    def shift_enter(self):
+        return self._get_attr("shiftenter")
+
+    @shift_enter.setter
+    @beartype
+    def shift_enter(self, value: Optional[bool]):
+        self._set_attr("shiftenter", value)
+
     # read_only
     @property
     def read_only(self):
@@ -192,6 +218,16 @@ class Textbox(Control):
     @beartype
     def auto_adjust_height(self, value: Optional[bool]):
         self._set_attr("autoadjustheight", value)
+
+    # resizable
+    @property
+    def resizable(self):
+        return self._get_attr("resizable", data_type="bool", def_value=True)
+
+    @resizable.setter
+    @beartype
+    def resizable(self, value: Optional[bool]):
+        self._set_attr("resizable", value)
 
     # underlined
     @property
