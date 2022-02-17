@@ -1,12 +1,14 @@
-from typing import Optional
+from typing import List, Optional
+
+from beartype import beartype
+
+from pglet.control import BorderStyle, Control, TextAlign, TextSize
+
 try:
     from typing import Literal
 except:
     from typing_extensions import Literal
 
-from beartype import beartype
-
-from pglet.control import Control, BorderStyle, TextSize, TextAlign
 
 VerticalAlign = Literal[None, "top", "center", "bottom"]
 
@@ -190,11 +192,16 @@ class Text(Control):
     # border_style
     @property
     def border_style(self):
-        return self._get_attr("borderStyle")
+        v = self._get_attr("borderStyle")
+        if v:
+            return [x.strip() for x in v.split(" ")]
+        return v
 
     @border_style.setter
     @beartype
     def border_style(self, value: BorderStyle):
+        if isinstance(value, List):
+            value = " ".join(value)
         self._set_attr("borderStyle", value)
 
     # border_width

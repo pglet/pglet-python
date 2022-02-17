@@ -1,5 +1,26 @@
 # Change Log - Pglet client for Python
 
+## [0.7.0](https://pypi.org/project/pglet/0.7.0) - Feb 17, 2022
+
+Works with [Pglet Server 0.7.0](https://github.com/pglet/pglet/releases/tag/v0.7.0).
+
+New `SplitStack` control (based on [split.js](https://split.js.org/)) which could be used as a drop-in replacement for `Stack`, but with resize gutters instead of gaps. Check out [SplitStack control example](https://github.com/pglet/examples/blob/main/python/controls/split.py).
+
+New `TextBox` control properties:
+* `shiftEnter` (bool) - blocks ENTER button in `multiline` TextBox, but pops up the event, so `Stack.submit` could be triggered. New line could still be entered with SHIFT+ENTER. This is to build Discord-like message box.
+* `rows` (int) - sets initial size in rows of `multiline` TextBox.
+* `resizable` (bool) - controls whether `multiline` TextBox is resizable by the user. Default is `true`. `autoAdjustHeight` is still respected even if `resizable` is `false`.
+
+`Panel` control changes:
+* `blocking` (bool) is now `true` by default.
+
+`border_style` property in `Image`, `IFrame`, `Stack` and `Text` allows lists, for example:
+
+```python
+stack.border_style = ["solid", "double"]  # top and bottom borders are solid, left and right are double
+```
+
+
 ## [0.6.0](https://pypi.org/project/pglet/0.6.0) - Feb 13, 2022
 
 * Works with [Pglet Server 0.6.0](https://github.com/pglet/pglet/releases/tag/v0.6.0).

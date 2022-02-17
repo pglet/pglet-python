@@ -1,20 +1,32 @@
 import datetime as dt
 import threading
-from typing import Optional
 from difflib import SequenceMatcher
+from typing import List, Optional, Union
+
+from beartype import beartype
+
+from pglet.protocol import Command
 
 try:
     from typing import Literal
 except:
     from typing_extensions import Literal
 
-from beartype import beartype
 
-from pglet.protocol import Command
-
-BorderStyle = Literal[
-    None, "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset"
+BorderStyles = Literal[
+    "none",
+    "hidden",
+    "dotted",
+    "dashed",
+    "solid",
+    "double",
+    "groove",
+    "ridge",
+    "inset",
+    "outset",
 ]
+
+BorderStyle = Union[None, BorderStyles, List[BorderStyles]]
 
 TextSize = Literal[
     None,

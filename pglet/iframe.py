@@ -1,5 +1,8 @@
+from typing import List
+
 from beartype import beartype
-from pglet.control import Control, BorderStyle
+
+from pglet.control import BorderStyle, Control
 
 
 class IFrame(Control):
@@ -7,7 +10,6 @@ class IFrame(Control):
         self,
         id=None,
         src=None,
-        border=None,
         border_style: BorderStyle = None,
         border_width=None,
         border_color=None,
@@ -33,7 +35,6 @@ class IFrame(Control):
         )
 
         self.src = src
-        self.border = border
         self.border_style = border_style
         self.border_width = border_width
         self.border_color = border_color
@@ -52,23 +53,19 @@ class IFrame(Control):
     def src(self, value):
         self._set_attr("src", value)
 
-    # border
-    @property
-    def border(self):
-        return self._get_attr("border")
-
-    @border.setter
-    def border(self, value):
-        self._set_attr("border", value)
-
     # border_style
     @property
     def border_style(self):
-        return self._get_attr("borderStyle")
+        v = self._get_attr("borderStyle")
+        if v:
+            return [x.strip() for x in v.split(" ")]
+        return v
 
     @border_style.setter
     @beartype
     def border_style(self, value: BorderStyle):
+        if isinstance(value, List):
+            value = " ".join(value)
         self._set_attr("borderStyle", value)
 
     # border_width
