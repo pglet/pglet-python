@@ -4,7 +4,7 @@
 
 Works with [Pglet Server 0.7.0](https://github.com/pglet/pglet/releases/tag/v0.7.0).
 
-New `SplitStack` control (based on [split.js](https://split.js.org/)) which could be used as a drop-in replacement for `Stack`, but with resize gutters instead of gaps. [SplitStack control example](https://github.com/pglet/examples/blob/main/python/controls/split.py)
+New `SplitStack` control (based on [split.js](https://split.js.org/)) which could be used as a drop-in replacement for `Stack`, but with resize gutters instead of gaps. Check out [SplitStack control example](https://github.com/pglet/examples/blob/main/python/controls/split.py).
 
 New `TextBox` control properties:
 * `shiftEnter` (bool) - blocks ENTER button in `multiline` TextBox, but pops up the event, so `Stack.submit` could be triggered. New line could still be entered with SHIFT+ENTER. This is to build Discord-like message box.
