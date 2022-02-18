@@ -1,5 +1,3 @@
-from cProfile import label
-
 import pglet
 from pglet import ComboBox, combobox
 
