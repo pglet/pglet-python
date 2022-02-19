@@ -35,7 +35,7 @@ page.add(
             combobox.Option("BMW"),
             combobox.Option("Toyota"),
             combobox.Option("Volkswagen"),
-            combobox.Option("Mercedes-Benz"),
+            combobox.Option("Mercedes-Benz", disabled=True),
         ],
     ),
     ComboBox(

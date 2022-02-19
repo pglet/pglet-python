@@ -172,7 +172,7 @@ class Textbox(Control):
     # multiline
     @property
     def multiline(self):
-        return self._get_attr("multiline")
+        return self._get_attr("multiline", data_type="bool", def_value=False)
 
     @multiline.setter
     @beartype
@@ -192,7 +192,7 @@ class Textbox(Control):
     # shift_enter
     @property
     def shift_enter(self):
-        return self._get_attr("shiftenter")
+        return self._get_attr("shiftenter", data_type="bool", def_value=False)
 
     @shift_enter.setter
     @beartype
@@ -202,7 +202,7 @@ class Textbox(Control):
     # read_only
     @property
     def read_only(self):
-        return self._get_attr("readOnly")
+        return self._get_attr("readOnly", data_type="bool", def_value=False)
 
     @read_only.setter
     @beartype
@@ -212,7 +212,7 @@ class Textbox(Control):
     # auto_adjust_height
     @property
     def auto_adjust_height(self):
-        return self._get_attr("autoadjustheight")
+        return self._get_attr("autoadjustheight", data_type="bool", def_value=False)
 
     @auto_adjust_height.setter
     @beartype
@@ -232,7 +232,7 @@ class Textbox(Control):
     # underlined
     @property
     def underlined(self):
-        return self._get_attr("underlined")
+        return self._get_attr("underlined", data_type="bool", def_value=False)
 
     @underlined.setter
     @beartype
@@ -242,7 +242,7 @@ class Textbox(Control):
     # borderless
     @property
     def borderless(self):
-        return self._get_attr("borderless")
+        return self._get_attr("borderless", data_type="bool", def_value=False)
 
     @borderless.setter
     @beartype
@@ -252,7 +252,7 @@ class Textbox(Control):
     # password
     @property
     def password(self):
-        return self._get_attr("password")
+        return self._get_attr("password", data_type="bool", def_value=False)
 
     @password.setter
     @beartype
@@ -262,7 +262,7 @@ class Textbox(Control):
     # required
     @property
     def required(self):
-        return self._get_attr("required")
+        return self._get_attr("required", data_type="bool", def_value=False)
 
     @required.setter
     @beartype
@@ -272,7 +272,7 @@ class Textbox(Control):
     # focused
     @property
     def focused(self):
-        return self._get_attr("focused")
+        return self._get_attr("focused", data_type="bool", def_value=False)
 
     @focused.setter
     @beartype

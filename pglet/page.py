@@ -2,10 +2,6 @@ import json
 import logging
 import threading
 from typing import List, Optional
-try:
-    from typing import Literal
-except:
-    from typing_extensions import Literal
 
 from beartype import beartype
 
@@ -14,6 +10,12 @@ from pglet.connection import Connection
 from pglet.control import Control
 from pglet.control_event import ControlEvent
 from pglet.protocol import Command
+
+try:
+    from typing import Literal
+except:
+    from typing_extensions import Literal
+
 
 Align = Literal[
     None,
@@ -261,7 +263,7 @@ class Page(Control):
     # vertical_fill
     @property
     def vertical_fill(self):
-        return self._get_attr("verticalFill")
+        return self._get_attr("verticalFill", data_type="bool", def_value=False)
 
     @vertical_fill.setter
     @beartype
@@ -390,7 +392,7 @@ class Page(Control):
     # signin_allow_dismiss
     @property
     def signin_allow_dismiss(self):
-        return self._get_attr("signinAllowDismiss")
+        return self._get_attr("signinAllowDismiss", data_type="bool", def_value=False)
 
     @signin_allow_dismiss.setter
     @beartype
@@ -400,7 +402,7 @@ class Page(Control):
     # signin_groups
     @property
     def signin_groups(self):
-        return self._get_attr("signinGroups")
+        return self._get_attr("signinGroups", data_type="bool", def_value=False)
 
     @signin_groups.setter
     @beartype

@@ -79,7 +79,7 @@ class DatePicker(Control):
     # allow_text_input
     @property
     def allow_text_input(self):
-        return self._get_attr("allowTextInput")
+        return self._get_attr("allowTextInput", data_type="bool", def_value=False)
 
     @allow_text_input.setter
     @beartype
@@ -89,7 +89,7 @@ class DatePicker(Control):
     # underlined
     @property
     def underlined(self):
-        return self._get_attr("underlined")
+        return self._get_attr("underlined", data_type="bool", def_value=False)
 
     @underlined.setter
     @beartype
@@ -99,7 +99,7 @@ class DatePicker(Control):
     # borderless
     @property
     def borderless(self):
-        return self._get_attr("borderless")
+        return self._get_attr("borderless", data_type="bool", def_value=False)
 
     @borderless.setter
     @beartype
@@ -109,7 +109,7 @@ class DatePicker(Control):
     # required
     @property
     def required(self):
-        return self._get_attr("required")
+        return self._get_attr("required", data_type="bool", def_value=False)
 
     @required.setter
     @beartype
@@ -119,7 +119,7 @@ class DatePicker(Control):
     # focused
     @property
     def focused(self):
-        return self._get_attr("focused")
+        return self._get_attr("focused", data_type="bool", def_value=False)
 
     @focused.setter
     @beartype

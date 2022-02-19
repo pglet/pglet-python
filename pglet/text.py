@@ -92,7 +92,7 @@ class Text(Control):
     # markdown
     @property
     def markdown(self):
-        return self._get_attr("markdown")
+        return self._get_attr("markdown", data_type="bool", def_value=False)
 
     @markdown.setter
     @beartype
@@ -132,7 +132,7 @@ class Text(Control):
     # bold
     @property
     def bold(self):
-        return self._get_attr("bold")
+        return self._get_attr("bold", data_type="bool", def_value=False)
 
     @bold.setter
     @beartype
@@ -142,7 +142,7 @@ class Text(Control):
     # italic
     @property
     def italic(self):
-        return self._get_attr("italic")
+        return self._get_attr("italic", data_type="bool", def_value=False)
 
     @italic.setter
     @beartype
@@ -152,7 +152,7 @@ class Text(Control):
     # pre
     @property
     def pre(self):
-        return self._get_attr("pre")
+        return self._get_attr("pre", data_type="bool", def_value=False)
 
     @pre.setter
     @beartype
@@ -162,7 +162,7 @@ class Text(Control):
     # nowrap
     @property
     def nowrap(self):
-        return self._get_attr("nowrap")
+        return self._get_attr("nowrap", data_type="bool", def_value=False)
 
     @nowrap.setter
     @beartype
@@ -172,7 +172,7 @@ class Text(Control):
     # block
     @property
     def block(self):
-        return self._get_attr("block")
+        return self._get_attr("block", data_type="bool", def_value=False)
 
     @block.setter
     @beartype

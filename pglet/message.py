@@ -1,14 +1,18 @@
 from typing import Optional
-try:
-    from typing import Literal
-except:
-    from typing_extensions import Literal
 
 from beartype import beartype
 
 from pglet.control import Control
 
-MessageType = Literal[None, "info", "error", "blocked", "severeWarning", "success", "warning"]
+try:
+    from typing import Literal
+except:
+    from typing_extensions import Literal
+
+
+MessageType = Literal[
+    None, "info", "error", "blocked", "severeWarning", "success", "warning"
+]
 
 
 class Message(Control):
@@ -97,7 +101,7 @@ class Message(Control):
     # multiline
     @property
     def multiline(self):
-        return self._get_attr("multiline")
+        return self._get_attr("multiline", data_type="bool", def_value=False)
 
     @multiline.setter
     @beartype
@@ -107,7 +111,7 @@ class Message(Control):
     # truncated
     @property
     def truncated(self):
-        return self._get_attr("truncated")
+        return self._get_attr("truncated", data_type="bool", def_value=False)
 
     @truncated.setter
     @beartype
@@ -117,7 +121,7 @@ class Message(Control):
     # dismiss
     @property
     def dismiss(self):
-        return self._get_attr("dismiss")
+        return self._get_attr("dismiss", data_type="bool", def_value=False)
 
     @dismiss.setter
     @beartype

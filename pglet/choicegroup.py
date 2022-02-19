@@ -91,7 +91,7 @@ class ChoiceGroup(Control):
     # focused
     @property
     def focused(self):
-        return self._get_attr("focused")
+        return self._get_attr("focused", data_type="bool", def_value=False)
 
     @focused.setter
     @beartype

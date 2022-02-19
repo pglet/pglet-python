@@ -1,12 +1,14 @@
 from typing import Optional
+
+from beartype import beartype
+
+from pglet.control import Control
+
 try:
     from typing import Literal
 except:
     from typing_extensions import Literal
 
-from beartype import beartype
-
-from pglet.control import Control
 
 Size = Literal[None, 8, 24, 32, 40, 48, 56, 72, 100, 120]
 
@@ -170,7 +172,7 @@ class Persona(Control):
     # hide_details
     @property
     def hide_details(self):
-        return self._get_attr("hidedetails")
+        return self._get_attr("hidedetails", data_type="bool", def_value=False)
 
     @hide_details.setter
     @beartype

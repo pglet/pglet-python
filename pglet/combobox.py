@@ -129,7 +129,7 @@ class ComboBox(Control):
     # focused
     @property
     def focused(self):
-        return self._get_attr("focused")
+        return self._get_attr("focused", data_type="bool", def_value=False)
 
     @focused.setter
     @beartype
@@ -139,7 +139,7 @@ class ComboBox(Control):
     # multi_select
     @property
     def multi_select(self):
-        return self._get_attr("multiselect")
+        return self._get_attr("multiselect", data_type="bool", def_value=False)
 
     @multi_select.setter
     @beartype
@@ -149,7 +149,7 @@ class ComboBox(Control):
     # allow_free_form
     @property
     def allow_free_form(self):
-        return self._get_attr("allowfreeform")
+        return self._get_attr("allowfreeform", data_type="bool", def_value=False)
 
     @allow_free_form.setter
     @beartype
@@ -159,7 +159,7 @@ class ComboBox(Control):
     # auto_complete
     @property
     def auto_complete(self):
-        return self._get_attr("autocomplete")
+        return self._get_attr("autocomplete", data_type="bool", def_value=True)
 
     @auto_complete.setter
     @beartype
@@ -187,7 +187,7 @@ class ComboBox(Control):
 
 class Option(Control):
     def __init__(self, key=None, text=None, item_type: ItemType = None, disabled=None):
-        Control.__init__(self)
+        Control.__init__(self, disabled=disabled)
         assert key != None or text != None, "key or text must be specified"
         self.key = key
         self.text = text
@@ -224,13 +224,3 @@ class Option(Control):
     @beartype
     def item_type(self, value: ItemType):
         self._set_attr("itemtype", value)
-
-    # disabled
-    @property
-    def disabled(self):
-        return self._get_attr("disabled")
-
-    @disabled.setter
-    @beartype
-    def disabled(self, value: Optional[bool]):
-        self._set_attr("disabled", value)

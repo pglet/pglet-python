@@ -1,5 +1,7 @@
 from typing import Optional
+
 from beartype import beartype
+
 from pglet.control import Control
 
 
@@ -74,7 +76,9 @@ class Tabs(Control):
     @beartype
     def value(self, value: str):
         if not value:
-            assert not self.tabs, "Setting an empty value is only allowed if you have no tabs"
+            assert (
+                not self.tabs
+            ), "Setting an empty value is only allowed if you have no tabs"
         else:
             assert any(
                 value in keys for keys in [(tab.key, tab.text) for tab in self.tabs]
@@ -84,7 +88,7 @@ class Tabs(Control):
     # solid
     @property
     def solid(self):
-        return self._get_attr("solid")
+        return self._get_attr("solid", data_type="bool", def_value=False)
 
     @solid.setter
     @beartype

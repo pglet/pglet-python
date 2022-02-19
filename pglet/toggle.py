@@ -95,7 +95,7 @@ class Toggle(Control):
     # inline
     @property
     def inline(self):
-        return self._get_attr("inline")
+        return self._get_attr("inline", data_type="bool", def_value=False)
 
     @inline.setter
     @beartype
@@ -123,7 +123,7 @@ class Toggle(Control):
     # focused
     @property
     def focused(self):
-        return self._get_attr("focused")
+        return self._get_attr("focused", data_type="bool", def_value=False)
 
     @focused.setter
     @beartype

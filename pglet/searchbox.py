@@ -108,7 +108,7 @@ class SearchBox(Control):
     # underlined
     @property
     def underlined(self):
-        return self._get_attr("underlined")
+        return self._get_attr("underlined", data_type="bool", def_value=False)
 
     @underlined.setter
     @beartype
@@ -136,7 +136,7 @@ class SearchBox(Control):
     # focused
     @property
     def focused(self):
-        return self._get_attr("focused")
+        return self._get_attr("focused", data_type="bool", def_value=False)
 
     @focused.setter
     @beartype

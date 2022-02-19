@@ -98,7 +98,7 @@ class Link(Control):
     # new_window
     @property
     def new_window(self):
-        return self._get_attr("newWindow")
+        return self._get_attr("newWindow", data_type="bool", def_value=False)
 
     @new_window.setter
     @beartype
@@ -126,7 +126,7 @@ class Link(Control):
     # bold
     @property
     def bold(self):
-        return self._get_attr("bold")
+        return self._get_attr("bold", data_type="bool", def_value=False)
 
     @bold.setter
     @beartype
@@ -136,7 +136,7 @@ class Link(Control):
     # italic
     @property
     def italic(self):
-        return self._get_attr("italic")
+        return self._get_attr("italic", data_type="bool", def_value=False)
 
     @italic.setter
     @beartype
@@ -146,7 +146,7 @@ class Link(Control):
     # pre
     @property
     def pre(self):
-        return self._get_attr("pre")
+        return self._get_attr("pre", data_type="bool", def_value=False)
 
     @pre.setter
     @beartype

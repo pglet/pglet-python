@@ -1,12 +1,14 @@
 from typing import Optional
+
+from beartype import beartype
+
+from pglet.control import Control
+
 try:
     from typing import Literal
 except:
     from typing_extensions import Literal
 
-from beartype import beartype
-
-from pglet.control import Control
 
 BoxSide = Literal[None, "start", "end"]
 
@@ -101,7 +103,7 @@ class Checkbox(Control):
     # focused
     @property
     def focused(self):
-        return self._get_attr("focused")
+        return self._get_attr("focused", data_type="bool", def_value=False)
 
     @focused.setter
     @beartype

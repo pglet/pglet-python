@@ -68,7 +68,7 @@ class SplitStack(Control):
     # horizontal
     @property
     def horizontal(self):
-        return self._get_attr("horizontal")
+        return self._get_attr("horizontal", data_type="bool", def_value=False)
 
     @horizontal.setter
     @beartype

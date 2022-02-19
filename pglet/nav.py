@@ -185,7 +185,7 @@ class Item(Control):
     # new_window
     @property
     def new_window(self):
-        return self._get_attr("newWindow")
+        return self._get_attr("newWindow", data_type="bool", def_value=False)
 
     @new_window.setter
     @beartype
@@ -195,7 +195,7 @@ class Item(Control):
     # expanded
     @property
     def expanded(self):
-        return self._get_attr("expanded", data_type="bool")
+        return self._get_attr("expanded", data_type="bool", def_value=False)
 
     @expanded.setter
     @beartype

@@ -117,7 +117,7 @@ class Slider(Control):
     # show_value
     @property
     def show_value(self):
-        return self._get_attr("showValue")
+        return self._get_attr("showValue", data_type="bool", def_value=False)
 
     @show_value.setter
     @beartype
@@ -136,7 +136,7 @@ class Slider(Control):
     # vertical
     @property
     def vertical(self):
-        return self._get_attr("vertical")
+        return self._get_attr("vertical", data_type="bool", def_value=False)
 
     @vertical.setter
     @beartype
@@ -146,7 +146,7 @@ class Slider(Control):
     # focused
     @property
     def focused(self):
-        return self._get_attr("focused")
+        return self._get_attr("focused", data_type="bool", def_value=False)
 
     @focused.setter
     @beartype
