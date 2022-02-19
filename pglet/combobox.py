@@ -1,14 +1,17 @@
-from typing import List, Optional
-try:
-    from typing import Literal
-except:
-    from typing_extensions import Literal
+from typing import List, Optional, Union
 
 from beartype import beartype
 
 from pglet.control import Control
 
+try:
+    from typing import Literal
+except:
+    from typing_extensions import Literal
+
+
 ItemType = Literal[None, "normal", "divider", "header", "selectAll", "select_all"]
+ComboBoxValue = Union[None, str, List[str]]
 
 
 class ComboBox(Control):
@@ -16,7 +19,7 @@ class ComboBox(Control):
         self,
         label=None,
         id=None,
-        value=None,
+        value: ComboBoxValue = None,
         placeholder=None,
         error_message=None,
         on_change=None,
@@ -95,16 +98,12 @@ class ComboBox(Control):
     # value
     @property
     def value(self):
-        v = self._get_attr("value")
-        if v and self.multi_select:
-            return [x.strip() for x in v.split(",")]
-        return v
+        return self._get_value_or_list_attr("value", ",")
 
     @value.setter
-    def value(self, value):
-        if isinstance(value, List):
-            value = ",".join(value)
-        self._set_attr("value", value)
+    @beartype
+    def value(self, value: ComboBoxValue):
+        self._set_value_or_list_attr("value", value, ",")
 
     # placeholder
     @property

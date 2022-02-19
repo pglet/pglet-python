@@ -2,7 +2,15 @@ from typing import List, Optional
 
 from beartype import beartype
 
-from pglet.control import BorderStyle, Control, TextAlign, TextSize
+from pglet.control import (
+    BorderColor,
+    BorderRadius,
+    BorderStyle,
+    BorderWidth,
+    Control,
+    TextAlign,
+    TextSize,
+)
 
 try:
     from typing import Literal
@@ -30,9 +38,9 @@ class Text(Control):
         color=None,
         bgcolor=None,
         border_style: BorderStyle = None,
-        border_width=None,
-        border_color=None,
-        border_radius=None,
+        border_width: BorderWidth = None,
+        border_color: BorderColor = None,
+        border_radius: BorderRadius = None,
         width=None,
         height=None,
         padding=None,
@@ -192,41 +200,39 @@ class Text(Control):
     # border_style
     @property
     def border_style(self):
-        v = self._get_attr("borderStyle")
-        if v:
-            return [x.strip() for x in v.split(" ")]
-        return v
+        return self._get_value_or_list_attr("borderStyle", " ")
 
     @border_style.setter
     @beartype
     def border_style(self, value: BorderStyle):
-        if isinstance(value, List):
-            value = " ".join(value)
-        self._set_attr("borderStyle", value)
+        self._set_value_or_list_attr("borderStyle", value, " ")
 
     # border_width
     @property
     def border_width(self):
-        return self._get_attr("borderWidth")
+        return self._get_value_or_list_attr("borderWidth", " ")
 
     @border_width.setter
-    def border_width(self, value):
-        self._set_attr("borderWidth", value)
+    @beartype
+    def border_width(self, value: BorderWidth):
+        self._set_value_or_list_attr("borderWidth", value, " ")
 
     # border_color
     @property
     def border_color(self):
-        return self._get_attr("borderColor")
+        return self._get_value_or_list_attr("borderColor", " ")
 
     @border_color.setter
-    def border_color(self, value):
-        self._set_attr("borderColor", value)
+    @beartype
+    def border_color(self, value: BorderColor):
+        self._set_value_or_list_attr("borderColor", value, " ")
 
     # border_radius
     @property
     def border_radius(self):
-        return self._get_attr("borderRadius")
+        return self._get_value_or_list_attr("borderRadius", " ")
 
     @border_radius.setter
-    def border_radius(self, value):
-        self._set_attr("borderRadius", value)
+    @beartype
+    def border_radius(self, value: BorderRadius):
+        self._set_value_or_list_attr("borderRadius", value, " ")

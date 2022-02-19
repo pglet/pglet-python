@@ -37,7 +37,7 @@ def main(page):
         rows=1,
         auto_adjust_height=True,
         shift_enter=True,
-        resizable=True,
+        resizable=False,
     )
 
     def on_message(user, message):
