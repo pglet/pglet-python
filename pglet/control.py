@@ -27,6 +27,9 @@ BorderStyles = Literal[
 ]
 
 BorderStyle = Union[None, BorderStyles, List[BorderStyles]]
+BorderWidth = Union[None, str, List[str]]
+BorderColor = Union[None, str, List[str]]
+BorderRadius = Union[None, str, List[str]]
 
 TextSize = Literal[
     None,
@@ -102,6 +105,17 @@ class Control:
 
     def _set_attr(self, name, value, dirty=True):
         self._set_attr_internal(name, value, dirty)
+
+    def _get_value_or_list_attr(self, name, delimiter):
+        v = self._get_attr(name)
+        if v and delimiter in v:
+            return [x.strip() for x in v.split(delimiter)]
+        return v
+
+    def _set_value_or_list_attr(self, name, value, delimiter):
+        if isinstance(value, List):
+            value = delimiter.join(value)
+        self._set_attr(name, value)
 
     def _set_attr_internal(self, name, value, dirty=True):
         name = name.lower()
