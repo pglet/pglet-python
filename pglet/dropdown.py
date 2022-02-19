@@ -1,12 +1,14 @@
 from typing import Optional
+
+from beartype import beartype
+
+from pglet.control import Control
+
 try:
     from typing import Literal
 except:
     from typing_extensions import Literal
 
-from beartype import beartype
-
-from pglet.control import Control
 
 ItemType = Literal[None, "normal", "divider", "header"]
 
@@ -119,7 +121,7 @@ class Dropdown(Control):
     # focused
     @property
     def focused(self):
-        return self._get_attr("focused")
+        return self._get_attr("focused", data_type="bool", def_value=False)
 
     @focused.setter
     @beartype
@@ -147,7 +149,7 @@ class Dropdown(Control):
 
 class Option(Control):
     def __init__(self, key=None, text=None, item_type: ItemType = None, disabled=None):
-        Control.__init__(self)
+        Control.__init__(self, disabled=disabled)
         assert key != None or text != None, "key or text must be specified"
         self.key = key
         self.text = text
@@ -184,13 +186,3 @@ class Option(Control):
     @beartype
     def item_type(self, value: ItemType):
         self._set_attr("itemtype", value)
-
-    # disabled
-    @property
-    def disabled(self):
-        return self._get_attr("disabled")
-
-    @disabled.setter
-    @beartype
-    def disabled(self, value: Optional[bool]):
-        self._set_attr("disabled", value)

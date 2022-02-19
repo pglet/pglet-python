@@ -111,7 +111,7 @@ class Stack(Control):
     # horizontal
     @property
     def horizontal(self):
-        return self._get_attr("horizontal")
+        return self._get_attr("horizontal", data_type="bool", def_value=False)
 
     @horizontal.setter
     @beartype
@@ -121,7 +121,7 @@ class Stack(Control):
     # vertical_fill
     @property
     def vertical_fill(self):
-        return self._get_attr("verticalFill")
+        return self._get_attr("verticalFill", data_type="bool", def_value=False)
 
     @vertical_fill.setter
     @beartype
@@ -196,7 +196,7 @@ class Stack(Control):
     # wrap
     @property
     def wrap(self):
-        return self._get_attr("wrap")
+        return self._get_attr("wrap", data_type="bool", def_value=False)
 
     @wrap.setter
     @beartype
@@ -255,7 +255,7 @@ class Stack(Control):
     # scroll_x
     @property
     def scroll_x(self):
-        return self._get_attr("scrollx")
+        return self._get_attr("scrollx", data_type="bool", def_value=False)
 
     @scroll_x.setter
     @beartype
@@ -265,7 +265,7 @@ class Stack(Control):
     # scroll_y
     @property
     def scroll_y(self):
-        return self._get_attr("scrolly")
+        return self._get_attr("scrolly", data_type="bool", def_value=False)
 
     @scroll_y.setter
     @beartype
@@ -275,7 +275,7 @@ class Stack(Control):
     # auto_scroll
     @property
     def auto_scroll(self):
-        return self._get_attr("autoscroll")
+        return self._get_attr("autoscroll", data_type="bool", def_value=False)
 
     @auto_scroll.setter
     @beartype

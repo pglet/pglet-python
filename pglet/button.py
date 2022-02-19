@@ -91,7 +91,7 @@ class Button(Control):
     # primary
     @property
     def primary(self):
-        return self._get_attr("primary")
+        return self._get_attr("primary", data_type="bool", def_value=False)
 
     @primary.setter
     @beartype
@@ -101,7 +101,7 @@ class Button(Control):
     # compound
     @property
     def compound(self):
-        return self._get_attr("compound")
+        return self._get_attr("compound", data_type="bool", def_value=False)
 
     @compound.setter
     @beartype
@@ -111,7 +111,7 @@ class Button(Control):
     # action
     @property
     def action(self):
-        return self._get_attr("action")
+        return self._get_attr("action", data_type="bool", def_value=False)
 
     @action.setter
     @beartype
@@ -121,7 +121,7 @@ class Button(Control):
     # toolbar
     @property
     def toolbar(self):
-        return self._get_attr("toolbar")
+        return self._get_attr("toolbar", data_type="bool", def_value=False)
 
     @toolbar.setter
     @beartype
@@ -131,7 +131,7 @@ class Button(Control):
     # split
     @property
     def split(self):
-        return self._get_attr("split")
+        return self._get_attr("split", data_type="bool", def_value=False)
 
     @split.setter
     @beartype
@@ -168,7 +168,7 @@ class Button(Control):
     # new_window
     @property
     def new_window(self):
-        return self._get_attr("newWindow")
+        return self._get_attr("newWindow", data_type="bool", def_value=False)
 
     @new_window.setter
     @beartype
@@ -208,7 +208,7 @@ class Button(Control):
     # focused
     @property
     def focused(self):
-        return self._get_attr("focused")
+        return self._get_attr("focused", data_type="bool", def_value=False)
 
     @focused.setter
     @beartype
@@ -335,7 +335,7 @@ class MenuItem(Control):
     # new_window
     @property
     def new_window(self):
-        return self._get_attr("newWindow")
+        return self._get_attr("newWindow", data_type="bool", def_value=False)
 
     @new_window.setter
     @beartype
@@ -363,7 +363,7 @@ class MenuItem(Control):
     # icon_only
     @property
     def icon_only(self):
-        return self._get_attr("iconOnly")
+        return self._get_attr("iconOnly", data_type="bool", def_value=False)
 
     @icon_only.setter
     @beartype
@@ -373,7 +373,7 @@ class MenuItem(Control):
     # split
     @property
     def split(self):
-        return self._get_attr("split")
+        return self._get_attr("split", data_type="bool", def_value=False)
 
     @split.setter
     @beartype
@@ -383,7 +383,7 @@ class MenuItem(Control):
     # divider
     @property
     def divider(self):
-        return self._get_attr("divider")
+        return self._get_attr("divider", data_type="bool", def_value=False)
 
     @divider.setter
     @beartype

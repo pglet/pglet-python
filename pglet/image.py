@@ -90,7 +90,7 @@ class Image(Control):
     # maximize_frame
     @property
     def maximize_frame(self):
-        return self._get_attr("maximizeFrame")
+        return self._get_attr("maximizeFrame", data_type="bool", def_value=False)
 
     @maximize_frame.setter
     @beartype

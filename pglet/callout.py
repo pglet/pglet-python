@@ -1,12 +1,14 @@
 from typing import Optional
+
+from beartype import beartype
+
+from pglet.control import Control
+
 try:
     from typing import Literal
 except:
     from typing_extensions import Literal
 
-from beartype import beartype
-
-from pglet.control import Control
 
 Position = Literal[
     None,
@@ -127,7 +129,7 @@ class Callout(Control):
     # beak
     @property
     def beak(self):
-        return self._get_attr("beak")
+        return self._get_attr("beak", data_type="bool", def_value=True)
 
     @beak.setter
     @beartype
@@ -157,7 +159,7 @@ class Callout(Control):
     # focus
     @property
     def focus(self):
-        return self._get_attr("focus")
+        return self._get_attr("focus", data_type="bool", def_value=False)
 
     @focus.setter
     @beartype
@@ -167,7 +169,7 @@ class Callout(Control):
     # cover
     @property
     def cover(self):
-        return self._get_attr("cover")
+        return self._get_attr("cover", data_type="bool", def_value=False)
 
     @cover.setter
     @beartype

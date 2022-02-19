@@ -1,5 +1,7 @@
 from typing import Optional
+
 from beartype import beartype
+
 from pglet.control import Control
 
 
@@ -44,7 +46,7 @@ class Toolbar(Control):
     # inverted
     @property
     def inverted(self):
-        return self._get_attr("inverted")
+        return self._get_attr("inverted", data_type="bool", def_value=False)
 
     @inverted.setter
     @beartype
@@ -225,7 +227,7 @@ class Item(Control):
     # new_window
     @property
     def new_window(self):
-        return self._get_attr("newWindow")
+        return self._get_attr("newWindow", data_type="bool", def_value=False)
 
     @new_window.setter
     @beartype
@@ -253,7 +255,7 @@ class Item(Control):
     # icon_only
     @property
     def icon_only(self):
-        return self._get_attr("iconOnly")
+        return self._get_attr("iconOnly", data_type="bool", def_value=False)
 
     @icon_only.setter
     @beartype
@@ -263,7 +265,7 @@ class Item(Control):
     # split
     @property
     def split(self):
-        return self._get_attr("split")
+        return self._get_attr("split", data_type="bool", def_value=False)
 
     @split.setter
     @beartype
@@ -273,7 +275,7 @@ class Item(Control):
     # divider
     @property
     def divider(self):
-        return self._get_attr("divider")
+        return self._get_attr("divider", data_type="bool", def_value=False)
 
     @divider.setter
     @beartype

@@ -1,12 +1,13 @@
 from typing import Optional, Union
-try:
-    from typing import Literal
-except ImportError:
-    from typing_extensions import Literal
 
 from beartype import beartype
 
 from pglet.control import Control
+
+try:
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal
 
 
 DataMode = Literal["default", "fraction", "percentage", None]
@@ -57,7 +58,7 @@ class BarChart(Control):
     # tooltips
     @property
     def tooltips(self):
-        return self._get_attr("tooltips")
+        return self._get_attr("tooltips", data_type="bool", def_value=False)
 
     @tooltips.setter
     @beartype

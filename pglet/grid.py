@@ -1,14 +1,16 @@
 from __future__ import annotations
 
 from typing import Optional
+
+from beartype import beartype
+
+from pglet.control import Control
+
 try:
     from typing import Literal
 except:
     from typing_extensions import Literal
 
-from beartype import beartype
-
-from pglet.control import Control
 
 SelectionMode = Literal[None, "single", "multiple"]
 Sortable = Literal[None, "string", "number", False]
@@ -127,7 +129,7 @@ class Grid(Control):
     # compact
     @property
     def compact(self):
-        return self._get_attr("compact")
+        return self._get_attr("compact", data_type="bool", def_value=False)
 
     @compact.setter
     @beartype
@@ -137,7 +139,7 @@ class Grid(Control):
     # header_visible
     @property
     def header_visible(self):
-        return self._get_attr("headerVisible")
+        return self._get_attr("headerVisible", data_type="bool", def_value=True)
 
     @header_visible.setter
     @beartype
@@ -147,7 +149,7 @@ class Grid(Control):
     # preserve_selection
     @property
     def preserve_selection(self):
-        return self._get_attr("preserveSelection")
+        return self._get_attr("preserveSelection", data_type="bool", def_value=False)
 
     @preserve_selection.setter
     @beartype
@@ -282,7 +284,7 @@ class Column(Control):
     # icon_only
     @property
     def icon_only(self):
-        return self._get_attr("iconOnly")
+        return self._get_attr("iconOnly", data_type="bool", def_value=False)
 
     @icon_only.setter
     @beartype
@@ -330,7 +332,7 @@ class Column(Control):
     # resizable
     @property
     def resizable(self):
-        return self._get_attr("resizable")
+        return self._get_attr("resizable", data_type="bool", def_value=False)
 
     @resizable.setter
     @beartype

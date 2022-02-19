@@ -101,7 +101,7 @@ class Panel(Control):
     # open
     @property
     def open(self):
-        return self._get_attr("open")
+        return self._get_attr("open", data_type="bool", def_value=False)
 
     @open.setter
     @beartype

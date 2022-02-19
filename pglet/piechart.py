@@ -1,5 +1,7 @@
 from typing import Optional, Union
+
 from beartype import beartype
+
 from pglet.control import Control
 
 
@@ -52,7 +54,7 @@ class PieChart(Control):
     # legend
     @property
     def legend(self):
-        return self._get_attr("legend")
+        return self._get_attr("legend", data_type="bool", def_value=False)
 
     @legend.setter
     @beartype
@@ -62,7 +64,7 @@ class PieChart(Control):
     # tooltips
     @property
     def tooltips(self):
-        return self._get_attr("tooltips")
+        return self._get_attr("tooltips", data_type="bool", def_value=False)
 
     @tooltips.setter
     @beartype

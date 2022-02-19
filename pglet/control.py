@@ -202,7 +202,7 @@ class Control:
     # visible
     @property
     def visible(self):
-        return self._get_attr("visible")
+        return self._get_attr("visible", data_type="bool", def_value=True)
 
     @visible.setter
     @beartype
@@ -212,7 +212,7 @@ class Control:
     # disabled
     @property
     def disabled(self):
-        return self._get_attr("disabled")
+        return self._get_attr("disabled", data_type="bool", def_value=False)
 
     @disabled.setter
     @beartype

@@ -93,7 +93,7 @@ class Dialog(Control):
     # open
     @property
     def open(self):
-        return self._get_attr("open")
+        return self._get_attr("open", data_type="bool", def_value=False)
 
     @open.setter
     @beartype
@@ -150,7 +150,7 @@ class Dialog(Control):
     # fixed_top
     @property
     def fixed_top(self):
-        return self._get_attr("fixedTop")
+        return self._get_attr("fixedTop", data_type="bool", def_value=False)
 
     @fixed_top.setter
     @beartype
@@ -160,7 +160,7 @@ class Dialog(Control):
     # blocking
     @property
     def blocking(self):
-        return self._get_attr("blocking")
+        return self._get_attr("blocking", data_type="bool", def_value=False)
 
     @blocking.setter
     @beartype
