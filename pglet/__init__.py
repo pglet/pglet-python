@@ -8,6 +8,7 @@ from pglet.control import Control
 from pglet.datepicker import DatePicker
 from pglet.dialog import Dialog
 from pglet.dropdown import Dropdown
+from pglet.form import Form
 from pglet.grid import Column, Columns, Grid, Item, Items
 from pglet.html import Html
 from pglet.icon import Icon
