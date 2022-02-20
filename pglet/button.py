@@ -10,6 +10,7 @@ class Button(Control):
         self,
         text=None,
         id=None,
+        ref=None,
         primary=None,
         compound=None,
         action=None,
@@ -37,6 +38,7 @@ class Button(Control):
         Control.__init__(
             self,
             id=id,
+            ref=ref,
             width=width,
             height=height,
             padding=padding,
@@ -239,6 +241,7 @@ class MenuItem(Control):
         self,
         text=None,
         id=None,
+        ref=None,
         secondary_text=None,
         url=None,
         new_window=None,
@@ -260,6 +263,7 @@ class MenuItem(Control):
         Control.__init__(
             self,
             id=id,
+            ref=ref,
             width=width,
             height=height,
             padding=padding,

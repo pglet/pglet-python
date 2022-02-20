@@ -24,6 +24,7 @@ from pglet.pglet import *
 from pglet.piechart import PieChart
 from pglet.progress import Progress
 from pglet.reconnecting_websocket import *
+from pglet.ref import Ref
 from pglet.searchbox import SearchBox
 from pglet.slider import Slider
 from pglet.spinbutton import SpinButton

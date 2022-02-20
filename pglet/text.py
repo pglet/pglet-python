@@ -26,6 +26,7 @@ class Text(Control):
         self,
         value=None,
         id=None,
+        ref=None,
         markdown=None,
         align: TextAlign = None,
         vertical_align: VerticalAlign = None,
@@ -52,6 +53,7 @@ class Text(Control):
         Control.__init__(
             self,
             id=id,
+            ref=ref,
             width=width,
             height=height,
             padding=padding,

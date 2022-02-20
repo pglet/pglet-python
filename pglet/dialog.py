@@ -17,6 +17,7 @@ class Dialog(Control):
     def __init__(
         self,
         id=None,
+        ref=None,
         open=None,
         title=None,
         sub_text=None,
@@ -40,6 +41,7 @@ class Dialog(Control):
         Control.__init__(
             self,
             id=id,
+            ref=ref,
             width=width,
             height=height,
             padding=padding,
@@ -177,8 +179,8 @@ class Dialog(Control):
 
 
 class Footer(Control):
-    def __init__(self, id=None, controls=None):
-        Control.__init__(self, id=id)
+    def __init__(self, id=None, ref=None, controls=None):
+        Control.__init__(self, id=id, ref=ref)
 
         self.__controls = []
         if controls != None:
