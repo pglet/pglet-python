@@ -189,7 +189,7 @@ class ComboBox(Control):
 
 class Option(Control):
     def __init__(
-        self, ref=None, key=None, text=None, item_type: ItemType = None, disabled=None
+        self, key=None, text=None, item_type: ItemType = None, disabled=None, ref=None
     ):
         Control.__init__(self, ref=ref, disabled=disabled)
         assert key != None or text != None, "key or text must be specified"
