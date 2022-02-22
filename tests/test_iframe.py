@@ -101,6 +101,14 @@ def test_iframe_border_width():
     assert v == ""
 
 
+def test_iframe_border_width_mixed():
+    # list of values
+    c = IFrame(border_width=["1px", "2px", 1, 2])
+    v = c.border_width
+    assert isinstance(v, List)
+    assert len(v) == 4
+
+
 def test_iframe_border_radius():
     # list of values
     c = IFrame(border_radius=["1px", "2px", "1", "2"])

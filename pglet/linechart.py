@@ -17,6 +17,7 @@ class LineChart(Control):
     def __init__(
         self,
         id=None,
+        ref=None,
         legend=None,
         tooltips=None,
         stroke_width=None,
@@ -37,6 +38,7 @@ class LineChart(Control):
         Control.__init__(
             self,
             id=id,
+            ref=ref,
             width=width,
             height=height,
             padding=padding,
@@ -155,8 +157,8 @@ class LineChart(Control):
 
 
 class Data(Control):
-    def __init__(self, id=None, color=None, legend=None, points=None):
-        Control.__init__(self, id=id)
+    def __init__(self, id=None, ref=None, color=None, legend=None, points=None):
+        Control.__init__(self, id=id, ref=ref)
 
         self.color = color
         self.legend = legend
@@ -203,6 +205,7 @@ class Point(Control):
     def __init__(
         self,
         id=None,
+        ref=None,
         x=None,
         y=None,
         tick=None,
@@ -210,7 +213,7 @@ class Point(Control):
         x_tooltip=None,
         y_tooltip=None,
     ):
-        Control.__init__(self, id=id)
+        Control.__init__(self, id=id, ref=ref)
 
         self.x = x
         self.y = y

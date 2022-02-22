@@ -9,6 +9,7 @@ class SearchBox(Control):
     def __init__(
         self,
         id=None,
+        ref=None,
         value=None,
         placeholder=None,
         underlined=None,
@@ -32,6 +33,7 @@ class SearchBox(Control):
         Control.__init__(
             self,
             id=id,
+            ref=ref,
             width=width,
             height=height,
             padding=padding,

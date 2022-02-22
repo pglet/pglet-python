@@ -28,6 +28,7 @@ class Panel(Control):
     def __init__(
         self,
         id=None,
+        ref=None,
         open=None,
         title=None,
         type: PanelType = None,
@@ -49,6 +50,7 @@ class Panel(Control):
         Control.__init__(
             self,
             id=id,
+            ref=ref,
             width=width,
             height=height,
             padding=padding,
@@ -176,8 +178,8 @@ class Panel(Control):
 
 
 class Footer(Control):
-    def __init__(self, id=None, controls=None):
-        Control.__init__(self, id=id)
+    def __init__(self, id=None, ref=None, controls=None):
+        Control.__init__(self, id=id, ref=ref)
 
         self.__controls = []
         if controls != None:

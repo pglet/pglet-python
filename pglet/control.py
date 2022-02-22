@@ -6,6 +6,7 @@ from typing import List, Optional, Union
 from beartype import beartype
 
 from pglet.protocol import Command
+from pglet.ref import Ref
 
 try:
     from typing import Literal
@@ -27,9 +28,9 @@ BorderStyles = Literal[
 ]
 
 BorderStyle = Union[None, BorderStyles, List[BorderStyles]]
-BorderWidth = Union[None, str, List[str]]
+BorderWidth = Union[None, str, int, float, List[str], List[int], List[float]]
 BorderColor = Union[None, str, List[str]]
-BorderRadius = Union[None, str, List[str]]
+BorderRadius = Union[None, str, int, float, List[str], List[int], List[float]]
 
 TextSize = Literal[
     None,
@@ -53,6 +54,7 @@ class Control:
     def __init__(
         self,
         id=None,
+        ref: Ref = None,
         width=None,
         height=None,
         padding=None,
@@ -77,6 +79,11 @@ class Control:
         self.data = data
         self.__event_handlers = {}
         self._lock = threading.Lock()
+        if ref:
+            ref.current = self
+
+    def _assign(self, variable):
+        variable = self
 
     def _get_children(self):
         return []
@@ -114,7 +121,7 @@ class Control:
 
     def _set_value_or_list_attr(self, name, value, delimiter):
         if isinstance(value, List):
-            value = delimiter.join(value)
+            value = delimiter.join([str(x) for x in value])
         self._set_attr(name, value)
 
     def _set_attr_internal(self, name, value, dirty=True):

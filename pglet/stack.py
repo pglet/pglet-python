@@ -28,6 +28,7 @@ class Stack(Control):
         self,
         controls=None,
         id=None,
+        ref=None,
         horizontal=None,
         vertical_fill=None,
         horizontal_align: Align = None,
@@ -58,6 +59,7 @@ class Stack(Control):
         Control.__init__(
             self,
             id=id,
+            ref=ref,
             width=width,
             height=height,
             padding=padding,

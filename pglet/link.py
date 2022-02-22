@@ -10,6 +10,7 @@ class Link(Control):
         self,
         url=None,
         id=None,
+        ref=None,
         value=None,
         new_window=None,
         title=None,
@@ -32,6 +33,7 @@ class Link(Control):
         Control.__init__(
             self,
             id=id,
+            ref=ref,
             width=width,
             height=height,
             padding=padding,

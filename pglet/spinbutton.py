@@ -18,6 +18,7 @@ class SpinButton(Control):
         self,
         label=None,
         id=None,
+        ref=None,
         value=None,
         min=None,
         max=None,
@@ -39,6 +40,7 @@ class SpinButton(Control):
         Control.__init__(
             self,
             id=id,
+            ref=ref,
             width=width,
             height=height,
             padding=padding,
