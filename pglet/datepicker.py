@@ -11,6 +11,7 @@ class DatePicker(Control):
         self,
         label=None,
         id=None,
+        ref=None,
         value=None,
         placeholder=None,
         required=None,
@@ -25,7 +26,9 @@ class DatePicker(Control):
         visible=None,
         disabled=None,
     ):
-        Control.__init__(self, id=id, width=width, visible=visible, disabled=disabled)
+        Control.__init__(
+            self, id=id, ref=ref, width=width, visible=visible, disabled=disabled
+        )
         self.label = label
         self.value = value
         self.placeholder = placeholder

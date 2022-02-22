@@ -1,5 +1,7 @@
 from typing import Optional
+
 from beartype import beartype
+
 from pglet.control import Control
 
 
@@ -8,6 +10,7 @@ class Progress(Control):
         self,
         label=None,
         id=None,
+        ref=None,
         description=None,
         value=None,
         bar_height=None,
@@ -21,6 +24,7 @@ class Progress(Control):
         Control.__init__(
             self,
             id=id,
+            ref=ref,
             width=width,
             height=height,
             padding=padding,

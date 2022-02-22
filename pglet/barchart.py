@@ -17,6 +17,7 @@ class BarChart(Control):
     def __init__(
         self,
         id=None,
+        ref=None,
         tooltips=None,
         data_mode: DataMode = None,
         points=None,
@@ -31,6 +32,7 @@ class BarChart(Control):
         Control.__init__(
             self,
             id=id,
+            ref=ref,
             width=width,
             height=height,
             padding=padding,
@@ -80,8 +82,8 @@ class BarChart(Control):
 
 
 class Data(Control):
-    def __init__(self, id=None, points=None):
-        Control.__init__(self, id=id)
+    def __init__(self, id=None, ref=None, points=None):
+        Control.__init__(self, id=id, ref=ref)
 
         self.__points = []
         if points != None:
@@ -108,6 +110,7 @@ class Point(Control):
     def __init__(
         self,
         id=None,
+        ref=None,
         x=None,
         y=None,
         legend=None,
@@ -115,7 +118,7 @@ class Point(Control):
         x_tooltip=None,
         y_tooltip=None,
     ):
-        Control.__init__(self, id=id)
+        Control.__init__(self, id=id, ref=ref)
 
         self.x = x
         self.y = y

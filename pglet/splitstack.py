@@ -15,6 +15,7 @@ class SplitStack(Control):
         self,
         controls=None,
         id=None,
+        ref=None,
         horizontal=None,
         gutter_size=None,
         gutter_color=None,
@@ -30,6 +31,7 @@ class SplitStack(Control):
         Control.__init__(
             self,
             id=id,
+            ref=ref,
             width=width,
             height=height,
             visible=visible,

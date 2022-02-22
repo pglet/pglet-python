@@ -10,6 +10,7 @@ class ChoiceGroup(Control):
         self,
         label=None,
         id=None,
+        ref=None,
         value=None,
         data=None,
         options=None,
@@ -27,6 +28,7 @@ class ChoiceGroup(Control):
         Control.__init__(
             self,
             id=id,
+            ref=ref,
             width=width,
             height=height,
             padding=padding,
@@ -118,8 +120,8 @@ class ChoiceGroup(Control):
 
 
 class Option(Control):
-    def __init__(self, key=None, text=None, icon=None, icon_color=None):
-        Control.__init__(self)
+    def __init__(self, ref=None, key=None, text=None, icon=None, icon_color=None):
+        Control.__init__(self, ref=ref)
         assert key != None or text != None, "key or text must be specified"
 
         self.key = key

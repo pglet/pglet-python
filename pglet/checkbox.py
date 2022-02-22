@@ -18,6 +18,7 @@ class Checkbox(Control):
         self,
         label=None,
         id=None,
+        ref=None,
         value=None,
         value_field=None,
         box_side: BoxSide = None,
@@ -34,6 +35,7 @@ class Checkbox(Control):
         Control.__init__(
             self,
             id=id,
+            ref=ref,
             width=width,
             height=height,
             padding=padding,

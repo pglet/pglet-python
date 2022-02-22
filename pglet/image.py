@@ -20,6 +20,7 @@ class Image(Control):
         self,
         src=None,
         id=None,
+        ref=None,
         alt=None,
         title=None,
         maximize_frame=None,
@@ -39,6 +40,7 @@ class Image(Control):
         Control.__init__(
             self,
             id=id,
+            ref=ref,
             width=width,
             height=height,
             padding=padding,

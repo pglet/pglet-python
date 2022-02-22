@@ -9,6 +9,7 @@ class PieChart(Control):
     def __init__(
         self,
         id=None,
+        ref=None,
         legend=None,
         tooltips=None,
         inner_value=None,
@@ -25,6 +26,7 @@ class PieChart(Control):
         Control.__init__(
             self,
             id=id,
+            ref=ref,
             width=width,
             height=height,
             padding=padding,
@@ -95,8 +97,8 @@ class PieChart(Control):
 
 
 class Data(Control):
-    def __init__(self, id=None, points=None):
-        Control.__init__(self, id=id)
+    def __init__(self, id=None, ref=None, points=None):
+        Control.__init__(self, id=id, ref=ref)
 
         self.__points = []
         if points != None:
@@ -120,8 +122,10 @@ class Data(Control):
 
 
 class Point(Control):
-    def __init__(self, id=None, value=None, legend=None, color=None, tooltip=None):
-        Control.__init__(self, id=id)
+    def __init__(
+        self, id=None, ref=None, value=None, legend=None, color=None, tooltip=None
+    ):
+        Control.__init__(self, id=id, ref=ref)
 
         self.value = value
         self.legend = legend

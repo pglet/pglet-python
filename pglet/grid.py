@@ -21,6 +21,7 @@ class Grid(Control):
     def __init__(
         self,
         id=None,
+        ref=None,
         selection_mode: SelectionMode = None,
         compact=None,
         header_visible=None,
@@ -40,6 +41,7 @@ class Grid(Control):
         Control.__init__(
             self,
             id=id,
+            ref=ref,
             width=width,
             height=height,
             padding=padding,
@@ -177,8 +179,8 @@ class Grid(Control):
 
 
 class Columns(Control):
-    def __init__(self, id=None, columns=None):
-        Control.__init__(self, id=id)
+    def __init__(self, id=None, ref=None, columns=None):
+        Control.__init__(self, id=id, ref=ref)
 
         self.columns = columns
 
@@ -190,8 +192,8 @@ class Columns(Control):
 
 
 class Items(Control):
-    def __init__(self, id=None, items=None):
-        Control.__init__(self, id=id)
+    def __init__(self, id=None, ref=None, items=None):
+        Control.__init__(self, id=id, ref=ref)
 
         self.__map = {}
         self.__items = []
@@ -231,6 +233,7 @@ class Column(Control):
     def __init__(
         self,
         id=None,
+        ref=None,
         name=None,
         icon=None,
         icon_only=None,
@@ -244,7 +247,7 @@ class Column(Control):
         on_click=None,
         template_controls=None,
     ):
-        Control.__init__(self, id=id)
+        Control.__init__(self, id=id, ref=ref)
 
         self.name = name
         self.icon = icon

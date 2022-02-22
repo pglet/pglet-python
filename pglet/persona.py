@@ -46,6 +46,7 @@ class Persona(Control):
         self,
         text=None,
         id=None,
+        ref=None,
         image_url=None,
         image_alt=None,
         initials_color: InitialsColor = None,
@@ -59,7 +60,7 @@ class Persona(Control):
         visible=None,
     ):
 
-        Control.__init__(self, id=id, visible=visible)
+        Control.__init__(self, id=id, ref=ref, visible=visible)
 
         self.text = text
         self.image_url = image_url

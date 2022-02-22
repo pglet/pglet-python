@@ -6,6 +6,7 @@ class Icon(Control):
         self,
         name=None,
         id=None,
+        ref=None,
         color=None,
         size=None,
         width=None,
@@ -19,6 +20,7 @@ class Icon(Control):
         Control.__init__(
             self,
             id=id,
+            ref=ref,
             width=width,
             height=height,
             padding=padding,

@@ -21,6 +21,7 @@ class Message(Control):
         value=None,
         type: MessageType = None,
         id=None,
+        ref=None,
         multiline=None,
         truncated=None,
         dismiss=None,
@@ -38,6 +39,7 @@ class Message(Control):
         Control.__init__(
             self,
             id=id,
+            ref=ref,
             width=width,
             height=height,
             padding=padding,

@@ -2,9 +2,9 @@ from pglet.control import Control
 
 
 class Html(Control):
-    def __init__(self, value=None, id=None, visible=None):
+    def __init__(self, value=None, id=None, ref=None, visible=None):
 
-        Control.__init__(self, id=id, visible=visible)
+        Control.__init__(self, id=id, ref=ref, visible=visible)
 
         self.value = value
 

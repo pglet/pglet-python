@@ -1,11 +1,12 @@
+from beartype._decor.main import beartype
+
+from pglet.control import Control
+
 try:
     from typing import Literal
 except:
     from typing_extensions import Literal
 
-from beartype._decor.main import beartype
-
-from pglet.control import Control
 
 Position = Literal[None, "left", "top", "right", "bottom"]
 
@@ -15,6 +16,7 @@ class Spinner(Control):
         self,
         label=None,
         id=None,
+        ref=None,
         label_position: Position = None,
         size=None,
         width=None,
@@ -27,6 +29,7 @@ class Spinner(Control):
         Control.__init__(
             self,
             id=id,
+            ref=ref,
             width=width,
             height=height,
             padding=padding,

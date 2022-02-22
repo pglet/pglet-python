@@ -19,6 +19,7 @@ class ComboBox(Control):
         self,
         label=None,
         id=None,
+        ref=None,
         value: ComboBoxValue = None,
         placeholder=None,
         error_message=None,
@@ -41,6 +42,7 @@ class ComboBox(Control):
         Control.__init__(
             self,
             id=id,
+            ref=ref,
             width=width,
             height=height,
             padding=padding,
@@ -186,8 +188,10 @@ class ComboBox(Control):
 
 
 class Option(Control):
-    def __init__(self, key=None, text=None, item_type: ItemType = None, disabled=None):
-        Control.__init__(self, disabled=disabled)
+    def __init__(
+        self, ref=None, key=None, text=None, item_type: ItemType = None, disabled=None
+    ):
+        Control.__init__(self, ref=ref, disabled=disabled)
         assert key != None or text != None, "key or text must be specified"
         self.key = key
         self.text = text

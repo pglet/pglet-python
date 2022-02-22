@@ -9,6 +9,7 @@ class Nav(Control):
     def __init__(
         self,
         id=None,
+        ref=None,
         value=None,
         items=None,
         on_change=None,
@@ -25,6 +26,7 @@ class Nav(Control):
         Control.__init__(
             self,
             id=id,
+            ref=ref,
             width=width,
             height=height,
             padding=padding,
@@ -98,6 +100,7 @@ class Item(Control):
     def __init__(
         self,
         id=None,
+        ref=None,
         key=None,
         text=None,
         icon=None,
@@ -110,7 +113,9 @@ class Item(Control):
         disabled=None,
         data=None,
     ):
-        Control.__init__(self, id=id, visible=visible, disabled=disabled, data=data)
+        Control.__init__(
+            self, id=id, ref=ref, visible=visible, disabled=disabled, data=data
+        )
         # key and text are optional for group item but key or text are required for level 2 and deeper items
         # assert key != None or text != None, "key or text must be specified"
         self.key = key

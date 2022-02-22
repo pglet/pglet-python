@@ -33,6 +33,7 @@ class Callout(Control):
     def __init__(
         self,
         id=None,
+        ref=None,
         target=None,
         position: Position = None,
         gap=None,
@@ -54,6 +55,7 @@ class Callout(Control):
         Control.__init__(
             self,
             id=id,
+            ref=ref,
             width=width,
             height=height,
             padding=padding,

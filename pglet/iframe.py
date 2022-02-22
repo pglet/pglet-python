@@ -9,6 +9,7 @@ class IFrame(Control):
     def __init__(
         self,
         id=None,
+        ref=None,
         src=None,
         border_style: BorderStyle = None,
         border_width: BorderWidth = None,
@@ -26,6 +27,7 @@ class IFrame(Control):
         Control.__init__(
             self,
             id=id,
+            ref=ref,
             width=width,
             height=height,
             padding=padding,

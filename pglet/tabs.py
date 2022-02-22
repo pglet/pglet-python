@@ -10,6 +10,7 @@ class Tabs(Control):
         self,
         tabs=None,
         id=None,
+        ref=None,
         value=None,
         solid=None,
         on_change=None,
@@ -24,6 +25,7 @@ class Tabs(Control):
         Control.__init__(
             self,
             id=id,
+            ref=ref,
             width=width,
             height=height,
             padding=padding,
@@ -100,8 +102,10 @@ class Tabs(Control):
 
 
 class Tab(Control):
-    def __init__(self, text, controls=None, id=None, key=None, icon=None, count=None):
-        Control.__init__(self, id=id)
+    def __init__(
+        self, text, controls=None, id=None, ref=None, key=None, icon=None, count=None
+    ):
+        Control.__init__(self, id=id, ref=ref)
         assert key or text, "key or text must be specified"
         self.key = key
         self.text = text

@@ -9,6 +9,7 @@ class Toolbar(Control):
     def __init__(
         self,
         id=None,
+        ref=None,
         inverted=None,
         items=None,
         overflow=None,
@@ -24,6 +25,7 @@ class Toolbar(Control):
         Control.__init__(
             self,
             id=id,
+            ref=ref,
             width=width,
             height=height,
             padding=padding,
@@ -91,8 +93,8 @@ class Toolbar(Control):
 
 
 class Overflow(Control):
-    def __init__(self, id=None, items=None):
-        Control.__init__(self, id=id)
+    def __init__(self, id=None, ref=None, items=None):
+        Control.__init__(self, id=id, ref=ref)
 
         self.__items = []
         if items != None:
@@ -116,8 +118,8 @@ class Overflow(Control):
 
 
 class Far(Control):
-    def __init__(self, id=None, items=None):
-        Control.__init__(self, id=id)
+    def __init__(self, id=None, ref=None, items=None):
+        Control.__init__(self, id=id, ref=ref)
 
         self.__items = []
         if items != None:
@@ -144,6 +146,7 @@ class Item(Control):
     def __init__(
         self,
         id=None,
+        ref=None,
         text=None,
         secondary_text=None,
         url=None,
@@ -159,7 +162,9 @@ class Item(Control):
         disabled=None,
         data=None,
     ):
-        Control.__init__(self, id=id, visible=visible, disabled=disabled, data=data)
+        Control.__init__(
+            self, id=id, ref=ref, visible=visible, disabled=disabled, data=data
+        )
 
         self.text = text
         self.secondary_text = secondary_text
