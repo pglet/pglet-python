@@ -1,5 +1,12 @@
 # Change Log - Pglet client for Python
 
+## [0.7.1](https://pypi.org/project/pglet/0.7.1) - Feb 22, 2022
+
+* Border styling props in Stack, Text, Image and IFrame allow either single value or a list by @FeodorFitsner in https://github.com/pglet/pglet-python/pull/68
+* All boolean control props have default values by @FeodorFitsner in https://github.com/pglet/pglet-python/pull/69
+* Control Refs by @FeodorFitsner in https://github.com/pglet/pglet-python/pull/70
+
+
 ## [0.7.0](https://pypi.org/project/pglet/0.7.0) - Feb 17, 2022
 
 Works with [Pglet Server 0.7.0](https://github.com/pglet/pglet/releases/tag/v0.7.0).
