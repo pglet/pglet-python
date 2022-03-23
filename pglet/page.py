@@ -1,10 +1,10 @@
 import json
 import logging
 import threading
-from typing import List, Optional
 
 from beartype import beartype
-
+from beartype.typing import List
+from beartype.typing import Optional
 from pglet import constants
 from pglet.connection import Connection
 from pglet.control import Control

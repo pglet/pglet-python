@@ -1,4 +1,4 @@
-from beartype._decor.main import beartype
+from beartype import beartype
 
 from pglet.control import Control
 

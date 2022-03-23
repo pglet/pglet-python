@@ -5,14 +5,18 @@ import time
 from dataclasses import is_dataclass
 from functools import partial
 from typing import Any
-from typing import List
 from typing import Union
 
+from beartype.typing import List
+from pglet import choicegroup
+from pglet import combobox
+from pglet import dropdown
 from pglet.button import Button
 from pglet.checkbox import Checkbox
 from pglet.choicegroup import ChoiceGroup
 from pglet.combobox import ComboBox
 from pglet.control import Control
+from pglet.control_event import ControlEvent
 from pglet.datepicker import DatePicker
 from pglet.dropdown import Dropdown
 from pglet.message import Message
@@ -22,10 +26,6 @@ from pglet.stack import Stack
 from pglet.text import Text
 from pglet.textbox import Textbox
 from pglet.toggle import Toggle
-from pglet import choicegroup
-from pglet import combobox
-from pglet import dropdown
-from pglet.control_event import ControlEvent
 
 __all__ = ["Form"]
 
