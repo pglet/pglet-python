@@ -1,8 +1,11 @@
-from typing import List, Optional
+from typing import Optional
 
 from beartype import beartype
-
-from pglet.control import BorderColor, BorderRadius, BorderStyle, BorderWidth, Control
+from pglet.control import BorderColor
+from pglet.control import BorderRadius
+from pglet.control import BorderStyle
+from pglet.control import BorderWidth
+from pglet.control import Control
 
 try:
     from typing import Literal

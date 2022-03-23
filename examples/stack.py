@@ -11,21 +11,19 @@ with pglet.page("horizontal-stack-wrapping") as page:
     page.horizontal_align = "stretch"
 
     def items(count):
-        items = []
-        for i in range(1, count + 1):
-            items.append(
-                Text(
-                    value=i,
-                    align="center",
-                    vertical_align="center",
-                    width=30,
-                    height=30,
-                    bgcolor="BlueMagenta10",
-                    color="white",
-                    padding=5,
-                )
+        return [
+            Text(
+                value=i + 1,
+                align="center",
+                vertical_align="center",
+                width=30,
+                height=30,
+                bgcolor="BlueMagenta10",
+                color="white",
+                padding=5,
             )
-        return items
+            for i in range(count)
+        ]
 
     def wrap_slider_change(e):
         print("wrap_slider_change", e)
